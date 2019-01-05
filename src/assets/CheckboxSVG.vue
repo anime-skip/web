@@ -33,7 +33,7 @@ export default class CheckboxSVG extends Vue {
   @Prop() public checked!: boolean;
 
   public get currentStyle(): string {
-    let klass = [this.down ? 'down' : ''];
+    const klass = [this.down ? 'down' : ''];
     klass.push(this.checked ? 'checked' : 'unchecked');
     return klass.join(' ');
   }
@@ -41,18 +41,18 @@ export default class CheckboxSVG extends Vue {
 </script>
 
 <style lang="scss">
-$transitionMs: 200ms;
+$transitionMs: 100ms;
 
 .checkbox-svg {
   * {
-    transition: 200ms;
+    transition: $transitionMs;
     transform-origin: center;
   }
   .fill {
     transform: scale(0, 0);
   }
   .check {
-    transition-delay: 100ms;
+    transition-delay: $transitionMs / 2;
     opacity: 0;
   }
 }

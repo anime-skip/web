@@ -1,6 +1,6 @@
 <template>
   <button class="checkbox hover" v-ripple @click="toggleChecked" @mousedown="onMouseDown" @mouseup="onMouseUp">
-    <input type="checkbox" :checked="checked">
+    <input type="checkbox" :checked="checked" autocomplete="off">
     <CheckboxSVG color="#673AB7" :down="down" :checked="checked" />
     <label class="label">{{label}}</label>
   </button>
@@ -12,8 +12,8 @@ import CheckboxSVG from '@/assets/CheckboxSVG.vue';
 
 @Component({
   components: {
-    CheckboxSVG
-  }
+    CheckboxSVG,
+  },
 })
 export default class Checkbox extends Vue {
   @Prop() private label!: string;
@@ -38,11 +38,12 @@ export default class Checkbox extends Vue {
 
 <style lang="scss">
 $height: 24px;
+$padding: 8px;
 
 .checkbox {
-  height: $height;
+  height: $height + $padding * 2;
   display: flex;
-  padding: 8px;
+  padding: $padding;
   outline: none;
   box-sizing: content-box;
   background-color: transparent;

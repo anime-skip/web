@@ -8,24 +8,31 @@
       <form class="width-adjust">
         <h2>Sign In</h2>
         <div v-if="notSignedIn">
-          <TextInput id="username" type="text" label="Username" defaultValue="apklinker@sourceallies.com"/>
+          <TextInput 
+            id="username"
+            type="text"
+            label="Username"
+            defaultValue="apklinker@sourceallies.com"
+            autocomplete="username"
+          />
           <TextInput
             id="password"
             type="password"
             defaultValue="ak013096"
             label="Password"
             help="This field is case sensitive"
+            autocomplete="current-password"
           />
           <Checkbox id="remember-me" label="Remember Me"/>
           <div class="button-bar flexRow">
-            <router-link id="sign-up" to="/sign-up">Sign Up!</router-link>
+            <Button id="create-account" flat="true" link="/sign-up" label="Create an Account"/>
             <Button id="sign-in" label="Sign In" :click="onClickSignIn" :loading="isSigningIn"/>
           </div>
         </div>
         <div v-else>
           <p class="signed-in-as">You've already signed in as <b>{{signedInUsername}}</b>.</p>
           <div class="flexRow button-bar">
-            <Button label="Log Out" :click="onClickReset"/>
+            <Button class="button--secondary" label="Log Out" flat="true" :click="onClickReset"/>
             <Button label="Stay Signed In" :click="onClickContinueAs"/>
           </div>
         </div>
@@ -35,13 +42,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import Button from "@/components/Button.vue";
-import Checkbox from "@/components/Checkbox.vue";
-import NavBar from "@/components/NavBar.vue";
-import TextInput from "@/components/TextInput.vue";
-import Auth from "@/utils/Auth";
-import Api from "@/utils/Api";
+import { Component, Vue } from 'vue-property-decorator';
+import Button from '@/components/Button.vue';
+import Checkbox from '@/components/Checkbox.vue';
+import NavBar from '@/components/NavBar.vue';
+import TextInput from '@/components/TextInput.vue';
+import Auth from '@/utils/Auth';
+import Api from '@/utils/Api';
 import { AxiosPromise, AxiosResponse } from 'axios';
 import { TokenResponse } from '@/utils/types';
 import { URL } from 'url';
@@ -51,8 +58,8 @@ import { URL } from 'url';
     Button,
     Checkbox,
     NavBar,
-    TextInput
-  }
+    TextInput,
+  },
 })
 export default class SignIn extends Vue {
   private validationMessage?: string;
@@ -61,14 +68,14 @@ export default class SignIn extends Vue {
   public async onClickSignIn(event: Event): Promise<void> {
     this.isSigningIn = true;
     event.preventDefault();
-    const username = (document.querySelector("#username input") as HTMLInputElement).value;
-    const password = (document.querySelector("#password input") as HTMLInputElement).value;
+    const username = (document.querySelector('#username input') as HTMLInputElement).value;
+    const password = (document.querySelector('#password input') as HTMLInputElement).value;
     const md5Hash = await Auth.hashPassword(password);
-    const rememberMe = (document.querySelector("#remember-me input") as HTMLInputElement).checked;
-    
+    const rememberMe = (document.querySelector('#remember-me input') as HTMLInputElement).checked;
+
     try {
       const response: AxiosResponse<TokenResponse> = await Api.token(username, md5Hash);
-      
+
       // save token
       let storage: Storage = sessionStorage;
       if (rememberMe) {
@@ -92,7 +99,7 @@ export default class SignIn extends Vue {
     event.preventDefault();
     localStorage.clear();
     sessionStorage.clear();
-    window.location.pathname = window.location.pathname
+    window.location.pathname = window.location.pathname;
   }
 
   public get notSignedIn(): boolean {
@@ -153,8 +160,13 @@ $cardRadius: 8px;
         font-size: 18px;
         margin-bottom: 8px;
       }
+      .text-input {
+        padding-bottom: 8px;
+      }
       #remember-me {
         margin: 8px 0;
+        width: 100%;
+        box-sizing: border-box;
       }
       .button-bar {
         justify-content: space-between;

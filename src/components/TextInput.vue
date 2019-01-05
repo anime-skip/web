@@ -1,22 +1,34 @@
 <template>
-  <div class="text-input" :class="[filledClass, focusedClass]">
+  <div class="text-input" :class="[filledClass, focusedClass, validityClass]">
     <div class="overlay">
-      <input class="input" :type="type" v-model="value" @focus="onFocus" @blur="onBlur">
+      <input 
+        class="input"
+        ref="input"
+        :type="type"
+        v-model="value"
+        @focus="onFocus"
+        @blur="onBlur"
+        :autocomplete="autocomplete || 'off'"
+        @input="updateValue"
+      >
       <div class="border"></div>
       <label class="label">{{label}}</label>
     </div>
-    <div class="help">{{help || ''}}</div>
+    <div :class="help ? undefined : 'hidden'" class="help">{{help || ''}}</div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import { ValidState } from '@/utils/types';
 
 @Component
 export default class TextInput extends Vue {
   @Prop() private label!: string;
+  @Prop() private autocomplete?: 'username' | 'current-password';
   @Prop() private help?: string;
   @Prop() private defaultValue?: string;
+  @Prop({ default: ValidState.NONE }) private validity?: ValidState;
   @Prop({ default: 'text' }) private type!: 'text' | 'password';
   @Prop({ default: 'none' }) private mode!: 'none' | 'error' | 'valid';
 
@@ -26,17 +38,29 @@ export default class TextInput extends Vue {
   public get filledClass(): any {
     return this.value === '' && !this.isFocused ? '' : 'filled';
   }
-
   public get focusedClass(): any {
     return !this.isFocused ? '' : 'focused';
+  }
+  public get validityClass(): any {
+    switch (this.validity) {
+      case ValidState.NONE: return undefined;
+      case ValidState.VALID: return 'valid';
+      case ValidState.ERROR: return 'error';
+    }
   }
 
   public onFocus(event: FocusEvent) {
     this.isFocused = true;
   }
-
   public onBlur(event: FocusEvent) {
     this.isFocused = false;
+  }
+  public updateValue({ target: { value } }: any) {
+    this.value = value;
+    this.$emit('input', value);
+  }
+  public loadInitialStates(): void {
+    this.$emit(this.defaultValue || '');
   }
 
 }
@@ -72,6 +96,7 @@ $validGreen: #4CAF50;
       font-family: "Avenir", Helvetica, Arial, sans-serif;
       font-size: 16px;
       line-height: $inputHeight;
+      caret-color: $primary700;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
@@ -106,6 +131,13 @@ $validGreen: #4CAF50;
     color: $colorFongNotActive;
     text-align: start;
     padding-left: 14px;
+    opacity: 1;
+    transition: 100ms;
+    &.hidden {
+      opacity: 0;
+      padding-top: 0;
+      height: 0;
+    }
   }
 }
 .text-input.filled {
@@ -149,7 +181,7 @@ $validGreen: #4CAF50;
     color: rgba($color: $errorRed, $alpha: 1.0);
   }
 }
-.text-input.error {
+.text-input.valid {
   .overlay {
     .label {
       color: rgba($color: $validGreen, $alpha: 1.0);

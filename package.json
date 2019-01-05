@@ -19,6 +19,7 @@
     "vue": "^2.5.21",
     "vue-class-component": "^6.0.0",
     "vue-property-decorator": "^7.0.0",
+    "vue-recaptcha": "^1.1.1",
     "vue-ripple-directive": "^2.0.1",
     "vue-router": "^3.0.1"
   },
@@ -32,7 +33,7 @@
     "@vue/cli-service": "^3.2.0",
     "@vue/test-utils": "^1.0.0-beta.20",
     "babel-core": "7.0.0-bridge.0",
-    "multi-proc": "^1.0.10",
+    "multi-proc": "^1.0.11",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.0.1",
     "ts-jest": "^23.0.0",

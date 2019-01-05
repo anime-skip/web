@@ -5,7 +5,7 @@ import RippleDirective from 'vue-ripple-directive';
 
 Vue.config.productionTip = false;
 
-RippleDirective.color = 'rgba(0, 0, 0, 0.04)';
+RippleDirective.color = 'rgba(0, 0, 0, 0.08)';
 RippleDirective.zIndex = 0;
 RippleDirective.transistion = '400ms';
 

@@ -6884,10 +6884,10 @@ ms@^2.1.1:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.1.tgz#30a5864eb3ebb0a66f2ebe6d727af06a09d86e0a"
   integrity sha512-tgp+dl5cGk28utYktBsrFqA7HKgrhgPsg6Z/EfhWI4gl1Hwq8B/GmY/0oXZ6nF8hDVesS/FpnYaD/kOWhYQvyg==
 
-multi-proc@^1.0.10:
-  version "1.0.10"
-  resolved "https://registry.yarnpkg.com/multi-proc/-/multi-proc-1.0.10.tgz#ea4e9b0ab90fe6fd49d02281ca312fa653861d2f"
-  integrity sha512-dpT8lxbLP0F7MwKUm9BkA2fhC+EHtG6AO5g8J469do8u2TmRVtOSRc/NdFx/gFafJIJz0aTkd7p+FGPSOXx/pA==
+multi-proc@^1.0.11:
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/multi-proc/-/multi-proc-1.0.11.tgz#29216f017a05131b28e2c7bd16682ccd69f80165"
+  integrity sha512-v5nrKVFyNxeIoydPlcOspqiTAmB9oWT22bQD0v74Kd/D6FqyMZ9py5YcuYau5yc8sHKI2In0jK+HrvIAcP9pgA==
   dependencies:
     commander "^2.19.0"
 
@@ -9962,6 +9962,11 @@ vue-property-decorator@^7.0.0:
   integrity sha512-sCI6NVM3tEDg+mpZrQlgkddtxd9LbFWetue8D+nqO3agfSLz0KoC/UIi2P1l5E0TDhcUeIXS9rasuP2HWg+L4w==
   dependencies:
     vue-class-component "^6.2.0"
+
+vue-recaptcha@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/vue-recaptcha/-/vue-recaptcha-1.1.1.tgz#be38f4ffab500e7f4775f149a279bb962cf91f07"
+  integrity sha512-ThjujwmoLrDS6EeE7AGHmeGfWDhFOFUAyfPfSCXojYMoSwFOJv0LL0/86PqHwjHM69HIq0kBI9ps+JeIQa5V/A==
 
 vue-ripple-directive@^2.0.1:
   version "2.0.1"

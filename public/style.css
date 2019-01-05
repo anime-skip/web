@@ -1,3 +1,7 @@
+::selection {
+  background: #B3E5FC;
+}
+
 body, html {
   height: 100%;
 }
@@ -16,7 +20,7 @@ body {
 }
 
 .hover:hover {
-  background-color: rgba(0, 0, 0, 0.04);
+  background-color: rgba(0, 0, 0, 0.08);
 }
 
 .flexRow {
@@ -26,4 +30,70 @@ body {
 
 a {
   color: #03A9F4;
+}
+
+.button {
+  display: block;
+  min-height: 36px;
+  outline: none;
+  box-sizing: border-box;
+  border: none;
+  background-color: #673AB7;
+  color: white;
+  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 24px;
+  cursor: pointer;
+  padding: 6px 16px;
+  border-radius: 3px;
+}
+
+.button:hover {
+  background-color: #7E57C2;
+}
+
+.button:disabled {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.button a {
+  text-decoration: none;
+}
+
+.button--secondary {
+  background-color: #03A9F4;
+  color: white;
+}
+
+.button--secondary:hover {
+  background-color: #29B6F6;
+}
+
+.button--flat {
+  text-transform: none;
+  background-color: transparent;
+  color: #673AB7;
+}
+
+.button--flat:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.button--flat.button--secondary {
+  color: #03A9F4;
+}
+
+code.letter-list {
+  font-family: monospace;
+  background-color: rgba(0, 0, 0, 0.12);
+  padding: 2px 4px;
+  line-height: 14px;
+  border-radius: 2px;
+  margin-left: 4px;
+}
+
+ul, ol {
+  padding-left: 16px;
 }

@@ -13,8 +13,8 @@ import CheckboxSVG from '@/assets/CheckboxSVG.vue';
 
 @Component({
   components: {
-    CheckboxSVG
-  }
+    CheckboxSVG,
+  },
 })
 export default class Spinner extends Vue {
 }

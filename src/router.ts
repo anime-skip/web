@@ -18,8 +18,8 @@ export default new Router({
     },
     {
       path: '/sign-up',
-      name: 'Sign Up',
-      component: () => import(/* webpackChunkName: "sign-in" */ './pages/SignUp.vue'),
+      name: 'Create Account',
+      component: () => import(/* webpackChunkName: "create-account" */ './pages/CreateAccount.vue'),
     },
     {
       path: '/about',
