@@ -1,0 +1,29 @@
+body, html {
+  height: 100%;
+}
+
+body, body * {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+
+.hover:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.flexRow {
+  display: flex;
+  flex-direction: row;
+}
+
+a {
+  color: #03A9F4;
+}
