@@ -41,7 +41,6 @@ $height: 24px;
 $padding: 8px;
 
 .checkbox {
-  height: $height + $padding * 2;
   display: flex;
   padding: $padding;
   outline: none;

@@ -158,7 +158,8 @@ $cardRadius: 8px;
       h2 {
         text-align: start;
         font-size: 18px;
-        margin-bottom: 8px;
+        line-height: 18px;
+        margin-bottom: 16px;
       }
       .text-input {
         padding-bottom: 8px;
