@@ -1,4 +1,4 @@
-import axios, { AxiosPromise, AxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import Env from './Env';
 import { TokenResponse, CreateAccountResponse, AxiosRes } from './types';
 
@@ -17,4 +17,5 @@ export default class Api {
     };
     return await axios.post(`${Env.API_URL}/account/create`, data);
   }
+
 }

@@ -2,8 +2,8 @@
   <div class="background">
     <div class="sign-in">
       <router-link class="top-bar" to="/">
-        <img src="../assets/logo.png">
-        <span>TV Skip</span>
+        <img src="../assets/logo-m.svg">
+        <span>TV Timestamps</span>
       </router-link>
       <form class="width-adjust">
         <h2>Sign In</h2>
@@ -113,6 +113,7 @@ export default class SignIn extends Vue {
 
 <style lang="scss" scoped>
 $cardRadius: 8px;
+$logoSize: 72px;
 
 .background {
   height: 100%;
@@ -140,11 +141,12 @@ $cardRadius: 8px;
       justify-content: center;
       text-decoration: none;
       img {
-        width: 24px;
-        height: 24px;
+        width: $logoSize;
         margin-right: 16px;
       }
       span {
+        font-size: 24px;
+        line-height: $logoSize;
         font-weight: 600;
         color: white;
       }

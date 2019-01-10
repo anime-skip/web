@@ -2,7 +2,7 @@
   <div class="background">
     <div class="sign-up">
       <router-link class="top-bar" to="/">
-        <img src="../assets/logo.png">
+        <img src="../assets/logo.svg">
         <span>TV Skip</span>
       </router-link>
       <form class="width-adjust">
