@@ -6,7 +6,7 @@ interface ENV {
   API_URL: string;
 }
 
-const envs: { development: ENV; production: ENV } = {
+const envs: { readonly [environment in NodeEnv]: ENV } = {
   development: {
     API_URL: 'http://localhost:8000/api',
   },
