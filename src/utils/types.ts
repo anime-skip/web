@@ -22,3 +22,5 @@ export enum ValidState {
   ERROR = 0,
   VALID = 1,
 }
+
+export type NodeEnv = 'development' | 'production';
