@@ -234,7 +234,7 @@ $logoSize: 72px;
 .background {
   height: 100%;
   position: relative;
-  background-image: url("../assets/bg-sign-in.png");
+  background-image: url("../assets/bg_sign_in.jpg");
   background-blend-mode: multiply;
   background-color: $primary500;
   background-size: cover;
