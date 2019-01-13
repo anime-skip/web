@@ -2,7 +2,7 @@
   <button
     class="button"
     :class="flat === 'true' ? 'button--flat' : undefined" 
-    v-ripple="flat === 'true' ? undefined : 'rgba(255, 255, 255, 0.24)'"
+    v-ripple="flat === 'true' || white === 'true' ? undefined : 'rgba(255, 255, 255, 0.24)'"
     @click="onClick"
     :disabled="loading || disabled"
   >
@@ -31,6 +31,7 @@ export default class Button extends Vue {
   @Prop() private click!: (event?: Event) => void;
   @Prop() private link?: string;
   @Prop() private flat?: 'true';
+  @Prop() private white?: 'true';
   @Prop() private disabled?: boolean;
 
   public onClick(event: Event) {

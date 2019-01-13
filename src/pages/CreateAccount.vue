@@ -2,38 +2,45 @@
   <div class="background">
     <div class="sign-up">
       <router-link class="top-bar" to="/">
-        <img src="../assets/logo.svg">
-        <span>TV Skip</span>
+        <img src="../assets/logo-m.svg">
+        <h1>Anime Skip</h1>
       </router-link>
       <form class="width-adjust">
         <h2>Create an Account</h2>
         <TextInput
-          id="username" 
-          type="text" 
+          id="username"
+          type="text"
           label="Username"
           autocomplete="username"
           v-model="username"
           :validity="usernameValidity"
-          defaultValue="aklinker1"
         />
-        <TextInput 
+        <TextInput
           id="email"
-          type="text" 
+          type="text"
           label="Email"
           autocomplete="email"
           v-model="email"
           :validity="emailValidity"
-          defaultValue="aaronklinker1@gmail.com"
         />
-        <p class="password-help">
-          Your password must be at least <b>8 characters</b> long and needs to include at least one of <b>each of</b> the following characters:
-          <ul>
-            <li>Lowercase <code class="letter-list">a-z</code></li>
-            <li>Uppercase <code class="letter-list">A-Z</code></li>
-            <li>Numeric <code class="letter-list">0-9</code></li>
-            <li>Special <code class="letter-list">!"#$%&'()*+,-./:;&gt;=&lt;?@[\]^_`{|}~</code></li>
-          </ul>
+        <p class="password-help">Your password must be at least
+          <b>8 characters</b> long and needs to include at least one of
+          <b>each of</b> the following characters:
         </p>
+        <ul>
+          <li>Lowercase
+            <code class="letter-list">a-z</code>
+          </li>
+          <li>Uppercase
+            <code class="letter-list">A-Z</code>
+          </li>
+          <li>Numeric
+            <code class="letter-list">0-9</code>
+          </li>
+          <li>Special
+            <code class="letter-list">!"#$%&'()*+,-./:;&gt;=&lt;?@[\]^_`{|}~</code>
+          </li>
+        </ul>
         <TextInput
           id="password1"
           type="password"
@@ -42,7 +49,6 @@
           :validity="password1Validity"
           v-model="password1"
           :help="passwordHelp"
-          defaultValue="AK4x#b8?ty0-"
         />
         <TextInput
           id="password2"
@@ -51,23 +57,22 @@
           autocomplete="password"
           v-model="password2"
           :validity="password2Validity"
-          defaultValue="AK4x#b8?ty0-"
         />
         <Checkbox id="remember-me" label="Remember Me"/>
-        <div class="button-bar flexRow">
-          <Button 
-            id="have-account"
-            flat="true"
-            link="/sign-in"
-            label="Already have an account?"
-          />
-          <vue-recaptcha sitekey="6LcIIocUAAAAAJBPYWFkeX-F91fFu72lum7oFxl9">
-            <Button 
+        <div class="button-bar flex-row">
+          <Button id="have-account" flat="true" link="/sign-in" label="Already have an account?"/>
+          <vue-recaptcha
+            ref="recaptcha"
+            sitekey="6LcIIocUAAAAAJBPYWFkeX-F91fFu72lum7oFxl9"
+            size="invisible"
+            @verify="recaptchaVerified"
+            @expired="recaptchaExpired"
+          >
+            <Button
               id="create"
               label="Create"
-              :click="() => {}"
               :loading="isCreatingAccount"
-              :disabled="usernameValidity !== 1 || emailValidity !== 1 || password1Validity !== 1 || password2Validity !== 1"
+              :disabled="isCreateDisabled"
             />
           </vue-recaptcha>
         </div>
@@ -87,6 +92,12 @@ import { ValidState } from '@/utils/types';
 import Const from '@/utils/Const';
 import Api from '@/utils/Api';
 import VueRecaptcha from 'vue-recaptcha';
+
+// Load reCAPTCHA
+const $script = document.createElement('script');
+$script.async = true;
+$script.src = 'https://www.google.com/recaptcha/api.js?onload=vueRecaptchaApiLoaded&render=explicit';
+document.head.appendChild($script);
 
 @Component({
   components: {
@@ -122,7 +133,7 @@ export default class SignIn extends Vue {
     }
   }
   public get password1Validity(): ValidState {
-    if (this.password1 === null) {
+    if (this.password1 === '') {
       return ValidState.NONE;
     }
 
@@ -181,16 +192,44 @@ export default class SignIn extends Vue {
     }
     return ValidState.ERROR;
   }
+  public get isCreateDisabled(): boolean {
+    return false;
+    // return (
+    //   this.usernameValidity !== 1 ||
+    //   this.emailValidity !== 1 ||
+    //   this.password1Validity !== 1 ||
+    //   this.password2Validity !== 1
+    // );
+  }
 
-  public async onClickCreate() {
-    const md5Hash = await Auth.hashPassword(this.password1);
-    const response = await Api.createAccount(this.username, this.email, md5Hash);
+  public createAccount() {
+    console.log('Creating account');
+    this.isCreatingAccount = true;
+    // reCAPTCHA is automatically executed since the button is inside it.
+  }
+
+  public async recaptchaVerified() {
+    const md5Hash = Auth.hashPassword(this.password1);
+    try {
+      const response = await Api.createAccount(this.username, this.email, md5Hash);
+    } catch (err) {
+      window.alert(`Unknown Error: ${err.response.data.error}`);
+      console.error(err);
+    }
+    this.isCreatingAccount = false;
+  }
+
+  public recaptchaExpired() {
+    window.alert('Recaptcha verification failed');
+    (this.$refs.recaptcha as VueRecaptcha).reset();
+    this.isCreatingAccount = false;
   }
 }
 </script>
 
 <style lang="scss" scoped>
 $cardRadius: 8px;
+$logoSize: 72px;
 
 .background {
   height: 100%;
@@ -202,6 +241,7 @@ $cardRadius: 8px;
   background-position: center;
   .sign-up {
     background: linear-gradient(
+      180deg,
       $primary700,
       rgba($color: $secondary700, $alpha: 0.7)
     );
@@ -218,13 +258,15 @@ $cardRadius: 8px;
       justify-content: center;
       text-decoration: none;
       img {
-        width: 24px;
-        height: 24px;
+        width: $logoSize;
         margin-right: 16px;
       }
-      span {
+      h1 {
+        font-size: 30px;
+        line-height: $logoSize;
         font-weight: 600;
         color: white;
+        padding-right: 24px;
       }
     }
     form {
@@ -245,11 +287,12 @@ $cardRadius: 8px;
       .password-help {
         text-align: left;
         margin-top: 8px;
-        ul {
-          margin-left: 16px;
-          li {
-            margin: 8px 0;
-          }
+      }
+      ul {
+        text-align: left;
+        margin-left: 16px;
+        li {
+          margin: 8px 0;
         }
       }
       .button-bar {

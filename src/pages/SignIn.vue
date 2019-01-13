@@ -3,7 +3,7 @@
     <div class="sign-in">
       <router-link class="top-bar" to="/">
         <img src="../assets/logo-m.svg">
-        <span>TV Timestamps</span>
+        <h1>Anime Skip</h1>
       </router-link>
       <form class="width-adjust">
         <h2>Sign In</h2>
@@ -14,24 +14,27 @@
             label="Username"
             defaultValue="apklinker@sourceallies.com"
             autocomplete="username"
+            :validity="usernameValidation"
+            :help="badUsernameMessage"
           />
           <TextInput
             id="password"
             type="password"
             defaultValue="ak013096"
             label="Password"
-            help="This field is case sensitive"
             autocomplete="current-password"
+            :validity="passwordValidation"
+            :help="badPasswordMessage"
           />
           <Checkbox id="remember-me" label="Remember Me"/>
-          <div class="button-bar flexRow">
+          <div class="button-bar flex-row">
             <Button id="create-account" flat="true" link="/sign-up" label="Create an Account"/>
             <Button id="sign-in" label="Sign In" :click="onClickSignIn" :loading="isSigningIn"/>
           </div>
         </div>
         <div v-else>
           <p class="signed-in-as">You've already signed in as <b>{{signedInUsername}}</b>.</p>
-          <div class="flexRow button-bar">
+          <div class="flex-row button-bar">
             <Button class="button--secondary" label="Log Out" flat="true" :click="onClickReset"/>
             <Button label="Stay Signed In" :click="onClickContinueAs"/>
           </div>
@@ -50,7 +53,7 @@ import TextInput from '@/components/TextInput.vue';
 import Auth from '@/utils/Auth';
 import Api from '@/utils/Api';
 import { AxiosPromise, AxiosResponse } from 'axios';
-import { TokenResponse } from '@/utils/types';
+import { TokenResponse, ValidState } from '@/utils/types';
 import { URL } from 'url';
 
 @Component({
@@ -62,11 +65,14 @@ import { URL } from 'url';
   },
 })
 export default class SignIn extends Vue {
-  private validationMessage?: string;
+  private badUsernameMessage: string = '';
+  private badPasswordMessage: string = '';
   private isSigningIn: boolean = false;
 
   public async onClickSignIn(event: Event): Promise<void> {
     this.isSigningIn = true;
+    this.badUsernameMessage = '';
+    this.badPasswordMessage = '';
     event.preventDefault();
     const username = (document.querySelector('#username input') as HTMLInputElement).value;
     const password = (document.querySelector('#password input') as HTMLInputElement).value;
@@ -87,7 +93,16 @@ export default class SignIn extends Vue {
       // Go to the homepage
       window.location.pathname = 'home';
     } catch (err) {
-      this.validationMessage = err.message;
+      if (err.response.data.type === 'NotFoundError') {
+        this.badUsernameMessage = err.response.data.error;
+        this.badPasswordMessage = '';
+      } else if (err.response.data.type === 'ValidationError') {
+        this.badUsernameMessage = '';
+        this.badPasswordMessage = err.response.data.error;
+      } else {
+        this.badUsernameMessage = '';
+        this.badUsernameMessage = `Unknown error: ${err.message}`;
+      }
       this.isSigningIn = false;
     }
   }
@@ -107,6 +122,12 @@ export default class SignIn extends Vue {
   }
   public get signedInUsername(): string {
     return localStorage.getItem('username') || sessionStorage.getItem('username')!;
+  }
+  public get usernameValidation(): ValidState {
+    return this.badUsernameMessage ? ValidState.ERROR : ValidState.NONE;
+  }
+  public get passwordValidation(): ValidState {
+    return this.badPasswordMessage ? ValidState.ERROR : ValidState.NONE;
   }
 }
 </script>
@@ -144,11 +165,12 @@ $logoSize: 72px;
         width: $logoSize;
         margin-right: 16px;
       }
-      span {
-        font-size: 24px;
+      h1 {
+        font-size: 30px;
         line-height: $logoSize;
         font-weight: 600;
         color: white;
+        padding-right: 24px;
       }
     }
     form {

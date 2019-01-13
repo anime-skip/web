@@ -1,7 +1,7 @@
 [
   {
     "tag": "Web",
-    "command": "yarn serve",
+    "command": "yarn start:dev",
     "color": "bg_green"
   },
   {

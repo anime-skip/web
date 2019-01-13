@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "build": "vue-cli-service build",
-    "start:dev": "vue-cli-service serve",
-    "start:dev+express": "yarn multi-proc start",
+    "start:dev": "NODE_ENV=development vue-cli-service serve",
+    "start:dev+express": "NODE_ENV=development yarn multi-proc start",
     "lint": "vue-cli-service lint",
     "test": "echo No tests # vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e"

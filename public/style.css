@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Overpass:200i,400,600,700,900');
 ::selection {
   background: #B3E5FC;
 }
@@ -19,11 +20,15 @@ body {
   color: #2c3e50;
 }
 
+h1, h2, h3, h4, h5, h6, button {
+  font-family: 'Overpass', sans-serif;
+}
+
 .hover:hover {
   background-color: rgba(0, 0, 0, 0.08);
 }
 
-.flexRow {
+.flex-row {
   display: flex;
   flex-direction: row;
 }
@@ -71,6 +76,27 @@ a {
   background-color: #29B6F6;
 }
 
+.button--white {
+  background-color: white;
+  color: #5F2E77;
+}
+
+.button--white:hover {
+  background-color: #f8f8f8;
+}
+
+.button--white:active {
+  background-color: #f8f8f8;
+}
+
+.button--white a {
+  color: white;
+}
+
+.button--white {
+  background-color: #f8f8f8;
+}
+
 .button--flat {
   text-transform: none;
   background-color: transparent;
@@ -83,6 +109,10 @@ a {
 
 .button--flat.button--secondary {
   color: #03A9F4;
+}
+
+.button--flat.button--white {
+  color: white;
 }
 
 code.letter-list {
