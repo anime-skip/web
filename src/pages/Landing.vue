@@ -14,7 +14,7 @@
           <Button class="button--white" label="Get Started" white="true" />
           <Button class="button--white learn-more" label="Sign In" flat="true" link="sign-in" />
         </div>
-        <img class="player-preview" src="../assets/img_player.png"/>
+        <img class="player-preview" src="../assets/img_player.jpg"/>
       </div>
     </section>
     <section class="section-2" id="learn-more">
