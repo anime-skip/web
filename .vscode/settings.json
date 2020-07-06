@@ -1,0 +1,5 @@
+{
+  "editor.rulers": [100, 120],
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": false
+}
