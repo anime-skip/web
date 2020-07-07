@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "start": "vue-cli-service serve",
+    "start:docker": "docker run -it -p 8080:80 --rm --name anime-skip-web-1 aklinker1/anime-skip-web",
     "build": "vue-cli-service build",
+    "build:docker": "docker build -t aklinker1/anime-skip-web .",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint"
