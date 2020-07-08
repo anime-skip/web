@@ -4,12 +4,11 @@
   "private": true,
   "scripts": {
     "start": "vue-cli-service serve",
-    "start:docker": "docker run -it -p 8080:80 --rm --name anime-skip-web-1 aklinker1/anime-skip-web",
     "build": "vue-cli-service build",
-    "build:docker": "docker build -t aklinker1/anime-skip-web .",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
+    "deploy": "git push heroku master",
     "heroku-prebuild": "echo 'This runs before Heroku installs dependencies'",
     "heroku-postbuild": "echo 'This runs after Heroku installs dependencies, but before Heroku prunes and caches dependencies'",
     "heroku-cleanup": "echo 'This runs after Heroku prunes and caches dependencies'"
