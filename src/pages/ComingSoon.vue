@@ -1,38 +1,27 @@
 <template>
-  <div class="ComingSoon">
-    <img class="banner" alt="Anime Skip Logo" src="../assets/banner.svg" />
-    <p class="message">Coming soon!</p>
-  </div>
+  <Banner class="ComingSoon">
+    <p slot="msg1" class="message">Coming soon!</p>
+  </Banner>
 </template>
 
 <script>
 import Vue from 'vue';
+import Banner from '@/components/Banner.vue';
 
 export default Vue.extend({
-  name: 'ComingSoon'
+  name: 'ComingSoon',
+  components: { Banner }
 });
 </script>
 
 <style lang="scss" scoped>
 .ComingSoon {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   height: 100%;
 
-  .banner {
-    width: 50%;
-    max-width: 800px;
-    min-width: 360px;
-  }
-
   .message {
-    color: white;
+    color: rgba($color: #ffffff, $alpha: 0.36);
     font-size: 20px;
-    opacity: 0.24;
-    position: absolute;
-    bottom: 16px;
+    margin-top: 32px;
   }
 }
 </style>
