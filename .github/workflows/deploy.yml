@@ -26,15 +26,20 @@ jobs:
     steps:
       - uses: actions/setup-node@v1
       - uses: actions/checkout@v1
-      # - uses: actions/cache@v2
-      #   with:
-      #     path: '**/node_modules'
-      #     key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-      # - run: yarn install
-      # - run: yarn build
-      # - run: yarn lint
-      # - run: yarn test:unit
-      # - run: yarn test:e2e
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - run: |
+          yarn install
+      - run: |
+          yarn build
+      - run: |
+          yarn lint
+      - run: |
+          yarn test:unit
+      # - run: |
+      #     yarn test:e2e
 
   prod_deploy:
     name: Deploy to Prod
@@ -45,6 +50,7 @@ jobs:
     if: needs.deploy_check.outputs.DEPLOY_TYPE == 'prod'
     steps:
       - uses: actions/checkout@v1
-      - run: git push https://heroku:$HEROKU_API_KEY@git.heroku.com/anime-skip-web.git HEAD:master -f
+      - run: |
+          git push https://heroku:$HEROKU_API_KEY@git.heroku.com/anime-skip-web.git HEAD:master -f
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
