@@ -38,8 +38,6 @@ jobs:
           yarn lint
       - run: |
           yarn test:unit
-      # - run: |
-      #     yarn test:e2e
 
   prod_deploy:
     name: Deploy to Prod
