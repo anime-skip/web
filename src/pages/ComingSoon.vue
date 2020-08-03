@@ -1,16 +1,16 @@
 <template>
   <Banner class="ComingSoon">
-    <p slot="msg1" class="message">Coming soon!</p>
+    <p class="message">Coming soon!</p>
   </Banner>
 </template>
 
 <script>
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 import Banner from '@/components/Banner.vue';
 
-export default Vue.extend({
+export default defineComponent({
   name: 'ComingSoon',
-  components: { Banner }
+  components: { Banner },
 });
 </script>
 

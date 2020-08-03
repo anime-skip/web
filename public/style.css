@@ -1,16 +1,45 @@
+@import url('https://fonts.googleapis.com/css?family=Overpass:300,400,500,800&display=swap');
+
 html,
 body {
+  height: 100%;
+}
+
+* {
   padding: 0;
   margin: 0;
-  height: 100%;
 }
 
 body {
   background-color: #282f37;
 }
 
-* {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+body * {
+  font-family: sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Overpass', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+input {
+  min-width: 0;
+}
+
+a {
+  color: #8e5dd6;
+}
+
+.grecaptcha-badge {
+  visibility: hidden;
 }

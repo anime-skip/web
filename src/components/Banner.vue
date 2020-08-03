@@ -1,17 +1,14 @@
 <template>
   <div class="Banner">
     <img class="banner" alt="Anime Skip Logo" src="../assets/banner.svg" />
-    <slot name="msg1" />
-    <slot name="msg2" />
+    <slot />
   </div>
 </template>
 
 <script>
-import Vue from 'vue';
+import { defineComponent } from 'vue';
 
-export default Vue.extend({
-  name: 'Banner'
-});
+export default defineComponent({});
 </script>
 
 <style lang="scss" scoped>
