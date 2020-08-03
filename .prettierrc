@@ -10,5 +10,6 @@
   "singleQuote": true,
   "tabWidth": 2,
   "vueIndentScriptAndStyle": false,
-  "useTabs": false
+  "useTabs": false,
+  "trailingComma": "all"
 }
