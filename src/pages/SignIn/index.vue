@@ -89,7 +89,7 @@ export default defineComponent({
 @media only screen and (min-width: 768px) {
   #SignIn {
     .card {
-      grid-template-columns: 7fr 6fr;
+      grid-template-columns: 1fr 1fr;
       grid-template-rows: auto;
       border-radius: 16px;
       width: 90%;
@@ -112,7 +112,7 @@ export default defineComponent({
         background-position: center;
 
         img {
-          width: 45%;
+          width: 50%;
           padding: 32px 0;
           margin-left: 16px;
         }
@@ -127,7 +127,7 @@ export default defineComponent({
         display: flex;
         flex-direction: column;
         justify-content: center;
-        padding: 36px;
+        padding: 24px 48px;
         flex-basis: 0;
       }
     }

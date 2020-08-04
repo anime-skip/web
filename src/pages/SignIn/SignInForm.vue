@@ -1,6 +1,6 @@
 <template>
   <form @submit.prevent="onSubmit">
-    <h2>Anime Skip</h2>
+    <h2>{{ title }}</h2>
 
     <p v-if="showSignUpFields" class="switch-page">
       Already have an acount? <a href="#" @click.prevent="switchToSignIn()">Sign in</a>
@@ -86,6 +86,9 @@ export default defineComponent({
     const usernameLabel = computed<string>((): string =>
       mode.value === Mode.SIGN_IN ? 'Username or email' : 'Username',
     );
+    const title = computed<string>((): string =>
+      mode.value === Mode.SIGN_IN ? 'Welcome!' : 'Get Started',
+    );
 
     // Form validation
     const rememberMeChecked = ref<boolean>(!!getPersistedValue('rememberMeChecked'));
@@ -127,7 +130,6 @@ export default defineComponent({
           username: username.value,
           password: password.value,
         };
-        console.info(signInData);
       } else {
         const signUpData = {
           token,
@@ -135,7 +137,6 @@ export default defineComponent({
           email: username.value,
           password: password.value,
         };
-        console.info(signUpData);
       }
     };
 
@@ -145,6 +146,7 @@ export default defineComponent({
       showSignUpFields,
       submitTitle,
       usernameLabel,
+      title,
       onSubmit,
       rememberMeChecked,
       username,
