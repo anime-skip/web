@@ -39,9 +39,13 @@ export default defineComponent({
   padding: 8px;
   align-self: flex-start;
   border-radius: 4px;
+  transition: background-color 200ms;
 
   &:hover {
     background-color: rgba(255, 255, 255, 0.06);
+  }
+  &:hover:active {
+    background-color: rgba(255, 255, 255, 0.12);
   }
 
   label {
