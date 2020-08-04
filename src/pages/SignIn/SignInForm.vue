@@ -130,7 +130,6 @@ export default defineComponent({
           username: username.value,
           password: password.value,
         };
-        console.info(signInData);
       } else {
         const signUpData = {
           token,
@@ -138,7 +137,6 @@ export default defineComponent({
           email: username.value,
           password: password.value,
         };
-        console.info(signUpData);
       }
     };
 
