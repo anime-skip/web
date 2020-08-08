@@ -65,6 +65,9 @@ import { defineComponent, computed, ref, watch, reactive } from 'vue';
 import { useRoute } from 'vue-router';
 import { useReCaptcha } from 'vue-recaptcha-v3';
 import { getPersistedValue, persistValue } from '../../utils';
+import md5 from 'md5';
+import { useStore } from 'vuex';
+import { ActionTypes } from '../../store/action-types';
 
 enum Mode {
   SIGN_IN = 'sign_in',
@@ -92,7 +95,9 @@ export default defineComponent({
 
     // Form validation
     const rememberMeChecked = ref<boolean>(!!getPersistedValue('rememberMeChecked'));
-    const username = ref<string>((rememberMeChecked.value && getPersistedValue('username')) || '');
+    const initializeUsername = () =>
+      (rememberMeChecked.value && !showSignUpFields.value && getPersistedValue('username')) || '';
+    const username = ref<string>(initializeUsername());
     const email = ref<string>('');
     const password = ref<string>('');
     const confirmPassword = ref<string>('');
@@ -102,16 +107,25 @@ export default defineComponent({
       confirmPassword: true,
     });
 
+    watch(showSignUpFields, () => {
+      username.value = initializeUsername();
+      email.value = '';
+      password.value = '';
+      confirmPassword.value = '';
+    });
     watch(email, () => {
       validation.email = VALID_EMAIL_REGEX.test(email.value.toLowerCase());
     });
-    watch(confirmPassword, () => {
+    const passwordWatcher = () => {
       validation.confirmPassword =
         password.value === '' || password.value === confirmPassword.value;
-    });
+    };
+    watch(password, passwordWatcher);
+    watch(confirmPassword, passwordWatcher);
 
     // Submitting
     const { executeRecaptcha, recaptchaLoaded } = useReCaptcha();
+    const store = useStore();
 
     const submitTitle = computed<string>(() =>
       mode.value === Mode.SIGN_IN ? 'Sign In' : 'Create Account',
@@ -119,24 +133,24 @@ export default defineComponent({
 
     const onSubmit = async (): Promise<void> => {
       await recaptchaLoaded();
-      const token = await executeRecaptcha(mode.value);
+      const recaptchaResponse = await executeRecaptcha(mode.value);
       if (mode.value === Mode.SIGN_IN) {
         persistValue('rememberMeChecked', rememberMeChecked.value);
         if (rememberMeChecked.value) {
           persistValue('username', username.value);
         }
-        const signInData = {
-          token,
-          username: username.value,
-          password: password.value,
-        };
+        store.dispatch(ActionTypes.SIGN_IN, {
+          recaptchaResponse,
+          usernameOrEmail: username.value,
+          passwordHash: md5(password.value),
+        });
       } else {
-        const signUpData = {
-          token,
+        store.dispatch(ActionTypes.SIGN_UP, {
+          recaptchaResponse,
           username: username.value,
           email: username.value,
-          password: password.value,
-        };
+          passwordHash: md5(password.value),
+        });
       }
     };
 
