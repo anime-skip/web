@@ -32,7 +32,7 @@
       name="password"
       type="password"
       placeholder="Password"
-      autocomplete="new-password"
+      :autocomplete="passwordAutocomplete"
     >
       <template v-slot:left>
         <img class="input-icon" src="../../assets/ic_password.svg" />
@@ -51,6 +51,8 @@
       </template>
     </text-input>
 
+    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+
     <checkbox v-if="!showSignUpFields" v-model="rememberMeChecked">Remember me</checkbox>
 
     <div class="bottom-row">
@@ -65,9 +67,9 @@ import { defineComponent, computed, ref, watch, reactive } from 'vue';
 import { useRoute } from 'vue-router';
 import { useReCaptcha } from 'vue-recaptcha-v3';
 import { getPersistedValue, persistValue } from '../../utils';
-import md5 from 'md5';
 import { useStore } from 'vuex';
 import { ActionTypes } from '../../store/action-types';
+import { RequestState } from '../../utils/enums';
 
 enum Mode {
   SIGN_IN = 'sign_in',
@@ -79,8 +81,12 @@ const VALID_EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)
 export default defineComponent({
   name: 'LoginForm',
   setup() {
-    // Mode
+    // Effects
+    const store = useStore();
     const route = useRoute();
+    const { executeRecaptcha, recaptchaLoaded } = useReCaptcha();
+
+    // Mode
     const mode = ref<Mode>(route.path === '/sign-in' ? Mode.SIGN_IN : Mode.SIGN_UP);
 
     const switchToSignIn = () => (mode.value = Mode.SIGN_IN);
@@ -92,11 +98,18 @@ export default defineComponent({
     const title = computed<string>((): string =>
       mode.value === Mode.SIGN_IN ? 'Welcome!' : 'Get Started',
     );
+    const passwordAutocomplete = computed<'current-password' | 'new-password'>(() =>
+      mode.value === Mode.SIGN_IN ? 'current-password' : 'new-password',
+    );
+    const submitTitle = computed<string>(() =>
+      mode.value === Mode.SIGN_IN ? 'Sign In' : 'Create Account',
+    );
 
     // Form validation
     const rememberMeChecked = ref<boolean>(!!getPersistedValue('rememberMeChecked'));
     const initializeUsername = () =>
-      (rememberMeChecked.value && !showSignUpFields.value && getPersistedValue('username')) || '';
+      (rememberMeChecked.value && mode.value === Mode.SIGN_IN && getPersistedValue('username')) ||
+      '';
     const username = ref<string>(initializeUsername());
     const email = ref<string>('');
     const password = ref<string>('');
@@ -123,14 +136,14 @@ export default defineComponent({
     watch(password, passwordWatcher);
     watch(confirmPassword, passwordWatcher);
 
+    // Error Messages
+    const errorMessage = computed<string | undefined>(() => {
+      if (store.state.signInRequestState === RequestState.FAILURE) return store.state.signInError;
+
+      return undefined;
+    });
+
     // Submitting
-    const { executeRecaptcha, recaptchaLoaded } = useReCaptcha();
-    const store = useStore();
-
-    const submitTitle = computed<string>(() =>
-      mode.value === Mode.SIGN_IN ? 'Sign In' : 'Create Account',
-    );
-
     const onSubmit = async (): Promise<void> => {
       await recaptchaLoaded();
       const recaptchaResponse = await executeRecaptcha(mode.value);
@@ -140,16 +153,16 @@ export default defineComponent({
           persistValue('username', username.value);
         }
         store.dispatch(ActionTypes.SIGN_IN, {
-          recaptchaResponse,
           usernameOrEmail: username.value,
-          passwordHash: md5(password.value),
+          password: password.value,
+          customRedirect: route.query.redirect as string | undefined,
         });
       } else {
         store.dispatch(ActionTypes.SIGN_UP, {
           recaptchaResponse,
           username: username.value,
           email: username.value,
-          passwordHash: md5(password.value),
+          password: password.value,
         });
       }
     };
@@ -161,6 +174,8 @@ export default defineComponent({
       submitTitle,
       usernameLabel,
       title,
+      passwordAutocomplete,
+      errorMessage,
       onSubmit,
       rememberMeChecked,
       username,
@@ -199,6 +214,13 @@ form {
     margin-bottom: 24px;
   }
 
+  .error {
+    font-size: 14px;
+    padding: 0 8px;
+    margin-bottom: 8px;
+    color: #e57373;
+  }
+
   .bottom-row {
     display: flex;
     flex-direction: row;
@@ -208,24 +230,6 @@ form {
 
     #submit {
       align-self: flex-start;
-    }
-  }
-
-  input[type='submit'] {
-    background-color: #2b78e0;
-    height: 32px;
-    padding: 0 16px;
-    border: none;
-    font-weight: 600;
-    border-radius: 4px;
-    transition: filter 200ms;
-    cursor: pointer;
-
-    &:hover {
-      filter: brightness(110%);
-    }
-    &:hover:active {
-      filter: brightness(120%);
     }
   }
 }

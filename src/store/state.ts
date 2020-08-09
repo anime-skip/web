@@ -1,16 +1,17 @@
+import { Api } from '@anime-skip/types';
+import { RequestState } from '@/utils/enums';
+
 export interface State {
   // Account
-  accessToken?: string;
-  accessTokenExpiresAt?: number;
-  refreshToken?: string;
-  refreshTokenExpiresAt?: number;
-  account?: {};
+  account?: Omit<Api.Account, 'preferences'>;
+  preferences?: Api.Preferences;
+  signInRequestState: RequestState;
+  signInError?: string;
 }
 
 export const state: State = {
-  accessToken: undefined,
-  accessTokenExpiresAt: undefined,
-  refreshToken: undefined,
-  refreshTokenExpiresAt: undefined,
   account: undefined,
+  preferences: undefined,
+  signInRequestState: RequestState.SUCCESS,
+  signInError: undefined,
 };
