@@ -14,7 +14,7 @@
     "start": "vue-cli-service serve"
   },
   "dependencies": {
-    "@anime-skip/axios-api": "^1.0.8",
+    "@anime-skip/axios-api": "^1.0.9",
     "core-js": "^3.6.5",
     "md5": "^2.3.0",
     "vue": "^3.0.0-rc.5",

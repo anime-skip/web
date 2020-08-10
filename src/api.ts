@@ -1,5 +1,4 @@
 import AxiosApi from '@anime-skip/axios-api';
-// import AxiosApi from './AxiosApi';
 import { Api } from '@anime-skip/types';
 import { LocalStorageKeys } from './utils/enums';
 import TimeUtils from './utils/time';
@@ -55,4 +54,22 @@ export async function getAccessToken(
   throw 'Unauthorized - login';
 }
 
-export default new AxiosApi(getAccessToken);
+export class ExtendedApi extends AxiosApi {
+  public async isUsernameInUse(username: string): Promise<boolean> {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await this.sendUnauthorizedGraphql<'findUserByUsername', any>({
+        query: `{
+          findUserByUsername(username: "${username}") {
+            username
+          }
+        }`,
+      });
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+}
+
+export default new ExtendedApi(getAccessToken);

@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@anime-skip/axios-api@^1.0.8":
-  version "1.0.8"
-  resolved "https://npm.pkg.github.com/download/@anime-skip/axios-api/1.0.8/58749bb01427648442971b09be010cd6eb24b1b2238d476fc13b7e1d9ae5ba84#87ecf6fa5afe25e1564c616103042925ec4232e8"
-  integrity sha512-OITM1yWX1Ytx3gQBmQqDewcTgvpY/VKkhiett3JNv6Rv76ceyFA5t78/Y3u27BflfLAa7GGgNj+vEK0fPT83tQ==
+"@anime-skip/axios-api@^1.0.9":
+  version "1.0.9"
+  resolved "https://npm.pkg.github.com/download/@anime-skip/axios-api/1.0.9/3b347fb879ee7f08b2188bc0ccb53790e4daf6d679f738f48b1e1c5180e2fc2a#94f89672874d30d7485557065b7e11ef3acbf558"
+  integrity sha512-pbjeLgefv6k6oY/oWZyVuYhmUDYsJ68aul9RzRAYxMoTu2wX9ryykudvzfpiNyGTHW3lhiko5+kJ4DxKOvtCrg==
   dependencies:
     axios "^0.19.2"
     eslint "^7.6.0"
