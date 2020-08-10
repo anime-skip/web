@@ -43,3 +43,40 @@ a {
 .grecaptcha-badge {
   visibility: hidden;
 }
+
+input[type='submit'],
+button,
+.button {
+  background-color: #009ce4;
+  height: 32px;
+  padding: 0 16px;
+  border: none;
+  font-weight: 600;
+  border-radius: 4px;
+  transition: filter 200ms;
+  cursor: pointer;
+
+  &.secondary {
+    background-color: #8e5dd6;
+  }
+  &.dark {
+    background-color: #1b2025;
+  }
+
+  &:hover {
+    filter: brightness(110%);
+  }
+  &:hover:active {
+    filter: brightness(120%);
+  }
+
+  &.disabled {
+    opacity: 0.48;
+    pointer-events: none;
+
+    &:hover,
+    &:hover:active {
+      filter: none;
+    }
+  }
+}

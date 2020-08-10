@@ -10,6 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@anime-skip'
       - uses: actions/checkout@v1
       - uses: actions/cache@v2
         with:
@@ -17,12 +21,19 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - run: |
           yarn install
+        env:
+          CI: true
+          NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
 
   build:
     name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@anime-skip'
       - uses: actions/checkout@v1
       - uses: actions/cache@v2
         with:
@@ -36,6 +47,9 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - run: |
           yarn install
+        env:
+          CI: true
+          NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
       - run: |
           yarn build
   lint:
@@ -43,6 +57,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@anime-skip'
       - uses: actions/checkout@v1
       - uses: actions/cache@v2
         with:
@@ -56,6 +74,9 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - run: |
           yarn install
+        env:
+          CI: true
+          NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
       - run: |
           yarn lint
 
@@ -64,6 +85,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@anime-skip'
       - uses: actions/checkout@v1
       - uses: actions/cache@v2
         with:
@@ -77,5 +102,8 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - run: |
           yarn install
+        env:
+          CI: true
+          NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
       - run: |
           yarn test:unit

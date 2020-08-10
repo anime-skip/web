@@ -25,6 +25,10 @@ jobs:
     if: needs.deploy_check.outputs.DEPLOY_TYPE != 'none'
     steps:
       - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@anime-skip'
       - uses: actions/checkout@v1
       - uses: actions/cache@v2
         with:
@@ -32,6 +36,9 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - run: |
           yarn install
+        env:
+          CI: true
+          NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
       - run: |
           yarn build
       - run: |
@@ -48,6 +55,13 @@ jobs:
     if: needs.deploy_check.outputs.DEPLOY_TYPE == 'prod'
     steps:
       - uses: actions/checkout@v1
+      - name: Setup private registry access
+        run: |
+          echo -e "//registry.npmjs.org/:_authToken=\${NODE_AUTH_TOKEN}" >> .npmrc
+          cat .npmrc
+        env:
+          CI: true
+          NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
       - run: |
           git push https://heroku:$HEROKU_API_KEY@git.heroku.com/anime-skip-web.git HEAD:master -f
         env:
