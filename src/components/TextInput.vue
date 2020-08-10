@@ -10,6 +10,8 @@
         :type="type"
         :placeholder="placeholder"
         :autocomplete="autocomplete"
+        @focus="$emit('focus')"
+        @blur="$emit('blur')"
       />
     </slot>
     <slot name="right" />
@@ -20,7 +22,7 @@
 import { defineComponent, computed } from 'vue';
 
 export default defineComponent({
-  emits: ['update:modelValue'],
+  emits: ['update:modelValue', 'focus', 'blur'],
   props: {
     modelValue: { type: String, required: true },
     placeholder: String,
@@ -68,7 +70,7 @@ export default defineComponent({
     flex-shrink: 0;
   }
 
-  .middle {
+  input.middle {
     flex-grow: 1;
     position: relative;
     height: 100%;
