@@ -55,14 +55,8 @@ jobs:
     if: needs.deploy_check.outputs.DEPLOY_TYPE == 'prod'
     steps:
       - uses: actions/checkout@v1
-      - name: Setup GitHub Packages access
-        run: |
-          echo -e "//registry.npmjs.org/:_authToken=\${NODE_AUTH_TOKEN}" >> .npmrc
-          cat .npmrc
-        env:
-          CI: true
-          NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
       - run: |
-          yarn push-dir --dir=dist --remote="https://heroku:$HEROKU_API_KEY@git.heroku.com/anime-skip-web.git" --branch=HEAD:master --force
+          git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/anime-skip-web.git
+          yarn push-dir --dir=dist --remote=heroku --branch=master --force
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
