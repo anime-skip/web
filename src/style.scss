@@ -69,4 +69,14 @@ button,
   &:hover:active {
     filter: brightness(120%);
   }
+
+  &.disabled {
+    opacity: 0.48;
+    pointer-events: none;
+
+    &:hover,
+    &:hover:active {
+      filter: none;
+    }
+  }
 }
