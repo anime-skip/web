@@ -7,7 +7,7 @@
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
-    "deploy": "push-dir --dir=dist --remote=heroku --branch=master --force",
+    "deploy": "yarn lint && yarn build && push-dir --dir=dist --remote=heroku --branch=master --force",
     "deploy:info": "heroku info",
     "heroku-prebuild": "echo 'This runs before Heroku runs \"yarn build\"'",
     "heroku-cleanup": "echo 'This runs after Heroku runs \"yarn build\"'",
