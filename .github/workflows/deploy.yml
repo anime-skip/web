@@ -55,7 +55,7 @@ jobs:
     if: needs.deploy_check.outputs.DEPLOY_TYPE == 'prod'
     steps:
       - uses: actions/checkout@v1
-      - name: Setup private registry access
+      - name: Setup GitHub Packages access
         run: |
           echo -e "//registry.npmjs.org/:_authToken=\${NODE_AUTH_TOKEN}" >> .npmrc
           cat .npmrc
@@ -63,6 +63,6 @@ jobs:
           CI: true
           NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
       - run: |
-          git push https://heroku:$HEROKU_API_KEY@git.heroku.com/anime-skip-web.git HEAD:master -f
+          yarn push-dir --dir=dist --remote="https://heroku:$HEROKU_API_KEY@git.heroku.com/anime-skip-web.git" --branch=HEAD:master --force
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
