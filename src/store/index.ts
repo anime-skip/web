@@ -3,16 +3,14 @@ import { State, state } from './state';
 import { Getters, getters } from './getters';
 import { Mutations, mutations } from './mutations';
 import { Actions, actions } from './actions';
-import VuexPersistence from 'vuex-persist';
-
-const persist = new VuexPersistence<State>({ storage: window.localStorage });
+import persist from './plugins/persist';
 
 export const store = createStore({
   state,
   getters,
   mutations,
   actions,
-  plugins: [persist.plugin],
+  plugins: [persist],
 });
 
 export type Store = Omit<VuexStore<State>, 'getters' | 'commit' | 'dispatch'> & {
