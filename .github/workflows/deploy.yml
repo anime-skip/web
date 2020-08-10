@@ -43,8 +43,8 @@ jobs:
           yarn build
       - run: |
           yarn lint
-      - run: |
-          yarn test:unit
+      # - run: |
+      #     yarn test:unit
 
   prod_deploy:
     name: Deploy to Prod
