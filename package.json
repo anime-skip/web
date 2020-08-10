@@ -16,7 +16,6 @@
   "dependencies": {
     "@anime-skip/axios-api": "^1.0.9",
     "core-js": "^3.6.5",
-    "md5": "^2.3.0",
     "vue": "^3.0.0-rc.5",
     "vue-recaptcha-v3": "file:local_modules/vue-recaptcha-v3-1.9.0-vue3.tgz",
     "vue-router": "^4.0.0-beta.4",
@@ -26,7 +25,6 @@
   "devDependencies": {
     "@anime-skip/types": "^1.2.0",
     "@types/jest": "^24.0.19",
-    "@types/md5": "^2.2.0",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
     "@vue/cli-plugin-babel": "~4.4.0",
