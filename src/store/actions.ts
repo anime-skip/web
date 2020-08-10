@@ -20,7 +20,13 @@ type AugmentedActionContext = {
 export interface Actions {
   [ActionTypes.SIGN_UP](
     context: AugmentedActionContext,
-    payload: { username: string; email: string; password: string; recaptchaResponse: string },
+    payload: {
+      username: string;
+      email: string;
+      password: string;
+      recaptchaResponse: string;
+      customRedirect?: string;
+    },
   ): Promise<void>;
   [ActionTypes.SIGN_IN](
     context: AugmentedActionContext,
@@ -37,7 +43,6 @@ export const callApi = async <A extends any[], R>(
   ...args: A
 ): Promise<R> => {
   try {
-    console.log('callApi', apiMethod);
     return await apiMethod.apply(api, args);
   } catch (err) {
     if (err.message == UNAUTHORIZED_ERROR_MESSAGE) {
@@ -48,12 +53,32 @@ export const callApi = async <A extends any[], R>(
 };
 
 export const actions: ActionTree<State, State> & Actions = {
-  async [ActionTypes.SIGN_UP]({ dispatch }, { username, email, password, recaptchaResponse }) {
+  async [ActionTypes.SIGN_UP](
+    { commit, dispatch },
+    { username, email, password, recaptchaResponse, customRedirect },
+  ) {
     console.log('signUp', { username, email, password, recaptchaResponse });
+    commit(MutationTypes.SIGN_IN_REQUEST_STATE, RequestState.LOADING);
+    commit(MutationTypes.SIGN_IN_ERROR, undefined);
     try {
-      callApi(dispatch, api.createAccount, username, email, password, recaptchaResponse);
+      const response = await callApi(
+        dispatch,
+        api.createAccount,
+        username,
+        email,
+        password,
+        recaptchaResponse,
+      );
+      persistTokens(response.authToken, response.refreshToken);
+      commit(MutationTypes.SET_ACCOUNT_INFO, response.account);
+      commit(MutationTypes.SIGN_IN_REQUEST_STATE, RequestState.SUCCESS);
+
+      const redirectUrl = customRedirect ?? SIGN_IN_REDIRECT;
+      console.log('redirecting to: ', redirectUrl);
+      router.push({ path: redirectUrl });
     } catch (err) {
-      console.error(err);
+      commit(MutationTypes.SIGN_IN_REQUEST_STATE, RequestState.FAILURE);
+      commit(MutationTypes.SIGN_IN_ERROR, Errors.signUpErrorMessage(err));
     }
   },
   async [ActionTypes.SIGN_IN]({ commit, dispatch }, { usernameOrEmail, password, customRedirect }) {
