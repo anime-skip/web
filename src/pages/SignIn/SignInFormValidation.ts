@@ -42,7 +42,6 @@ export default function useSignInValidation(
   watch(username, () => {
     isUsernameInUse.value = false;
     hasCheckedUsername.value = false;
-
     hasEnteredUsername.value = true;
   });
   watch(email, () => {
@@ -83,12 +82,7 @@ export default function useSignInValidation(
       (confirmPassword.value === password.value && confirmPassword.value !== ''),
   );
 
-  watch(signInRequestState, () => {
-    console.log('Sign in request state changed: ' + signInRequestState.value);
-  });
-
   const isSubmitDisabled = computed<boolean>(() => {
-    console.log('isSubmitDisabled', signInRequestState.value === RequestState.LOADING);
     if (signInRequestState.value === RequestState.LOADING) return true;
     if (isSignIn.value) return false;
 
@@ -103,7 +97,6 @@ export default function useSignInValidation(
     const somethingHasNotBeenEntered =
       !username.value || !email.value || !password.value || !confirmPassword.value;
 
-    console.log({ usernameNeedsChecked, somethingIsNotValid, somethingHasNotBeenEntered });
     return usernameNeedsChecked || somethingIsNotValid || somethingHasNotBeenEntered;
   });
 

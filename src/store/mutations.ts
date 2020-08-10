@@ -17,7 +17,6 @@ export const mutations: MutationTree<State> & Mutations = {
       emailVerified: account.emailVerified,
       username: account.username,
     };
-    console.log('SET_ACCOUNT_INFO', state);
   },
 
   [MutationTypes.SIGN_IN_REQUEST_STATE](state, requestState) {

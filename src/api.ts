@@ -2,6 +2,7 @@ import AxiosApi from '@anime-skip/axios-api';
 import { Api } from '@anime-skip/types';
 import { LocalStorageKeys } from './utils/enums';
 import TimeUtils from './utils/time';
+import { UNAUTHORIZED_ERROR_MESSAGE } from './utils/constants';
 
 export function persistTokens(accessToken: string, refreshToken: string): void;
 export function persistTokens(accessToken: undefined, refreshToken: undefined): void;
@@ -51,7 +52,7 @@ export async function getAccessToken(
   }
 
   persistTokens(undefined, undefined);
-  throw 'Unauthorized - login';
+  throw UNAUTHORIZED_ERROR_MESSAGE;
 }
 
 export class ExtendedApi extends AxiosApi {

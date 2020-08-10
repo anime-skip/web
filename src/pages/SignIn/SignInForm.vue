@@ -135,7 +135,6 @@ export default defineComponent({
 
     // Error Messages
     const signInRequestState = computed<RequestState>(() => store.state.signInRequestState);
-    watch(signInRequestState, () => console.log('watch request state', signInRequestState.value));
     const {
       isUsernameValid,
       isEmailValid,

@@ -57,11 +57,11 @@ export const actions: ActionTree<State, State> & Actions = {
     { commit, dispatch },
     { username, email, password, recaptchaResponse, customRedirect },
   ) {
-    console.log('signUp', { username, email, password, recaptchaResponse });
     commit(MutationTypes.SIGN_IN_REQUEST_STATE, RequestState.LOADING);
     commit(MutationTypes.SIGN_IN_ERROR, undefined);
+
     try {
-      const response = await callApi(
+      const { account, authToken, refreshToken } = await callApi(
         dispatch,
         api.createAccount,
         username,
@@ -69,31 +69,27 @@ export const actions: ActionTree<State, State> & Actions = {
         password,
         recaptchaResponse,
       );
-      persistTokens(response.authToken, response.refreshToken);
-      commit(MutationTypes.SET_ACCOUNT_INFO, response.account);
-      commit(MutationTypes.SIGN_IN_REQUEST_STATE, RequestState.SUCCESS);
+      persistTokens(authToken, refreshToken);
 
-      const redirectUrl = customRedirect ?? SIGN_IN_REDIRECT;
-      console.log('redirecting to: ', redirectUrl);
-      router.push({ path: redirectUrl });
+      commit(MutationTypes.SET_ACCOUNT_INFO, account);
+      commit(MutationTypes.SIGN_IN_REQUEST_STATE, RequestState.SUCCESS);
+      router.push({ path: customRedirect ?? SIGN_IN_REDIRECT });
     } catch (err) {
       commit(MutationTypes.SIGN_IN_REQUEST_STATE, RequestState.FAILURE);
       commit(MutationTypes.SIGN_IN_ERROR, Errors.signUpErrorMessage(err));
     }
   },
   async [ActionTypes.SIGN_IN]({ commit, dispatch }, { usernameOrEmail, password, customRedirect }) {
-    console.log('signIn', { usernameOrEmail, password });
     commit(MutationTypes.SIGN_IN_REQUEST_STATE, RequestState.LOADING);
     commit(MutationTypes.SIGN_IN_ERROR, undefined);
+
     try {
       const response = await callApi(dispatch, api.loginManual, usernameOrEmail, password);
       persistTokens(response.authToken, response.refreshToken);
+
       commit(MutationTypes.SET_ACCOUNT_INFO, response.account);
       commit(MutationTypes.SIGN_IN_REQUEST_STATE, RequestState.SUCCESS);
-
-      const redirectUrl = customRedirect ?? SIGN_IN_REDIRECT;
-      console.log('redirecting to: ', redirectUrl);
-      router.push({ path: redirectUrl });
+      router.push({ path: customRedirect ?? SIGN_IN_REDIRECT });
     } catch (err) {
       commit(MutationTypes.SIGN_IN_REQUEST_STATE, RequestState.FAILURE);
       commit(MutationTypes.SIGN_IN_ERROR, Errors.signInErrorMessage(err));
