@@ -13,20 +13,10 @@ const routes: RouteRecordRaw[] = [
     component: () => import(/* webpackChunkName: "sign_in" */ './pages/SignIn/index.vue'),
   },
   {
-    path: '/getting-started',
-    name: 'GettingStarted',
-    component: () => import(/* webpackChunkName: "getting_started" */ './pages/GettingStarted.vue'),
+    path: '/get-started',
+    name: 'GetStarted',
+    component: () => import(/* webpackChunkName: "get_started" */ './pages/GetStarted/index.vue'),
   },
-  // {
-  //   path: '/',
-  //   name: 'Home',
-  //   component: () => import(/* webpackChunkName: "home" */ './pages/Home.vue')
-  // }
-  // {
-  //   path: '/about',
-  //   name: 'About',
-  //   component: () => import(/* webpackChunkName: "about" */ './pages/About.vue')
-  // }
 ];
 
 export default createRouter({

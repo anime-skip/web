@@ -5,6 +5,11 @@ export enum LocalStorageKeys {
   REFRESH_TOKEN_EXPIRES_AT = 'refreshTokenExpiresAt',
 }
 
+export enum SessionStorageKeys {
+  EXTENSION_INSTALLED = 'extensionInstalled',
+  EXTENSION_LOGGED_IN = 'extensionLoggedIn',
+}
+
 export enum RequestState {
   LOADING,
   SUCCESS,

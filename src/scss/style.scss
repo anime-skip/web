@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Overpass:300,400,500,800&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Overpass:500,600,700,800&display=swap');
 
 html,
 body {
@@ -38,6 +38,13 @@ input {
 
 a {
   color: #8e5dd6;
+
+  &.white {
+    color: $textPrimaryColor;
+  }
+  &.white.secondary {
+    color: $textSecondaryColor;
+  }
 }
 
 .grecaptcha-badge {
@@ -45,16 +52,23 @@ a {
 }
 
 input[type='submit'],
+a.button,
 button,
 .button {
+  display: inline-block;
+  font-family: 'Overpass', sans-serif;
   background-color: #009ce4;
   height: 32px;
+  line-height: 32px;
   padding: 0 16px;
+  padding-top: 2px;
+  box-sizing: border-box;
   border: none;
-  font-weight: 600;
+  font-weight: 800;
   border-radius: 4px;
-  transition: filter 200ms;
+  transition: 200ms;
   cursor: pointer;
+  text-decoration: none;
 
   &.secondary {
     background-color: #8e5dd6;
@@ -62,9 +76,15 @@ button,
   &.dark {
     background-color: #1b2025;
   }
+  &.transparent {
+    background-color: transparent;
+  }
 
   &:hover {
     filter: brightness(110%);
+    &.transparent {
+      background-color: rgba($color: white, $alpha: 0.06);
+    }
   }
   &:hover:active {
     filter: brightness(120%);
@@ -79,4 +99,7 @@ button,
       filter: none;
     }
   }
+}
+a.button {
+  color: white;
 }
