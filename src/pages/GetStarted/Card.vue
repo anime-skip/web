@@ -1,5 +1,5 @@
 <template>
-  <div class="Card" :class="{ done, selected }" @click="toggleExpanded">
+  <div class="Card" :class="{ done, selected }">
     <div class="left">
       <div class="number">
         <span v-if="!done">{{ number }}</span>
@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class="right">
-      <h2>{{ title }}</h2>
+      <h2 @click="toggleExpanded">{{ title }}</h2>
       <slot v-if="shouldShowMessage" name="message" />
       <div v-if="shouldShowButtons" class="buttons">
         <slot name="buttons" />
