@@ -1,0 +1,45 @@
+$primary500: #009ce4;
+$primary700: #018eca;
+
+$secondary500: #8e5dd6;
+$secondary700: #804ec9;
+
+$dark500: #1b2025;
+$dark700: #080c11;
+
+$backgroundColor: #282f37;
+
+$textTitleColor: #ffffff;
+$textPrimaryColor: rgba(
+  $color: #ffffff,
+  $alpha: 0.9,
+);
+$textSecondaryColor: rgba(
+  $color: #ffffff,
+  $alpha: 0.64,
+);
+$textDisabledColor: rgba(
+  $color: #ffffff,
+  $alpha: 0.48,
+);
+
+h1 {
+  font-size: 36px;
+  font-weight: 600;
+  color: $textTitleColor;
+}
+
+h2 {
+  font-size: 28px;
+  color: $textTitleColor;
+}
+
+p {
+  font-family: sans-serif;
+  font-size: 15px;
+  color: $textPrimaryColor;
+
+  &.secondary {
+    color: $textSecondaryColor;
+  }
+}
