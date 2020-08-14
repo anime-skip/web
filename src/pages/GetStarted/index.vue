@@ -217,7 +217,7 @@
 import { defineComponent, ref, computed } from 'vue';
 import Card from './Card.vue';
 import { detectBrowser } from '../../utils';
-import { SessionStorageKeys, LocalStorageKeys } from '../../utils/enums';
+import { SessionStorageKeys } from '../../utils/enums';
 import { useStore } from 'vuex';
 
 export default defineComponent({
