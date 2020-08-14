@@ -241,7 +241,7 @@ export default defineComponent({
       if (event.data === '@anime-skip/install-check') {
         isExtensionInstalled.value = true;
         sessionStorage.setItem(SessionStorageKeys.EXTENSION_INSTALLED, 'true');
-        window.removeEventListener('message', isExtensionInstalledListener);
+        // window.removeEventListener('message', isExtensionInstalledListener);
       }
     }
     window.addEventListener('message', isExtensionInstalledListener);
@@ -259,7 +259,7 @@ export default defineComponent({
       if (event.data === '@anime-skip/login-check') {
         isExtensionLoggedIn.value = true;
         sessionStorage.setItem(SessionStorageKeys.EXTENSION_LOGGED_IN, 'true');
-        window.removeEventListener('message', isExtensionLoggedInListener);
+        // window.removeEventListener('message', isExtensionLoggedInListener);
       }
     }
     window.addEventListener('message', isExtensionLoggedInListener);
