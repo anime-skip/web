@@ -9,16 +9,28 @@
         :number="1"
       >
         <template v-slot:message>
-          <p :class="{ secondary: false }">
+          <p :class="{ secondary: isExtensionInstalled }">
+            After installing, reload the page
+          </p>
+          <p :class="{ secondary: isExtensionInstalled }" v-if="false">
             Anime Skip requires a web extension be installed on your browser before you can use the
             service. Click
-            <a href="/faq#web-ext-permissions" class="white" :class="{ secondary: false }">here</a>
+            <a
+              href="/faq#web-ext-permissions"
+              class="white"
+              :class="{ secondary: isExtensionInstalled }"
+              >here</a
+            >
             to learn more the permissions it requires.
           </p>
         </template>
         <template v-slot:buttons>
-          <button v-if="isChrome || !isFirefox" class="primary">Google Chrome</button>
-          <button v-if="isFirefox || !isChrome" class="primary">Firefox</button>
+          <button v-if="isChrome || !isFirefox" class="primary">
+            Google Chrome
+          </button>
+          <button v-if="isFirefox || !isChrome" class="primary">
+            Firefox
+          </button>
           <button v-if="isFirefox" class="transparent">Google Chrome</button>
           <button v-if="isChrome" class="transparent">Firefox</button>
         </template>
@@ -26,15 +38,15 @@
 
       <card title="Create an account" :done="hasAccount" :selected="currentCard === 2" :number="2">
         <template v-slot:message>
-          <p :class="{ secondary: false }">
+          <p :class="{ secondary: hasAccount }">
             You need an account to be able to use some features provided by Anime Skip:
           </p>
-          <ul>
+          <ul :class="{ secondary: hasAccount }">
             <li>Automatic timestamp skipping</li>
             <li>Playback speed</li>
             <li>Submitting timestamps for the community</li>
           </ul>
-          <p :class="{ secondary: false }">
+          <p :class="{ secondary: hasAccount }">
             Without an account, you will still be able to use the awesome video player.
           </p>
         </template>
@@ -51,17 +63,17 @@
         :number="3"
       >
         <template v-slot:message>
-          <p :class="{ secondary: false }">
+          <p :class="{ secondary: isExtensionLoggedIn }">
             There are a lot of different types of timestamps in anime, and you should be able to
             skip only what you want. To learn more about what each timestamp represents, checkout
             the
-            <a href="/faq#web-ext-permissions" class="white" :class="{ secondary: false }"
+            <a href="/faq#timestamp-types" class="white" :class="{ secondary: isExtensionLoggedIn }"
               >FAQ page</a
             >.
           </p>
         </template>
-        <template v-slot:buttons>
-          <button class="primary">Continue</button>
+        <template v-if="!isExtensionLoggedIn" v-slot:buttons>
+          <button class="primary" @click="logIntoExtension">Continue</button>
         </template>
       </card>
 
@@ -72,7 +84,7 @@
           </p>
         </template>
         <template v-slot:buttons>
-          <button class="primary">Recently Added</button>
+          <router-link to="/#recently-added" class="button primary">Recently Added</router-link>
         </template>
       </card>
 
@@ -241,7 +253,6 @@ export default defineComponent({
       if (event.data === '@anime-skip/install-check') {
         isExtensionInstalled.value = true;
         sessionStorage.setItem(SessionStorageKeys.EXTENSION_INSTALLED, 'true');
-        // window.removeEventListener('message', isExtensionInstalledListener);
       }
     }
     window.addEventListener('message', isExtensionInstalledListener);
@@ -255,11 +266,13 @@ export default defineComponent({
     const isExtensionLoggedIn = ref<boolean>(
       sessionStorage.getItem(SessionStorageKeys.EXTENSION_LOGGED_IN) === 'true',
     );
+    const logIntoExtension = () => {
+      isExtensionLoggedIn.value = true;
+    };
     function isExtensionLoggedInListener(event: MessageEvent) {
       if (event.data === '@anime-skip/login-check') {
         isExtensionLoggedIn.value = true;
         sessionStorage.setItem(SessionStorageKeys.EXTENSION_LOGGED_IN, 'true');
-        // window.removeEventListener('message', isExtensionLoggedInListener);
       }
     }
     window.addEventListener('message', isExtensionLoggedInListener);
@@ -284,6 +297,8 @@ export default defineComponent({
       hasAccount,
       setupAccountLater,
       isExtensionLoggedIn,
+      logIntoExtension,
+
       currentCard,
     };
   },
@@ -331,6 +346,11 @@ export default defineComponent({
 
   h2 {
     margin-bottom: 16px;
+  }
+
+  ul.secondary,
+  ul.secondary * {
+    color: $textSecondaryColor;
   }
 
   li {
