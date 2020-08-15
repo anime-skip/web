@@ -86,7 +86,6 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   setup() {
     const scrollToLearnMore = () => {
-      console.log('Inner height', window.innerHeight, document.getElementById('scroll'));
       document.querySelector('section.two')?.scrollIntoView({ behavior: 'smooth' });
     };
     return {
