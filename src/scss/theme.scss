@@ -4,15 +4,14 @@ $primary700: #018eca;
 $secondary500: #8e5dd6;
 $secondary700: #804ec9;
 
+$backgroundColor: #282f37;
 $dark500: #1b2025;
 $dark700: #080c11;
-
-$backgroundColor: #282f37;
 
 $textTitleColor: #ffffff;
 $textPrimaryColor: rgba(
   $color: #ffffff,
-  $alpha: 0.9,
+  $alpha: 0.7,
 );
 $textSecondaryColor: rgba(
   $color: #ffffff,
@@ -41,5 +40,8 @@ p {
 
   &.secondary {
     color: $textSecondaryColor;
+  }
+  &.disabled {
+    color: $textDisabledColor;
   }
 }

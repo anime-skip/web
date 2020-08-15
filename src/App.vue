@@ -4,12 +4,18 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div> -->
-    <router-view />
+    <router-view id="scroll" class="child" />
   </div>
 </template>
 
 <style lang="scss">
 #app {
   height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .child {
+    flex-grow: 1;
+  }
 }
 </style>

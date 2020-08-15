@@ -3,8 +3,8 @@ import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router';
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    name: 'ComingSoon',
-    component: () => import(/* webpackChunkName: "coming_soon" */ './pages/ComingSoon.vue'),
+    name: 'Home',
+    component: () => import(/* webpackChunkName: "home" */ './pages/Home/index.vue'),
   },
   {
     path: '/sign-up',
