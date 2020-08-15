@@ -6,6 +6,7 @@ import './scss/style.scss';
 import './scss/theme.scss';
 
 import { VueReCaptcha } from 'vue-recaptcha-v3';
+
 import TextInput from '@/components/TextInput.vue';
 import Checkbox from '@/components/Checkbox.vue';
 import PageFooter from '@/components/PageFooter.vue';
