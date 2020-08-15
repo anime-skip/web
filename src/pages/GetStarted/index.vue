@@ -25,14 +25,21 @@
           </p>
         </template>
         <template v-slot:buttons>
-          <button v-if="isChrome || !isFirefox" class="primary">
+          <a v-if="isChrome || !isFirefox" :href="chromeUrl">
             Google Chrome
-          </button>
-          <button v-if="isFirefox || !isChrome" class="primary">
+          </a>
+          <a
+            v-if="isFirefox || !isChrome"
+            :href="firefoxUrl"
+            target="_blank"
+            class="button primary"
+          >
             Firefox
-          </button>
-          <button v-if="isFirefox" class="transparent">Google Chrome</button>
-          <button v-if="isChrome" class="transparent">Firefox</button>
+          </a>
+          <a v-if="isFirefox" :href="chromeUrl" target="_blank" class="button transparent"
+            >Google Chrome</a
+          >
+          <a v-if="isChrome" :href="firefoxUrl" class="button transparent">Firefox</a>
         </template>
       </card>
 
@@ -57,19 +64,23 @@
       </card>
 
       <card
-        title="Log into the extension to setup what you want to skip"
+        title="Sign into the extension"
         :done="isExtensionLoggedIn"
         :selected="currentCard === 3"
         :number="3"
       >
         <template v-slot:message>
           <p :class="{ secondary: isExtensionLoggedIn }">
+            Once you're logged in, you can setup the timestamps you want to skip.
+          </p>
+          <p :class="{ secondary: isExtensionLoggedIn }">
             There are a lot of different types of timestamps in anime, and you should be able to
             skip only what you want. To learn more about what each timestamp represents, checkout
             the
             <a href="/faq#timestamp-types" class="white" :class="{ secondary: isExtensionLoggedIn }"
               >FAQ page</a
-            >.
+            >
+            for a summary of each.
           </p>
         </template>
         <template v-if="!isExtensionLoggedIn" v-slot:buttons>
@@ -285,6 +296,10 @@ export default defineComponent({
       logIntoExtension,
 
       currentCard,
+      chromeUrl:
+        'https://drive.google.com/file/d/1kBdhTQbLchJsHVs63kZLNpynityHCthl/view?usp=sharing',
+      firefoxUrl:
+        'https://drive.google.com/file/d/139CVpc7ifHQ6bOSI-KCN_MoALtv--sNQ/view?usp=sharing',
     };
   },
 });
