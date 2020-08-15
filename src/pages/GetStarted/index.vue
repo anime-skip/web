@@ -105,7 +105,7 @@
       </div>
 
       <div v-if="isExtensionInstalled && hasAccount && isExtensionLoggedIn" class="alpha-testers">
-        <h1>Alpha Testers</h1>
+        <h2>Alpha Testers</h2>
         <p>
           <i><span class="highlight">If you don't have a VRV account</span></i
           >, reach out to Aaron and he can give you access to a shared account.
