@@ -119,17 +119,18 @@
 
         <h2>Shows/Test Data</h2>
         <p>
-          Both <a href="https://vrv.co/series/G6J0G49DR/Tower-of-God">Tower of God</a> and
-          <a href="https://vrv.co/series/G6ZJ48K4Y/No-Game-No-Life">No Game, No Life</a> are fully
-          filled out. There are a few other shows that have episodes with timestamps here and there,
-          but right now those are the primary ones. Demon Slayer is coming soon.
+          <a href="https://vrv.co/series/G6J0G49DR/Tower-of-God">Tower of God</a>,
+          <a href="https://vrv.co/series/G6ZJ48K4Y/No-Game-No-Life">No Game, No Life</a>, and
+          <a href="">Demon Slayer</a> are fully filled out. There are a few other shows that have
+          episodes with timestamps from the current season, but right now those are the primary
+          ones.
         </p>
         <p>
           <i><span class="highlight">If you're one of my testers new to anime</span></i
-          >, I would NOT recommend either of those shows.
-          <a href="https://vrv.co/series/G6ZJ48K4Y/Death-Note">Death Note</a> or Demon Slayer would
-          be good shows to start with once I have that done. The first half of Death Note is done
-          (24 episodes), and I'll be starting on Demon Slayer soon.
+          >, I would NOT recommend either of those shows. Instead, I would recommend
+          <a href="https://vrv.co/series/G6ZJ48K4Y/Death-Note">Death Note</a> first because it's
+          dubbed, and Demon Slayer second because it is subbed. The first half of Death Note is done
+          (24 episodes).
         </p>
         <p>
           Try and watch at least 3 episodes before you give up on the show. Its only an hour of your
