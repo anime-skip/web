@@ -298,9 +298,9 @@ export default defineComponent({
 
       currentCard,
       chromeUrl:
-        'https://drive.google.com/file/d/1kBdhTQbLchJsHVs63kZLNpynityHCthl/view?usp=sharing',
+        'https://drive.google.com/file/d/1LLn2F6mCpQcbbyBYoFNE3FvbvE-P3Ns_/view?usp=sharing',
       firefoxUrl:
-        'https://drive.google.com/file/d/139CVpc7ifHQ6bOSI-KCN_MoALtv--sNQ/view?usp=sharing',
+        'https://drive.google.com/file/d/1RGtsxVb6QLczNV_YuZGGvq4p_Yk-hbs6/view?usp=sharing',
     };
   },
 });
