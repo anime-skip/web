@@ -121,16 +121,15 @@
         <p>
           <a href="https://vrv.co/series/G6J0G49DR/Tower-of-God">Tower of God</a>,
           <a href="https://vrv.co/series/G6ZJ48K4Y/No-Game-No-Life">No Game, No Life</a>, and
-          <a href="">Demon Slayer</a> are fully filled out. There are a few other shows that have
-          episodes with timestamps from the current season, but right now those are the primary
-          ones.
+          <a href="https://vrv.co/series/GY5P48XEY/Demon-Slayer-Kimetsu-no-Yaiba">Demon Slayer</a>
+          are fully filled out. There are a few other shows that have episodes with timestamps from
+          the current season, but right now those are the primary ones.
         </p>
         <p>
           <i><span class="highlight">If you're one of my testers new to anime</span></i
-          >, I would NOT recommend either of those shows. Instead, I would recommend
+          >, I would NOT recommend No Game, No Life or Tower of God. Instead, I would recommend
           <a href="https://vrv.co/series/G6ZJ48K4Y/Death-Note">Death Note</a> first because it's
-          dubbed, and Demon Slayer second because it is subbed. The first half of Death Note is done
-          (24 episodes).
+          dubbed (24/48 episodes have timestamps), and Demon Slayer second because it is subbed.
         </p>
         <p>
           Try and watch at least 3 episodes before you give up on the show. Its only an hour of your
@@ -178,7 +177,7 @@
             - Next timestamp
           </li>
           <li>
-            <code>D</code>
+            <code>D</code> <code>SPACE</code>
             - Play/pause
           </li>
           <li>
