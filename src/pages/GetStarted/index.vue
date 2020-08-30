@@ -40,6 +40,9 @@
             >Google Chrome</a
           >
           <a v-if="isChrome" :href="firefoxUrl" class="button transparent">Firefox</a>
+          <a :href="genericZipUrl" target="_blank" class="button transparent">
+            ZIP
+          </a>
         </template>
       </card>
 
@@ -296,8 +299,10 @@ export default defineComponent({
       logIntoExtension,
 
       currentCard,
+      genericZipUrl:
+        'https://drive.google.com/file/d/1O5e0W0g4N7IcPHo6pO4Gya8-nZWzT3xI/view?usp=sharing',
       chromeUrl:
-        'https://drive.google.com/file/d/1jCujH8VPVS9UqrJVwP3soPfgUHrIZ1ex/view?usp=sharing',
+        'https://chrome.google.com/webstore/detail/anime-skip/mgmdkjcljneegjfajchedjpdhbadklcf',
       firefoxUrl:
         'https://drive.google.com/file/d/1txh2LU4AskqXJfK82xMQYZakTc64VfiX/view?usp=sharing',
     };
