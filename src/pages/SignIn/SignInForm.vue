@@ -3,7 +3,7 @@
     <h2>{{ title }}</h2>
 
     <p v-if="!isSignIn" class="switch-page">
-      Already have an acount? <a href="#" @click.prevent="switchToSignIn()">Sign in</a>
+      Already have an acount? <a href="#" @click.prevent="switchToSignIn()">Log in</a>
     </p>
     <p v-else class="switch-page">
       Need to create an account? <a href="#" @click.prevent="switchToSignUp()">Sign up</a>
@@ -85,7 +85,7 @@ import { RequestState } from '../../utils/enums';
 import useFormValidation from './SignInFormValidation';
 
 enum Mode {
-  SIGN_IN = 'sign_in',
+  LOG_IN = 'log_in',
   SIGN_UP = 'sign_up',
 }
 
@@ -99,34 +99,32 @@ export default defineComponent({
     const { executeRecaptcha, recaptchaLoaded } = useReCaptcha();
 
     // Mode
-    const mode = ref<Mode>(route.path === '/sign-in' ? Mode.SIGN_IN : Mode.SIGN_UP);
+    const mode = ref<Mode>(route.path === '/log-in' ? Mode.LOG_IN : Mode.SIGN_UP);
 
     const switchToSignIn = () => {
-      mode.value = Mode.SIGN_IN;
-      router.replace({ path: '/sign-in' });
+      mode.value = Mode.LOG_IN;
+      router.replace({ path: '/log-in' });
     };
     const switchToSignUp = () => {
       mode.value = Mode.SIGN_UP;
       router.replace({ path: '/sign-up' });
     };
-    const isSignIn = computed<boolean>(() => mode.value === Mode.SIGN_IN);
+    const isSignIn = computed<boolean>(() => mode.value === Mode.LOG_IN);
     const usernameLabel = computed<string>((): string =>
-      mode.value === Mode.SIGN_IN ? 'Username or email' : 'Username',
+      mode.value === Mode.LOG_IN ? 'Username or email' : 'Username',
     );
     const title = computed<string>((): string =>
-      mode.value === Mode.SIGN_IN ? 'Welcome!' : 'Get Started',
+      mode.value === Mode.LOG_IN ? 'Welcome back!' : 'Create Account',
     );
     const passwordAutocomplete = computed<'current-password' | 'new-password'>(() =>
-      mode.value === Mode.SIGN_IN ? 'current-password' : 'new-password',
+      mode.value === Mode.LOG_IN ? 'current-password' : 'new-password',
     );
-    const submitTitle = computed<string>(() =>
-      mode.value === Mode.SIGN_IN ? 'Sign In' : 'Create Account',
-    );
+    const submitTitle = computed<string>(() => (mode.value === Mode.LOG_IN ? 'Log In' : 'Sign Up'));
 
     // Form Values
     const rememberMeChecked = ref<boolean>(!!getPersistedValue('rememberMeChecked'));
     const initializeUsername = () =>
-      (rememberMeChecked.value && mode.value === Mode.SIGN_IN && getPersistedValue('username')) ||
+      (rememberMeChecked.value && mode.value === Mode.LOG_IN && getPersistedValue('username')) ||
       '';
     const username = ref<string>(initializeUsername());
     const email = ref<string>('');
@@ -146,7 +144,7 @@ export default defineComponent({
     } = useFormValidation(isSignIn, signInRequestState, username, email, password, confirmPassword);
 
     const usernameErrorMessage = computed<string | undefined>(() => {
-      if (mode.value === Mode.SIGN_IN) {
+      if (mode.value === Mode.LOG_IN) {
         return undefined;
       }
       if (isUsernameInUse.value === true) {
@@ -182,12 +180,12 @@ export default defineComponent({
       await recaptchaLoaded();
       const recaptchaResponse = await executeRecaptcha(mode.value);
       const customRedirect = route.query.redirect as string | undefined;
-      if (mode.value === Mode.SIGN_IN) {
+      if (mode.value === Mode.LOG_IN) {
         persistValue('rememberMeChecked', rememberMeChecked.value);
         if (rememberMeChecked.value) {
           persistValue('username', username.value);
         }
-        store.dispatch(ActionTypes.SIGN_IN, {
+        store.dispatch(ActionTypes.LOG_IN, {
           usernameOrEmail: username.value,
           password: password.value,
           customRedirect,

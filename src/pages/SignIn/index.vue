@@ -31,7 +31,7 @@ import { defineComponent, computed } from 'vue';
 import SignInForm from './SignInForm.vue';
 import { useStore } from 'vuex';
 import { useRouter, useRoute } from 'vue-router';
-import { SIGN_IN_REDIRECT } from '../../utils/constants';
+import { LOG_IN_REDIRECT } from '../../utils/constants';
 import { ActionTypes } from '../../store/action-types';
 
 export default defineComponent({
@@ -43,7 +43,7 @@ export default defineComponent({
 
     const isSignedIn = computed<boolean>(() => store.getters.IS_SIGNED_IN);
     const followRedirect = () => {
-      const redirectUrl = (route.query.redirect as string | undefined) || SIGN_IN_REDIRECT;
+      const redirectUrl = (route.query.redirect as string | undefined) || LOG_IN_REDIRECT;
       router.push({ path: redirectUrl });
     };
     const logOut = () => {

@@ -62,12 +62,14 @@
         </template>
         <template v-slot:buttons>
           <router-link to="/sign-up" class="button primary">Create Account</router-link>
-          <button class="transparent" @click="setupAccountLater">Setup Account Later</button>
+          <button v-if="!hasAccount" class="transparent" @click="setupAccountLater">
+            Setup Account Later
+          </button>
         </template>
       </card>
 
       <card
-        title="Sign into the extension"
+        title="Log into the extension"
         :done="isExtensionLoggedIn"
         :selected="currentCard === 3"
         :number="3"

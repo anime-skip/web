@@ -6,7 +6,7 @@ export default {
   },
   signUpErrorMessage(err: Error): string {
     if (err.message.includes('email=')) {
-      return 'Email is already in use, did you mean to sign in?';
+      return 'Email is already in use, did you mean to log in?';
     }
     if (err.message.includes('username=')) {
       return 'Username is already in use';

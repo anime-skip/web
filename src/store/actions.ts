@@ -3,7 +3,7 @@ import { State } from './state';
 import { Mutations } from './mutations';
 import { ActionTypes } from './action-types';
 import { MutationTypes } from './mutation-types';
-import { UNAUTHORIZED_ERROR_MESSAGE, SIGN_IN_REDIRECT } from '../utils/constants';
+import { UNAUTHORIZED_ERROR_MESSAGE, LOG_IN_REDIRECT } from '../utils/constants';
 import api, { persistTokens } from '@/api';
 import { RequestState } from '@/utils/enums';
 import Errors from '@/utils/errors';
@@ -28,7 +28,7 @@ export interface Actions {
       customRedirect?: string;
     },
   ): Promise<void>;
-  [ActionTypes.SIGN_IN](
+  [ActionTypes.LOG_IN](
     context: AugmentedActionContext,
     payload: { usernameOrEmail: string; password: string; customRedirect?: string },
   ): Promise<void>;
@@ -57,8 +57,8 @@ export const actions: ActionTree<State, State> & Actions = {
     { commit, dispatch },
     { username, email, password, recaptchaResponse, customRedirect },
   ) {
-    commit(MutationTypes.SIGN_IN_REQUEST_STATE, RequestState.LOADING);
-    commit(MutationTypes.SIGN_IN_ERROR, undefined);
+    commit(MutationTypes.LOG_IN_REQUEST_STATE, RequestState.LOADING);
+    commit(MutationTypes.LOG_IN_ERROR, undefined);
 
     try {
       const { account, authToken, refreshToken } = await callApi(
@@ -72,27 +72,27 @@ export const actions: ActionTree<State, State> & Actions = {
       persistTokens(authToken, refreshToken);
 
       commit(MutationTypes.SET_ACCOUNT_INFO, account);
-      commit(MutationTypes.SIGN_IN_REQUEST_STATE, RequestState.SUCCESS);
-      router.push({ path: customRedirect ?? SIGN_IN_REDIRECT });
+      commit(MutationTypes.LOG_IN_REQUEST_STATE, RequestState.SUCCESS);
+      router.push({ path: customRedirect ?? LOG_IN_REDIRECT });
     } catch (err) {
-      commit(MutationTypes.SIGN_IN_REQUEST_STATE, RequestState.FAILURE);
-      commit(MutationTypes.SIGN_IN_ERROR, Errors.signUpErrorMessage(err));
+      commit(MutationTypes.LOG_IN_REQUEST_STATE, RequestState.FAILURE);
+      commit(MutationTypes.LOG_IN_ERROR, Errors.signUpErrorMessage(err));
     }
   },
-  async [ActionTypes.SIGN_IN]({ commit, dispatch }, { usernameOrEmail, password, customRedirect }) {
-    commit(MutationTypes.SIGN_IN_REQUEST_STATE, RequestState.LOADING);
-    commit(MutationTypes.SIGN_IN_ERROR, undefined);
+  async [ActionTypes.LOG_IN]({ commit, dispatch }, { usernameOrEmail, password, customRedirect }) {
+    commit(MutationTypes.LOG_IN_REQUEST_STATE, RequestState.LOADING);
+    commit(MutationTypes.LOG_IN_ERROR, undefined);
 
     try {
       const response = await callApi(dispatch, api.loginManual, usernameOrEmail, password);
       persistTokens(response.authToken, response.refreshToken);
 
       commit(MutationTypes.SET_ACCOUNT_INFO, response.account);
-      commit(MutationTypes.SIGN_IN_REQUEST_STATE, RequestState.SUCCESS);
-      router.push({ path: customRedirect ?? SIGN_IN_REDIRECT });
+      commit(MutationTypes.LOG_IN_REQUEST_STATE, RequestState.SUCCESS);
+      router.push({ path: customRedirect ?? LOG_IN_REDIRECT });
     } catch (err) {
-      commit(MutationTypes.SIGN_IN_REQUEST_STATE, RequestState.FAILURE);
-      commit(MutationTypes.SIGN_IN_ERROR, Errors.signInErrorMessage(err));
+      commit(MutationTypes.LOG_IN_REQUEST_STATE, RequestState.FAILURE);
+      commit(MutationTypes.LOG_IN_ERROR, Errors.signInErrorMessage(err));
     }
   },
   [ActionTypes.LOG_OUT]({ commit }, customRedirect) {
@@ -103,7 +103,7 @@ export const actions: ActionTree<State, State> & Actions = {
     persistTokens(undefined, undefined);
 
     // Navigate to sign-in page
-    let url = '/sign-in';
+    let url = '/log-in';
     if (customRedirect) {
       url += `&redirect=${encodeURI(customRedirect)}`;
     }

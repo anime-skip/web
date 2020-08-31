@@ -8,7 +8,7 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/sign-up',
-    alias: '/sign-in',
+    alias: '/log-in',
     name: 'SignIn',
     component: () => import(/* webpackChunkName: "sign_in" */ './pages/SignIn/index.vue'),
   },
