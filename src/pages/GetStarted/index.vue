@@ -302,11 +302,11 @@ export default defineComponent({
 
       currentCard,
       genericZipUrl:
-        'https://drive.google.com/file/d/1O5e0W0g4N7IcPHo6pO4Gya8-nZWzT3xI/view?usp=sharing',
+        'https://drive.google.com/file/d/1zWcon38GXfSkXfQLs3AT55LsfDRiHyUB/view?usp=sharing',
       chromeUrl:
         'https://chrome.google.com/webstore/detail/anime-skip/mgmdkjcljneegjfajchedjpdhbadklcf',
       firefoxUrl:
-        'https://drive.google.com/file/d/1txh2LU4AskqXJfK82xMQYZakTc64VfiX/view?usp=sharing',
+        'https://drive.google.com/file/d/1DBX_Ull8M03bg4X51o_x4pdJ7R_IKU_I/view?usp=sharing',
     };
   },
 });
