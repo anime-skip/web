@@ -65,7 +65,7 @@ export const actions: ActionTree<State, State> & Actions = {
         dispatch,
         api.createAccount,
         username,
-        email,
+        email.toLowerCase(),
         password,
         recaptchaResponse,
       );
