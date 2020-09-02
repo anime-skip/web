@@ -306,7 +306,7 @@ export default defineComponent({
       chromeUrl:
         'https://chrome.google.com/webstore/detail/anime-skip/mgmdkjcljneegjfajchedjpdhbadklcf',
       firefoxUrl:
-        'https://drive.google.com/file/d/1DBX_Ull8M03bg4X51o_x4pdJ7R_IKU_I/view?usp=sharing',
+        'https://drive.google.com/file/d/1Z8OwZIEBrcH4FxvpyWW9bMvxblWV6leP/view?usp=sharing',
     };
   },
 });
