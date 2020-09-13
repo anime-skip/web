@@ -247,36 +247,31 @@ export default defineComponent({
     const isFirefox = browser === 'firefox';
 
     // Card Checks
-    const isExtensionInstalled = ref<boolean>(
-      sessionStorage.getItem(SessionStorageKeys.EXTENSION_INSTALLED) === 'true',
-    );
-    function isExtensionInstalledListener(event: MessageEvent) {
-      if (event.data === '@anime-skip/install-check') {
-        isExtensionInstalled.value = true;
-        sessionStorage.setItem(SessionStorageKeys.EXTENSION_INSTALLED, 'true');
-      }
-    }
-    window.addEventListener('message', isExtensionInstalledListener);
-
     const store = useStore();
     const hasAccount = ref<boolean>(store.getters.IS_SIGNED_IN);
     const setupAccountLater = () => {
       hasAccount.value = true;
     };
 
+    const isExtensionInstalled = ref<boolean>(
+      sessionStorage.getItem(SessionStorageKeys.EXTENSION_INSTALLED) === 'true',
+    );
     const isExtensionLoggedIn = ref<boolean>(
       sessionStorage.getItem(SessionStorageKeys.EXTENSION_LOGGED_IN) === 'true',
     );
     const logIntoExtension = () => {
       isExtensionLoggedIn.value = true;
     };
-    function isExtensionLoggedInListener(event: MessageEvent) {
+    function extensionMessageListener(event: MessageEvent) {
       if (event.data === '@anime-skip/login-check') {
         isExtensionLoggedIn.value = true;
         sessionStorage.setItem(SessionStorageKeys.EXTENSION_LOGGED_IN, 'true');
+      } else if (event.data === '@anime-skip/install-check') {
+        isExtensionInstalled.value = true;
+        sessionStorage.setItem(SessionStorageKeys.EXTENSION_INSTALLED, 'true');
       }
     }
-    window.addEventListener('message', isExtensionLoggedInListener);
+    window.addEventListener('message', extensionMessageListener);
 
     // Selected Card
     const currentCard = computed<number>(() => {
