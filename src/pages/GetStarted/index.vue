@@ -113,7 +113,7 @@
           </ul>
         </template>
         <template v-slot:buttons>
-          <a href="" class="button primary">Join the Discord</a>
+          <a href="https://discord.gg/9wVhwZg" class="button primary">Join the Discord</a>
           <router-link class="button transparent outline" to="/#supported-services">
             Supported Servces
           </router-link>

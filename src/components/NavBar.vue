@@ -8,13 +8,13 @@
 
       <div class="space" />
 
-      <div v-if="isLoggedIn" class="right-buttons">
-        <router-link class="link" to="/get-started">Get Started</router-link>
-        <router-link class="link" to="/log-in">Log In</router-link>
-      </div>
-      <div v-else class="right-buttons">
+      <div v-if="isSignedIn" class="right-buttons">
         <router-link class="link" to="/account">Account</router-link>
         <div class="link" @click="logout">Logout</div>
+      </div>
+      <div v-else class="right-buttons">
+        <router-link class="link" to="/get-started">Get Started</router-link>
+        <router-link class="link" to="/log-in">Log In</router-link>
       </div>
     </div>
   </nav>
@@ -22,16 +22,17 @@
 
 <script lang="ts">
 import { ActionTypes } from '@/store/action-types';
-import { defineComponent } from 'vue';
+import { computed, defineComponent } from 'vue';
 import { useStore } from 'vuex';
 
 export default defineComponent({
   setup() {
     const store = useStore();
     const logout = () => store.dispatch(ActionTypes.LOG_OUT, undefined);
+    const isSignedIn = computed<boolean>(() => store.getters.IS_SIGNED_IN);
 
     return {
-      isLoggedIn: store.getters.IS_SIGNED_IN,
+      isSignedIn,
       logout,
     };
   },
