@@ -54,7 +54,7 @@ export default defineComponent({
 <style lang="scss">
 .Card {
   padding: 28px;
-  background-color: $dark500;
+  background-color: $dark400;
   border-radius: 16px;
   transition: 500ms;
   display: flex;
@@ -87,7 +87,7 @@ export default defineComponent({
     justify-content: center;
 
     span {
-      font-family: 'Overpass', sans-serif;
+      font-family: $overpassFontFamily;
       color: $textTitleColor;
       font-weight: 700;
       font-size: 24px;
@@ -125,8 +125,12 @@ export default defineComponent({
       cursor: pointer;
     }
 
+    img {
+      opacity: 0.7;
+    }
+
     .number {
-      background-color: $dark500;
+      background-color: $dark400;
     }
 
     h2 {

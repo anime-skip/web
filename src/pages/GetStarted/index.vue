@@ -1,7 +1,10 @@
 <template>
   <div class="GetStarted">
     <div class="column">
-      <h1>Get Started</h1>
+      <h1>
+        Get Started
+        <p>Start binging anime faster than ever before in just 4 easy steps</p>
+      </h1>
       <card
         title="Download the web extension"
         :done="isExtensionInstalled"
@@ -48,10 +51,11 @@
 
       <card title="Create an account" :done="hasAccount" :selected="currentCard === 2" :number="2">
         <template v-slot:message>
-          <p :class="{ secondary: hasAccount }">
-            You need an account to be able to use some features provided by Anime Skip:
-          </p>
           <ul :class="{ secondary: hasAccount }">
+            <p :class="{ secondary: hasAccount }">
+              You need an account to be able to use some features provided by Anime Skip:
+            </p>
+            <br />
             <li>Automatic timestamp skipping</li>
             <li>Playback speed</li>
             <li>Submitting timestamps for the community</li>
@@ -95,132 +99,36 @@
 
       <card title="Watch some anime!" :selected="currentCard === 4" :number="4">
         <template v-slot:message>
-          <p :class="{ secondary: false }">
-            You can check out the recently added list to find shows or just start watching.
+          <p>
+            You're good to go! Head over to one of the supported services and start watching some
+            anime!
           </p>
+          <ul>
+            <p><strong>Join the Discord!</strong> There you'll find:</p>
+            <br />
+            <li>Support</li>
+            <li>Feature Requests</li>
+            <li>Updates</li>
+            <li>Bug reports</li>
+          </ul>
         </template>
         <template v-slot:buttons>
-          <router-link to="/#recently-added" class="button primary">Recently Added</router-link>
+          <a href="" class="button primary">Join the Discord</a>
+          <router-link class="button transparent outline" to="/#supported-services">
+            Supported Servces
+          </router-link>
+          <router-link
+            :to="{ path: '/', hash: '#recently-added' }"
+            class="button transparent outline"
+          >
+            Recently Added Shows
+          </router-link>
         </template>
       </card>
 
       <div v-if="isDev">
         <button class="dev transparent" @click="sendInstallMessage">Send install event</button>
         <button class="dev transparent" @click="sendLoginMessage">Send log in event</button>
-      </div>
-
-      <div v-if="isExtensionInstalled && hasAccount && isExtensionLoggedIn" class="alpha-testers">
-        <h2>Alpha Testers</h2>
-        <p>
-          <i><span class="highlight">If you don't have a VRV account</span></i
-          >, reach out to Aaron and he can give you access to a shared account.
-        </p>
-        <p>
-          <span class="highlight red">Please don't try and break anything right now</span>, there
-          will be a time and place for you to test out the security of the application. This is just
-          a usage test, ie: do you like what this provides?
-        </p>
-        <div class="spacer" />
-
-        <h2>Shows/Test Data</h2>
-        <p>
-          <a href="https://vrv.co/series/G6J0G49DR/Tower-of-God">Tower of God</a>,
-          <a href="https://vrv.co/series/G6ZJ48K4Y/No-Game-No-Life">No Game, No Life</a>, and
-          <a href="https://vrv.co/series/GY5P48XEY/Demon-Slayer-Kimetsu-no-Yaiba">Demon Slayer</a>
-          are fully filled out. There are a few other shows that have episodes with timestamps from
-          the current season, but right now those are the primary ones.
-        </p>
-        <p>
-          <i><span class="highlight">If you're one of my testers new to anime</span></i
-          >, I would NOT recommend No Game, No Life or Tower of God. Instead, I would recommend
-          <a href="https://vrv.co/series/G6ZJ48K4Y/Death-Note">Death Note</a> first because it's
-          dubbed (24/48 episodes have timestamps), and Demon Slayer second because it is subbed.
-        </p>
-        <p>
-          Try and watch at least 3 episodes before you give up on the show. Its only an hour of your
-          life.
-        </p>
-        <div class="spacer" />
-
-        <h2>Tips & Tricks</h2>
-
-        <h3>Basic Keyboard Shortcuts</h3>
-        <p>
-          There are keyboard shortcuts if you watch something that doesn't have timestamps. They are
-          designed for you to place your index fingers on <code>F</code> and <code>J</code> like
-          you're typing.
-        </p>
-        <ul>
-          <li>
-            <code>R</code>
-            - Advance 1:30
-          </li>
-          <li>
-            <code>F</code>
-            - Advance 0:05
-          </li>
-          <li>
-            <code>V</code>
-            - Advance 0:01
-          </li>
-          <br />
-          <li>
-            <code>W</code>
-            - Go back 1:30
-          </li>
-          <li>
-            <code>S</code>
-            - Go back 0:05
-          </li>
-          <li>
-            <code>X</code>
-            - Go back 0:01
-          </li>
-          <br />
-          <li>
-            <code>E</code>
-            - Next timestamp
-          </li>
-          <li>
-            <code>D</code> <code>SPACE</code>
-            - Play/pause
-          </li>
-          <li>
-            <code>C</code>
-            - Previous timestamp
-          </li>
-        </ul>
-
-        <h3>Editing Keyboard Shortcuts</h3>
-        <ul>
-          <li>
-            <code>J</code>
-            - Go back 1 frame
-          </li>
-          <li>
-            <code>K</code>
-            - When editing, create a timestamp
-          </li>
-          <li>
-            <code>L</code>
-            - Advance 1 frame
-          </li>
-        </ul>
-        <p>
-          I'm not going to go into editing right now, but you're welcome to mess around.
-          <span class="highlight red">Please do this in shows I haven't done yet</span>. Other than
-          the shortcuts, it's fairly straight forward and easy to do.
-        </p>
-        <p>
-          If you want to add some timestamps to shows I haven't gotten to, place the timestamps the
-          frame after the cut, not the frame before the cut.
-        </p>
-        <p>
-          For an example, open an episode from Tower of God and go into edit mode. Skip to a
-          timestamp that has a hard cut using <code>E</code> or <code>C</code>, then press
-          <code>J</code> to go back 1 frame. It will take you to before the cut, meaning the
-          timestamp should be the next frame, the one after the cut.
-        </p>
       </div>
     </div>
   </div>
@@ -316,13 +224,22 @@ export default defineComponent({
   .column {
     width: 1080px + 2 * 24px;
     max-width: 100%;
-    padding: 30vh 24px 30vh 24px;
+    padding: 64px 24px 64px 24px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
 
     & > * {
       margin-bottom: 24px;
+    }
+  }
+
+  h1 {
+    padding-top: 48px;
+    padding-bottom: 64px;
+
+    p {
+      font-weight: 500;
     }
   }
 

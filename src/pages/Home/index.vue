@@ -64,10 +64,10 @@
       <h2>Supported Services</h2>
       <ul class="service-list">
         <li class="vrv">VRV</li>
+        <li class="funimation">Funimation Now</li>
       </ul>
       <h3>Coming Soon</h3>
       <ul class="service-list">
-        <li class="funimation">Funimation Now</li>
         <li class="netflix">NETFLIX</li>
         <li class="crunchyroll">crunchyroll</li>
         <li class="hulu">hulu</li>
@@ -118,7 +118,7 @@ $GRID_BREAK_LARGE: 1440px;
   .one {
     height: 100vh;
     background-color: $dark500;
-    z-index: 10;
+    z-index: 1;
 
     .background {
       height: 100%;
@@ -330,7 +330,7 @@ $GRID_BREAK_LARGE: 1440px;
       filter: drop-shadow(0px 6px 12px rgba(0, 0, 0, 0.36));
 
       line-height: 72px;
-      font-family: 'Overpass', sans-serif;
+      font-family: $overpassFontFamily;
       text-align: center;
       font-size: 28px;
       font-weight: 800;
