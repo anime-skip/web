@@ -25,7 +25,7 @@
           </p>
         </template>
         <template v-slot:buttons>
-          <a v-if="isChrome || !isFirefox" :href="chromeUrl">
+          <a v-if="isChrome || !isFirefox" :href="chromeUrl" class="button primary">
             Google Chrome
           </a>
           <a
@@ -36,9 +36,9 @@
           >
             Firefox
           </a>
-          <a v-if="isFirefox" :href="chromeUrl" target="_blank" class="button transparent"
-            >Google Chrome</a
-          >
+          <a v-if="isFirefox" :href="chromeUrl" target="_blank" class="button transparent">
+            Google Chrome
+          </a>
           <a v-if="isChrome" :href="firefoxUrl" class="button transparent">Firefox</a>
           <a :href="genericZipUrl" target="_blank" class="button transparent">
             ZIP
