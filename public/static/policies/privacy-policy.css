@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css?family=Overpass:500,600,700,800&display=swap');
+
+html,
+body {
+  height: 100%;
+}
+
+*:not(ul):not(ol) {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #282f37;
+}
+
+body * {
+  font-family: sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+a,
+a * {
+  color: #8e5dd6;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.heading_1,
+.heading_2 {
+  font-family: 'Overpass', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body > div {
+  max-width: 900px;
+  width: 100%;
+  padding-top: 128px;
+  padding-bottom: 64px;
+}
+
+.body_text {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.title {
+  font-size: 34px;
+  color: white;
+}
+
+.subtitle {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.64);
+  font-weight: 500;
+}
+
+.heading_1 {
+  font-size: 24px;
+}
+
+.heading_2 {
+  font-size: 20px;
+}
+
+.email {
+  color: #009ce4;
+  font-weight: bold;
+}
