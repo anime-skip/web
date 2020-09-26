@@ -1,0 +1,32 @@
+<template>
+  <div class="NotFound">
+    <div class="centered">
+      <h1>404</h1>
+      <p>The page you're looking for doesn't exist</p>
+    </div>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.NotFound {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .centered {
+    text-align: center;
+
+    h1 {
+      font-size: 192px;
+      font-weight: 500;
+      color: $textSecondaryColor;
+    }
+
+    p {
+      font-size: 17px;
+      color: $textSecondaryColor;
+    }
+  }
+}
+</style>
