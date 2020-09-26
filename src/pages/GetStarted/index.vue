@@ -91,9 +91,13 @@
             There are a lot of different types of timestamps in anime, and you should be able to
             skip only what you want. To learn more about what each timestamp represents, checkout
             the
-            <a href="/faq#timestamp-types" class="white" :class="{ secondary: isExtensionLoggedIn }"
-              >FAQ page</a
+            <a
+              href="/support#timestamp-types"
+              class="white"
+              :class="{ secondary: isExtensionLoggedIn }"
             >
+              FAQ page
+            </a>
             for a summary of each.
           </p>
         </template>
@@ -145,6 +149,7 @@ import Card from './Card.vue';
 import { detectBrowser } from '../../utils';
 import { SessionStorageKeys } from '../../utils/enums';
 import { useStore } from 'vuex';
+import { CHROME_STORE_URL, FIREFOX_STORE_URL, ZIP_FILE_URL } from '@/utils/constants';
 
 export default defineComponent({
   components: { Card },
@@ -209,12 +214,9 @@ export default defineComponent({
       logIntoExtension,
 
       currentCard,
-      genericZipUrl:
-        'https://drive.google.com/file/d/1k6iuwvRul_ef6ijd0lTepGvhQch9XzM5/view?usp=sharing',
-      chromeUrl:
-        'https://chrome.google.com/webstore/detail/anime-skip/mgmdkjcljneegjfajchedjpdhbadklcf',
-      firefoxUrl:
-        'https://drive.google.com/file/d/1vDr7BK9AtCWFBbYuRpudO5qyIfUrN7zb/view?usp=sharing',
+      genericZipUrl: ZIP_FILE_URL,
+      chromeUrl: CHROME_STORE_URL,
+      firefoxUrl: FIREFOX_STORE_URL,
     };
   },
 });
@@ -229,7 +231,7 @@ export default defineComponent({
   .column {
     width: 1080px + 2 * 24px;
     max-width: 100%;
-    padding: 64px 24px 64px 24px;
+    padding: 64px 24px 192px 24px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
