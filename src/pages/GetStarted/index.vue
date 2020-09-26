@@ -65,7 +65,12 @@
           </p>
         </template>
         <template v-slot:buttons>
-          <router-link to="/sign-up" class="button primary">Create Account</router-link>
+          <router-link
+            :to="{ path: '/sign-up', query: { redirect: '/get-started' } }"
+            class="button primary"
+          >
+            Create Account
+          </router-link>
           <button v-if="!hasAccount" class="transparent" @click="setupAccountLater">
             Setup Account Later
           </button>
