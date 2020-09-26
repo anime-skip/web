@@ -1,11 +1,6 @@
 <template>
   <div id="SignIn">
-    <header>
-      <router-link to="/">
-        <img src="../../assets/logo_nav.svg" />
-        <h1>Anime Skip</h1>
-      </router-link>
-    </header>
+    <div />
     <div class="card">
       <section class="section-1">
         <img src="../../assets/logo.svg" />
@@ -63,37 +58,12 @@ export default defineComponent({
 #SignIn {
   width: 100%;
   min-height: 100%;
+  padding-top: $navBarHeight;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-
-  header {
-    height: 48px;
-    align-self: stretch;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    padding: 0 24px;
-
-    a {
-      text-decoration: none;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-    }
-
-    h1 {
-      font-size: 18px;
-      margin-right: 16px;
-    }
-
-    img {
-      height: 24px;
-      margin-right: 16px;
-    }
-  }
 
   .card {
     box-sizing: border-box;
@@ -131,12 +101,12 @@ export default defineComponent({
       min-width: 700px;
       max-width: 900px;
       padding: 0px;
-      box-shadow: 0px 16px 24px 8px rgba(0, 0, 0, 0.18);
+      box-shadow: 0px 8px 24px 8px rgba(0, 0, 0, 0.24);
       overflow: hidden;
 
       .section-1 {
         display: unset;
-        background-color: #1b2025;
+        background-color: $dark500;
         display: flex;
         flex-direction: column;
         align-items: center;

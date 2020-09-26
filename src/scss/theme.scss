@@ -5,7 +5,8 @@ $secondary500: #8e5dd6;
 $secondary700: #804ec9;
 
 $backgroundColor: #282f37;
-$dark500: #1b2025;
+$dark400: #1b2025;
+$dark500: #14171b;
 $dark700: #080c11;
 
 $textTitleColor: #ffffff;
@@ -22,6 +23,9 @@ $textDisabledColor: rgba(
   $alpha: 0.48,
 );
 
+$navBarHeight: 54px;
+$overpassFontFamily: 'Overpass', sans-serif;
+
 h1 {
   font-size: 36px;
   font-weight: 600;
@@ -33,10 +37,12 @@ h2 {
   color: $textTitleColor;
 }
 
-p {
+p,
+li {
   font-family: sans-serif;
   font-size: 15px;
   color: $textPrimaryColor;
+  line-height: 22px;
 
   &.secondary {
     color: $textSecondaryColor;

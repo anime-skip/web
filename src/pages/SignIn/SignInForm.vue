@@ -101,13 +101,14 @@ export default defineComponent({
     // Mode
     const mode = ref<Mode>(route.path === '/log-in' ? Mode.LOG_IN : Mode.SIGN_UP);
 
+    const customRedirect = route.query.redirect as string | undefined;
     const switchToSignIn = () => {
       mode.value = Mode.LOG_IN;
-      router.replace({ path: '/log-in' });
+      router.replace({ path: '/log-in', query: { redirect: customRedirect } });
     };
     const switchToSignUp = () => {
       mode.value = Mode.SIGN_UP;
-      router.replace({ path: '/sign-up' });
+      router.replace({ path: '/sign-up', query: { redirect: customRedirect } });
     };
     const isSignIn = computed<boolean>(() => mode.value === Mode.LOG_IN);
     const usernameLabel = computed<string>((): string =>
@@ -179,7 +180,6 @@ export default defineComponent({
 
       await recaptchaLoaded();
       const recaptchaResponse = await executeRecaptcha(mode.value);
-      const customRedirect = route.query.redirect as string | undefined;
       if (mode.value === Mode.LOG_IN) {
         persistValue('rememberMeChecked', rememberMeChecked.value);
         if (rememberMeChecked.value) {

@@ -55,9 +55,8 @@ export default defineComponent({
   display: flex;
   flex-direction: row;
   align-items: center;
-  // background-color: rgba(0, 0, 0, 0.24);
   outline: none;
-  background-color: #191e24cc;
+  background-color: $dark500;
   border-radius: 4px;
   cursor: text;
 

@@ -16,7 +16,7 @@
   "dependencies": {
     "@anime-skip/axios-api": "^1.0.10",
     "core-js": "^3.6.5",
-    "vue": "^3.0.0-rc.5",
+    "vue": "^3.0.0",
     "vue-recaptcha-v3": "file:local_modules/vue-recaptcha-v3-1.9.0-vue3.tgz",
     "vue-router": "^4.0.0-beta.4",
     "vuex": "^4.0.0-beta.4",
