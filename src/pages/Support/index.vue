@@ -10,12 +10,12 @@
       </p>
       <ul>
         <li>
-          <strong>FAQ</strong> - Please checkout the frequently asked questions to see if your
+          <strong>FAQ</strong> - Please check out the frequently asked questions to see if your
           question has already been answered
         </li>
         <li>
           <strong><a href="https://discord.gg/9wVhwZg" target="_blank">Discord</a></strong> - Ask
-          the community for help, report bugs, craete feature requests
+          the community for help, report bugs, create feature requests
         </li>
       </ul>
 
@@ -31,7 +31,7 @@
         </Faq>
       </div>
 
-      <h2 id="editing-best-practices">Editing Best Practices</h2>
+      <h2 id="editing-best-practices">Editing - Best Practices</h2>
       <p>
         This section has not been written yet
       </p>
@@ -76,8 +76,7 @@ export default defineComponent({
   .column {
     width: 100%;
     max-width: 1128px;
-    padding: 32px;
-    padding-top: 64px;
+    padding: 64px 32px;
     box-sizing: border-box;
   }
 
