@@ -15,6 +15,10 @@ const routes: RouteRecordRaw[] = [
     component: () => import(/* webpackChunkName: "get_started" */ './pages/GetStarted/index.vue'),
   },
   {
+    path: '/support',
+    component: () => import(/* webpackChunkName: "support" */ './pages/Support/index.vue'),
+  },
+  {
     path: '/policies/privacy-policy',
     component: () => import(/* webpackChunkName: "privacy_policy" */ './pages/PrivacyPolicy.vue'),
   },
