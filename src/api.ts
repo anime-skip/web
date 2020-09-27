@@ -71,6 +71,19 @@ export class ExtendedApi extends AxiosApi {
       return false;
     }
   }
+
+  public async getAllTimestampTypes(): Promise<Api.TimestampType[]> {
+    const response = await this.sendUnauthorizedGraphql<'allTimestampTypes', Api.TimestampType[]>({
+      query: `{
+        allTimestampTypes {
+          id
+          name
+          description
+        }
+      }`,
+    });
+    return response.data.allTimestampTypes;
+  }
 }
 
 export default new ExtendedApi(getAccessToken);
