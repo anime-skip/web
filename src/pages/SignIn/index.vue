@@ -15,9 +15,7 @@
         <sign-in-form v-else />
       </section>
     </div>
-    <footer>
-      <page-footer showReCaptchaMessage />
-    </footer>
+    <RecaptchaFooter showReCaptchaMessage />
   </div>
 </template>
 
@@ -28,9 +26,10 @@ import { useStore } from 'vuex';
 import { useRouter, useRoute } from 'vue-router';
 import { LOG_IN_REDIRECT } from '../../utils/constants';
 import { ActionTypes } from '../../store/action-types';
+import RecaptchaFooter from '@/components/RecaptchaFooter.vue';
 
 export default defineComponent({
-  components: { SignInForm },
+  components: { SignInForm, RecaptchaFooter },
   setup() {
     const store = useStore();
     const router = useRouter();
@@ -57,7 +56,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 #SignIn {
   width: 100%;
-  min-height: 100%;
+  min-height: 95%;
   padding-top: $navBarHeight;
   box-sizing: border-box;
   display: flex;

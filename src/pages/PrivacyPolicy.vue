@@ -5,5 +5,6 @@
 <style lang="scss" scoped>
 iframe {
   border: none;
+  flex: 1;
 }
 </style>

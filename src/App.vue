@@ -3,6 +3,7 @@
     <NavBar />
     <div class="child">
       <router-view />
+      <SiteFooter />
     </div>
   </div>
 </template>
@@ -10,9 +11,10 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import NavBar from '@/components/NavBar.vue';
+import SiteFooter from '@/components/SiteFooter.vue';
 
 export default defineComponent({
-  components: { NavBar },
+  components: { NavBar, SiteFooter },
 });
 </script>
 

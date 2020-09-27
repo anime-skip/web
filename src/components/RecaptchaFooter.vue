@@ -1,22 +1,12 @@
 <template>
   <div class="PageFooter">
-    <p v-if="showReCaptchaMessage" class="recaptcha">
+    <p class="recaptcha">
       This site is protected by reCAPTCHA and the Google
       <a href="https://policies.google.com/privacy">Privacy Policy</a> and
       <a href="https://policies.google.com/terms">Terms of Service</a> apply.
     </p>
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-  props: {
-    showReCaptchaMessage: Boolean,
-  },
-});
-</script>
 
 <style lang="scss" scoped>
 .PageFooter {
