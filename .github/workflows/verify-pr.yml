@@ -2,7 +2,7 @@ name: Verify PR
 on:
   push:
     branches-ignore:
-      - master
+      - main
 
 jobs:
   install:
@@ -14,95 +14,73 @@ jobs:
           node-version: '12.x'
           registry-url: 'https://npm.pkg.github.com'
           scope: '@anime-skip'
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - uses: actions/cache@v2
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-      - run: |
-          yarn install
+      - run: yarn install
         env:
           CI: true
-          NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.ANIME_SKIP_PACKAGES_TOKEN  }}
 
   build:
     name: Build
     runs-on: ubuntu-latest
+    needs: [install]
     steps:
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
           registry-url: 'https://npm.pkg.github.com'
           scope: '@anime-skip'
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - uses: actions/cache@v2
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-      - name: Waiting for "Install Dependencies"
-        uses: fountainhead/action-wait-for-check@v1.0.0
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          checkName: Install Dependencies
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
-      - run: |
-          yarn install
+      - run: yarn install
         env:
           CI: true
-          NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
-      - run: |
-          yarn build
+          NODE_AUTH_TOKEN: ${{ secrets.ANIME_SKIP_PACKAGES_TOKEN  }}
+      - run: yarn build
   lint:
     name: Lint
     runs-on: ubuntu-latest
+    needs: [install]
     steps:
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
           registry-url: 'https://npm.pkg.github.com'
           scope: '@anime-skip'
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - uses: actions/cache@v2
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-      - name: Waiting for "Install Dependencies"
-        uses: fountainhead/action-wait-for-check@v1.0.0
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          checkName: Install Dependencies
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
-      - run: |
-          yarn install
+      - run: yarn install
         env:
           CI: true
-          NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
-      - run: |
-          yarn lint
+          NODE_AUTH_TOKEN: ${{ secrets.ANIME_SKIP_PACKAGES_TOKEN  }}
+      - run: yarn lint
   # unit_test:
   #   name: Unit Tests
   #   runs-on: ubuntu-latest
+  #   needs: [install]
   #   steps:
   #     - uses: actions/setup-node@v1
   #       with:
   #         node-version: '12.x'
   #         registry-url: 'https://npm.pkg.github.com'
   #         scope: '@anime-skip'
-  #     - uses: actions/checkout@v1
+  #     - uses: actions/checkout@v2
   #     - uses: actions/cache@v2
   #       with:
   #         path: '**/node_modules'
   #         key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-  #     - name: Waiting for "Install Dependencies"
-  #       uses: fountainhead/action-wait-for-check@v1.0.0
-  #       with:
-  #         token: ${{ secrets.GITHUB_TOKEN }}
-  #         checkName: Install Dependencies
-  #         ref: ${{ github.event.pull_request.head.sha || github.sha }}
-  #     - run: |
-  #         yarn install
+  #     - run: yarn install
   #       env:
   #         CI: true
-  #         NODE_AUTH_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
-  #     - run: |
-  #         yarn test:unit
+  #         NODE_AUTH_TOKEN: ${{ secrets.ANIME_SKIP_PACKAGES_TOKEN  }}
+  #     - run: yarn test:unit

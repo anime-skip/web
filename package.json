@@ -4,14 +4,12 @@
   "private": true,
   "scripts": {
     "build": "vue-cli-service build",
+    "build:docker": "npx dotenv-cli -e docker/.env -- bash -c 'docker build --build-arg GITHUB_PACKAGES_TOKEN=${GITHUB_PACKAGES_TOKEN} . -t anime-skip-web:dev'",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
-    "deploy": "yarn lint && yarn build && push-dir --dir=dist --remote=heroku --branch=master --force",
-    "deploy:info": "heroku info",
-    "heroku-prebuild": "echo 'This runs before Heroku runs \"yarn build\"'",
-    "heroku-cleanup": "echo 'This runs after Heroku runs \"yarn build\"'",
-    "start": "vue-cli-service serve"
+    "start": "vue-cli-service serve",
+    "start:docker": "yarn build:docker && docker run -p 8080:80 anime-skip-web:dev"
   },
   "dependencies": {
     "@anime-skip/axios-api": "^1.0.10",
