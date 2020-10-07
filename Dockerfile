@@ -8,8 +8,6 @@ COPY local_modules ./local_modules
 RUN yarn install --frozen-lockfile
 COPY . .
 RUN yarn run build
-RUN ls -la
-RUN ls -la /app/dist
 
 # production stage
 FROM nginx:stable-alpine as production-stage
