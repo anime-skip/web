@@ -18,6 +18,29 @@ const routes: RouteRecordRaw[] = [
     path: '/support',
     component: () => import(/* webpackChunkName: "support" */ './pages/Support/index.vue'),
   },
+
+  {
+    path: '/account',
+    component: () => import(/* webpackChunkName: "account" */ './pages/Account/index.vue'),
+    meta: {
+      authenticated: true,
+    },
+    children: [
+      {
+        path: '',
+        component: () =>
+          import(/* webpackChunkName: "account_info" */ './pages/Account/AccountInfo.vue'),
+      },
+      {
+        path: 'email-verification',
+        component: () =>
+          import(
+            /* webpackChunkName: "email_verification" */ './pages/Account/EmailVerification.vue'
+          ),
+      },
+    ],
+  },
+
   {
     path: '/policies/privacy-policy',
     component: () => import(/* webpackChunkName: "privacy_policy" */ './pages/PrivacyPolicy.vue'),
