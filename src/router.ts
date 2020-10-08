@@ -1,4 +1,5 @@
-import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router';
+import { Store } from '@/store';
+import { createRouter, createWebHistory, Router, RouteRecordRaw } from 'vue-router';
 
 const routes: RouteRecordRaw[] = [
   {
@@ -52,7 +53,22 @@ const routes: RouteRecordRaw[] = [
   },
 ];
 
-export default createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes,
-});
+export default function initializeRouter(store: Store): Router {
+  const router = createRouter({
+    history: createWebHistory(process.env.BASE_URL),
+    routes,
+  });
+  router.beforeEach((to, _, next) => {
+    if (!to.meta.authenticated || store.getters.IS_SIGNED_IN) {
+      return next();
+    }
+
+    next({
+      path: '/log-in',
+      query: {
+        redirect: to.fullPath,
+      },
+    });
+  });
+  return router;
+}
