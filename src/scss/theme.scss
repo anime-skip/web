@@ -4,6 +4,8 @@ $primary700: #018eca;
 $secondary500: #8e5dd6;
 $secondary700: #804ec9;
 
+$red500: #d32f2f;
+
 $backgroundColor: #282f37;
 $dark400: #1b2025;
 $dark500: #14171b;
@@ -25,6 +27,9 @@ $textDisabledColor: rgba(
 
 $navBarHeight: 54px;
 $overpassFontFamily: 'Overpass', sans-serif;
+
+$GRID_BREAK_SMALL: 720px;
+$GRID_BREAK_LARGE: 1440px;
 
 h1 {
   font-size: 36px;
