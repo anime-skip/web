@@ -136,8 +136,8 @@
       </card>
 
       <div v-if="isDev">
-        <button class="dev transparent" @click="sendInstallMessage">Send install event</button>
-        <button class="dev transparent" @click="sendLoginMessage">Send log in event</button>
+        <button class="dev transparent" @click="sendMockInstallMessage">Send install event</button>
+        <button class="dev transparent" @click="sendMockLoginMessage">Send log in event</button>
       </div>
     </div>
   </div>
@@ -157,7 +157,7 @@ export default defineComponent({
   components: { Card },
   setup() {
     const { isDev } = useEnv();
-    const { sendInstallMessage, sendLoginMessage } = useExtensionInteraction();
+    const { sendMockInstallMessage, sendMockLoginMessage } = useExtensionInteraction();
     const { isExtensionInstalled, isExtensionLoggedIn, logIntoExtension } = useExtensionStatus();
 
     // Browser
@@ -182,8 +182,8 @@ export default defineComponent({
 
     return {
       isDev,
-      sendInstallMessage,
-      sendLoginMessage,
+      sendMockInstallMessage,
+      sendMockLoginMessage,
 
       isChrome,
       isFirefox,

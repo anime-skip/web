@@ -3,13 +3,13 @@ export default function useExtensionInteraction() {
   const openKeyboardShortcuts = () =>
     window.postMessage('@anime-skip/open-keyboard-shortcuts', '*');
 
-  const sendInstallMessage = () => window.postMessage('@anime-skip/install-check', '*');
-  const sendLoginMessage = () => window.postMessage('@anime-skip/login-check', '*');
+  const sendMockInstallMessage = () => window.postMessage('@anime-skip/install-check', '*');
+  const sendMockLoginMessage = () => window.postMessage('@anime-skip/login-check', '*');
 
   return {
     openPopup,
     openKeyboardShortcuts,
-    sendInstallMessage,
-    sendLoginMessage,
+    sendMockInstallMessage,
+    sendMockLoginMessage,
   };
 }

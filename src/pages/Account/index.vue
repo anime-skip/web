@@ -28,7 +28,7 @@
       </div>
 
       <div v-if="isDev" class="group">
-        <div v-if="!isExtensionInstalled" class="nav-item" @click="sendInstallMessage">
+        <div v-if="!isExtensionInstalled" class="nav-item" @click="sendMockInstallMessage">
           <span>Send Install Event</span>
           <img src="../../assets/ic_chevron_right.svg" />
         </div>
@@ -52,7 +52,7 @@ export default defineComponent({
   setup() {
     const { isDev } = useEnv();
     const { isExtensionInstalled } = useExtensionStatus();
-    const { openPopup, openKeyboardShortcuts, sendInstallMessage } = useExtensionInteraction();
+    const { openPopup, openKeyboardShortcuts, sendMockInstallMessage } = useExtensionInteraction();
 
     const extensionInstalledIcon = computed(() =>
       isExtensionInstalled.value ? icCheckmarkBlue : icXRed,
@@ -67,7 +67,7 @@ export default defineComponent({
       extensionInstalledTitle,
       openPopup,
       openKeyboardShortcuts,
-      sendInstallMessage,
+      sendMockInstallMessage,
     };
   },
 });
