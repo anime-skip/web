@@ -8,7 +8,7 @@
 
 ### Enhancements
 
-- Login redirects when going to an authenication required page, but you're not logged in
+- Login redirects when going to an authentication required page, but you're not logged in
 - Account page
 
 ### Fixes
