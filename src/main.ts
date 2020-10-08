@@ -1,9 +1,8 @@
 import { createApp } from 'vue';
-import App from './App.vue';
-import router from './router';
-import { store } from './store';
-import './scss/style.scss';
-import './scss/theme.scss';
+import plugins from '@/plugins';
+import App from '@/App.vue';
+import '@/scss/style.scss';
+import '@/scss/theme.scss';
 
 import { VueReCaptcha } from 'vue-recaptcha-v3';
 
@@ -13,7 +12,7 @@ import Checkbox from '@/components/Checkbox.vue';
 createApp(App)
   .component('text-input', TextInput)
   .component('checkbox', Checkbox)
-  .use(router)
-  .use(store)
+  .use(plugins.router)
+  .use(plugins.store)
   .use(VueReCaptcha, { siteKey: '6LdCabkZAAAAANjX98ln54xCQ5OVnuinrPeLF8Np' })
   .mount('#app');
