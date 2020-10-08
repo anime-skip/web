@@ -9,7 +9,7 @@
       <p v-if="isEmailVerified">Your email address is verified!</p>
       <div v-else class="not-verified">
         <h4><strong>Your email address is not verified</strong></h4>
-        <button>Verify Email</button>
+        <button class="disabled" disabled>Verify Email</button>
         <p>
           To verify your account, press the button above. The email address registered with your
           account will recieve an email with instructions to verify your address. If you do not
