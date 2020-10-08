@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.3.0
+
+### Breaking Changes
+
+- None
+
+### Enhancements
+
+- Login redirects when going to an authenication required page, but you're not logged in
+- Account page
+
+### Fixes
+
+- Button text color styling
+
 ## v0.2.4
 
 Initial release that this changelog is tracking
