@@ -136,8 +136,8 @@
       </card>
 
       <div v-if="isDev">
-        <button class="dev transparent" @click="sendInstallMessage">Send install event</button>
-        <button class="dev transparent" @click="sendLoginMessage">Send log in event</button>
+        <button class="dev transparent" @click="sendMockInstallMessage">Send install event</button>
+        <button class="dev transparent" @click="sendMockLoginMessage">Send log in event</button>
       </div>
     </div>
   </div>
@@ -147,17 +147,18 @@
 import { defineComponent, ref, computed } from 'vue';
 import Card from './Card.vue';
 import { detectBrowser } from '../../utils';
-import { SessionStorageKeys } from '../../utils/enums';
+import useExtensionStatus from '@/composition/extension-status';
+import useExtensionInteraction from '@/composition/extension-interaction';
+import useEnv from '@/composition/env';
 import { useStore } from 'vuex';
 import { CHROME_STORE_URL, FIREFOX_STORE_URL, ZIP_FILE_URL } from '@/utils/constants';
 
 export default defineComponent({
   components: { Card },
   setup() {
-    // Dev stuff
-    const isDev = process.env.NODE_ENV !== 'production';
-    const sendInstallMessage = () => window.postMessage('@anime-skip/install-check', '*');
-    const sendLoginMessage = () => window.postMessage('@anime-skip/login-check', '*');
+    const { isDev } = useEnv();
+    const { sendMockInstallMessage, sendMockLoginMessage } = useExtensionInteraction();
+    const { isExtensionInstalled, isExtensionLoggedIn, logIntoExtension } = useExtensionStatus();
 
     // Browser
     const browser = detectBrowser();
@@ -171,26 +172,6 @@ export default defineComponent({
       hasAccount.value = true;
     };
 
-    const isExtensionInstalled = ref<boolean>(
-      sessionStorage.getItem(SessionStorageKeys.EXTENSION_INSTALLED) === 'true',
-    );
-    const isExtensionLoggedIn = ref<boolean>(
-      sessionStorage.getItem(SessionStorageKeys.EXTENSION_LOGGED_IN) === 'true',
-    );
-    const logIntoExtension = () => {
-      isExtensionLoggedIn.value = true;
-    };
-    function extensionMessageListener(event: MessageEvent) {
-      if (event.data === '@anime-skip/login-check') {
-        isExtensionLoggedIn.value = true;
-        sessionStorage.setItem(SessionStorageKeys.EXTENSION_LOGGED_IN, 'true');
-      } else if (event.data === '@anime-skip/install-check') {
-        isExtensionInstalled.value = true;
-        sessionStorage.setItem(SessionStorageKeys.EXTENSION_INSTALLED, 'true');
-      }
-    }
-    window.addEventListener('message', extensionMessageListener);
-
     // Selected Card
     const currentCard = computed<number>(() => {
       if (!isExtensionInstalled.value) return 1;
@@ -201,8 +182,8 @@ export default defineComponent({
 
     return {
       isDev,
-      sendInstallMessage,
-      sendLoginMessage,
+      sendMockInstallMessage,
+      sendMockLoginMessage,
 
       isChrome,
       isFirefox,

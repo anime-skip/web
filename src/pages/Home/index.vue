@@ -96,9 +96,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-$GRID_BREAK_SMALL: 720px;
-$GRID_BREAK_LARGE: 1440px;
-
 .Home {
   position: relative;
   display: flex;

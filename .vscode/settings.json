@@ -3,5 +3,9 @@
   "editor.formatOnSave": true,
   "editor.formatOnPaste": false,
   "files.insertFinalNewline": true,
-  "files.trimFinalNewlines": true
+  "files.trimFinalNewlines": true,
+  "cSpell.words": [
+    "recaptcha",
+    "vuex"
+  ]
 }

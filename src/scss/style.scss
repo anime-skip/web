@@ -70,6 +70,7 @@ button,
   transition: 200ms;
   cursor: pointer;
   text-decoration: none;
+  color: $textTitleColor;
 
   &.secondary {
     background-color: #8e5dd6;

@@ -16,6 +16,7 @@ export const mutations: MutationTree<State> & Mutations = {
     state.account = account && {
       emailVerified: account.emailVerified,
       username: account.username,
+      email: account.email,
     };
   },
 

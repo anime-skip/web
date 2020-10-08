@@ -7,7 +7,7 @@ import { UNAUTHORIZED_ERROR_MESSAGE, LOG_IN_REDIRECT } from '../utils/constants'
 import api, { persistTokens } from '@/api';
 import { RequestState } from '@/utils/enums';
 import Errors from '@/utils/errors';
-import router from '@/router';
+import plugins from '@/plugins';
 
 //#region Types
 type AugmentedActionContext = {
@@ -73,7 +73,7 @@ export const actions: ActionTree<State, State> & Actions = {
 
       commit(MutationTypes.SET_ACCOUNT_INFO, account);
       commit(MutationTypes.LOG_IN_REQUEST_STATE, RequestState.SUCCESS);
-      router.push({ path: customRedirect ?? LOG_IN_REDIRECT });
+      plugins.router.push({ path: customRedirect ?? LOG_IN_REDIRECT });
     } catch (err) {
       commit(MutationTypes.LOG_IN_REQUEST_STATE, RequestState.FAILURE);
       commit(MutationTypes.LOG_IN_ERROR, Errors.signUpErrorMessage(err));
@@ -89,7 +89,7 @@ export const actions: ActionTree<State, State> & Actions = {
 
       commit(MutationTypes.SET_ACCOUNT_INFO, response.account);
       commit(MutationTypes.LOG_IN_REQUEST_STATE, RequestState.SUCCESS);
-      router.push({ path: customRedirect ?? LOG_IN_REDIRECT });
+      plugins.router.push({ path: customRedirect ?? LOG_IN_REDIRECT });
     } catch (err) {
       commit(MutationTypes.LOG_IN_REQUEST_STATE, RequestState.FAILURE);
       commit(MutationTypes.LOG_IN_ERROR, Errors.signInErrorMessage(err));
@@ -107,6 +107,6 @@ export const actions: ActionTree<State, State> & Actions = {
     if (customRedirect) {
       url += `&redirect=${encodeURI(customRedirect)}`;
     }
-    router.push({ path: url });
+    plugins.router.push({ path: url });
   },
 };

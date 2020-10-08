@@ -1,6 +1,8 @@
 <template>
-  <div class="TextInput" :class="{ invalid: !valid }" @click="focusOnInput">
-    <slot name="left" class="left" />
+  <div class="TextInput" :class="{ invalid: !valid, disabled }" @click="focusOnInput">
+    <div class="left">
+      <slot name="left" />
+    </div>
     <slot>
       <input
         class="middle"
@@ -10,11 +12,14 @@
         :type="type"
         :placeholder="placeholder"
         :autocomplete="autocomplete"
+        :disabled="disabled"
         @focus="$emit('focus')"
         @blur="$emit('blur')"
       />
     </slot>
-    <slot name="right" />
+    <div class="right">
+      <slot name="right" />
+    </div>
   </div>
 </template>
 
@@ -27,6 +32,7 @@ export default defineComponent({
     modelValue: { type: String, required: true },
     placeholder: String,
     name: String,
+    disabled: { type: Boolean, required: false },
     type: { type: String, default: 'text' },
     valid: { type: Boolean, required: false, default: true },
     // https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete
@@ -66,7 +72,9 @@ export default defineComponent({
 
   .left,
   .right {
+    display: flex;
     flex-shrink: 0;
+    align-self: center;
   }
 
   input.middle {
@@ -81,9 +89,19 @@ export default defineComponent({
     border: none;
     min-width: 0;
     caret-color: #b791f8;
+    color: $textTitleColor;
 
     &::placeholder {
       color: rgba(255, 255, 255, 0.36);
+    }
+  }
+
+  &.disabled {
+    .left {
+      opacity: 0.48;
+    }
+    input.middle {
+      color: $textDisabledColor;
     }
   }
 }
