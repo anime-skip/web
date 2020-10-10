@@ -1,7 +1,14 @@
 export default function useExtensionInteraction() {
-  const openPopup = () => window.postMessage('@anime-skip/open-popup', '*');
-  const openKeyboardShortcuts = () =>
-    window.postMessage('@anime-skip/open-keyboard-shortcuts', '*');
+  const openPopup = () => {
+    const event = document.createEvent('Event');
+    event.initEvent('@anime-skip/open-popup');
+    document.dispatchEvent(event);
+  };
+  const openKeyboardShortcuts = () => {
+    const event = document.createEvent('Event');
+    event.initEvent('@anime-skip/open-options');
+    document.dispatchEvent(event);
+  };
 
   const sendMockInstallMessage = () => window.postMessage('@anime-skip/install-check', '*');
   const sendMockLoginMessage = () => window.postMessage('@anime-skip/login-check', '*');
