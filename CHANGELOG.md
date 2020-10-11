@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.3.1
+
+### Breaking Changes
+
+- None
+
+### Enhancements
+
+- Updated integrations with the web extension - account logs
+
+### Fixes
+
+- Changed support emails to <support@anime-skip.com>
+
 ## v0.3.0
 
 ### Breaking Changes
