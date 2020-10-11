@@ -18,6 +18,11 @@
           the community for help, report bugs, create feature requests
         </li>
       </ul>
+      <p>
+        If you'd like to reach out to me directly, you can do so by emailing
+        <a href="mailto:support@anime-skip.com">support@anime-skip.com</a>, and I'll respond as soon
+        as possible!
+      </p>
 
       <h2 id="faq">FAQ</h2>
       <FaqList />

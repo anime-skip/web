@@ -20,19 +20,30 @@
     <Faq question="How do I edit keyboard shortcuts?">
       <template v-slot:default>
         <p>
-          Keyboard shortcuts are apart of the web extension's options. Make sure you have followed
-          the <router-link to="/get-started">getting started guide</router-link> and installed the
-          web extension.
+          Keyboard shortcuts are apart of the web extension options. Make sure you have followed the
+          <router-link to="/get-started">getting started guide</router-link> and installed the web
+          extension.
         </p>
+        <span>
+          <button
+            class="primary"
+            :class="{ disabled: !isExtensionInstalled }"
+            @click="openKeyboardShortcuts"
+          >
+            Edit Keyboard Shortcuts
+          </button>
+          <span v-if="!isExtensionInstalled" class="not-installed-warning"
+            >Extension not installed</span
+          >
+        </span>
         <p>
-          <strong>If you have an account</strong> and are signed in, there is a button that will
-          open these options in both the extension popup (when you click on the extnsion icon in the
-          browser's top bar), and in the player's settings when watching an episode. The button is
-          beneath the list of timestamp types you are skipping.
+          <strong>If you have an account</strong> and are signed in, there are three ways to edit
+          them: a button in the extension's popup, in the player's settings when watching an
+          episode, or from you're <router-link to="/account">account settings</router-link>.
         </p>
         <p>
           <strong>If you don't have an account</strong>, you can still customize your keyboard
-          shortcuts by right clicking on the extension icon and selecting "Options" or "Settings"
+          shortcuts by right clicking on the extension's icon and selecting "Options" or "Settings"
           depending on your browser.
         </p>
       </template>
@@ -44,7 +55,7 @@
           In the future, there will be an option to delete your account from your account settings
           page. Until then, please fill out
           <a
-            href="mailto:aaron@anime-skip.com?subject=Anime Skip - Delete Account&body=My email is _, and my username is _."
+            href="mailto:support@anime-skip.com?subject=Anime Skip - Delete Account&body=My email is _, and my username is _."
             target="_blank"
           >
             this email template</a
@@ -71,12 +82,33 @@
 </template>
 
 <script lang="ts">
+import useExtensionInteraction from '@/composition/extension-interaction';
+import useExtensionStatus from '@/composition/extension-status';
 import { defineComponent } from 'vue';
 import Faq from './Faq.vue';
 
 export default defineComponent({
   components: { Faq },
+  setup() {
+    const { isExtensionInstalled } = useExtensionStatus();
+    const { openKeyboardShortcuts } = useExtensionInteraction();
+    return {
+      openKeyboardShortcuts,
+      isExtensionInstalled,
+    };
+  },
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+button {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.not-installed-warning {
+  margin-left: 16px;
+  color: $textSecondaryColor;
+  font-size: 14px;
+}
+</style>

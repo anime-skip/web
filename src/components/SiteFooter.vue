@@ -24,7 +24,7 @@
       <div class="group">
         <h4>Help Center</h4>
         <router-link to="/support">Support</router-link>
-        <a href="mailto:aaron@anime-skip.com?subject=Anime Skip">Contact Us</a>
+        <a href="mailto:support@anime-skip.com?subject=Anime Skip">Contact Us</a>
         <router-link to="/policies/privacy-policy">Privacy Policy</router-link>
       </div>
 
