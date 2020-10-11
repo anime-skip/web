@@ -96,13 +96,16 @@
               class="white"
               :class="{ secondary: isExtensionLoggedIn }"
             >
-              FAQ page
-            </a>
+              FAQ page</a
+            >
             for a summary of each.
           </p>
         </template>
         <template v-if="!isExtensionLoggedIn" v-slot:buttons>
-          <button class="primary" @click="logIntoExtension">Continue</button>
+          <button class="primary" @click="openPopup">Login</button>
+          <button class="transparent outline" @click="logIntoExtension">
+            Skip
+          </button>
         </template>
       </card>
 
@@ -157,7 +160,7 @@ export default defineComponent({
   components: { Card },
   setup() {
     const { isDev } = useEnv();
-    const { sendMockInstallMessage, sendMockLoginMessage } = useExtensionInteraction();
+    const { sendMockInstallMessage, sendMockLoginMessage, openPopup } = useExtensionInteraction();
     const { isExtensionInstalled, isExtensionLoggedIn, logIntoExtension } = useExtensionStatus();
 
     // Browser
@@ -184,6 +187,7 @@ export default defineComponent({
       isDev,
       sendMockInstallMessage,
       sendMockLoginMessage,
+      openPopup,
 
       isChrome,
       isFirefox,
