@@ -17,10 +17,16 @@
         </div>
       </li>
     </ul>
-    <div v-else-if="requestState === RequestState.LOADING">
-      Loading
+    <div v-else-if="requestState === RequestState.LOADING" class="loading">
+      <LoadingIndicator />
     </div>
-    <div v-else>Something went wrong</div>
+    <div v-else class="error">
+      <div>
+        <img src="../assets/ic_error.svg" />
+        <span>Hmm, something went wrong</span>
+      </div>
+      <button class="button primary retry" @click="fetchEpisodes">Retry</button>
+    </div>
   </div>
 </template>
 
@@ -30,9 +36,11 @@ import { RequestState } from '@/utils/enums';
 import { Api } from '@anime-skip/types';
 import { defineComponent, ref } from 'vue';
 import EpisodeUtils from '@/utils/EpisodeUtils';
+import LoadingIndicator from '@/components/LoadingIndicator.vue';
 import TimeUtils from '@/utils/time';
 
 export default defineComponent({
+  components: { LoadingIndicator },
   setup() {
     const requestState = ref(RequestState.LOADING);
     const recentEpisodes = ref<(Api.Episode & { createdAt: number })[]>([]);
@@ -100,7 +108,9 @@ export default defineComponent({
 .RecentEpisodesList {
   width: 100%;
   max-width: 600px;
-  min-height: 300px;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
 
   @media only screen and (min-width: 600px) {
     background-color: $backgroundColor;
@@ -109,8 +119,6 @@ export default defineComponent({
   }
 
   ul {
-    height: 100%;
-
     li {
       display: flex;
       flex-direction: row;
@@ -150,6 +158,31 @@ export default defineComponent({
       .time {
         color: $textDisabledColor;
       }
+    }
+  }
+
+  .loading,
+  .error {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .error {
+    & > div {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      max-width: 75%;
+      img {
+        margin-right: 12px;
+      }
+    }
+
+    .retry {
+      margin-top: 16px;
     }
   }
 }
