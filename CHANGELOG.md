@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.4.0
+
+### Breaking Changes
+
+- None
+
+### Enhancements
+
+- New "Recently Added Episodes" section on the homepage
+- Added diagonals to the homepage to give it more depth and motion
+
+### Fixes
+
+- None
+
 ## v0.3.1
 
 ### Breaking Changes
