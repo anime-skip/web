@@ -17,6 +17,7 @@
         </div>
       </div>
     </header>
+    <img class="section-transition" src="../../assets/dark500_section_bottom.svg" />
     <section class="two" id="learn-more">
       <div class="title">
         <h2>What is Anime Skip?</h2>
@@ -60,6 +61,7 @@
         </p>
       </div>
     </section>
+    <img class="section-transition" src="../../assets/dark400_section_top.svg" />
     <section class="three" id="supported-services">
       <h2>Supported Services</h2>
       <ul class="service-list">
@@ -77,13 +79,25 @@
         Anime Skip is not affiliated with any of these services
       </p>
     </section>
+    <img class="section-transition" src="../../assets/dark400_section_bottom.svg" />
+    <section class="four" id="recently-added">
+      <h2>Recently Added Epiosdes</h2>
+      <RecentEpisodesList class="list" />
+      <p class="label">
+        BetterVRV episodes do not show up on this list. You can view those
+        <a target="_blank" href="http://tuckerchap.in/BetterVRV/">here</a>
+      </p>
+    </section>
+    <img class="section-transition" src="../../assets/dark400_section_top.svg" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import RecentEpisodesList from '../../components/RecentEpisodesList.vue';
 
 export default defineComponent({
+  components: { RecentEpisodesList },
   setup() {
     const scrollToLearnMore = () => {
       document.querySelector('section.two')?.scrollIntoView({ behavior: 'smooth' });
@@ -96,6 +110,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+$transitionHeight: 10vw;
+
 .Home {
   position: relative;
   display: flex;
@@ -110,6 +126,17 @@ export default defineComponent({
   header {
     box-sizing: border-box;
     width: 100%;
+  }
+
+  .section-transition {
+    width: 100%;
+    height: $transitionHeight;
+  }
+
+  .two,
+  .three,
+  .four {
+    padding: 112px 0;
   }
 
   .one {
@@ -204,11 +231,6 @@ export default defineComponent({
     }
   }
 
-  .two,
-  .three {
-    padding: 128px 24px;
-  }
-
   .two {
     max-width: 600px;
     display: grid;
@@ -217,7 +239,6 @@ export default defineComponent({
     grid-template-areas: 'title' 'image' 'benefit' 'benefit' 'benefit' 'benefit';
     gap: 24px;
     grid-gap: 24px;
-    padding-bottom: 0px;
 
     @media only screen and (min-width: $GRID_BREAK_SMALL) {
       max-width: $GRID_BREAK_SMALL;
@@ -293,6 +314,7 @@ export default defineComponent({
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: $dark400;
 
     h2,
     h3 {
@@ -360,6 +382,20 @@ export default defineComponent({
 
     .affiliation {
       margin-top: 64px;
+    }
+  }
+
+  .four {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .list {
+      margin: 48px 0;
+    }
+
+    .label {
+      color: $textDisabledColor;
     }
   }
 }

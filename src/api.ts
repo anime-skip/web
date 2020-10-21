@@ -93,6 +93,30 @@ export class ExtendedApi extends AxiosApi {
     });
     return response.data.allTimestampTypes;
   }
+
+  public async recentlyAddedEpisodes(
+    limit?: number,
+    offset?: number,
+  ): Promise<(Api.Episode & { createdAt: number })[]> {
+    const response = await this.sendUnauthorizedGraphql<
+      'recentlyAddedEpisodes',
+      (Api.Episode & { createdAt: number })[]
+    >({
+      query: `query RecentlyAddedEpisodes($limit: Int, $offset: Int) {
+        recentlyAddedEpisodes(limit: $limit, offset: $offset) {
+          id name season number absoluteNumber createdAt
+          show {
+            name
+          }
+        }
+      }`,
+      variables: {
+        limit,
+        offset,
+      },
+    });
+    return response.data.recentlyAddedEpisodes;
+  }
 }
 
 export default new ExtendedApi();
