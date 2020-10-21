@@ -252,7 +252,6 @@ $transitionHeight: 10vw;
       grid-template-columns: 2fr 1fr 1fr;
       grid-template-rows: repeat(3, auto);
       grid-template-areas: 'image title title' 'image benefit benefit' 'image benefit benefit';
-      padding: 96px 0;
     }
 
     p {
