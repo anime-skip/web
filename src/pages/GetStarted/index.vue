@@ -126,15 +126,12 @@
         </template>
         <template v-slot:buttons>
           <a href="https://discord.gg/9wVhwZg" class="button primary">Join the Discord</a>
-          <router-link class="button transparent outline" to="/#supported-services">
+          <a class="button transparent outline" href="/#supported-services">
             Supported Servces
-          </router-link>
-          <router-link
-            :to="{ path: '/', hash: '#recently-added' }"
-            class="button transparent outline"
-          >
+          </a>
+          <a href="/#recently-added" class="button transparent outline">
             Recently Added Shows
-          </router-link>
+          </a>
         </template>
       </card>
 

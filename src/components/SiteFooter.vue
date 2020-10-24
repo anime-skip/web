@@ -3,16 +3,15 @@
     <div class="column">
       <div class="group">
         <h4>Anime Skip</h4>
-        <a :href="chromeUrl" target="_blank">Chrome Extension</a>
-        <a :href="firefoxUrl" target="_blank">Firefox Addon</a>
-        <div class="space" />
-        <a href="https://discord.gg/9wVhwZg" target="_blank">Join the Discord</a>
         <a
           href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=2GQQVS49AE57W&currency_code=USD&source=url"
           target="_blank"
         >
           Donate via PayPal
         </a>
+        <div class="space" />
+        <a :href="chromeUrl" target="_blank">Chrome Extension</a>
+        <a :href="firefoxUrl" target="_blank">Firefox Addon</a>
       </div>
 
       <div class="group">
@@ -30,8 +29,9 @@
 
       <div class="group">
         <h4>Other Resources</h4>
+        <a href="https://discord.gg/9wVhwZg" target="_blank">Join the Discord</a>
         <a href="http://test.api.anime-skip.com/graphiql" target="_blank">API Playground</a>
-        <router-link :to="{ path: '/', hash: '#recently-added' }">Recent Episodes</router-link>
+        <a href="/#recently-added">Recent Episodes</a>
       </div>
     </div>
   </footer>

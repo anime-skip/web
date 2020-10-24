@@ -7,7 +7,7 @@
           <router-link to="/get-started">getting started guide</router-link> and you've properly
           installed the Anime Skip web extension. Also keep in mind that Anime Skip does not work on
           every streaming service, so make sure you're watching on one of the
-          <router-link to="/#supported-services">supported services</router-link>.
+          <a href="/#supported-services">supported services</a>.
         </p>
         <p>
           In very rare cases, a website update can break how the Anime Skip player replaces the

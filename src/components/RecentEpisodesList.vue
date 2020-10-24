@@ -80,7 +80,6 @@ export default defineComponent({
       /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
       const createdAt = new Date((episode as any).createdAt);
       const msDiff = Math.abs(now - createdAt.getTime());
-      console.log({ msDiff, now, createdAt: createdAt.getTime() });
 
       const weeks = Math.floor(msDiff / TimeUtils.WEEKS);
       if (weeks >= 1) {
