@@ -10,7 +10,7 @@
             <router-link to="/get-started" class="button primary get-started"
               >Get Started</router-link
             >
-            <button to="#learn-more" class="transparent" @click="scrollToLearnMore">
+            <button class="transparent" @click="scrollToLearnMore">
               Learn More
             </button>
           </div>
@@ -19,46 +19,72 @@
     </header>
     <img class="section-transition" src="../../assets/dark500_section_bottom.svg" />
     <section class="two" id="learn-more">
-      <div class="title">
+      <div class="about">
         <h2>What is Anime Skip?</h2>
         <p>
-          Anime Skip is a community managed, timestamp database and custom video player. It uses a
-          web extension to replace the video player of supported services with it’s own.
-        </p>
-      </div>
-      <div class="example">
-        <img src="../../assets/death_note_example.jpg" />
-        <p class="disabled label">Death Note on VRV</p>
-      </div>
-      <div class="first benefit">
-        <h3>Automaticaly Skip Timestamps</h3>
-        <p>
-          You can choose all the stuff you don’t want to watch in your account setttings. This
-          ranges from intros or credits to commercial transitions and recap
-        </p>
-      </div>
-      <div class="benefit">
-        <h3>Advanced Player Controls</h3>
-        <p>
-          Watch episdes at speeds up to x4 and skip betweeen timestamps manually
+          Anime Skip is a
+          <strong>community managed, publicly available timestamp database</strong>.
         </p>
         <p>
-          We’re always looking for your feedback when developing new features!
+          Along with the
+          <a class="white" href="http://test.api.anime-skip.com/graphiql" target="_blank"
+            >publicly available API</a
+          >, Anime Skip provides a feature packed <strong>web extension</strong> that integrates
+          with supported services, meant to make contributing timestamps easy. It also includes
+          playback features that let you <strong>watch shows up to 25% faster</strong> when
+          contributing, and even faster if you're just watching.
         </p>
-      </div>
-      <div class="benefit">
-        <h3>Useful Keyboard Shortcuts</h3>
         <p>
-          The player comes setup with 12 keyboard shortcuts that are fully customizable, and make
-          the player worth, even when there are not timestamps available for an episode.
+          Anime Skip is also integrated with
+          <a target="_blank" href="http://tuckerchap.in/BetterVRV/" class="white">BetterVRV</a>,
+          another timestamp database specifically for VRV, which boasts a library of
+          <strong>over 1400 annotated episodes accross 400 series</strong>, all of which are
+          accessible through the Anime Skip web extension!
         </p>
+        <div class="example">
+          <img src="../../assets/death_note_example.jpg" />
+          <p class="disabled label">Watching Death Note on VRV using the Anime Skip Extension</p>
+        </div>
       </div>
-      <div class="benefit">
-        <h3>Standardized Video Player</h3>
-        <p>
-          With Anime Skip, you get a standardized, beautiful video player that is the same between
-          all services
-        </p>
+      <div class="web-extension">
+        <h2>
+          Web Extension Features
+        </h2>
+        <div class="benefits">
+          <div class="benefit">
+            <img class="icon" src="../../assets/ic_home_benefit_autoskip.svg" />
+            <h3>Auto-skip Timestamps</h3>
+            <p>
+              Don't want to watch intros? You don't have to move a finger
+            </p>
+            <p>
+              Anything you don't want to watch can be automatically skipped
+            </p>
+          </div>
+          <div class="benefit">
+            <img class="icon" src="../../assets/ic_home_benefit_controls.svg" />
+            <h3>Advanced Player Controls</h3>
+            <p>
+              Playback speed up to 4x, advance between timestamps, 4 levels of fast forwards and
+              rewinds
+            </p>
+          </div>
+          <div class="benefit">
+            <img class="icon" src="../../assets/ic_home_benefit_keyboard_shortcuts.svg" />
+            <h3>Custom Keyboard Shortcuts</h3>
+            <p>
+              Over a dozen customizable keyboard shortcuts for advancing, editing and more!
+            </p>
+          </div>
+          <div class="benefit">
+            <img class="icon" src="../../assets/ic_home_benefit_stadard_player.svg" />
+            <h3>Standardized Video Player</h3>
+            <p>
+              Regardless of what service you're watching on, you'll get the same beautiful video
+              player with the same awesome features
+            </p>
+          </div>
+        </div>
       </div>
     </section>
     <img class="section-transition" src="../../assets/dark400_section_top.svg" />
@@ -126,6 +152,8 @@ $transitionHeight: 10vw;
   header {
     box-sizing: border-box;
     width: 100%;
+    padding-left: 24px;
+    padding-right: 24px;
   }
 
   .section-transition {
@@ -136,7 +164,8 @@ $transitionHeight: 10vw;
   .two,
   .three,
   .four {
-    padding: 112px 0;
+    padding-top: 112px;
+    padding-bottom: 112px;
   }
 
   .one {
@@ -232,80 +261,83 @@ $transitionHeight: 10vw;
   }
 
   .two {
-    max-width: 600px;
-    display: grid;
-    grid-template-columns: auto;
-    grid-template-rows: repeat(6, auto);
-    grid-template-areas: 'title' 'image' 'benefit' 'benefit' 'benefit' 'benefit';
-    gap: 24px;
-    grid-gap: 24px;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-    @media only screen and (min-width: $GRID_BREAK_SMALL) {
-      max-width: $GRID_BREAK_SMALL;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: repeat(4, auto);
-      grid-template-areas: 'title title' 'image image' 'benefit benefit' 'benefit benefit';
-    }
-
-    @media only screen and (min-width: $GRID_BREAK_LARGE) {
-      max-width: $GRID_BREAK_LARGE;
-      grid-template-columns: 2fr 1fr 1fr;
-      grid-template-rows: repeat(3, auto);
-      grid-template-areas: 'image title title' 'image benefit benefit' 'image benefit benefit';
+    h2 {
+      text-align: center;
     }
 
     p {
       margin-top: 16px;
     }
 
-    .title {
-      grid-area: title;
-    }
-
-    .example {
+    .about {
       display: flex;
       flex-direction: column;
       align-items: center;
-      grid-area: image;
-      margin-bottom: 16px;
-      margin-top: 24px;
+      max-width: 900px;
 
-      @media only screen and (min-width: $GRID_BREAK_LARGE) {
-        align-self: center;
-        margin: 0;
-        padding-right: 24px;
+      h2 {
+        margin-bottom: 16px;
       }
 
-      img {
-        width: 100%;
-        border-radius: 4px;
-        filter: drop-shadow(0px 6px 12px rgba(0, 0, 0, 0.36));
+      p {
+        margin-bottom: 16px;
+      }
 
-        @media only screen and (min-width: $GRID_BREAK_SMALL) {
-          border-radius: 8px;
+      .example {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 48px;
+        margin-bottom: 64px;
+        max-width: 600px;
+
+        img {
+          width: 100%;
+          border-radius: 4px;
+          filter: drop-shadow(0px 6px 12px rgba(0, 0, 0, 0.36));
+
+          @media only screen and (min-width: $GRID_BREAK_SMALL) {
+            border-radius: 8px;
+          }
         }
-      }
 
-      .label {
-        margin-top: 16px;
+        .label {
+          margin-top: 16px;
+        }
       }
     }
 
-    .benefit {
-      padding-bottom: 24px;
-      border-bottom: 1px solid rgba($color: white, $alpha: 0.12);
-      &.first {
-        @media only screen and (max-width: $GRID_BREAK_SMALL) {
-          padding-top: 24px;
-          border-top: 1px solid rgba($color: white, $alpha: 0.12);
-        }
-      }
+    .benefits {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
 
-      @media only screen and (min-width: $GRID_BREAK_SMALL) {
-        padding: 24px;
-        padding-bottom: 0px;
-        border: none;
-        border-radius: 8px;
+      .benefit {
+        display: flex;
+        flex-direction: column;
+        width: 256px;
+        padding: 16px;
+        margin: 0 auto;
+        text-align: center;
+
+        .icon {
+          width: 48px;
+          height: 48px;
+          padding: 16px;
+          align-self: center;
+        }
+
+        @media only screen and (min-width: $GRID_BREAK_SMALL) {
+          padding: 24px;
+          padding-bottom: 0px;
+          border: none;
+          border-radius: 8px;
+        }
       }
     }
   }
@@ -389,6 +421,14 @@ $transitionHeight: 10vw;
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-left: 0px;
+    padding-right: 0px;
+
+    h2,
+    .label {
+      text-align: center;
+      padding: 0 24px;
+    }
 
     .list {
       margin: 48px 0;
