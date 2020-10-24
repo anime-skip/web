@@ -62,7 +62,7 @@ export default defineComponent({
         timestampTypes.value = result;
       })
       .catch(err => {
-        console.error(err);
+        // TODO: add a failure mode
       });
 
     return {
