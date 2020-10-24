@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.4.1
+
+### Breaking Changes
+
+- None
+
+### Enhancements
+
+- Cleanup mobile experience on the homepage
+- Restructured benefits section and added icons
+
+### Fixes
+
+- Allow IFrames via CSP
+- Links to headings and other sections did not scroll to that section when pressed
+
 ## v0.4.0
 
 ### Breaking Changes
