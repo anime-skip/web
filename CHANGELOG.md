@@ -1,5 +1,19 @@
 # Changelog
 
+## v0.4.2
+
+### Breaking Changes
+
+- None
+
+### Enhancements
+
+- Get started now links to extension store URLs
+
+### Fixes
+
+- None
+
 ## v0.4.1
 
 ### Breaking Changes
