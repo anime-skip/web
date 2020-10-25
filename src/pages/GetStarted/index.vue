@@ -43,9 +43,6 @@
             Google Chrome
           </a>
           <a v-if="isChrome" :href="firefoxUrl" class="button transparent">Firefox</a>
-          <a :href="genericZipUrl" target="_blank" class="button transparent">
-            ZIP
-          </a>
         </template>
       </card>
 
@@ -151,7 +148,7 @@ import useExtensionStatus from '@/composition/extension-status';
 import useExtensionInteraction from '@/composition/extension-interaction';
 import useEnv from '@/composition/env';
 import { useStore } from 'vuex';
-import { CHROME_STORE_URL, FIREFOX_STORE_URL, ZIP_FILE_URL } from '@/utils/constants';
+import { CHROME_STORE_URL, FIREFOX_STORE_URL } from '@/utils/constants';
 
 export default defineComponent({
   components: { Card },
@@ -196,7 +193,6 @@ export default defineComponent({
       logIntoExtension,
 
       currentCard,
-      genericZipUrl: ZIP_FILE_URL,
       chromeUrl: CHROME_STORE_URL,
       firefoxUrl: FIREFOX_STORE_URL,
     };
