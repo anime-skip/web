@@ -1,6 +1,20 @@
 # Changelog
 
-## v0.4.2
+## `v0.4.3`
+
+### Breaking Changes
+
+- None
+
+### Enhancements
+
+- None
+
+### Fixes
+
+- Fix CSP that was blocking recaptcha
+
+## `v0.4.2`
 
 ### Breaking Changes
 
@@ -14,7 +28,7 @@
 
 - None
 
-## v0.4.1
+## `v0.4.1`
 
 ### Breaking Changes
 
@@ -30,7 +44,7 @@
 - Allow IFrames via CSP
 - Links to headings and other sections did not scroll to that section when pressed
 
-## v0.4.0
+## `v0.4.0`
 
 ### Breaking Changes
 
@@ -45,7 +59,7 @@
 
 - None
 
-## v0.3.1
+## `v0.3.1`
 
 ### Breaking Changes
 
@@ -59,7 +73,7 @@
 
 - Changed support emails to <support@anime-skip.com>
 
-## v0.3.0
+## `v0.3.0`
 
 ### Breaking Changes
 
@@ -74,7 +88,7 @@
 
 - Button text color styling
 
-## v0.2.4
+## `v0.2.4`
 
 Initial release that this changelog is tracking
 
