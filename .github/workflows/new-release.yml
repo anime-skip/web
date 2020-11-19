@@ -37,7 +37,7 @@ jobs:
     needs: [verify]
     steps:
       - uses: actions/checkout@v2
-      - uses: olegtarasov/get-tag@v2
+      - uses: little-core-labs/get-git-tag@v3.0.1
         id: tagName
         with:
           tagRegex: 'v(.*)'

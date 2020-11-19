@@ -1,5 +1,33 @@
 # Changelog
 
+## `[Unreleased]`
+
+### Breaking Changes
+
+- None
+
+### Enhancements
+
+- None
+
+### Fixes
+
+- None
+
+## `v0.4.4`
+
+### Breaking Changes
+
+- None
+
+### Enhancements
+
+- None
+
+### Fixes
+
+- Fix CSP that was blocking privacy policy
+
 ## `v0.4.3`
 
 ### Breaking Changes
