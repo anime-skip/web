@@ -9,6 +9,7 @@
       <div class="space" />
 
       <div v-if="isSignedIn" class="right-buttons">
+        <router-link class="link" to="/contributing">Contributing</router-link>
         <router-link class="link" to="/account">Account</router-link>
         <div class="link" @click="logout">Logout</div>
       </div>

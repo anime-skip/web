@@ -22,6 +22,7 @@
 
       <div class="group">
         <h4>Help Center</h4>
+        <router-link to="/contributing">Contributing</router-link>
         <router-link to="/support">Support</router-link>
         <a href="mailto:support@anime-skip.com?subject=Anime Skip">Contact Us</a>
         <router-link to="/policies/privacy-policy">Privacy Policy</router-link>
@@ -31,7 +32,7 @@
         <h4>Other Resources</h4>
         <a href="https://discord.gg/9wVhwZg" target="_blank">Join the Discord</a>
         <a href="http://test.api.anime-skip.com/graphiql" target="_blank">API Playground</a>
-        <a href="/#recently-added">Recent Episodes</a>
+        <a href="http://tuckerchap.in/BetterVRV/">BetterVRV</a>
       </div>
     </div>
   </footer>
