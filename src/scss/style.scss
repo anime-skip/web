@@ -36,6 +36,32 @@ input {
   min-width: 0;
 }
 
+h1 {
+  font-size: 36px;
+  font-weight: 600;
+  color: $textTitleColor;
+}
+
+h2 {
+  font-size: 28px;
+  color: $textTitleColor;
+}
+
+p,
+li {
+  font-family: sans-serif;
+  font-size: 15px;
+  color: $textPrimaryColor;
+  line-height: 22px;
+
+  &.secondary {
+    color: $textSecondaryColor;
+  }
+  &.disabled {
+    color: $textDisabledColor;
+  }
+}
+
 a {
   color: #8e5dd6;
 
@@ -49,6 +75,10 @@ a {
 
 .grecaptcha-badge {
   visibility: hidden;
+}
+
+.error-text {
+  color: $red500;
 }
 
 input[type='submit'],
@@ -77,6 +107,10 @@ button,
   }
   &.dark {
     background-color: #1b2025;
+  }
+  &.error {
+    color: rgba($color: black, $alpha: 0.87);
+    background-color: $red500;
   }
   &.transparent {
     background-color: transparent;

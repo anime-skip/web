@@ -20,7 +20,7 @@
         <img class="input-icon" src="../../assets/ic_account.svg" />
       </template>
     </text-input>
-    <p v-if="usernameErrorMessage" class="error">{{ usernameErrorMessage }}</p>
+    <p v-if="usernameErrorMessage" class="error error-text">{{ usernameErrorMessage }}</p>
 
     <text-input
       v-if="!isSignIn"
@@ -58,7 +58,7 @@
         <img class="input-icon" src="../../assets/ic_password.svg" />
       </template>
     </text-input>
-    <p v-if="passwordErrorMessage" class="error">{{ passwordErrorMessage }}</p>
+    <p v-if="passwordErrorMessage" class="error error-text">{{ passwordErrorMessage }}</p>
 
     <checkbox v-if="!!isSignIn" v-model="rememberMeChecked">Remember me</checkbox>
 
@@ -263,7 +263,6 @@ form {
     font-size: 14px;
     padding: 0 8px;
     margin-bottom: 8px;
-    color: #e57373;
   }
 
   .bottom-row {
