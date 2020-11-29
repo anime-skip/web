@@ -19,7 +19,6 @@ export default defineComponent({
   },
   setup(props) {
     const route = useRoute();
-    console.debug({ hash: route.hash });
     const expanded = ref<boolean>(!!props.id && !!route.hash && route.hash === `#${props.id}`);
     const toggleExpanded = () => {
       expanded.value = !expanded.value;
