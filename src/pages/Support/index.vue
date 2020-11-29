@@ -3,15 +3,15 @@
     <div class="column">
       <h1>Support</h1>
       <p>
-        Anime Skip is a one-man team, so I spend a lot of time each day responding to questions or
-        issues. I will happly respond to any emails about issues or questions you may have, but I'd
-        also like to point out other resouces you can use to answer your question or resolve your
-        issue:
+        Anime Skip is a one-man team, so I expect to be spending a lot of time each day responding
+        to questions or issues after the user base grows. I will happily respond to any emails you
+        send me, but I'd also like to point out other resouces you can use to answer your question
+        or resolve your issue:
       </p>
       <ul>
         <li>
-          <strong>FAQ</strong> - Please check out the frequently asked questions to see if your
-          question has already been answered
+          <strong>FAQ</strong> - Check out the section bloew to see if your question has already
+          been answered
         </li>
         <li>
           <strong><a href="https://discord.gg/9wVhwZg" target="_blank">Discord</a></strong> - Ask
@@ -36,10 +36,7 @@
         </Faq>
       </div>
 
-      <h2 id="editing-best-practices">Editing - Best Practices</h2>
-      <p>
-        This section has not been written yet
-      </p>
+      <div id="contributing"></div>
     </div>
   </div>
   <div class="fill" />
@@ -87,6 +84,7 @@ export default defineComponent({
 
   h1,
   h2,
+  h3,
   p,
   ul {
     margin-bottom: 16px;
@@ -94,13 +92,25 @@ export default defineComponent({
 
   ul {
     margin-top: 24px;
+    &.extra-spacing {
+      li {
+        margin-bottom: 16px;
+      }
+    }
+  }
+  ol ul {
+    margin-top: 0;
+    li {
+      margin-bottom: 4px;
+    }
   }
 
   h2 {
     margin-top: 48px;
   }
 
-  ul {
+  ul,
+  ol {
     margin-left: 24px;
   }
 }

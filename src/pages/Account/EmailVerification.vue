@@ -13,7 +13,7 @@
         <p>
           To verify your account, press the button above. The email address registered with your
           account will recieve an email with instructions to verify your address. If you do not
-          recieve an email within 5 minutes, please check your spam
+          recieve an email within 5 minutes, check your spam folder
         </p>
       </div>
     </div>

@@ -1,6 +1,9 @@
 <template>
   <div>
-    <Faq question="The Anime Skip video player doesn't show up when I go to watch an episode">
+    <Faq
+      id="player-not-showing"
+      question="The Anime Skip video player doesn't show up when I go to watch an episode"
+    >
       <template v-slot:default>
         <p>
           Make sure you've followed the
@@ -17,7 +20,17 @@
       </template>
     </Faq>
 
-    <Faq question="How do I edit keyboard shortcuts?">
+    <Faq id="contributing" question="How do I start contributing?">
+      <template v-slot:default>
+        <p>
+          Head over to the
+          <router-link to="/contributing">contributing guideliens</router-link> for an overview,
+          best practices, and tips and tricks.
+        </p>
+      </template>
+    </Faq>
+
+    <Faq id="edit-keyboard-shortcuts" question="How do I edit keyboard shortcuts?">
       <template v-slot:default>
         <p>
           Keyboard shortcuts are apart of the web extension options. Make sure you have followed the
@@ -49,11 +62,14 @@
       </template>
     </Faq>
 
-    <Faq question="I would like to delete my account, how do I go about doing that?">
+    <Faq
+      id="delete-my-account"
+      question="I would like to delete my account, how do I go about doing that?"
+    >
       <template v-slot:default>
         <p>
           In the future, there will be an option to delete your account from your account settings
-          page. Until then, please fill out
+          page. Until then, fill out and send
           <a
             href="mailto:support@anime-skip.com?subject=Anime Skip - Delete Account&body=My email is _, and my username is _."
             target="_blank"
@@ -65,7 +81,10 @@
       </template>
     </Faq>
 
-    <Faq question="What happens to my account and contributions when I delete my account?">
+    <Faq
+      id="deleted-account-info"
+      question="What happens to my account and contributions when I delete my account?"
+    >
       <template v-slot:default>
         <p>
           Your contributations are not deleted and you're account is wiped of all personal data. No
@@ -76,6 +95,62 @@
           This way we can tell deleted users apart and still provide a robust interface with any
           apps that depend on that data, while respecting your right to your data.
         </p>
+      </template>
+    </Faq>
+
+    <Faq
+      id="web-ext-permissions"
+      question="What permissions does the Anime Skip Player use, and why?"
+    >
+      <template v-slot:default>
+        <div>
+          <p><strong>Host</strong></p>
+          <p>
+            This is used to replace the original serice's video player with Anime Skips.
+          </p>
+          <p>
+            For Chrome, this shows as the "Host" permission. For Firefox, it shows as "Access your
+            data for ____"
+          </p>
+        </div>
+        <div>
+          <p><strong>Storage</strong></p>
+          <p>
+            In order to provide a good user experience, the extension needs access to the browser's
+            storage. An example: whether or not you are logged in is persisted to the extension's
+            local storage so that you don't have to login for every episode.
+          </p>
+          <p>
+            Also worth mentioning, the Anime Skip Player does not create or read cookies.
+          </p>
+        </div>
+        <div>
+          <p><strong>Tabs</strong></p>
+          <p>
+            For some services it's impossible to get the current URL when linking it to an episode.
+            The permission is used to listen for tab URL changes. When a tab's URL changes, if it's
+            for a service Anime Skip supports, the tab is notified what the new URL is.
+          </p>
+          <p>
+            It's unfortunate this is required, and I recogize that how this permission is used could
+            be abused to track user history. Eventually, I plan on open sourcing the web extension
+            so anyone can verify it's not abused, but for now you will just have to trust the
+            Chrome/Firefox extension review processes. They are very strict about permission usage,
+            so you shouldn't worry about this.
+          </p>
+          <p>
+            VRV (and maybe future services) uses HTML5 histroy to navigate their Single Page
+            Application, meaning in iframes that are not from the same origin cannot get the tab's
+            current URL. They can get the URL that the iframe was created at, but when HTML5 history
+            is used to go to another episode, the iframe isn't always destroyed (it's reused with a
+            new tab URL), meaning the method to aforementioned method would return the original URL,
+            not the new one.
+          </p>
+          <p>
+            The "currentTab" permission does not provide enough utility for each tab to be notified
+            when it's URL changes, so that can't be used as a replacement.
+          </p>
+        </div>
       </template>
     </Faq>
   </div>

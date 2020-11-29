@@ -13,18 +13,18 @@
       >
         <template v-slot:message>
           <p :class="{ secondary: isExtensionInstalled }">
-            After installing, reload the page
-          </p>
-          <p :class="{ secondary: isExtensionInstalled }" v-if="false">
-            Anime Skip requires a web extension be installed on your browser before you can use the
-            service. Click
+            Anime Skip Player requires the web extension be installed on your browser before you can
+            use the service. Click
             <a
-              href="/faq#web-ext-permissions"
-              class="white"
+              href="/support#web-ext-permissions"
+              target="_blank"
               :class="{ secondary: isExtensionInstalled }"
               >here</a
             >
             to learn more the permissions it requires.
+          </p>
+          <p :class="{ secondary: isExtensionInstalled }">
+            You may need to reload this page after installing.
           </p>
         </template>
         <template v-slot:buttons>
@@ -46,36 +46,59 @@
         </template>
       </card>
 
-      <card title="Create an account" :done="hasAccount" :selected="currentCard === 2" :number="2">
+      <card
+        title="Create an account"
+        :done="accountStepComplete"
+        :selected="currentCard === 2"
+        :number="2"
+      >
         <template v-slot:message>
-          <ul :class="{ secondary: hasAccount }">
-            <p :class="{ secondary: hasAccount }">
-              You need an account to be able to use some features provided by Anime Skip:
+          <ul :class="{ secondary: accountStepComplete }">
+            <p :class="{ secondary: accountStepComplete }">
+              Without an account, the Anime Skip Player will not let you:
             </p>
             <br />
+            <li>Contributing episodes and timestamps to the community</li>
             <li>Automatic timestamp skipping</li>
-            <li>Playback speed</li>
-            <li>Submitting timestamps for the community</li>
+            <li>Change playback speed</li>
           </ul>
-          <p :class="{ secondary: hasAccount }">
-            Without an account, you will still be able to use the awesome video player.
-          </p>
+          <template v-if="notCreatingAccount && !isLoggedIn">
+            <p class="error-text">
+              If you choose not to create an account, you'll be missing out on the main features
+              that make the player awesome. Those features are disabled as an incentive for users to
+              contribute - contributing is easy to do and the community will reap the benefits of
+              more episodes and timestamps.
+            </p>
+            <p class="error-text">
+              Anime Skip will not send you needless emails and we do not sell you personal data.
+            </p>
+          </template>
         </template>
         <template v-slot:buttons>
           <router-link
+            v-if="!isLoggedIn"
             :to="{ path: '/sign-up', query: { redirect: '/get-started' } }"
             class="button primary"
           >
             Create Account
           </router-link>
-          <button v-if="!hasAccount" class="transparent" @click="setupAccountLater">
-            Setup Account Later
-          </button>
+          <template v-if="!accountStepComplete">
+            <button
+              v-if="notCreatingAccount && !isLoggedIn"
+              class="error"
+              @click="setupAccountLaterForce"
+            >
+              Setup Account Later
+            </button>
+            <button v-else class="transparent outline" @click="setupAccountLater">
+              Skip
+            </button>
+          </template>
         </template>
       </card>
 
       <card
-        title="Log into the extension"
+        title="Log in to the extension"
         :done="isExtensionLoggedIn"
         :selected="currentCard === 3"
         :number="3"
@@ -90,7 +113,7 @@
             the
             <a
               href="/support#timestamp-types"
-              class="white"
+              target="_blank"
               :class="{ secondary: isExtensionLoggedIn }"
             >
               FAQ page</a
@@ -99,7 +122,9 @@
           </p>
         </template>
         <template v-if="!isExtensionLoggedIn" v-slot:buttons>
-          <button class="primary" @click="openPopup">Login</button>
+          <button class="primary" :class="{ disabled: !isExtensionInstalled }" @click="openPopup">
+            Login
+          </button>
           <button class="transparent outline" @click="logIntoExtension">
             Skip
           </button>
@@ -113,12 +138,17 @@
             anime!
           </p>
           <ul>
-            <p><strong>Join the Discord!</strong> There you'll find:</p>
+            <p>Join the Discord! There you'll find:</p>
             <br />
+            <li>Announcements</li>
             <li>Support</li>
             <li>Feature Requests</li>
-            <li>Updates</li>
             <li>Bug reports</li>
+            <br />
+            <p>
+              Since the community is just getting started, it's pretty quiet, but we'd love to have
+              you!
+            </p>
           </ul>
         </template>
         <template v-slot:buttons>
@@ -164,15 +194,20 @@ export default defineComponent({
 
     // Card Checks
     const store = useStore();
-    const hasAccount = ref<boolean>(store.getters.IS_SIGNED_IN);
+    const isLoggedIn = computed<boolean>(() => store.getters.IS_SIGNED_IN);
+    const accountStepComplete = ref<boolean>(store.getters.IS_SIGNED_IN);
+    const notCreatingAccount = ref<boolean>(false);
     const setupAccountLater = () => {
-      hasAccount.value = true;
+      notCreatingAccount.value = true;
+    };
+    const setupAccountLaterForce = () => {
+      accountStepComplete.value = true;
     };
 
     // Selected Card
     const currentCard = computed<number>(() => {
       if (!isExtensionInstalled.value) return 1;
-      if (!hasAccount.value) return 2;
+      if (!accountStepComplete.value) return 2;
       if (!isExtensionLoggedIn.value) return 3;
       return 4;
     });
@@ -187,8 +222,11 @@ export default defineComponent({
       isFirefox,
 
       isExtensionInstalled,
-      hasAccount,
+      isLoggedIn,
+      accountStepComplete,
+      notCreatingAccount,
       setupAccountLater,
+      setupAccountLaterForce,
       isExtensionLoggedIn,
       logIntoExtension,
 
@@ -243,7 +281,7 @@ export default defineComponent({
   }
 
   .transparent {
-    color: $textDisabledColor;
+    color: $textSecondaryColor;
   }
 
   .alpha-testers {

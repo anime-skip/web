@@ -18,47 +18,43 @@
       </div>
     </header>
     <img class="section-transition" src="../../assets/dark500_section_bottom.svg" />
-    <section class="two" id="learn-more">
-      <div class="about">
+    <section class="two">
+      <div class="about" id="about">
         <h2>What is Anime Skip?</h2>
         <p>
-          Anime Skip is a
-          <strong>community managed, publicly available timestamp database</strong>.
+          Anime Skip is a community managed timestamp database, with a
+          <a href="http://test.api.anime-skip.com/graphiql" target="_blank">public API</a>
+          for devlopers to use.
         </p>
         <p>
-          Along with the
-          <a class="white" href="http://test.api.anime-skip.com/graphiql" target="_blank"
-            >publicly available API</a
-          >, Anime Skip provides a feature packed <strong>web extension</strong> that integrates
-          with supported services, meant to make contributing timestamps easy. It also includes
-          playback features that let you <strong>watch shows up to 25% faster</strong> when
-          contributing, and even faster if you're just watching.
+          Anime Skip is integrated with
+          <a target="_blank" href="http://tuckerchap.in/BetterVRV/">BetterVRV</a>, another timestamp
+          database specifically for VRV, which boasts a library of
+          <strong>over 1400 annotated episodes accross 400 series</strong>.
         </p>
+      </div>
+      <div id="anime-skip-player">
+        <h2>
+          Anime Skip Player
+        </h2>
         <p>
-          Anime Skip is also integrated with
-          <a target="_blank" href="http://tuckerchap.in/BetterVRV/" class="white">BetterVRV</a>,
-          another timestamp database specifically for VRV, which boasts a library of
-          <strong>over 1400 annotated episodes accross 400 series</strong>, all of which are
-          accessible through the Anime Skip web extension!
+          The Anime Skip Player is a web extension that makes watching anime and contributing
+          timestamps easy! For
+          <router-link to="#supported-services">supported services</router-link>, it replaces the
+          video player with it's own, adding playback features that let you
+          <strong>passively watch anime up to 25% faster</strong>.
         </p>
         <div class="example">
           <img src="../../assets/death_note_example.jpg" />
-          <p class="disabled label">Watching Death Note on VRV using the Anime Skip Extension</p>
+          <p class="disabled label">Watching Death Note on VRV using the Anime Skip Player</p>
         </div>
-      </div>
-      <div class="web-extension">
-        <h2>
-          Web Extension Features
-        </h2>
-        <div class="benefits">
+        <div id="benefits">
           <div class="benefit">
             <img class="icon" src="../../assets/ic_home_benefit_autoskip.svg" />
             <h3>Auto-skip Timestamps</h3>
             <p>
-              Don't want to watch intros? You don't have to move a finger
-            </p>
-            <p>
-              Anything you don't want to watch can be automatically skipped
+              Don't want to watch intros? You don't have to move a finger. Anything you don't want
+              to watch is automatically skipped
             </p>
           </div>
           <div class="benefit">
@@ -73,15 +69,15 @@
             <img class="icon" src="../../assets/ic_home_benefit_keyboard_shortcuts.svg" />
             <h3>Custom Keyboard Shortcuts</h3>
             <p>
-              Over a dozen customizable keyboard shortcuts for advancing, editing and more!
+              Over a dozen customizable keyboard shortcuts for advancing, contributing, and more!
             </p>
           </div>
           <div class="benefit">
             <img class="icon" src="../../assets/ic_home_benefit_stadard_player.svg" />
             <h3>Standardized Video Player</h3>
             <p>
-              Regardless of what service you're watching on, you'll get the same beautiful video
-              player with the same awesome features
+              Regardless of where you're watching anime, you'll get the same, beautiful video player
+              with the same, awesome features
             </p>
           </div>
         </div>
@@ -94,7 +90,7 @@
         <li class="vrv">VRV</li>
         <li class="funimation">Funimation Now</li>
       </ul>
-      <h3>Coming Soon</h3>
+      <h3>In the Future</h3>
       <ul class="service-list">
         <li class="netflix">NETFLIX</li>
         <li class="crunchyroll">crunchyroll</li>
@@ -274,7 +270,7 @@ $transitionHeight: 10vw;
       margin-top: 16px;
     }
 
-    .about {
+    #about {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -287,13 +283,21 @@ $transitionHeight: 10vw;
       p {
         margin-bottom: 16px;
       }
+    }
+
+    #anime-skip-player {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 900px;
+      margin-top: 64px;
 
       .example {
         display: flex;
         flex-direction: column;
         align-items: center;
         margin-top: 48px;
-        margin-bottom: 64px;
+        margin-bottom: 16px;
         max-width: 600px;
 
         img {
@@ -310,33 +314,33 @@ $transitionHeight: 10vw;
           margin-top: 16px;
         }
       }
-    }
 
-    .benefits {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-
-      .benefit {
+      #benefits {
         display: flex;
-        flex-direction: column;
-        width: 256px;
-        padding: 16px;
-        margin: 0 auto;
-        text-align: center;
+        flex-direction: row;
+        flex-wrap: wrap;
 
-        .icon {
-          width: 48px;
-          height: 48px;
+        .benefit {
+          display: flex;
+          flex-direction: column;
+          width: 256px;
           padding: 16px;
-          align-self: center;
-        }
+          margin: 0 auto;
+          text-align: center;
 
-        @media only screen and (min-width: $GRID_BREAK_SMALL) {
-          padding: 24px;
-          padding-bottom: 0px;
-          border: none;
-          border-radius: 8px;
+          .icon {
+            width: 48px;
+            height: 48px;
+            padding: 16px;
+            align-self: center;
+          }
+
+          @media only screen and (min-width: $GRID_BREAK_SMALL) {
+            padding: 24px;
+            padding-bottom: 0px;
+            border: none;
+            border-radius: 8px;
+          }
         }
       }
     }

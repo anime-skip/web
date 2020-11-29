@@ -19,6 +19,10 @@ const routes: RouteRecordRaw[] = [
     path: '/support',
     component: () => import(/* webpackChunkName: "support" */ './pages/Support/index.vue'),
   },
+  {
+    path: '/contributing',
+    component: () => import(/* webpackChunkName: "contributing" */ './pages/Contributing.vue'),
+  },
 
   {
     path: '/account',

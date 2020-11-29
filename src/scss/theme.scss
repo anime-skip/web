@@ -4,7 +4,7 @@ $primary700: #018eca;
 $secondary500: #8e5dd6;
 $secondary700: #804ec9;
 
-$red500: #d32f2f;
+$red500: #cf6679;
 
 $backgroundColor: #282f37;
 $dark400: #1b2025;
@@ -30,29 +30,3 @@ $overpassFontFamily: 'Overpass', sans-serif;
 
 $GRID_BREAK_SMALL: 720px;
 $GRID_BREAK_LARGE: 1440px;
-
-h1 {
-  font-size: 36px;
-  font-weight: 600;
-  color: $textTitleColor;
-}
-
-h2 {
-  font-size: 28px;
-  color: $textTitleColor;
-}
-
-p,
-li {
-  font-family: sans-serif;
-  font-size: 15px;
-  color: $textPrimaryColor;
-  line-height: 22px;
-
-  &.secondary {
-    color: $textSecondaryColor;
-  }
-  &.disabled {
-    color: $textDisabledColor;
-  }
-}

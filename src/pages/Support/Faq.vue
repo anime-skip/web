@@ -1,5 +1,5 @@
 <template>
-  <div class="FAQ" :class="{ expanded }">
+  <div class="FAQ" :id="id" :class="{ expanded }">
     <img src="../../assets/ic_chevron_down.svg" alt="expand" @click="toggleExpanded" />
     <div class="right">
       <h3 @click="toggleExpanded">{{ question }}</h3>
@@ -10,13 +10,16 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
+import { useRoute } from 'vue-router';
 
 export default defineComponent({
   props: {
     question: { type: String, required: true },
+    id: { type: String, required: false },
   },
-  setup() {
-    const expanded = ref<boolean>(false);
+  setup(props) {
+    const route = useRoute();
+    const expanded = ref<boolean>(!!props.id && !!route.hash && route.hash === `#${props.id}`);
     const toggleExpanded = () => {
       expanded.value = !expanded.value;
     };
