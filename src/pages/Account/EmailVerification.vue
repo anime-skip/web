@@ -1,20 +1,22 @@
 <template>
   <div class="EmailVerification">
     <h2>Email Address Verification</h2>
-    <p class="beta-message">
-      During the beta, Anime Skip does not require your email address be validated before using the
-      service. Once the beta is finished, your email address will need to be verified
+    <p class="beta-message error-text">
+      During the beta, Anime Skip will not send out a verification email, nor does it require your
+      email address be validated before contributing. Once the beta is finished, your email address
+      will need to be verified. You will do that here.
     </p>
+    <p class="beta-message error-text"></p>
     <div class="status">
       <p v-if="isEmailVerified">Your email address is verified!</p>
       <div v-else class="not-verified">
         <h4><strong>Your email address is not verified</strong></h4>
-        <button class="disabled" disabled>Verify Email</button>
+        <button class="disabled" disabled>Verify Account</button>
         <p>
           To verify your account, press the button above. The email address registered with your
-          account will recieve an email with instructions to verify your address. If you do not
-          recieve an email within 5 minutes, check your spam folder
+          account will recieve an email with instructions to verify your account.
         </p>
+        <p>If you do not recieve an email within 5 minutes, check your spam folder.</p>
       </div>
     </div>
   </div>
@@ -45,6 +47,10 @@ export default defineComponent({
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    p {
+      align-self: stretch;
+    }
 
     * {
       margin-bottom: 16px;
