@@ -1,7 +1,7 @@
 <template>
-  <div class="Contributing Guideliens">
+  <div class="Contributing">
     <div class="column">
-      <h1>Contributing</h1>
+      <h1>Contributing Guidelines</h1>
       <p>
         Contributing an episode to anime skip consists of two parts:
       </p>
