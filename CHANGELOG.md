@@ -10,6 +10,32 @@
 
 - None
 
+## `v0.5.1`
+
+### Breaking Changes
+
+- None
+
+### Enhancements
+
+- None
+
+### Fixes
+
+- Wording updates
+
+## `v0.5.0`
+
+### Breaking Changes
+
+- None
+
+### Enhancements
+
+- Restructure home page
+- Add contribution guidelines
+- Add warning if the user gets started without an account
+
 ### Fixes
 
 - None
