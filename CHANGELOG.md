@@ -10,6 +10,24 @@
 
 - None
 
+### Fixes
+
+- None
+
+## `0.5.2`
+
+### Breaking Changes
+
+- None
+
+### Enhancements
+
+- None
+
+### Fixes
+
+- Fixed default text size on Macs to be the regular text size
+
 ## `v0.5.1`
 
 ### Breaking Changes
