@@ -60,7 +60,9 @@
     </text-input>
     <p v-if="passwordErrorMessage" class="error error-text">{{ passwordErrorMessage }}</p>
 
-    <checkbox v-if="!!isSignIn" v-model="rememberMeChecked">Remember me</checkbox>
+    <checkbox v-if="!!isSignIn" v-model="rememberMeChecked"
+      ><p class="secondary">Remember me</p></checkbox
+    >
 
     <div class="bottom-row">
       <input

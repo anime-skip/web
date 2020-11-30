@@ -36,7 +36,7 @@ export default defineComponent({
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 8px;
+  padding: 8px 12px;
   align-self: flex-start;
   border-radius: 4px;
   transition: background-color 200ms;
