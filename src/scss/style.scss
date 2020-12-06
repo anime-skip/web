@@ -2,7 +2,7 @@
 
 html,
 body {
-  height: 100%;
+  min-height: 100%;
 }
 
 * {
@@ -85,6 +85,10 @@ input[type='submit'],
 a.button,
 button,
 .button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
   display: inline-block;
   font-family: $overpassFontFamily;
   background-color: #009ce4;

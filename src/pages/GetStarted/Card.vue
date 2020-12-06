@@ -96,6 +96,11 @@ export default defineComponent({
   }
 
   .buttons {
+    display: flex;
+    flex-direction: row;
+    row-gap: 8px;
+    gap: 8px;
+    flex-wrap: wrap;
     & > * {
       margin-right: 24px;
     }

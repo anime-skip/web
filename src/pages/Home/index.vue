@@ -185,11 +185,12 @@ $transitionHeight: 10vw;
       grid-template-columns: auto;
       grid-template-rows: repeat(4, auto);
       grid-template-areas: 'title' 'logo' 'subtitle' 'buttons';
-      padding: 0 48px;
+      padding: 24px;
       text-align: center;
       gap: 24px;
       grid-gap: 24px;
       justify-items: flex-start;
+      margin-bottom: $navBarHeight;
 
       @media only screen and (min-width: $GRID_BREAK_SMALL) {
         margin-right: 0;
@@ -202,6 +203,7 @@ $transitionHeight: 10vw;
         column-gap: 24px;
         grid-column-gap: 24px;
         text-align: unset;
+        padding: 0 48px;
       }
 
       h1 {
@@ -217,7 +219,7 @@ $transitionHeight: 10vw;
 
       img {
         width: 30%;
-        min-width: 172px;
+        min-width: 124px;
         justify-self: center;
         grid-area: logo;
 
@@ -312,6 +314,7 @@ $transitionHeight: 10vw;
 
         .label {
           margin-top: 16px;
+          text-align: center;
         }
       }
 
@@ -417,6 +420,7 @@ $transitionHeight: 10vw;
     }
 
     .affiliation {
+      text-align: center;
       margin-top: 64px;
     }
   }
