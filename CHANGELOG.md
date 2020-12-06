@@ -2,17 +2,11 @@
 
 ## `[Unreleased]`
 
-### Breaking Changes
-
-- None
-
-### Enhancements
-
-- iOS mobile layouts fixed, it looked like everything had an absolute position? Weird
+## `v0.5.4`
 
 ### Fixes
 
-- None
+- Account screen fixed
 
 ## `v0.5.3`
 
