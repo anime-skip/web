@@ -9,7 +9,7 @@
       <div class="space" />
 
       <div v-if="isSignedIn" class="right-buttons">
-        <router-link class="link" to="/contributing">Contributing</router-link>
+        <!-- <router-link class="link" to="/contributing">Contributing</router-link> -->
         <router-link class="link" to="/account">Account</router-link>
         <div class="link" @click="logout">Logout</div>
       </div>
@@ -42,7 +42,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 #NavBar {
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   right: 0;
@@ -59,7 +59,10 @@ export default defineComponent({
     width: 100%;
     height: $navBarHeight;
     box-sizing: border-box;
-    padding: 0 24px;
+    padding: 0 8px;
+    @media only screen and (min-width: $GRID_BREAK_SMALL) {
+      padding: 0 24px;
+    }
   }
 
   h1 {
@@ -77,14 +80,19 @@ export default defineComponent({
     flex-direction: row;
     align-items: center;
     text-decoration: none;
-    padding-left: 8px;
-    padding-right: 6px;
     margin: 0 8px;
+    padding-left: 2px;
+    padding-right: 2px;
     transition: 200ms;
     border-top: 2px solid transparent;
     border-bottom: 2px solid transparent;
     font-family: $overpassFontFamily;
     cursor: pointer;
+    text-align: center;
+    @media only screen and (min-width: $GRID_BREAK_SMALL) {
+      padding-left: 8px;
+      padding-right: 6px;
+    }
 
     &,
     * {

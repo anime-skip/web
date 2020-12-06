@@ -13,6 +13,7 @@
   padding: 24px;
 
   .recaptcha {
+    text-align: center;
     color: rgba(255, 255, 255, 0.48);
 
     * {

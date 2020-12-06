@@ -1,11 +1,7 @@
 <template>
-  <div id="app">
-    <NavBar />
-    <div class="child">
-      <router-view />
-      <SiteFooter />
-    </div>
-  </div>
+  <NavBar />
+  <router-view class="child" />
+  <SiteFooter />
 </template>
 
 <script lang="ts">
@@ -21,17 +17,12 @@ export default defineComponent({
 <style lang="scss">
 #app {
   height: 100%;
-  position: relative;
 
   .child {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: $navBarHeight;
-    bottom: 0;
+    margin-top: $navBarHeight;
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
+    flex: 1;
   }
 }
 </style>
