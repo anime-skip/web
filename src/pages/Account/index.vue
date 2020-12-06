@@ -75,9 +75,9 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .Account {
-  flex: 1;
   width: 100%;
   max-width: 900px;
+  min-height: 90vh;
   align-self: center;
   padding: 24px;
   box-sizing: border-box;

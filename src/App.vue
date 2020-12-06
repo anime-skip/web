@@ -1,6 +1,8 @@
 <template>
   <NavBar />
-  <router-view class="child" />
+  <div class="child">
+    <router-view />
+  </div>
   <SiteFooter />
 </template>
 
