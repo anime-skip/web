@@ -8,13 +8,19 @@
 
 ### Enhancements
 
-- None
+- iOS mobile layouts fixed, it looked like everything had an absolute position? Weird
 
 ### Fixes
 
 - None
 
-## `0.5.2`
+## `v0.5.3`
+
+### Fixes
+
+- iOS mobile layouts fixed, it looked like everything had an absolute position? Weird
+
+## `v0.5.2`
 
 ### Breaking Changes
 
