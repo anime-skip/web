@@ -122,7 +122,7 @@
           </p>
         </template>
         <template v-if="!isExtensionLoggedIn" v-slot:buttons>
-          <button class="primary" :class="{ disabled: !isExtensionInstalled }" @click="openPopup">
+          <button class="primary" :class="{ disabled: !isExtensionInstalled }" @click="openLogin">
             Login
           </button>
           <button class="transparent outline" @click="logIntoExtension">
@@ -184,7 +184,7 @@ export default defineComponent({
   components: { Card },
   setup() {
     const { isDev } = useEnv();
-    const { sendMockInstallMessage, sendMockLoginMessage, openPopup } = useExtensionInteraction();
+    const { sendMockInstallMessage, sendMockLoginMessage, openLogin } = useExtensionInteraction();
     const { isExtensionInstalled, isExtensionLoggedIn, logIntoExtension } = useExtensionStatus();
 
     // Browser
@@ -216,7 +216,7 @@ export default defineComponent({
       isDev,
       sendMockInstallMessage,
       sendMockLoginMessage,
-      openPopup,
+      openLogin,
 
       isChrome,
       isFirefox,
