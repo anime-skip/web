@@ -1,12 +1,12 @@
 export default function useExtensionInteraction() {
-  const openPopup = () => {
+  const openLogin = () => {
     const event = document.createEvent('Event');
-    event.initEvent('@anime-skip/open-popup');
+    event.initEvent('@anime-skip/open-login');
     document.dispatchEvent(event);
   };
-  const openKeyboardShortcuts = () => {
+  const openPlayerSettings = () => {
     const event = document.createEvent('Event');
-    event.initEvent('@anime-skip/open-options');
+    event.initEvent('@anime-skip/open-all-settings');
     document.dispatchEvent(event);
   };
 
@@ -14,8 +14,8 @@ export default function useExtensionInteraction() {
   const sendMockLoginMessage = () => window.postMessage('@anime-skip/login-check', '*');
 
   return {
-    openPopup,
-    openKeyboardShortcuts,
+    openLogin,
+    openPlayerSettings,
     sendMockInstallMessage,
     sendMockLoginMessage,
   };

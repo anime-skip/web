@@ -33,7 +33,7 @@
     <Faq id="edit-keyboard-shortcuts" question="How do I edit keyboard shortcuts?">
       <template v-slot:default>
         <p>
-          Keyboard shortcuts are apart of the web extension options. Make sure you have followed the
+          Keyboard shortcuts are apart of the web extension. Make sure you have followed the
           <router-link to="/get-started">getting started guide</router-link> and installed the web
           extension.
         </p>
@@ -41,7 +41,7 @@
           <button
             class="primary"
             :class="{ disabled: !isExtensionInstalled }"
-            @click="openKeyboardShortcuts"
+            @click="openPlayerSettings"
           >
             Edit Keyboard Shortcuts
           </button>
@@ -50,9 +50,9 @@
           >
         </span>
         <p>
-          <strong>If you have an account</strong> and are signed in, there are three ways to edit
-          them: a button in the extension's popup, in the player's settings when watching an
-          episode, or from you're <router-link to="/account">account settings</router-link>.
+          <strong>If you have an account</strong> and are signed in, there are two ways to edit
+          them: the "All Settings" button in the extension's popup or on the video player, or from
+          you're <router-link to="/account">account settings</router-link>.
         </p>
         <p>
           <strong>If you don't have an account</strong>, you can still customize your keyboard
@@ -166,9 +166,9 @@ export default defineComponent({
   components: { Faq },
   setup() {
     const { isExtensionInstalled } = useExtensionStatus();
-    const { openKeyboardShortcuts } = useExtensionInteraction();
+    const { openPlayerSettings } = useExtensionInteraction();
     return {
-      openKeyboardShortcuts,
+      openPlayerSettings,
       isExtensionInstalled,
     };
   },

@@ -16,12 +16,8 @@
         <div
           class="nav-item"
           :class="{ disabled: !isExtensionInstalled }"
-          @click="openKeyboardShortcuts"
+          @click="openPlayerSettings"
         >
-          <span>Keyboard Shortcuts</span>
-          <img src="../../assets/ic_chevron_right.svg" />
-        </div>
-        <div class="nav-item" :class="{ disabled: !isExtensionInstalled }" @click="openPopup">
           <span>Player Settings</span>
           <img src="../../assets/ic_chevron_right.svg" />
         </div>
@@ -52,7 +48,7 @@ export default defineComponent({
   setup() {
     const { isDev } = useEnv();
     const { isExtensionInstalled } = useExtensionStatus();
-    const { openPopup, openKeyboardShortcuts, sendMockInstallMessage } = useExtensionInteraction();
+    const { openPlayerSettings, sendMockInstallMessage } = useExtensionInteraction();
 
     const extensionInstalledIcon = computed(() =>
       isExtensionInstalled.value ? icCheckmarkBlue : icXRed,
@@ -65,8 +61,7 @@ export default defineComponent({
       isExtensionInstalled,
       extensionInstalledIcon,
       extensionInstalledTitle,
-      openPopup,
-      openKeyboardShortcuts,
+      openPlayerSettings,
       sendMockInstallMessage,
     };
   },
