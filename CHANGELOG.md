@@ -2,6 +2,12 @@
 
 ## `[Unreleased]`
 
+## `0.5.5`
+
+### Fixes
+
+- Interactions with extension v1.1 was not working because of new "All Settings" options page
+
 ## `v0.5.4`
 
 ### Fixes
