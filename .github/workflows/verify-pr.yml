@@ -5,8 +5,8 @@ on:
       - main
 
 jobs:
-  verify:
-    name: Install Dependencies
+  checks:
+    name: Run Checks
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/setup-node@v1
