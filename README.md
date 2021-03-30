@@ -6,30 +6,35 @@ It uses [Vue 3](https://v3.vuejs.org/guide/introduction.html) (object syntax) as
 
 ## Project setup
 
-Standard vue project setup. See the [Vue 3 getting started page](https://v3.vuejs.org/guide/introduction.html) for more info.
+### Setup Access to `@anime-skip/*` Libraries
+
+Follow [this guide](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token) to setup a personal access token in GitHub, then generate your yarn settings in your home directory. Make sure to use your PAT for the `npmAuthToken` field:
 
 ```bash
+echo "npmRegistries:
+  //npm.pkg.github.com:
+    npmAlwaysAuth: true
+    npmAuthToken: <personal-access-token>
+" > ~/.yarnrc.yml
+```
+
+### Running the App
+
+```bash
+# Install dependencies
 yarn install
-# Run webpack and hot-reloader
+
+# Start the app at :3000
 yarn start
 
-# Build a /dist directory for production
+# Build `dist/` folder
 yarn build
-# Lint the project
-yarn lint
 ```
 
-### Running Tests
+<br />
 
-Right now, there are no unit or end to end tests.
+## IDE Setup
 
-```
-yarn test:unit
-yarn test:e2e
-```
+All IDEs are supported, but I (Aaron) use VS Code. Make sure to install [Vetur](https://marketplace.visualstudio.com/items?itemName=octref.vetur), [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint), [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) plug-ins. A [spell checker](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker) is also recommended.
 
-### IDE Setup
-
-All IDEs are supported, but I (Aaron) use VS Code. Make sure to install the [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) and [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) plug-ins. A spell checker is also recommended.
-
-This repo does have some shared vscode settings to make development easier.
+This repo has some shared vscode settings to make development easier.
