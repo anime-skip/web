@@ -1,10 +1,12 @@
 <template>
-  <div class="NotFound">
-    <div class="centered">
-      <h1>404</h1>
-      <p>The page you're looking for doesn't exist</p>
+  <NavAndFooterLayout>
+    <div class="NotFound">
+      <div class="centered">
+        <h1>404</h1>
+        <p>The page you're looking for doesn't exist</p>
+      </div>
     </div>
-  </div>
+  </NavAndFooterLayout>
 </template>
 
 <style lang="scss" scoped>

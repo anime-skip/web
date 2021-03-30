@@ -1,113 +1,115 @@
 <template>
-  <div class="Home">
-    <header class="one">
-      <div class="background">
-        <div class="grid">
-          <h1>Anime Skip</h1>
-          <img src="../../assets/logo.svg" />
-          <p>Skip timestamps and watch anime faster than ever before</p>
-          <div class="buttons">
-            <router-link to="/get-started" class="button primary get-started">
-              Get Started
-            </router-link>
-            <button class="transparent" @click="scrollToLearnMore">Learn More</button>
+  <NavAndFooterLayout>
+    <div class="Home">
+      <header class="one">
+        <div class="background">
+          <div class="grid">
+            <h1>Anime Skip</h1>
+            <img src="../../assets/logo.svg" />
+            <p>Skip timestamps and watch anime faster than ever before</p>
+            <div class="buttons">
+              <router-link to="/get-started" class="button primary get-started">
+                Get Started
+              </router-link>
+              <button class="transparent" @click="scrollToLearnMore">Learn More</button>
+            </div>
           </div>
         </div>
-      </div>
-    </header>
-    <img class="section-transition" src="../../assets/dark500_section_bottom.svg" />
-    <section class="two">
-      <div id="about" class="about">
-        <h2>What is Anime Skip?</h2>
-        <p>
-          Anime Skip is a community managed timestamp database, with a
-          <a href="http://test.api.anime-skip.com/graphiql" target="_blank">public API</a>
-          for devlopers to use.
-        </p>
-        <p>
-          Anime Skip is integrated with
-          <a target="_blank" href="http://tuckerchap.in/BetterVRV/">BetterVRV</a>, another timestamp
-          database specifically for VRV, which boasts a library of
-          <strong>over 1400 annotated episodes accross 400 series</strong>.
-        </p>
-      </div>
-      <div id="anime-skip-player">
-        <h2>Anime Skip Player</h2>
-        <p>
-          The Anime Skip Player is a web extension that makes watching anime and contributing
-          timestamps easy! For
-          <router-link to="#supported-services">supported services</router-link>, it replaces the
-          video player with it's own, adding playback features that let you
-          <strong>passively watch anime up to 25% faster</strong>.
-        </p>
-        <div class="example">
-          <img src="../../assets/death_note_example.jpg" />
-          <p class="disabled label">Watching Death Note on VRV using the Anime Skip Player</p>
+      </header>
+      <img class="section-transition" src="../../assets/dark500_section_bottom.svg" />
+      <section class="two">
+        <div id="about" class="about">
+          <h2>What is Anime Skip?</h2>
+          <p>
+            Anime Skip is a community managed timestamp database, with a
+            <a href="http://test.api.anime-skip.com/graphiql" target="_blank">public API</a>
+            for devlopers to use.
+          </p>
+          <p>
+            Anime Skip is integrated with
+            <a target="_blank" href="http://tuckerchap.in/BetterVRV/">BetterVRV</a>, another
+            timestamp database specifically for VRV, which boasts a library of
+            <strong>over 1400 annotated episodes accross 400 series</strong>.
+          </p>
         </div>
-        <div id="benefits">
-          <div class="benefit">
-            <img class="icon" src="../../assets/ic_home_benefit_autoskip.svg" />
-            <h3>Auto-skip Timestamps</h3>
-            <p>
-              Don't want to watch intros? You don't have to move a finger. Anything you don't want
-              to watch is automatically skipped
-            </p>
+        <div id="anime-skip-player">
+          <h2>Anime Skip Player</h2>
+          <p>
+            The Anime Skip Player is a web extension that makes watching anime and contributing
+            timestamps easy! For
+            <router-link to="#supported-services">supported services</router-link>, it replaces the
+            video player with it's own, adding playback features that let you
+            <strong>passively watch anime up to 25% faster</strong>.
+          </p>
+          <div class="example">
+            <img src="../../assets/death_note_example.jpg" />
+            <p class="disabled label">Watching Death Note on VRV using the Anime Skip Player</p>
           </div>
-          <div class="benefit">
-            <img class="icon" src="../../assets/ic_home_benefit_controls.svg" />
-            <h3>Advanced Player Controls</h3>
-            <p>
-              Playback speed up to 4x, advance between timestamps, 4 levels of fast forwards and
-              rewinds
-            </p>
-          </div>
-          <div class="benefit">
-            <img class="icon" src="../../assets/ic_home_benefit_keyboard_shortcuts.svg" />
-            <h3>Custom Keyboard Shortcuts</h3>
-            <p>
-              Over a dozen customizable keyboard shortcuts for advancing, contributing, and more!
-            </p>
-          </div>
-          <div class="benefit">
-            <img class="icon" src="../../assets/ic_home_benefit_stadard_player.svg" />
-            <h3>Standardized Video Player</h3>
-            <p>
-              Regardless of where you're watching anime, you'll get the same, beautiful video player
-              with the same, awesome features
-            </p>
+          <div id="benefits">
+            <div class="benefit">
+              <img class="icon" src="../../assets/ic_home_benefit_autoskip.svg" />
+              <h3>Auto-skip Timestamps</h3>
+              <p>
+                Don't want to watch intros? You don't have to move a finger. Anything you don't want
+                to watch is automatically skipped
+              </p>
+            </div>
+            <div class="benefit">
+              <img class="icon" src="../../assets/ic_home_benefit_controls.svg" />
+              <h3>Advanced Player Controls</h3>
+              <p>
+                Playback speed up to 4x, advance between timestamps, 4 levels of fast forwards and
+                rewinds
+              </p>
+            </div>
+            <div class="benefit">
+              <img class="icon" src="../../assets/ic_home_benefit_keyboard_shortcuts.svg" />
+              <h3>Custom Keyboard Shortcuts</h3>
+              <p>
+                Over a dozen customizable keyboard shortcuts for advancing, contributing, and more!
+              </p>
+            </div>
+            <div class="benefit">
+              <img class="icon" src="../../assets/ic_home_benefit_stadard_player.svg" />
+              <h3>Standardized Video Player</h3>
+              <p>
+                Regardless of where you're watching anime, you'll get the same, beautiful video
+                player with the same, awesome features
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
-    <img class="section-transition" src="../../assets/dark400_section_top.svg" />
-    <section id="supported-services" class="three">
-      <h2>Supported Services</h2>
-      <ul class="service-list">
-        <li class="vrv">VRV</li>
-        <li class="funimation">Funimation Now</li>
-      </ul>
-      <h3>In the Future</h3>
-      <ul class="service-list">
-        <li class="netflix">NETFLIX</li>
-        <li class="crunchyroll">crunchyroll</li>
-        <li class="hulu">hulu</li>
-        <li class="prime">Amazon Prime Video</li>
-      </ul>
-      <p class="affiliation label disabled">
-        Anime Skip is not affiliated with any of these services
-      </p>
-    </section>
-    <img class="section-transition" src="../../assets/dark400_section_bottom.svg" />
-    <section id="recently-added" class="four">
-      <h2>Recently Added Epiosdes</h2>
-      <RecentEpisodesList class="list" />
-      <p class="label">
-        BetterVRV episodes do not show up on this list. You can view those
-        <a target="_blank" href="http://tuckerchap.in/BetterVRV/">here</a>
-      </p>
-    </section>
-    <img class="section-transition" src="../../assets/dark400_section_top.svg" />
-  </div>
+      </section>
+      <img class="section-transition" src="../../assets/dark400_section_top.svg" />
+      <section id="supported-services" class="three">
+        <h2>Supported Services</h2>
+        <ul class="service-list">
+          <li class="vrv">VRV</li>
+          <li class="funimation">Funimation Now</li>
+        </ul>
+        <h3>In the Future</h3>
+        <ul class="service-list">
+          <li class="netflix">NETFLIX</li>
+          <li class="crunchyroll">crunchyroll</li>
+          <li class="hulu">hulu</li>
+          <li class="prime">Amazon Prime Video</li>
+        </ul>
+        <p class="affiliation label disabled">
+          Anime Skip is not affiliated with any of these services
+        </p>
+      </section>
+      <img class="section-transition" src="../../assets/dark400_section_bottom.svg" />
+      <section id="recently-added" class="four">
+        <h2>Recently Added Epiosdes</h2>
+        <RecentEpisodesList class="list" />
+        <p class="label">
+          BetterVRV episodes do not show up on this list. You can view those
+          <a target="_blank" href="http://tuckerchap.in/BetterVRV/">here</a>
+        </p>
+      </section>
+      <img class="section-transition" src="../../assets/dark400_section_top.svg" />
+    </div>
+  </NavAndFooterLayout>
 </template>
 
 <script lang="ts">
@@ -136,6 +138,7 @@ $transitionHeight: 10vw;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: -1px;
 
   p.label {
     font-size: 14px;

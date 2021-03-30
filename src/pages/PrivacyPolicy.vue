@@ -1,5 +1,7 @@
 <template>
-  <iframe src="/static/policies/privacy-policy.html" />
+  <NavAndFooterLayout>
+    <iframe src="/static/policies/privacy-policy.html" />
+  </NavAndFooterLayout>
 </template>
 
 <style lang="scss" scoped>
