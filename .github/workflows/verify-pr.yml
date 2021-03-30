@@ -19,11 +19,9 @@ jobs:
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-      - run: yarn install
-        env:
-          CI: true
-          NODE_AUTH_TOKEN: ${{ secrets.ANIME_SKIP_PACKAGES_TOKEN }}
-      - run: yarn prettier
-      - run: yarn lint:no-fix
-      - run: yarn build
-      - run: yarn test
+      - uses: ./.github/actions/install
+        with:
+          NPM_AUTH_TOKEN: ${{ secrets.ANIME_SKIP_PACKAGES_TOKEN }}
+      - uses: ./.github/actions/run-checks
+        with:
+          NPM_AUTH_TOKEN: ${{ secrets.ANIME_SKIP_PACKAGES_TOKEN }}
