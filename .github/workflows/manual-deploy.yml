@@ -1,0 +1,27 @@
+name: Manual Deploy
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Environment (production or staging)'
+        required: true
+        default: 'staging'
+
+jobs:
+  build_image:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@anime-skip'
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+      - uses: ./.github/actions/build-image
+        with:
+          mode: ${{ github.event.inputs.mode }}
+          npmAuthToken: ${{ secrets.ANIME_SKIP_PACKAGES_TOKEN }}

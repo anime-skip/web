@@ -1,0 +1,26 @@
+name: Build Docker Image
+description: Builds a docker image for web based on the mode passed in
+inputs:
+  mode:
+    required: true
+  npmAuthToken:
+    required: true
+outputs:
+  image:
+    description: The image including the tag that was created
+    value: ${{ steps.output-image.outputs.image }}
+runs:
+  using: 'composite'
+  steps:
+    - id: image-tag
+      run: |
+        echo "::set-output name=tag::$(
+          echo $(if [[ "${{ inputs.mode }}" == "production" ]] ; then echo "prod" ; elif [[ "${{ inputs.mode }}" == "staging" ]] ; then echo "staging" ; else echo '' ; fi)
+        )"
+      shell: bash
+    - run: 'if [[ "${{ steps.image-tag.outputs.tag }}" == "" ]] ; then echo "Invalid environment: ${{ steps.image-tag.outputs.tag }}" ; exit 1 ; fi'
+    - id: output-image
+      run: echo "::set-output name=image::$(echo 'anime-skip-web:${{ steps.image-tag.outputs.tag }}')"
+      shell: bash
+    - run: docker build --build-arg MODE=${{ inputs.mode }} --build-arg GITHUB_PACKAGES_TOKEN=${{ inputs.npmAuthToken }} . -t "${{ steps.output-image.outputs.image }}"
+      shell: bash
