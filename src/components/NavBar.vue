@@ -10,12 +10,12 @@
 
       <div v-if="isSignedIn" class="right-buttons">
         <!-- <router-link class="link" to="/contributing">Contributing</router-link> -->
-        <router-link class="link" to="/account"> Account </router-link>
+        <router-link class="link" to="/account">Account</router-link>
         <div class="link" @click="logout">Logout</div>
       </div>
       <div v-else class="right-buttons">
-        <router-link class="link" to="/get-started"> Get Started </router-link>
-        <router-link class="link" to="/log-in"> Log In </router-link>
+        <router-link class="link" to="/get-started">Get Started</router-link>
+        <router-link class="link" to="/log-in">Log In</router-link>
       </div>
     </div>
   </nav>

@@ -149,8 +149,8 @@
         </template>
         <template #buttons>
           <a href="https://discord.gg/9wVhwZg" class="button primary">Join the Discord</a>
-          <a class="button transparent outline" href="/#supported-services"> Supported Servces </a>
-          <a href="/#recently-added" class="button transparent outline"> Recently Added Shows </a>
+          <a class="button transparent outline" href="/#supported-services">Supported Servces</a>
+          <a href="/#recently-added" class="button transparent outline">Recently Added Shows</a>
         </template>
       </card>
 

@@ -2,7 +2,7 @@
   <div class="Account">
     <div class="nav-bar">
       <div class="group">
-        <router-link to="/account" class="nav-item"> Account Info </router-link>
+        <router-link to="/account" class="nav-item">Account Info</router-link>
         <router-link to="/account/email-verification" class="nav-item">
           Email Verification
         </router-link>

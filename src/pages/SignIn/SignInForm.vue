@@ -75,7 +75,7 @@
         :class="{ disabled: isSubmitDisabled }"
         :value="submitTitle"
       />
-      <router-link v-if="false" to="/forgot-password"> Forgot password? </router-link>
+      <router-link v-if="false" to="/forgot-password">Forgot password?</router-link>
     </div>
   </form>
 </template>
