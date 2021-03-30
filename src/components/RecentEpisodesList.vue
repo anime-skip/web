@@ -5,6 +5,7 @@
         <div class="left">
           <p class="title">
             {{ listItemEpisode(episode) }}
+            <!-- TODO! What is this? -->
             <span class="episode" />
           </p>
           <p class="subtitle">
