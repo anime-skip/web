@@ -41,6 +41,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '@/scss/theme.scss';
+
 #NavBar {
   position: fixed;
   left: 0;

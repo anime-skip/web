@@ -57,12 +57,7 @@ export async function getAccessToken(
 
 export class ExtendedApi extends AxiosApi {
   public constructor() {
-    super(
-      getAccessToken,
-      process.env.NODE_ENV === 'production'
-        ? 'https://api.anime-skip.com/'
-        : 'http://localhost:8081',
-    );
+    super(getAccessToken, import.meta.env.VITE_API_URL);
   }
 
   public async isUsernameInUse(username: string): Promise<boolean> {

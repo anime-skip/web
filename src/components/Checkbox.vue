@@ -1,6 +1,6 @@
 <template>
   <div class="Checkbox" @click="toggle">
-    <input type="checkbox" v-model="value" />
+    <input v-model="value" type="checkbox" />
     <label><slot /></label>
   </div>
 </template>
@@ -9,10 +9,10 @@
 import { defineComponent, computed } from 'vue';
 
 export default defineComponent({
-  emits: ['update:modelValue'],
   props: {
     modelValue: { type: Boolean, required: true },
   },
+  emits: ['update:modelValue'],
   setup(props, { emit }) {
     const value = computed({
       get: () => props.modelValue,

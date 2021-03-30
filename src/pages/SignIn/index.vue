@@ -15,7 +15,7 @@
         <sign-in-form v-else />
       </section>
     </div>
-    <RecaptchaFooter showReCaptchaMessage />
+    <RecaptchaFooter show-re-captcha-message />
   </div>
 </template>
 
@@ -54,6 +54,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '@/scss/theme.scss';
+
 #SignIn {
   width: 100%;
   min-height: 95%;

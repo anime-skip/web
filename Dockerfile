@@ -4,7 +4,6 @@ WORKDIR /app
 ARG GITHUB_PACKAGES_TOKEN
 COPY docker/.npmrc .npmrc
 COPY package.json yarn.lock ./
-COPY local_modules ./local_modules
 RUN yarn install --frozen-lockfile
 COPY . .
 RUN yarn run build

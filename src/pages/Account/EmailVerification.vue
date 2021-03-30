@@ -6,7 +6,8 @@
       email address be validated before contributing. Once the beta is finished, your email address
       will need to be verified. You will do that here.
     </p>
-    <p class="beta-message error-text"></p>
+    <!-- TODO! What is this? -->
+    <p class="beta-message error-text" />
     <div class="status">
       <p v-if="isEmailVerified">Your email address is verified!</p>
       <div v-else class="not-verified">

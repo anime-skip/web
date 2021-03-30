@@ -2,9 +2,7 @@
   <div class="Contributing">
     <div class="column">
       <h1>Contributing Guidelines</h1>
-      <p>
-        Contributing an episode to anime skip consists of two parts:
-      </p>
+      <p>Contributing an episode to anime skip consists of two parts:</p>
       <ol>
         <li>
           <p><strong>Connect the epiosde to Anime Skip</strong></p>
@@ -104,9 +102,7 @@
         Timestamp editing was actually designed to be done this way, while using your mouse was
         meant for one off changes.
       </p>
-      <p>
-        Here are some tips and tricks so you can start contriubting!
-      </p>
+      <p>Here are some tips and tricks so you can start contriubting!</p>
       <ul class="extra-spacing">
         <li>
           The keyboard shortcut for "Create Timestamp" isn't just for creating a timestamp, it will

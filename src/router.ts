@@ -4,62 +4,60 @@ import { createRouter, createWebHistory, Router, RouteRecordRaw } from 'vue-rout
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    component: () => import(/* webpackChunkName: "home" */ './pages/Home/index.vue'),
+    component: () => import('./pages/Home/index.vue'),
   },
   {
     path: '/sign-up',
     alias: '/log-in',
-    component: () => import(/* webpackChunkName: "sign_in" */ './pages/SignIn/index.vue'),
+    component: () => import('./pages/SignIn/index.vue'),
   },
   {
     path: '/get-started',
-    component: () => import(/* webpackChunkName: "get_started" */ './pages/GetStarted/index.vue'),
+    component: () => import('./pages/GetStarted/index.vue'),
   },
   {
     path: '/support',
-    component: () => import(/* webpackChunkName: "support" */ './pages/Support/index.vue'),
+    component: () => import('./pages/Support/index.vue'),
   },
   {
     path: '/contributing',
-    component: () => import(/* webpackChunkName: "contributing" */ './pages/Contributing.vue'),
+    component: () => import('./pages/Contributing.vue'),
   },
 
   {
     path: '/account',
-    component: () => import(/* webpackChunkName: "account" */ './pages/Account/index.vue'),
+    component: () => import('./pages/Account/index.vue'),
     meta: {
       authenticated: true,
     },
     children: [
       {
         path: '',
-        component: () =>
-          import(/* webpackChunkName: "account_info" */ './pages/Account/AccountInfo.vue'),
+        component: () => import('./pages/Account/AccountInfo.vue'),
       },
       {
         path: 'email-verification',
-        component: () =>
-          import(
-            /* webpackChunkName: "email_verification" */ './pages/Account/EmailVerification.vue'
-          ),
+        component: () => import('./pages/Account/EmailVerification.vue'),
       },
     ],
   },
 
   {
     path: '/policies/privacy-policy',
-    component: () => import(/* webpackChunkName: "privacy_policy" */ './pages/PrivacyPolicy.vue'),
+    component: () => import('./pages/PrivacyPolicy.vue'),
   },
+
+  /* 404 */
 
   {
     path: '/:catchAll(.*)',
-    component: () => import(/* 404 */ './pages/404.vue'),
+    component: () => import('./pages/404.vue'),
   },
 ];
 
 export default function initializeRouter(store: Store): Router {
   const router = createRouter({
-    history: createWebHistory(process.env.BASE_URL),
+    history: createWebHistory(import.meta.env.BASE_URL),
     routes,
   });
   router.beforeEach((to, _, next) => {

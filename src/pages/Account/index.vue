@@ -3,9 +3,9 @@
     <div class="nav-bar">
       <div class="group">
         <router-link to="/account" class="nav-item">Account Info</router-link>
-        <router-link to="/account/email-verification" class="nav-item"
-          >Email Verification</router-link
-        >
+        <router-link to="/account/email-verification" class="nav-item">
+          Email Verification
+        </router-link>
       </div>
 
       <div class="group">
@@ -42,11 +42,9 @@ import useExtensionInteraction from '@/composition/extension-interaction';
 import { computed, defineComponent } from 'vue';
 import icCheckmarkBlue from '../../assets/ic_checkmark_secondary.svg';
 import icXRed from '../../assets/ic_x_red.svg';
-import useEnv from '@/composition/env';
 
 export default defineComponent({
   setup() {
-    const { isDev } = useEnv();
     const { isExtensionInstalled } = useExtensionStatus();
     const { openPlayerSettings, sendMockInstallMessage } = useExtensionInteraction();
 
@@ -57,7 +55,7 @@ export default defineComponent({
       isExtensionInstalled.value ? 'Extension installed!' : 'Extension not installed',
     );
     return {
-      isDev,
+      isDev: import.meta.env.DEV,
       isExtensionInstalled,
       extensionInstalledIcon,
       extensionInstalledTitle,
@@ -69,6 +67,8 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+@import '@/scss/theme.scss';
+
 .Account {
   width: 100%;
   max-width: 900px;

@@ -21,11 +21,11 @@ import { defineComponent, computed, ref } from 'vue';
 
 export default defineComponent({
   props: {
-    number: Number,
-    title: String,
+    number: { type: Number, default: undefined },
+    title: { type: String, default: undefined },
     selected: Boolean,
     done: Boolean,
-    message: { required: false, type: String },
+    message: { type: String, default: undefined },
   },
   setup(props, context) {
     const expanded = ref<boolean>(false);
@@ -52,6 +52,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+@import '@/scss/theme.scss';
+
 .Card {
   padding: 28px;
   background-color: $dark400;

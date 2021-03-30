@@ -4,8 +4,6 @@
   "editor.formatOnPaste": false,
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
-  "cSpell.words": [
-    "recaptcha",
-    "vuex"
-  ]
+  "cSpell.words": ["recaptcha", "vuex", "vite"],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

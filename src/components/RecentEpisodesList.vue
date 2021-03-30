@@ -5,7 +5,8 @@
         <div class="left">
           <p class="title">
             {{ listItemEpisode(episode) }}
-            <span class="episode"></span>
+            <!-- TODO! What is this? -->
+            <span class="episode" />
           </p>
           <p class="subtitle">
             <span class="show">{{ listItemShow(episode.show) }}</span>
@@ -104,6 +105,8 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+@import '@/scss/theme.scss';
+
 .RecentEpisodesList {
   width: 100%;
   max-width: 600px;

@@ -5,9 +5,9 @@
     </div>
     <slot>
       <input
-        class="middle"
         ref="input"
         v-model="value"
+        class="middle"
         :name="name"
         :type="type"
         :placeholder="placeholder"
@@ -27,17 +27,17 @@
 import { defineComponent, computed } from 'vue';
 
 export default defineComponent({
-  emits: ['update:modelValue', 'focus', 'blur'],
   props: {
     modelValue: { type: String, required: true },
-    placeholder: String,
-    name: String,
-    disabled: { type: Boolean, required: false },
+    placeholder: { type: String, default: undefined },
+    name: { type: String, default: undefined },
+    disabled: Boolean,
     type: { type: String, default: 'text' },
-    valid: { type: Boolean, required: false, default: true },
+    valid: { type: Boolean, default: true },
     // https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete
-    autocomplete: { type: String, required: false },
+    autocomplete: { type: String, default: undefined },
   },
+  emits: ['update:modelValue', 'focus', 'blur'],
   setup(props, { emit }) {
     const value = computed<string>({
       get: () => props.modelValue,
@@ -57,6 +57,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '@/scss/theme.scss';
+
 .TextInput {
   display: flex;
   flex-direction: row;

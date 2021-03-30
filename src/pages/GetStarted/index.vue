@@ -11,7 +11,7 @@
         :selected="currentCard === 1"
         :number="1"
       >
-        <template v-slot:message>
+        <template #message>
           <p :class="{ secondary: isExtensionInstalled }">
             Anime Skip Player requires the web extension be installed on your browser before you can
             use the service. Click
@@ -27,7 +27,7 @@
             You may need to reload this page after installing.
           </p>
         </template>
-        <template v-slot:buttons>
+        <template #buttons>
           <a v-if="isChrome || !isFirefox" :href="chromeUrl" class="button primary">
             Google Chrome
           </a>
@@ -52,7 +52,7 @@
         :selected="currentCard === 2"
         :number="2"
       >
-        <template v-slot:message>
+        <template #message>
           <ul :class="{ secondary: accountStepComplete }">
             <p :class="{ secondary: accountStepComplete }">
               Without an account, the Anime Skip Player will not let you:
@@ -74,7 +74,7 @@
             </p>
           </template>
         </template>
-        <template v-slot:buttons>
+        <template #buttons>
           <router-link
             v-if="!isLoggedIn"
             :to="{ path: '/sign-up', query: { redirect: '/get-started' } }"
@@ -90,9 +90,7 @@
             >
               Setup Account Later
             </button>
-            <button v-else class="transparent outline" @click="setupAccountLater">
-              Skip
-            </button>
+            <button v-else class="transparent outline" @click="setupAccountLater">Skip</button>
           </template>
         </template>
       </card>
@@ -103,7 +101,7 @@
         :selected="currentCard === 3"
         :number="3"
       >
-        <template v-slot:message>
+        <template #message>
           <p :class="{ secondary: isExtensionLoggedIn }">
             Once you're logged in, you can setup the timestamps you want to skip.
           </p>
@@ -121,18 +119,16 @@
             for a summary of each.
           </p>
         </template>
-        <template v-if="!isExtensionLoggedIn" v-slot:buttons>
+        <template v-if="!isExtensionLoggedIn" #buttons>
           <button class="primary" :class="{ disabled: !isExtensionInstalled }" @click="openLogin">
             Login
           </button>
-          <button class="transparent outline" @click="logIntoExtension">
-            Skip
-          </button>
+          <button class="transparent outline" @click="logIntoExtension">Skip</button>
         </template>
       </card>
 
       <card title="Watch some anime!" :selected="currentCard === 4" :number="4">
-        <template v-slot:message>
+        <template #message>
           <p>
             You're good to go! Head over to one of the supported services and start watching some
             anime!
@@ -151,14 +147,10 @@
             </p>
           </ul>
         </template>
-        <template v-slot:buttons>
+        <template #buttons>
           <a href="https://discord.gg/9wVhwZg" class="button primary">Join the Discord</a>
-          <a class="button transparent outline" href="/#supported-services">
-            Supported Servces
-          </a>
-          <a href="/#recently-added" class="button transparent outline">
-            Recently Added Shows
-          </a>
+          <a class="button transparent outline" href="/#supported-services">Supported Servces</a>
+          <a href="/#recently-added" class="button transparent outline">Recently Added Shows</a>
         </template>
       </card>
 
@@ -176,14 +168,12 @@ import Card from './Card.vue';
 import { detectBrowser } from '../../utils';
 import useExtensionStatus from '@/composition/extension-status';
 import useExtensionInteraction from '@/composition/extension-interaction';
-import useEnv from '@/composition/env';
 import { useStore } from 'vuex';
 import { CHROME_STORE_URL, FIREFOX_STORE_URL } from '@/utils/constants';
 
 export default defineComponent({
   components: { Card },
   setup() {
-    const { isDev } = useEnv();
     const { sendMockInstallMessage, sendMockLoginMessage, openLogin } = useExtensionInteraction();
     const { isExtensionInstalled, isExtensionLoggedIn, logIntoExtension } = useExtensionStatus();
 
@@ -213,7 +203,7 @@ export default defineComponent({
     });
 
     return {
-      isDev,
+      isDev: import.meta.env.DEV,
       sendMockInstallMessage,
       sendMockLoginMessage,
       openLogin,
@@ -239,6 +229,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '@/scss/theme.scss';
+
 .GetStarted {
   display: flex;
   flex-direction: column;

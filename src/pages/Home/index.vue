@@ -7,19 +7,17 @@
           <img src="../../assets/logo.svg" />
           <p>Skip timestamps and watch anime faster than ever before</p>
           <div class="buttons">
-            <router-link to="/get-started" class="button primary get-started"
-              >Get Started</router-link
-            >
-            <button class="transparent" @click="scrollToLearnMore">
-              Learn More
-            </button>
+            <router-link to="/get-started" class="button primary get-started">
+              Get Started
+            </router-link>
+            <button class="transparent" @click="scrollToLearnMore">Learn More</button>
           </div>
         </div>
       </div>
     </header>
     <img class="section-transition" src="../../assets/dark500_section_bottom.svg" />
     <section class="two">
-      <div class="about" id="about">
+      <div id="about" class="about">
         <h2>What is Anime Skip?</h2>
         <p>
           Anime Skip is a community managed timestamp database, with a
@@ -34,9 +32,7 @@
         </p>
       </div>
       <div id="anime-skip-player">
-        <h2>
-          Anime Skip Player
-        </h2>
+        <h2>Anime Skip Player</h2>
         <p>
           The Anime Skip Player is a web extension that makes watching anime and contributing
           timestamps easy! For
@@ -84,7 +80,7 @@
       </div>
     </section>
     <img class="section-transition" src="../../assets/dark400_section_top.svg" />
-    <section class="three" id="supported-services">
+    <section id="supported-services" class="three">
       <h2>Supported Services</h2>
       <ul class="service-list">
         <li class="vrv">VRV</li>
@@ -102,7 +98,7 @@
       </p>
     </section>
     <img class="section-transition" src="../../assets/dark400_section_bottom.svg" />
-    <section class="four" id="recently-added">
+    <section id="recently-added" class="four">
       <h2>Recently Added Epiosdes</h2>
       <RecentEpisodesList class="list" />
       <p class="label">
@@ -132,6 +128,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '@/scss/theme.scss';
 $transitionHeight: 10vw;
 
 .Home {
