@@ -21,7 +21,7 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - uses: ./.github/actions/install
         with:
-          NPM_AUTH_TOKEN: ${{ secrets.ANIME_SKIP_PACKAGES_TOKEN }}
+          npmAuthToken: ${{ secrets.ANIME_SKIP_PACKAGES_TOKEN }}
       - uses: ./.github/actions/run-checks
         with:
-          NPM_AUTH_TOKEN: ${{ secrets.ANIME_SKIP_PACKAGES_TOKEN }}
+          npmAuthToken: ${{ secrets.ANIME_SKIP_PACKAGES_TOKEN }}
