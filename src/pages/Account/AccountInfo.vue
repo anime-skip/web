@@ -4,15 +4,15 @@
     <p>During the beta, none of this information can be updated</p>
     <div class="user-details">
       <label>Username</label>
-      <text-input :modelValue="username" placeholder="Username" autocomplete="username" disabled>
-        <template v-slot:left>
+      <text-input :model-value="username" placeholder="Username" autocomplete="username" disabled>
+        <template #left>
           <img class="input-icon" src="../../assets/ic_account.svg" />
         </template>
       </text-input>
 
       <label>Email</label>
-      <text-input :modelValue="email" placeholder="Email" autocomplete="email" disabled>
-        <template v-slot:left>
+      <text-input :model-value="email" placeholder="Email" autocomplete="email" disabled>
+        <template #left>
           <img class="input-icon" src="../../assets/ic_email.svg" />
         </template>
       </text-input>
@@ -25,7 +25,7 @@
         autocomplete="current-password"
         disabled
       >
-        <template v-slot:left>
+        <template #left>
           <img class="input-icon" src="../../assets/ic_password.svg" />
         </template>
       </text-input>
@@ -36,7 +36,7 @@
         autocomplete="password"
         disabled
       >
-        <template v-slot:left>
+        <template #left>
           <img class="input-icon" src="../../assets/ic_password.svg" />
         </template>
       </text-input>
@@ -47,7 +47,7 @@
         autocomplete="password"
         disabled
       >
-        <template v-slot:left>
+        <template #left>
           <img class="input-icon" src="../../assets/ic_password.svg" />
         </template>
       </text-input>
@@ -79,6 +79,8 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+@import '@/scss/theme.scss';
+
 .AccountInfo {
   .user-details {
     margin-top: 8px;

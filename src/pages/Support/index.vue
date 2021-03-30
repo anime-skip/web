@@ -30,13 +30,13 @@
       <h2 id="timestamp-types">Timestamp Types</h2>
       <div>
         <Faq v-for="type of timestampTypes" :key="type.id" :question="type.name">
-          <template v-slot:default>
+          <template #default>
             <p>{{ type.description }}</p>
           </template>
         </Faq>
       </div>
 
-      <div id="contributing"></div>
+      <div id="contributing" />
     </div>
   </div>
   <div class="fill" />

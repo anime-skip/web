@@ -16,11 +16,13 @@
       :valid="isUsernameValid"
       @blur="checkUsername"
     >
-      <template v-slot:left>
+      <template #left>
         <img class="input-icon" src="../../assets/ic_account.svg" />
       </template>
     </text-input>
-    <p v-if="usernameErrorMessage" class="error error-text">{{ usernameErrorMessage }}</p>
+    <p v-if="usernameErrorMessage" class="error error-text">
+      {{ usernameErrorMessage }}
+    </p>
 
     <text-input
       v-if="!isSignIn"
@@ -29,7 +31,7 @@
       placeholder="Email"
       autocomplete="email"
     >
-      <template v-slot:left>
+      <template #left>
         <img class="input-icon" src="../../assets/ic_email.svg" />
       </template>
     </text-input>
@@ -42,7 +44,7 @@
       placeholder="Password"
       :autocomplete="passwordAutocomplete"
     >
-      <template v-slot:left>
+      <template #left>
         <img class="input-icon" src="../../assets/ic_password.svg" />
       </template>
     </text-input>
@@ -54,15 +56,17 @@
       placeholder="Confirm password"
       autocomplete="current-password"
     >
-      <template v-slot:left>
+      <template #left>
         <img class="input-icon" src="../../assets/ic_password.svg" />
       </template>
     </text-input>
-    <p v-if="passwordErrorMessage" class="error error-text">{{ passwordErrorMessage }}</p>
+    <p v-if="passwordErrorMessage" class="error error-text">
+      {{ passwordErrorMessage }}
+    </p>
 
-    <checkbox v-if="!!isSignIn" v-model="rememberMeChecked"
-      ><p class="secondary">Remember me</p></checkbox
-    >
+    <checkbox v-if="!!isSignIn" v-model="rememberMeChecked">
+      <p class="secondary">Remember me</p>
+    </checkbox>
 
     <div class="bottom-row">
       <input
@@ -71,7 +75,7 @@
         :class="{ disabled: isSubmitDisabled }"
         :value="submitTitle"
       />
-      <router-link to="/forgot-password" v-if="false">Forgot password?</router-link>
+      <router-link v-if="false" to="/forgot-password"> Forgot password? </router-link>
     </div>
   </form>
 </template>
@@ -98,7 +102,7 @@ export default defineComponent({
     const store = useStore();
     const route = useRoute();
     const router = useRouter();
-    const { executeRecaptcha, recaptchaLoaded } = useReCaptcha();
+    const { executeRecaptcha, recaptchaLoaded } = useReCaptcha()!;
 
     // Mode
     const mode = ref<Mode>(route.path === '/log-in' ? Mode.LOG_IN : Mode.SIGN_UP);

@@ -53,6 +53,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '@/scss/theme.scss';
+
 footer {
   background-color: $dark400;
   padding: 16px 48px;

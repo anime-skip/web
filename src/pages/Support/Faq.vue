@@ -1,5 +1,5 @@
 <template>
-  <div class="FAQ" :id="id" :class="{ expanded }">
+  <div :id="id" class="FAQ" :class="{ expanded }">
     <img src="../../assets/ic_chevron_down.svg" alt="expand" @click="toggleExpanded" />
     <div class="right">
       <h3 @click="toggleExpanded">{{ question }}</h3>
@@ -15,7 +15,7 @@ import { useRoute } from 'vue-router';
 export default defineComponent({
   props: {
     question: { type: String, required: true },
-    id: { type: String, required: false },
+    id: { type: String, default: undefined },
   },
   setup(props) {
     const route = useRoute();
@@ -32,6 +32,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+@import '@/scss/theme.scss';
+
 .FAQ {
   border-radius: 8px;
   display: flex;

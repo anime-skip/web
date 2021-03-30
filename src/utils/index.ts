@@ -24,7 +24,7 @@ export function persistValue<T extends keyof LocalStorageTypes>(
   return JSON.parse(storedObject)[key];
 }
 
-/* eslint-disable @typescript-eslint/ban-ts-ignore */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 export function detectBrowser(): BrowserType {
   // Opera 8.0+
   // @ts-ignore
@@ -39,7 +39,7 @@ export function detectBrowser(): BrowserType {
   if (
     // @ts-ignore
     /constructor/i.test(window.HTMLElement) ||
-    (function(p) {
+    (function (p) {
       return p.toString() === '[object SafariRemoteNotification]';
       // @ts-ignore
     })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification))
@@ -62,4 +62,4 @@ export function detectBrowser(): BrowserType {
 
   return 'unsupported';
 }
-/* eslint-enable @typescript-eslint/ban-ts-ignore */
+/* eslint-enable @typescript-eslint/ban-ts-comment */

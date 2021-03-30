@@ -23,9 +23,10 @@ jobs:
         env:
           CI: true
           NODE_AUTH_TOKEN: ${{ secrets.ANIME_SKIP_PACKAGES_TOKEN }}
+      - run: yarn prettier
+      - run: yarn lint:no-fix
       - run: yarn build
-      - run: yarn lint
-      # - run: yarn test:unit
+      - run: yarn test
       - name: Run docker build
         run: docker build --build-arg GITHUB_PACKAGES_TOKEN=${GITHUB_PACKAGES_TOKEN} .
         env:

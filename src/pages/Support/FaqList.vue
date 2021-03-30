@@ -4,7 +4,7 @@
       id="player-not-showing"
       question="The Anime Skip video player doesn't show up when I go to watch an episode"
     >
-      <template v-slot:default>
+      <template #default>
         <p>
           Make sure you've followed the
           <router-link to="/get-started">getting started guide</router-link> and you've properly
@@ -21,7 +21,7 @@
     </Faq>
 
     <Faq id="contributing" question="How do I start contributing?">
-      <template v-slot:default>
+      <template #default>
         <p>
           Head over to the
           <router-link to="/contributing">contributing guideliens</router-link> for an overview,
@@ -31,7 +31,7 @@
     </Faq>
 
     <Faq id="edit-keyboard-shortcuts" question="How do I edit keyboard shortcuts?">
-      <template v-slot:default>
+      <template #default>
         <p>
           Keyboard shortcuts are apart of the web extension. Make sure you have followed the
           <router-link to="/get-started">getting started guide</router-link> and installed the web
@@ -66,7 +66,7 @@
       id="delete-my-account"
       question="I would like to delete my account, how do I go about doing that?"
     >
-      <template v-slot:default>
+      <template #default>
         <p>
           In the future, there will be an option to delete your account from your account settings
           page. Until then, fill out and send
@@ -85,7 +85,7 @@
       id="deleted-account-info"
       question="What happens to my account and contributions when I delete my account?"
     >
-      <template v-slot:default>
+      <template #default>
         <p>
           Your contributations are not deleted and you're account is wiped of all personal data. No
           history of your personal information is ever stored.
@@ -102,12 +102,10 @@
       id="web-ext-permissions"
       question="What permissions does the Anime Skip Player use, and why?"
     >
-      <template v-slot:default>
+      <template #default>
         <div>
           <p><strong>Host</strong></p>
-          <p>
-            This is used to replace the original serice's video player with Anime Skips.
-          </p>
+          <p>This is used to replace the original serice's video player with Anime Skips.</p>
           <p>
             For Chrome, this shows as the "Host" permission. For Firefox, it shows as "Access your
             data for ____"
@@ -120,9 +118,7 @@
             storage. An example: whether or not you are logged in is persisted to the extension's
             local storage so that you don't have to login for every episode.
           </p>
-          <p>
-            Also worth mentioning, the Anime Skip Player does not create or read cookies.
-          </p>
+          <p>Also worth mentioning, the Anime Skip Player does not create or read cookies.</p>
         </div>
         <div>
           <p><strong>Tabs</strong></p>
@@ -176,6 +172,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import '@/scss/theme.scss';
+
 button {
   margin-top: 16px;
   margin-bottom: 16px;
