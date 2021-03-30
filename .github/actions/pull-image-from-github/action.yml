@@ -1,5 +1,5 @@
-name: Publish Image to GitHub
-description: Upload an image to GitHub Packages
+name: Pull Image to GitHub
+description: Get an image from github
 inputs:
   image:
     required: true
@@ -8,5 +8,5 @@ runs:
   steps:
     - run: |
         echo "${{ github.token }}" | docker login https://docker.pkg.github.com -u "${{ github.actor }}" --password-stdin
-        docker push ${{ inputs.image }}
+        docker pull ${{ inputs.image }}
       shell: bash

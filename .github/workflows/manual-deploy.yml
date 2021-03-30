@@ -3,13 +3,17 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'Environment (production or staging)'
+        description: 'Environment (production or staged)'
         required: true
-        default: 'staging'
+        default: 'staged'
 
 jobs:
   build_image:
+    name: Build Image
     runs-on: ubuntu-20.04
+    outputs:
+      imageToDeploy: ${{ steps.build-image.outputs.image }}
+      tagToDeploy: ${{ steps.build-image.outputs.image }}
     steps:
       - uses: actions/setup-node@v1
         with:
@@ -22,6 +26,24 @@ jobs:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - uses: ./.github/actions/build-image
+        id: build-image
         with:
           mode: ${{ github.event.inputs.mode }}
           npmAuthToken: ${{ secrets.ANIME_SKIP_PACKAGES_TOKEN }}
+      - uses: ./.github/actions/publish-image-to-github
+        with:
+          image: '${{ steps.build-image.outputs.image }}'
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-20.04
+    needs: build_image
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/pull-image-from-github
+        with:
+          image: '${{ needs.build_image.outputs.imageToDeploy }}'
+      - uses: ./.github/actions/deploy-to-heroku
+        with:
+          baseImage: '${{ needs.build_image.outputs.imageToDeploy }}'
+          mode: '${{ github.event.inputs.mode }}'
+          herokuToken: ${{ secrets.HEROKU_API_KEY }}

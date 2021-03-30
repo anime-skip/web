@@ -9,18 +9,27 @@ outputs:
   image:
     description: The image including the tag that was created
     value: ${{ steps.output-image.outputs.image }}
+  tag:
+    description: The image including the tag that was created
+    value: ${{ steps.image-tag.outputs.tag }}
 runs:
-  using: 'composite'
+  using: composite
   steps:
     - id: image-tag
       run: |
-        echo "::set-output name=tag::$(
-          echo $(if [[ "${{ inputs.mode }}" == "production" ]] ; then echo "prod" ; elif [[ "${{ inputs.mode }}" == "staging" ]] ; then echo "staging" ; else echo '' ; fi)
-        )"
+        declare -A modesToTags=( ["production"]="prod" ["staged"]="staged" )
+        mode="${{ inputs.mode }}"
+        tag="${modesToTags[$mode]}"
+        echo "Building tag '$tag'"
+
+        if [[ "$tag" == "" ]]; then exit 1 ; fi
+
+        echo "::set-output name=tag::$(echo $tag)"
       shell: bash
     - run: 'if [[ "${{ steps.image-tag.outputs.tag }}" == "" ]] ; then echo "Invalid environment: ${{ steps.image-tag.outputs.tag }}" ; exit 1 ; fi'
+      shell: bash
     - id: output-image
-      run: echo "::set-output name=image::$(echo 'anime-skip-web:${{ steps.image-tag.outputs.tag }}')"
+      run: echo "::set-output name=image::$(echo 'docker.pkg.github.com/anime-skip/web/website:${{ steps.image-tag.outputs.tag }}')"
       shell: bash
     - run: docker build --build-arg MODE=${{ inputs.mode }} --build-arg GITHUB_PACKAGES_TOKEN=${{ inputs.npmAuthToken }} . -t "${{ steps.output-image.outputs.image }}"
       shell: bash

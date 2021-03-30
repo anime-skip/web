@@ -23,11 +23,11 @@ To run in a specific environment:
 
 ```bash
 yarn start # defaults to development
-yarn start --mode staging
+yarn start --mode staged
 yarn start --mode production
 
 yarn build --mode development
-yarn build --mode staging
+yarn build --mode staged
 yarn build # default to production
 ```
 

@@ -13,7 +13,7 @@
     "test": "echo 'TODO'",
     "test:e2e": "echo 'TODO'",
     "build": "yarn compile && vite build",
-    "build:staging": "yarn build --mode staging",
+    "build:staged": "yarn build --mode staged",
     "build:docker": "npx dotenv-cli -e docker/.env -- bash -c 'docker build --build-arg GITHUB_PACKAGES_TOKEN=${GITHUB_PACKAGES_TOKEN} . -t anime-skip-web:dev'",
     "preview": "echo 'Previewing \"dist/\" build' && vite preview"
   },

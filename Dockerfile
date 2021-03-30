@@ -7,7 +7,7 @@ COPY docker/.npmrc .npmrc
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 COPY . .
-RUN yarn run build
+RUN yarn run build --mode ${MODE}
 
 # production stage
 FROM nginx:stable-alpine as production-stage

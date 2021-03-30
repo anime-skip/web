@@ -3,7 +3,7 @@ inputs:
   npmAuthToken:
     required: true
 runs:
-  using: 'composite'
+  using: composite
   steps:
     - run: yarn install --immutable --immutable-cache
       shell: bash

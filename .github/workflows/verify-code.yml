@@ -1,8 +1,6 @@
-name: Verify PR
+name: Verify Code
 on:
-  push:
-    branches-ignore:
-      - main
+  push: {}
 
 jobs:
   checks:
