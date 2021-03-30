@@ -1,20 +1,21 @@
 <template>
   <NavAndFooterLayout>
     <div id="SignIn">
-      <div />
-      <div class="card">
-        <section class="section-1">
-          <img src="../../assets/logo.svg" />
-          <h3>watch anime like a pro</h3>
-        </section>
-        <section class="section-2">
-          <div v-if="isSignedIn">
-            <h2 class="already-logged-in">Already logged in</h2>
-            <button class="log-out dark" @click="logOut">Log Out</button>
-            <button @click="followRedirect">Continue</button>
-          </div>
-          <sign-in-form v-else />
-        </section>
+      <div class="centered">
+        <div class="card">
+          <section class="section-1">
+            <img src="../../assets/logo.svg" />
+            <h3>watch anime like a pro</h3>
+          </section>
+          <section class="section-2">
+            <div v-if="isSignedIn">
+              <h2 class="already-logged-in">Already logged in</h2>
+              <button class="log-out dark" @click="logOut">Log Out</button>
+              <button @click="followRedirect">Continue</button>
+            </div>
+            <sign-in-form v-else />
+          </section>
+        </div>
       </div>
       <RecaptchaFooter show-re-captcha-message />
     </div>
@@ -59,14 +60,17 @@ export default defineComponent({
 @import '@/scss/theme.scss';
 
 #SignIn {
-  width: 100%;
-  min-height: 95%;
-  padding-top: $navBarHeight;
-  box-sizing: border-box;
+  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
+
+  .centered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+  }
 
   .card {
     box-sizing: border-box;
@@ -76,6 +80,7 @@ export default defineComponent({
     width: 75%;
     min-width: 350px;
     max-width: 500px;
+    margin: $navBarHeight 0;
     padding: 24px;
     background-color: #282f37;
 
