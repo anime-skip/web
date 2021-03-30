@@ -8,10 +8,12 @@ import { VueReCaptcha } from 'vue-recaptcha-v3';
 
 import TextInput from '@/components/TextInput.vue';
 import Checkbox from '@/components/Checkbox.vue';
+import NavAndFooterLayout from '@/layouts/NavAndFooter.vue';
 
 createApp(App)
   .component('text-input', TextInput)
   .component('checkbox', Checkbox)
+  .component('NavAndFooterLayout', NavAndFooterLayout)
   .use(plugins.router)
   .use(plugins.store)
   .use(VueReCaptcha, { siteKey: '6LdCabkZAAAAANjX98ln54xCQ5OVnuinrPeLF8Np' })

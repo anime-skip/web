@@ -1,22 +1,24 @@
 <template>
-  <div id="SignIn">
-    <div />
-    <div class="card">
-      <section class="section-1">
-        <img src="../../assets/logo.svg" />
-        <h3>watch anime like a pro</h3>
-      </section>
-      <section class="section-2">
-        <div v-if="isSignedIn">
-          <h2 class="already-logged-in">Already logged in</h2>
-          <button class="log-out dark" @click="logOut">Log Out</button>
-          <button @click="followRedirect">Continue</button>
-        </div>
-        <sign-in-form v-else />
-      </section>
+  <NavAndFooterLayout>
+    <div id="SignIn">
+      <div />
+      <div class="card">
+        <section class="section-1">
+          <img src="../../assets/logo.svg" />
+          <h3>watch anime like a pro</h3>
+        </section>
+        <section class="section-2">
+          <div v-if="isSignedIn">
+            <h2 class="already-logged-in">Already logged in</h2>
+            <button class="log-out dark" @click="logOut">Log Out</button>
+            <button @click="followRedirect">Continue</button>
+          </div>
+          <sign-in-form v-else />
+        </section>
+      </div>
+      <RecaptchaFooter show-re-captcha-message />
     </div>
-    <RecaptchaFooter show-re-captcha-message />
-  </div>
+  </NavAndFooterLayout>
 </template>
 
 <script lang="ts">

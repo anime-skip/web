@@ -1,45 +1,47 @@
 <template>
-  <div class="Support">
-    <div class="column">
-      <h1>Support</h1>
-      <p>
-        Anime Skip is a one-man team, so I expect to be spending a lot of time each day responding
-        to questions or issues after the user base grows. I will happily respond to any emails you
-        send me, but I'd also like to point out other resouces you can use to answer your question
-        or resolve your issue:
-      </p>
-      <ul>
-        <li>
-          <strong>FAQ</strong> - Check out the section bloew to see if your question has already
-          been answered
-        </li>
-        <li>
-          <strong><a href="https://discord.gg/9wVhwZg" target="_blank">Discord</a></strong> - Ask
-          the community for help, report bugs, create feature requests
-        </li>
-      </ul>
-      <p>
-        If you'd like to reach out to me directly, you can do so by emailing
-        <a href="mailto:support@anime-skip.com">support@anime-skip.com</a>, and I'll respond as soon
-        as possible!
-      </p>
+  <NavAndFooterLayout>
+    <div class="Support">
+      <div class="column">
+        <h1>Support</h1>
+        <p>
+          Anime Skip is a one-man team, so I expect to be spending a lot of time each day responding
+          to questions or issues after the user base grows. I will happily respond to any emails you
+          send me, but I'd also like to point out other resouces you can use to answer your question
+          or resolve your issue:
+        </p>
+        <ul>
+          <li>
+            <strong>FAQ</strong> - Check out the section bloew to see if your question has already
+            been answered
+          </li>
+          <li>
+            <strong><a href="https://discord.gg/9wVhwZg" target="_blank">Discord</a></strong> - Ask
+            the community for help, report bugs, create feature requests
+          </li>
+        </ul>
+        <p>
+          If you'd like to reach out to me directly, you can do so by emailing
+          <a href="mailto:support@anime-skip.com">support@anime-skip.com</a>, and I'll respond as
+          soon as possible!
+        </p>
 
-      <h2 id="faq">FAQ</h2>
-      <FaqList />
+        <h2 id="faq">FAQ</h2>
+        <FaqList />
 
-      <h2 id="timestamp-types">Timestamp Types</h2>
-      <div>
-        <Faq v-for="type of timestampTypes" :key="type.id" :question="type.name">
-          <template #default>
-            <p>{{ type.description }}</p>
-          </template>
-        </Faq>
+        <h2 id="timestamp-types">Timestamp Types</h2>
+        <div>
+          <Faq v-for="type of timestampTypes" :key="type.id" :question="type.name">
+            <template #default>
+              <p>{{ type.description }}</p>
+            </template>
+          </Faq>
+        </div>
+
+        <div id="contributing" />
       </div>
-
-      <div id="contributing" />
     </div>
-  </div>
-  <div class="fill" />
+    <div class="fill" />
+  </NavAndFooterLayout>
 </template>
 
 <script lang="ts">

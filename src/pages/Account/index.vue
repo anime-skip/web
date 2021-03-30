@@ -1,39 +1,41 @@
 <template>
-  <div class="Account">
-    <div class="nav-bar">
-      <div class="group">
-        <router-link to="/account" class="nav-item">Account Info</router-link>
-        <router-link to="/account/email-verification" class="nav-item">
-          Email Verification
-        </router-link>
-      </div>
+  <NavAndFooterLayout>
+    <div class="Account">
+      <div class="nav-bar">
+        <div class="group">
+          <router-link to="/account" class="nav-item">Account Info</router-link>
+          <router-link to="/account/email-verification" class="nav-item">
+            Email Verification
+          </router-link>
+        </div>
 
-      <div class="group">
-        <router-link to="/get-started" class="nav-item">
-          <span>Web Extension</span>
-          <img :src="extensionInstalledIcon" :title="extensionInstalledTitle" />
-        </router-link>
-        <div
-          class="nav-item"
-          :class="{ disabled: !isExtensionInstalled }"
-          @click="openPlayerSettings"
-        >
-          <span>Player Settings</span>
-          <img src="../../assets/ic_chevron_right.svg" />
+        <div class="group">
+          <router-link to="/get-started" class="nav-item">
+            <span>Web Extension</span>
+            <img :src="extensionInstalledIcon" :title="extensionInstalledTitle" />
+          </router-link>
+          <div
+            class="nav-item"
+            :class="{ disabled: !isExtensionInstalled }"
+            @click="openPlayerSettings"
+          >
+            <span>Player Settings</span>
+            <img src="../../assets/ic_chevron_right.svg" />
+          </div>
+        </div>
+
+        <div v-if="isDev" class="group">
+          <div v-if="!isExtensionInstalled" class="nav-item" @click="sendMockInstallMessage">
+            <span>Send Install Event</span>
+            <img src="../../assets/ic_chevron_right.svg" />
+          </div>
         </div>
       </div>
-
-      <div v-if="isDev" class="group">
-        <div v-if="!isExtensionInstalled" class="nav-item" @click="sendMockInstallMessage">
-          <span>Send Install Event</span>
-          <img src="../../assets/ic_chevron_right.svg" />
-        </div>
+      <div class="content">
+        <router-view />
       </div>
     </div>
-    <div class="content">
-      <router-view />
-    </div>
-  </div>
+  </NavAndFooterLayout>
 </template>
 
 <script lang="ts">
@@ -72,7 +74,6 @@ export default defineComponent({
 .Account {
   width: 100%;
   max-width: 900px;
-  min-height: 90vh;
   align-self: center;
   padding: 24px;
   box-sizing: border-box;
