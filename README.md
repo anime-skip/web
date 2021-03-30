@@ -19,6 +19,18 @@ yarn build
 yarn lint
 ```
 
+To run in a specific environment:
+
+```bash
+yarn start # defaults to development
+yarn start --mode staging
+yarn start --mode production
+
+yarn build --mode development
+yarn build --mode staging
+yarn build # default to production
+```
+
 ### Running Tests
 
 Right now, there are no unit or end to end tests.
