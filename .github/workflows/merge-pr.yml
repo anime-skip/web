@@ -5,8 +5,8 @@ on:
       - main
 
 jobs:
-  verify:
-    name: Verify Build
+  checks:
+    name: Run Checks
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/setup-node@v1
@@ -25,7 +25,6 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.ANIME_SKIP_PACKAGES_TOKEN }}
       - run: yarn prettier
       - run: yarn lint:no-fix
-      - run: yarn build
       - run: yarn test
       - name: Run docker build
         run: docker build --build-arg GITHUB_PACKAGES_TOKEN=${GITHUB_PACKAGES_TOKEN} .
