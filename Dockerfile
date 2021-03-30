@@ -2,11 +2,12 @@
 FROM node:lts-alpine as build-stage
 WORKDIR /app
 ARG GITHUB_PACKAGES_TOKEN
-COPY docker/.npmrc .npmrc
+COPY docker/.yarnrc.yml .yarnrc.yml
+COPY .yarn .yarn
 COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+RUN yarn install --immutable --skip-builds
 COPY . .
-RUN yarn run build
+RUN yarn build
 
 # production stage
 FROM nginx:stable-alpine as production-stage
