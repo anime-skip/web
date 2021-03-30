@@ -1,0 +1,11 @@
+name: Install Dependencies
+inputs:
+  npmAuthToken:
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - run: yarn install --immutable --immutable-cache
+      shell: bash
+      env:
+        NODE_AUTH_TOKEN: ${{ inputs.npmAuthToken }}

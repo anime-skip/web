@@ -2,6 +2,7 @@
 FROM node:lts-alpine as build-stage
 WORKDIR /app
 ARG GITHUB_PACKAGES_TOKEN
+ARG MODE=production
 COPY docker/.npmrc .npmrc
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile

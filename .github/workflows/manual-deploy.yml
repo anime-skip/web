@@ -1,12 +1,14 @@
-name: Verify PR
+name: Manual Deploy
 on:
-  push:
-    branches-ignore:
-      - main
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Environment (production or staging)'
+        required: true
+        default: 'staging'
 
 jobs:
-  checks:
-    name: Run Checks
+  build_image:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/setup-node@v1
@@ -19,9 +21,7 @@ jobs:
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-      - uses: ./.github/actions/install
+      - uses: ./.github/actions/build-image
         with:
-          npmAuthToken: ${{ secrets.ANIME_SKIP_PACKAGES_TOKEN }}
-      - uses: ./.github/actions/run-checks
-        with:
+          mode: ${{ github.event.inputs.mode }}
           npmAuthToken: ${{ secrets.ANIME_SKIP_PACKAGES_TOKEN }}

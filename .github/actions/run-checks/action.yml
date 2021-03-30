@@ -1,0 +1,20 @@
+name: Run Checks
+description: Lint, test, build, check formatting, etc
+inputs:
+  npmAuthToken:
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - run: yarn prettier
+      shell: bash
+    - run: yarn lint:no-fix
+      shell: bash
+    - run: yarn test
+      shell: bash
+    - run: yarn build:docker
+      shell: bash
+      env:
+        GITHUB_PACKAGES_TOKEN: ${{ inputs.npmAuthToken }}
+    - run: yarn test:e2e
+      shell: bash
