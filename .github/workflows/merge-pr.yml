@@ -7,7 +7,7 @@ on:
 jobs:
   verify:
     name: Verify Build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/setup-node@v1
         with:
@@ -34,7 +34,7 @@ jobs:
 
   push_to_registry:
     name: Push dev image
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [verify]
     steps:
       - uses: actions/checkout@v2
