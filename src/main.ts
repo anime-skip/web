@@ -1,8 +1,7 @@
 import { createApp } from 'vue';
 import plugins from '@/plugins';
 import App from '@/App.vue';
-import '@/scss/style.scss';
-import '@/scss/theme.scss';
+import '@anime-skip/ui/style.css';
 
 import { VueReCaptcha } from 'vue-recaptcha-v3';
 
