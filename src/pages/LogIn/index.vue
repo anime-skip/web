@@ -1,6 +1,6 @@
 <template>
   <NavAndFooterLayout>
-    <div id="SignIn">
+    <div id="Login">
       <div class="centered">
         <div class="card">
           <section class="section-1">
@@ -13,7 +13,7 @@
               <button class="log-out dark" @click="logOut">Log Out</button>
               <button @click="followRedirect">Continue</button>
             </div>
-            <sign-in-form v-else />
+            <log-in-form v-else />
           </section>
         </div>
       </div>
@@ -24,7 +24,7 @@
 
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
-import SignInForm from './SignInForm.vue';
+import LogInForm from './LogInForm.vue';
 import { useStore } from 'vuex';
 import { useRouter, useRoute } from 'vue-router';
 import { LOG_IN_REDIRECT } from '../../utils/constants';
@@ -32,7 +32,7 @@ import { ActionTypes } from '../../store/action-types';
 import RecaptchaFooter from '@/components/RecaptchaFooter.vue';
 
 export default defineComponent({
-  components: { SignInForm, RecaptchaFooter },
+  components: { LogInForm, RecaptchaFooter },
   setup() {
     const store = useStore();
     const router = useRouter();
@@ -59,7 +59,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import '@/scss/theme.scss';
 
-#SignIn {
+#Login {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -99,7 +99,7 @@ export default defineComponent({
 }
 
 @media only screen and (min-width: 768px) {
-  #SignIn {
+  #Login {
     .card {
       grid-template-columns: 1fr 1fr;
       grid-template-rows: auto;

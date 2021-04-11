@@ -15,8 +15,8 @@ interface Validation {
   checkUsername: () => Promise<void>;
 }
 
-export default function useSignInValidation(
-  isSignIn: ComputedRef<boolean>,
+export default function useLogInValidation(
+  isLogIn: ComputedRef<boolean>,
   signInRequestState: ComputedRef<RequestState>,
   username: Ref<string>,
   email: Ref<string>,
@@ -28,7 +28,7 @@ export default function useSignInValidation(
   const hasEnteredPassword = ref<boolean>(false);
   const hasEnteredConfirmPassword = ref<boolean>(false);
 
-  watch(isSignIn, () => {
+  watch(isLogIn, () => {
     hasEnteredUsername.value = false;
     hasEnteredEmail.value = false;
     hasEnteredPassword.value = false;
@@ -55,7 +55,7 @@ export default function useSignInValidation(
   });
 
   const checkUsername = async () => {
-    if (isSignIn.value || username.value.length < 3) return;
+    if (isLogIn.value || username.value.length < 3) return;
 
     isCheckingUsername.value = true;
     isUsernameInUse.value = await api.isUsernameInUse(username.value);
@@ -66,25 +66,25 @@ export default function useSignInValidation(
   const isUsernameValid = computed<boolean>(
     () =>
       !hasEnteredUsername.value ||
-      isSignIn.value ||
+      isLogIn.value ||
       (username.value.length >= 3 && !isUsernameInUse.value),
   );
   const isEmailValid = computed<boolean>(
     () => !hasEnteredEmail.value || VALID_EMAIL_REGEX.test(email.value.toLowerCase()),
   );
   const isPasswordValid = computed<boolean>(
-    () => !hasEnteredPassword.value || isSignIn.value || password.value !== '',
+    () => !hasEnteredPassword.value || isLogIn.value || password.value !== '',
   );
   const isConfirmPasswordValid = computed<boolean>(
     () =>
       !hasEnteredConfirmPassword.value ||
-      isSignIn.value ||
+      isLogIn.value ||
       (confirmPassword.value === password.value && confirmPassword.value !== ''),
   );
 
   const isSubmitDisabled = computed<boolean>(() => {
     if (signInRequestState.value === RequestState.LOADING) return true;
-    if (isSignIn.value) return false;
+    if (isLogIn.value) return false;
 
     const usernameNeedsChecked = isCheckingUsername.value || !hasCheckedUsername.value;
 

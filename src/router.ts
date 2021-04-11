@@ -9,7 +9,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/sign-up',
     alias: '/log-in',
-    component: () => import('./pages/SignIn/index.vue'),
+    component: () => import('./pages/LogIn/index.vue'),
   },
   {
     path: '/get-started',

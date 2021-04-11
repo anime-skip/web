@@ -2,8 +2,8 @@
   <form @submit.prevent="onSubmit">
     <h2>{{ title }}</h2>
 
-    <p v-if="!isSignIn" class="switch-page">
-      Already have an acount? <a href="#" @click.prevent="switchToSignIn()">Log in</a>
+    <p v-if="!isLogIn" class="switch-page">
+      Already have an acount? <a href="#" @click.prevent="switchToLogIn()">Log in</a>
     </p>
     <p v-else class="switch-page">
       Need to create an account? <a href="#" @click.prevent="switchToSignUp()">Sign up</a>
@@ -25,7 +25,7 @@
     </p>
 
     <text-input
-      v-if="!isSignIn"
+      v-if="!isLogIn"
       v-model="email"
       :valid="isEmailValid"
       placeholder="Email"
@@ -49,7 +49,7 @@
       </template>
     </text-input>
     <text-input
-      v-if="!isSignIn"
+      v-if="!isLogIn"
       v-model="confirmPassword"
       :valid="isConfirmPasswordValid"
       type="password"
@@ -64,7 +64,7 @@
       {{ passwordErrorMessage }}
     </p>
 
-    <checkbox v-if="!!isSignIn" v-model="rememberMeChecked">
+    <checkbox v-if="!!isLogIn" v-model="rememberMeChecked">
       <p class="secondary">Remember me</p>
     </checkbox>
 
@@ -88,7 +88,7 @@ import { getPersistedValue, persistValue } from '../../utils';
 import { useStore } from 'vuex';
 import { ActionTypes } from '../../store/action-types';
 import { RequestState } from '../../utils/enums';
-import useFormValidation from './SignInFormValidation';
+import useFormValidation from './LogInFormValidation';
 
 enum Mode {
   LOG_IN = 'log_in',
@@ -96,7 +96,7 @@ enum Mode {
 }
 
 export default defineComponent({
-  name: 'LoginForm',
+  name: 'LogInForm',
   setup() {
     // Effects
     const store = useStore();
@@ -108,7 +108,7 @@ export default defineComponent({
     const mode = ref<Mode>(route.path === '/log-in' ? Mode.LOG_IN : Mode.SIGN_UP);
 
     const customRedirect = route.query.redirect as string | undefined;
-    const switchToSignIn = () => {
+    const switchToLogIn = () => {
       mode.value = Mode.LOG_IN;
       router.replace({ path: '/log-in', query: { redirect: customRedirect } });
     };
@@ -116,7 +116,7 @@ export default defineComponent({
       mode.value = Mode.SIGN_UP;
       router.replace({ path: '/sign-up', query: { redirect: customRedirect } });
     };
-    const isSignIn = computed<boolean>(() => mode.value === Mode.LOG_IN);
+    const isLogIn = computed<boolean>(() => mode.value === Mode.LOG_IN);
     const usernameLabel = computed<string>((): string =>
       mode.value === Mode.LOG_IN ? 'Username or email' : 'Username',
     );
@@ -148,7 +148,7 @@ export default defineComponent({
       isSubmitDisabled,
       checkUsername,
       isUsernameInUse,
-    } = useFormValidation(isSignIn, signInRequestState, username, email, password, confirmPassword);
+    } = useFormValidation(isLogIn, signInRequestState, username, email, password, confirmPassword);
 
     const usernameErrorMessage = computed<string | undefined>(() => {
       if (mode.value === Mode.LOG_IN) {
@@ -208,9 +208,9 @@ export default defineComponent({
     };
 
     return {
-      switchToSignIn,
+      switchToLogIn,
       switchToSignUp,
-      isSignIn,
+      isLogIn,
       submitTitle,
       usernameLabel,
       title,
