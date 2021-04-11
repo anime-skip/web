@@ -2,9 +2,9 @@
   <div class="EmailVerification">
     <h2>Email Address Verification</h2>
     <p class="beta-message error-text">
-      During the beta, Anime Skip will not send out a verification email, nor does it require your
-      email address be validated before contributing. Once the beta is finished, your email address
-      will need to be verified. You will do that here.
+      During the beta, Anime Skip does not require your email address be validated before
+      contributing. Once the beta is finished, your email address will need to be verified. You will
+      do that here.
     </p>
     <!-- TODO! What is this? -->
     <p class="beta-message error-text" />
