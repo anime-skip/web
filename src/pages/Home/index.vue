@@ -1,7 +1,7 @@
 <template>
   <NavAndFooterLayout>
     <div class="">
-      <hero />
+      <hero @scrollTo="scrollTo" />
       <img class="section-transition" src="../../assets/home-section-bottom.svg" />
       <about />
       <img class="section-transition" src="../../assets/home-section-top.svg" />
@@ -14,7 +14,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
 import About from './About.vue';
 import Hero from './Hero.vue';
 import RecentlyAdded from './RecentlyAdded.vue';
@@ -28,11 +29,20 @@ export default defineComponent({
     RecentlyAdded,
   },
   setup() {
-    const scrollToLearnMore = () => {
-      document.querySelector('section.two')?.scrollIntoView({ behavior: 'smooth' });
+    const scrollTo = (selector: string) => {
+      setTimeout(() => {
+        document.querySelector(selector)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 10);
     };
+
+    const route = useRoute();
+    onMounted(() => {
+      if (!route.hash) return;
+      scrollTo(route.hash);
+    });
+
     return {
-      scrollToLearnMore,
+      scrollTo,
     };
   },
 });

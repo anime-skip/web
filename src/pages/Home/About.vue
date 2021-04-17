@@ -1,5 +1,5 @@
 <template>
-  <section-wrapper class="max-w-screen-lg mx-auto space-y-20 px-8 md:px-16 text-center">
+  <section-wrapper id="about" class="max-w-screen-lg mx-auto space-y-20 px-8 md:px-16 text-center">
     <div class="space-y-8">
       <h4>What is Anime Skip?</h4>
       <p class="body-1">

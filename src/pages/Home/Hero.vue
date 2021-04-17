@@ -8,9 +8,7 @@
           Skip timestamps and watch anime faster than ever before
         </h6>
         <div class="flex md:flex-row-reverse">
-          <flat-button transparent @click="$emit('scrollTo', 'learn-more')">
-            Learn More
-          </flat-button>
+          <flat-button transparent @click="$emit('scrollTo', '#about')"> Learn More </flat-button>
           <div class="w-4" />
           <raised-button @click="onClickGetStarted">Get Started</raised-button>
         </div>
