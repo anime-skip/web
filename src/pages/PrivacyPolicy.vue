@@ -1,12 +1,5 @@
 <template>
-  <NavAndFooterLayout>
-    <iframe src="/static/policies/privacy-policy.html" />
-  </NavAndFooterLayout>
+  <iframe class="border-none flex-1 w-full min-h-full" src="/static/policies/privacy-policy.html" />
 </template>
 
-<style lang="scss" scoped>
-iframe {
-  border: none;
-  flex: 1;
-}
-</style>
+<style lang="scss" scoped></style>
