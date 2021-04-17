@@ -1,6 +1,6 @@
 <template>
   <NavAndFooterLayout>
-    <div class="">
+    <div>
       <hero @scrollTo="scrollTo" />
       <img class="section-transition" src="../../assets/home-section-bottom.svg" />
       <about />
