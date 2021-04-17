@@ -1,35 +1,49 @@
 <template>
   <NavAndFooterLayout>
-    <div class="Support">
-      <div class="column">
-        <h1>Support</h1>
-        <p>
-          Anime Skip is a one-man team, so I expect to be spending a lot of time each day responding
-          to questions or issues after the user base grows. I will happily respond to any emails you
-          send me, but I'd also like to point out other resouces you can use to answer your question
-          or resolve your issue:
-        </p>
-        <ul>
-          <li>
-            <strong>FAQ</strong> - Check out the section bloew to see if your question has already
-            been answered
-          </li>
-          <li>
-            <strong><a href="https://discord.gg/9wVhwZg" target="_blank">Discord</a></strong> - Ask
-            the community for help, report bugs, create feature requests
-          </li>
-        </ul>
-        <p>
-          If you'd like to reach out to me directly, you can do so by emailing
-          <a href="mailto:support@anime-skip.com">support@anime-skip.com</a>, and I'll respond as
-          soon as possible!
-        </p>
+    <div class="mt-32 pb-24">
+      <div class="max-w-screen-lg mx-auto px-16 space-y-24">
+        <div class="space-y-4">
+          <h1 class="heading-3 pb-4">Support</h1>
+          <p class="body-1 text-on-surface text-opacity-high">
+            Anime Skip is a one-man team, so I expect to be spending a lot of time each day
+            responding to questions or issues after the user base grows. I will happily respond to
+            any emails you send me, but I'd also like to point out other resouces you can use to
+            answer your question or resolve your issue:
+          </p>
+          <ul class="list-disc ml-8 space-y-2">
+            <li class="body-1 text-on-surface text-opacity-high">
+              <strong>FAQ</strong> - Check out the section below to see if your question has already
+              been answered
+            </li>
+            <li class="body-1 text-on-surface text-opacity-high">
+              <strong
+                ><a
+                  class="text-secondaryPalette-200 hover:underline"
+                  href="https://discord.gg/9wVhwZg"
+                  target="_blank"
+                  >Discord</a
+                ></strong
+              >
+              - Ask the community for help, report bugs, create feature requests
+            </li>
+          </ul>
+          <p class="body-1 text-on-surface text-opacity-high">
+            If you'd like to reach out to me directly, you can do so by emailing
+            <a
+              class="text-secondaryPalette-200 hover:underline"
+              href="mailto:support@anime-skip.com"
+              >support@anime-skip.com</a
+            >, and I'll respond as soon as possible!
+          </p>
+        </div>
 
-        <h2 id="faq">FAQ</h2>
-        <FaqList />
+        <div class="space-y-8">
+          <h2 id="faq" class="heading-4">FAQ</h2>
+          <FaqList />
+        </div>
 
-        <h2 id="timestamp-types">Timestamp Types</h2>
-        <div>
+        <div class="space-y-8">
+          <h2 id="timestamp-types" class="heading-4">Timestamp Types</h2>
           <Faq v-for="type of timestampTypes" :key="type.id" :question="type.name">
             <template #default>
               <p>{{ type.description }}</p>
@@ -70,54 +84,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style lang="scss" scoped>
-.Support {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  .column {
-    width: 100%;
-    max-width: 1128px;
-    padding: 64px 32px;
-    box-sizing: border-box;
-  }
-
-  h1,
-  h2,
-  h3,
-  p,
-  ul {
-    margin-bottom: 16px;
-  }
-
-  ul {
-    margin-top: 24px;
-    &.extra-spacing {
-      li {
-        margin-bottom: 16px;
-      }
-    }
-  }
-  ol ul {
-    margin-top: 0;
-    li {
-      margin-bottom: 4px;
-    }
-  }
-
-  h2 {
-    margin-top: 48px;
-  }
-
-  ul,
-  ol {
-    margin-left: 24px;
-  }
-}
-
-.fill {
-  flex: 1;
-}
-</style>
