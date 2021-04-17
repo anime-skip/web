@@ -57,14 +57,12 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import '@/scss/theme.scss';
-
 .TextInput {
   display: flex;
   flex-direction: row;
   align-items: center;
   outline: none;
-  background-color: $dark500;
+  // background-color: $dark500;
   border-radius: 4px;
   cursor: text;
 
@@ -91,7 +89,7 @@ export default defineComponent({
     border: none;
     min-width: 0;
     caret-color: #b791f8;
-    color: $textTitleColor;
+    // color: $textTitleColor;
 
     &::placeholder {
       color: rgba(255, 255, 255, 0.36);
@@ -103,7 +101,7 @@ export default defineComponent({
       opacity: 0.48;
     }
     input.middle {
-      color: $textDisabledColor;
+      // color: $textDisabledColor;
     }
   }
 }

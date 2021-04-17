@@ -2,6 +2,8 @@ import { createApp } from 'vue';
 import plugins from '@/plugins';
 import App from '@/App.vue';
 import '@anime-skip/ui/style.css';
+import './styles/hide-recaptcha.css';
+import './styles/custom-drop-shadows.css';
 
 import { VueReCaptcha } from 'vue-recaptcha-v3';
 

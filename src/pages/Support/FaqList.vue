@@ -172,8 +172,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import '@/scss/theme.scss';
-
 button {
   margin-top: 16px;
   margin-bottom: 16px;
@@ -181,7 +179,7 @@ button {
 
 .not-installed-warning {
   margin-left: 16px;
-  color: $textSecondaryColor;
+  // color: $textSecondaryColor;
   font-size: 14px;
 }
 </style>

@@ -3,13 +3,11 @@
 </template>
 
 <style lang="scss">
-@import '@/scss/theme.scss';
-
 #app {
   height: 100%;
 
   .child {
-    margin-top: $navBarHeight;
+    // margin-top: $navBarHeight;
     display: flex;
     flex-direction: column;
     flex: 1;

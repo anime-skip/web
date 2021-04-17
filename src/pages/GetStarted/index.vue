@@ -233,8 +233,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import '@/scss/theme.scss';
-
 .GetStarted {
   display: flex;
   flex-direction: column;
@@ -268,7 +266,7 @@ export default defineComponent({
 
   ul.secondary,
   ul.secondary * {
-    color: $textSecondaryColor;
+    // color: $textSecondaryColor;
   }
 
   li {
@@ -277,7 +275,7 @@ export default defineComponent({
   }
 
   .transparent {
-    color: $textSecondaryColor;
+    // color: $textSecondaryColor;
   }
 
   .alpha-testers {

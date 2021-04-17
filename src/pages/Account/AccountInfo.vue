@@ -79,8 +79,6 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-@import '@/scss/theme.scss';
-
 .AccountInfo {
   .user-details {
     margin-top: 8px;
@@ -92,7 +90,7 @@ export default defineComponent({
     margin-top: 8px;
     margin-bottom: 4px;
     font-size: 14px;
-    color: $textSecondaryColor;
+    // color: $textSecondaryColor;
   }
 
   .TextInput {

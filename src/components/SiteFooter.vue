@@ -1,27 +1,24 @@
 <template>
-  <footer>
-    <div class="column">
+  <footer class="bg-control pt-24">
+    <div class="px-2 flex flex-wrap justify-center">
       <div class="group">
-        <h4>Anime Skip</h4>
-        <a
-          href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=2GQQVS49AE57W&currency_code=USD&source=url"
-          target="_blank"
+        <h6>Anime Skip</h6>
+        <a href="https://www.buymeacoffee.com/anime.skip" target="_blank"
+          >Buy me a pizza! <span>🍕</span></a
         >
-          Donate via PayPal
-        </a>
         <div class="space" />
         <a :href="chromeUrl" target="_blank">Chrome Extension</a>
         <a :href="firefoxUrl" target="_blank">Firefox Addon</a>
       </div>
 
       <div class="group">
-        <h4>Supported Services</h4>
+        <h6>Supported Services</h6>
         <a href="https://vrv.co/" target="_blank">VRV</a>
         <a href="https://www.funimation.com/" target="_blank">FunimationNow</a>
       </div>
 
       <div class="group">
-        <h4>Help Center</h4>
+        <h6>Help Center</h6>
         <router-link to="/contributing">Contributing</router-link>
         <router-link to="/support">Support</router-link>
         <a href="mailto:support@anime-skip.com?subject=Anime Skip">Contact Us</a>
@@ -29,7 +26,7 @@
       </div>
 
       <div class="group">
-        <h4>Other Resources</h4>
+        <h6>Other Resources</h6>
         <a href="https://discord.gg/9wVhwZg" target="_blank">Join the Discord</a>
         <a href="http://test.api.anime-skip.com/graphiql" target="_blank">API Playground</a>
         <a href="http://tuckerchap.in/BetterVRV/">BetterVRV</a>
@@ -52,11 +49,26 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-@import '@/scss/theme.scss';
+<style scoped>
+.group {
+  @apply w-72 flex flex-col px-8 space-y-1 items-start mb-16;
+}
 
+h6,
+.space {
+  @apply pb-4;
+}
+
+h6 {
+  @apply text-on-surface text-opacity-high;
+}
+
+a {
+  @apply text-on-surface text-opacity-medium hover:underline;
+}
+
+/*
 footer {
-  background-color: $dark400;
   padding: 16px 48px;
   display: flex;
   flex-direction: column;
@@ -72,7 +84,7 @@ footer {
   }
 
   * {
-    color: $textDisabledColor;
+    // color: $textDisabledColor;
     text-decoration: none;
   }
 
@@ -83,8 +95,8 @@ footer {
     padding: 32px;
     flex-shrink: 0;
 
-    h4 {
-      color: $textPrimaryColor;
+    h6 {
+      // color: $textPrimaryColor;
       text-transform: uppercase;
       margin-bottom: 16px;
     }
@@ -98,4 +110,5 @@ footer {
     }
   }
 }
+*/
 </style>

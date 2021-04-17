@@ -1,7 +1,7 @@
 <template>
-  <div class="root">
-    <NavBar />
-    <div class="child">
+  <div class="flex flex-col min-h-screen">
+    <nav-bar class="fixed left-0 top-0 right-0 z-10" :items="items" />
+    <div class="flex-grow flex-shrink-0">
       <slot />
     </div>
     <SiteFooter class="footer" />
@@ -9,24 +9,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import NavBar from '@/components/NavBar.vue';
+import { computed, defineComponent } from 'vue';
 import SiteFooter from '@/components/SiteFooter.vue';
+import { NavBar } from '@anime-skip/ui';
 
 export default defineComponent({
   components: { NavBar, SiteFooter },
+  setup() {
+    const items = computed(() => []);
+
+    return {
+      items,
+    };
+  },
 });
 </script>
-
-<style scoped>
-.root {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.child {
-  flex-grow: 1;
-  flex-shrink: 0;
-}
-</style>

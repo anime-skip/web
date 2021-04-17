@@ -3,7 +3,7 @@
   "version": "0.5.5",
   "private": true,
   "scripts": {
-    "start": "vite",
+    "start": "vite --clearScreen false",
     "start:docker": "yarn build:docker && docker run -p 3000:80 anime-skip-web:dev",
     "compile": "vue-tsc --noEmit",
     "lint": "eslint . --ext .js,.ts,.vue --max-warnings 0 --fix",
@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@anime-skip/axios-api": "^1.1.2",
-    "@anime-skip/ui": "^0.0.35",
+    "@anime-skip/ui": "^0.0.36",
     "@types/node": "^14.14.37",
     "core-js": "^3.6.5",
     "vue": "^3.0.9",

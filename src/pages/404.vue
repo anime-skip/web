@@ -10,8 +10,6 @@
 </template>
 
 <style lang="scss" scoped>
-@import '@/scss/theme.scss';
-
 .NotFound {
   flex: 1;
   display: flex;
@@ -25,12 +23,12 @@
     h1 {
       font-size: 192px;
       font-weight: 500;
-      color: $textSecondaryColor;
+      // color: $textSecondaryColor;
     }
 
     p {
       font-size: 17px;
-      color: $textSecondaryColor;
+      // color: $textSecondaryColor;
     }
   }
 }

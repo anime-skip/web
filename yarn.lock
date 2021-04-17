@@ -16,10 +16,10 @@
   resolved "https://npm.pkg.github.com/download/@anime-skip/types/1.3.1/1162e4d797fb3341a1682a1db6b4ab783ba66651212c78a9aa0660555bdbd138#4fa65673f6b1d9c73a59a51aff9035e52fdb7d60"
   integrity sha512-I3LobPPAO8sA2c65dNMsmWc7dlJ5BCCZIQU8RWQNzzRsf36VIAbngr/OT1qRSGtPzVtb9vBd+pCcekueuyvZyQ==
 
-"@anime-skip/ui@^0.0.35":
-  version "0.0.35"
-  resolved "https://npm.pkg.github.com/download/@anime-skip/ui/0.0.35/b19766eb4cb319310201ec703af460bda2ffe3254b994a55bb221de785e87f30#39bcd4947298799be2b84a390e7841ec3c276d8a"
-  integrity sha512-luNeNzeJ9LJoS/8GVeTgntlUm3Op+rVAqApcXyqaaAVetdOqEAjaWLxfWGF6boLacQl3LsMqaCL7yLqL4GCjeA==
+"@anime-skip/ui@^0.0.36":
+  version "0.0.36"
+  resolved "https://npm.pkg.github.com/download/@anime-skip/ui/0.0.36/e01e47d532dac6e1624d886ce7aa2263e46e9e15a9a141013f1740d481280487#93599f9ad6efdccb5d8d3dc0fa29ad8529ad2a99"
+  integrity sha512-M6PQunv9kpy0fivfqqrzUQ6SODZL8Nk5slSrKAw26TW/EYZ53UBRc2EWNJLJZ5QK7CgsMKXWVbBrwgynuURhMw==
   dependencies:
     vue "^3.0.5"
 

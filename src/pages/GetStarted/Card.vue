@@ -52,11 +52,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import '@/scss/theme.scss';
-
 .Card {
   padding: 28px;
-  background-color: $dark400;
+  // background-color: $dark400;
   border-radius: 16px;
   transition: 500ms;
   display: flex;
@@ -79,7 +77,7 @@ export default defineComponent({
   }
 
   .number {
-    background-color: $primary500;
+    // background-color: $primary500;
     width: 36px;
     height: 36px;
     margin-right: 24px;
@@ -89,8 +87,8 @@ export default defineComponent({
     justify-content: center;
 
     span {
-      font-family: $overpassFontFamily;
-      color: $textTitleColor;
+      // font-family: $overpassFontFamily;
+      // color: $textTitleColor;
       font-weight: 700;
       font-size: 24px;
       margin-top: 5px;
@@ -116,8 +114,8 @@ export default defineComponent({
   }
 
   &.selected {
-    background-color: $backgroundColor;
-    border: 2px solid $primary500;
+    // background-color: $backgroundColor;
+    // border: 2px solid $primary500;
     padding: 24px;
     margin-top: 0px !important;
     margin-bottom: 64px !important;
@@ -137,11 +135,11 @@ export default defineComponent({
     }
 
     .number {
-      background-color: $dark400;
+      // background-color: $dark400;
     }
 
     h2 {
-      color: $textDisabledColor;
+      // color: $textDisabledColor;
     }
   }
 }

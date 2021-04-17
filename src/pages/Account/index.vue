@@ -69,8 +69,6 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-@import '@/scss/theme.scss';
-
 .Account {
   width: 100%;
   max-width: 900px;
@@ -79,24 +77,24 @@ export default defineComponent({
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  @media only screen and (min-width: $GRID_BREAK_SMALL) {
-    flex-direction: row;
-  }
+  // @media only screen and (min-width: $GRID_BREAK_SMALL) {
+  //   flex-direction: row;
+  // }
 
   .nav-bar {
-    @media only screen and (min-width: $GRID_BREAK_SMALL) {
-      min-width: 232px;
-      margin-right: 24px;
-    }
+    // @media only screen and (min-width: $GRID_BREAK_SMALL) {
+    //   min-width: 232px;
+    //   margin-right: 24px;
+    // }
     .group {
       border-radius: 4px;
       margin-bottom: 16px;
-      background-color: $dark400;
+      // background-color: $dark400;
       &:last-child {
         margin-bottom: 32px;
-        @media only screen and (min-width: $GRID_BREAK_SMALL) {
-          margin-bottom: 0;
-        }
+        // @media only screen and (min-width: $GRID_BREAK_SMALL) {
+        //   margin-bottom: 0;
+        // }
       }
     }
 
@@ -108,7 +106,7 @@ export default defineComponent({
       text-decoration: none;
       padding-left: 16px;
       padding-right: 8px;
-      color: $textTitleColor;
+      // color: $textTitleColor;
       cursor: pointer;
       position: relative;
       padding-bottom: 1px;
@@ -119,7 +117,7 @@ export default defineComponent({
         bottom: 0;
         content: '';
         height: 1px;
-        background-color: $backgroundColor;
+        // background-color: $backgroundColor;
       }
       &:last-child {
         border-bottom: none;
@@ -127,10 +125,10 @@ export default defineComponent({
 
       &.disabled {
         cursor: default;
-        color: $textDisabledColor;
+        // color: $textDisabledColor;
         pointer-events: none;
         span {
-          color: $textDisabledColor;
+          // color: $textDisabledColor;
         }
         img {
           display: none;
@@ -138,7 +136,7 @@ export default defineComponent({
       }
 
       &.router-link-exact-active {
-        border-left: 4px solid $primary500;
+        // border-left: 4px solid $primary500;
         padding-left: 12px;
         &:first-child {
           border-top-left-radius: 4px;
@@ -159,10 +157,10 @@ export default defineComponent({
   }
 
   .content {
-    @media only screen and (min-width: $GRID_BREAK_SMALL) {
-      flex: 1;
-      padding: 24px 0 24px 24px;
-    }
+    // @media only screen and (min-width: $GRID_BREAK_SMALL) {
+    //   flex: 1;
+    //   padding: 24px 0 24px 24px;
+    // }
   }
 }
 </style>

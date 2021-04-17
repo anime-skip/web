@@ -32,8 +32,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import '@/scss/theme.scss';
-
 .FAQ {
   border-radius: 8px;
   display: flex;
@@ -49,7 +47,7 @@ export default defineComponent({
 
   h3 {
     font-weight: 500;
-    color: $textPrimaryColor;
+    // color: $textPrimaryColor;
     font-size: 16px;
     padding-top: 4px;
   }
@@ -67,7 +65,7 @@ export default defineComponent({
   }
 
   &.expanded {
-    background-color: $dark400;
+    // background-color: $dark400;
     padding: 24px 24px 20px 20px;
     transition: 200ms;
 
@@ -75,7 +73,7 @@ export default defineComponent({
       padding-top: 0;
       margin-bottom: 16px;
       font-weight: bold;
-      color: $textTitleColor;
+      // color: $textTitleColor;
       font-size: 20px;
     }
 

@@ -57,8 +57,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import '@/scss/theme.scss';
-
 #Login {
   flex: 1;
   display: flex;
@@ -114,7 +112,7 @@ export default defineComponent({
 
       .section-1 {
         display: unset;
-        background-color: $dark500;
+        // background-color: $dark500;
         display: flex;
         flex-direction: column;
         align-items: center;
