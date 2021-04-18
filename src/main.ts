@@ -7,7 +7,6 @@ import './styles/custom-drop-shadows.css';
 
 import { VueReCaptcha } from 'vue-recaptcha-v3';
 
-import TextInput from '@/components/TextInput.vue';
 import Checkbox from '@/components/Checkbox.vue';
 import NavAndFooterLayout from '@/layouts/NavAndFooter.vue';
 
@@ -16,7 +15,6 @@ if (import.meta.env.VITE_APP_TITLE != null) {
 }
 
 createApp(App)
-  .component('text-input', TextInput)
   .component('checkbox', Checkbox)
   .component('NavAndFooterLayout', NavAndFooterLayout)
   .use(plugins.router)

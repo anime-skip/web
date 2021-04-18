@@ -1,5 +1,7 @@
+import { Store } from '@/store';
 import { RequestState } from '@/utils/enums';
-import { computed, ref } from 'vue';
+import { computed, Ref, ref } from 'vue';
+import { useStore } from 'vuex';
 
 export function useRequestState(initialState = RequestState.SUCCESS) {
   const requestState = ref(initialState);
@@ -18,21 +20,14 @@ export function useRequestState(initialState = RequestState.SUCCESS) {
     errorMessage.value = err.message;
   }
 
-  const isLoading = computed(() => requestState.value === RequestState.LOADING);
-  const isSuccess = computed(() => requestState.value === RequestState.SUCCESS);
-  const isFailure = computed(() => requestState.value === RequestState.FAILURE);
-
-  function tryCatch(callback: () => Promise<void> | void) {
-    return async (): Promise<void> => {
-      try {
-        setLoading();
-        await callback();
-        setSuccess();
-      } catch (err) {
-        setFailure(err);
-      }
-    };
-  }
+  const { tryCatch } = useTryCatch(
+    newRequestState => {
+      requestState.value = newRequestState;
+    },
+    err => {
+      errorMessage.value = err.message;
+    },
+  );
 
   return {
     requestState,
@@ -43,6 +38,54 @@ export function useRequestState(initialState = RequestState.SUCCESS) {
 
     tryCatch,
 
+    ...useRequestStateChecks(requestState),
+  };
+}
+
+export function useStoreRequestState(
+  getter: (store: Store) => RequestState,
+  mutation: (requestState: RequestState) => void,
+) {
+  const store = useStore();
+  const requestState = computed(() => getter(store));
+
+  const { tryCatch } = useTryCatch(mutation);
+
+  return {
+    requestState,
+    tryCatch,
+    ...useRequestStateChecks(requestState),
+  };
+}
+
+function useTryCatch(
+  setRequestState: (requestState: RequestState) => void,
+  setError?: (err: Error) => void,
+) {
+  function tryCatch(callback: () => Promise<void> | void) {
+    return async (): Promise<void> => {
+      try {
+        setRequestState(RequestState.LOADING);
+        await callback();
+        setRequestState(RequestState.SUCCESS);
+      } catch (err) {
+        setRequestState(RequestState.FAILURE);
+        setError?.(err);
+      }
+    };
+  }
+
+  return {
+    tryCatch,
+  };
+}
+
+function useRequestStateChecks(requestState: Ref<RequestState>) {
+  const isLoading = computed(() => requestState.value === RequestState.LOADING);
+  const isSuccess = computed(() => requestState.value === RequestState.SUCCESS);
+  const isFailure = computed(() => requestState.value === RequestState.FAILURE);
+
+  return {
     isLoading,
     isSuccess,
     isFailure,

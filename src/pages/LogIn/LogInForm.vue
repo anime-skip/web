@@ -1,286 +1,124 @@
 <template>
-  <form @submit.prevent="onSubmit">
-    <h2>{{ title }}</h2>
+  <div class="flex flex-col w-full space-y-3">
+    <h4>Welcome back!</h4>
 
-    <p v-if="!isLogIn" class="switch-page">
-      Already have an acount? <a href="#" @click.prevent="switchToLogIn()">Log in</a>
-    </p>
-    <p v-else class="switch-page">
-      Need to create an account? <a href="#" @click.prevent="switchToSignUp()">Sign up</a>
+    <p class="body-2 text-on-surface text-opacity-medium pb-4">
+      Need to create an account?
+      <router-link :to="signUpLink" class="text-secondaryPalette-200 hover:underline"
+        >Sign up</router-link
+      >
     </p>
 
     <text-input
-      v-model="username"
-      :placeholder="usernameLabel"
+      v-model:value="username"
+      placeholder="Username or email"
       autocomplete="username"
       :valid="isUsernameValid"
-      @blur="checkUsername"
+      @submit="onSubmit"
     >
-      <template #left>
-        <img class="input-icon" src="../../assets/ic_account.svg" />
+      <template #left-icon="slotProps">
+        <icon-account :disabled="slotProps.disabled" :active="slotProps.focused" />
       </template>
     </text-input>
-    <p v-if="usernameErrorMessage" class="error error-text">
-      {{ usernameErrorMessage }}
-    </p>
-
     <text-input
-      v-if="!isLogIn"
-      v-model="email"
-      :valid="isEmailValid"
-      placeholder="Email"
-      autocomplete="email"
-    >
-      <template #left>
-        <img class="input-icon" src="../../assets/ic_email.svg" />
-      </template>
-    </text-input>
-
-    <text-input
-      v-model="password"
+      v-model:value="password"
       :valid="isPasswordValid"
       name="password"
       type="password"
       placeholder="Password"
-      :autocomplete="passwordAutocomplete"
-    >
-      <template #left>
-        <img class="input-icon" src="../../assets/ic_password.svg" />
-      </template>
-    </text-input>
-    <text-input
-      v-if="!isLogIn"
-      v-model="confirmPassword"
-      :valid="isConfirmPasswordValid"
-      type="password"
-      placeholder="Confirm password"
       autocomplete="current-password"
+      @submit="onSubmit"
     >
-      <template #left>
-        <img class="input-icon" src="../../assets/ic_password.svg" />
+      <template #left-icon="slotProps">
+        <icon-password :disabled="slotProps.disabled" :active="slotProps.focused" />
       </template>
     </text-input>
-    <p v-if="passwordErrorMessage" class="error error-text">
-      {{ passwordErrorMessage }}
+    <p v-if="logInErrorMessage" class="error error-text">
+      {{ logInErrorMessage }}
     </p>
 
-    <checkbox v-if="!!isLogIn" v-model="rememberMeChecked">
-      <p class="secondary">Remember me</p>
-    </checkbox>
+    <checkbox v-model:checked="rememberMe" label="Remember me" class="self-start" />
 
-    <div class="bottom-row">
-      <input
-        id="submit"
-        type="submit"
-        :class="{ disabled: isSubmitDisabled }"
-        :value="submitTitle"
-      />
-      <router-link v-if="false" to="/forgot-password">Forgot password?</router-link>
+    <div class="flex items-center pt-2 space-x-4">
+      <raised-button id="submit" :disabled="isSubmitDisabled" @click="onSubmit">
+        Log In
+      </raised-button>
+      <router-link
+        v-if="true"
+        to="/forgot-password"
+        class="text-on-surface text-opacity-medium hover:underline"
+        >Forgot password?</router-link
+      >
     </div>
-  </form>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { useReCaptcha } from 'vue-recaptcha-v3';
-import { getPersistedValue, persistValue } from '../../utils';
+import { defineComponent, computed, ref } from 'vue';
+import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 import { ActionTypes } from '../../store/action-types';
 import { RequestState } from '../../utils/enums';
-import useFormValidation from './LogInFormValidation';
-
-enum Mode {
-  LOG_IN = 'log_in',
-  SIGN_UP = 'sign_up',
-}
+import { useUsername, usePassword } from './LogInFormValidation';
+import { Checkbox, RaisedButton, TextInput } from '@anime-skip/ui';
+import IconAccount from '@/assets/IconAccount.vue';
+import IconPassword from '@/assets/IconPassword.vue';
 
 export default defineComponent({
   name: 'LogInForm',
+  components: {
+    Checkbox,
+    RaisedButton,
+    TextInput,
+    IconAccount,
+    IconPassword,
+  },
   setup() {
     // Effects
     const store = useStore();
     const route = useRoute();
-    const router = useRouter();
-    const { executeRecaptcha, recaptchaLoaded } = useReCaptcha()!;
-
-    // Mode
-    const mode = ref<Mode>(route.path === '/log-in' ? Mode.LOG_IN : Mode.SIGN_UP);
 
     const customRedirect = route.query.redirect as string | undefined;
-    const switchToLogIn = () => {
-      mode.value = Mode.LOG_IN;
-      router.replace({ path: '/log-in', query: { redirect: customRedirect } });
-    };
-    const switchToSignUp = () => {
-      mode.value = Mode.SIGN_UP;
-      router.replace({ path: '/sign-up', query: { redirect: customRedirect } });
-    };
-    const isLogIn = computed<boolean>(() => mode.value === Mode.LOG_IN);
-    const usernameLabel = computed<string>((): string =>
-      mode.value === Mode.LOG_IN ? 'Username or email' : 'Username',
-    );
-    const title = computed<string>((): string =>
-      mode.value === Mode.LOG_IN ? 'Welcome back!' : 'Create Account',
-    );
-    const passwordAutocomplete = computed<'current-password' | 'new-password'>(() =>
-      mode.value === Mode.LOG_IN ? 'current-password' : 'new-password',
-    );
-    const submitTitle = computed<string>(() => (mode.value === Mode.LOG_IN ? 'Log In' : 'Sign Up'));
-
-    // Form Values
-    const rememberMeChecked = ref<boolean>(!!getPersistedValue('rememberMeChecked'));
-    const initializeUsername = () =>
-      (rememberMeChecked.value && mode.value === Mode.LOG_IN && getPersistedValue('username')) ||
-      '';
-    const username = ref<string>(initializeUsername());
-    const email = ref<string>('');
-    const password = ref<string>('');
-    const confirmPassword = ref<string>('');
+    const signUpLink = ref({ path: '/sign-up', query: { redirect: customRedirect } });
 
     // Error Messages
     const signInRequestState = computed<RequestState>(() => store.state.signInRequestState);
-    const {
-      isUsernameValid,
-      isEmailValid,
-      isPasswordValid,
-      isConfirmPasswordValid,
-      isSubmitDisabled,
-      checkUsername,
-      isUsernameInUse,
-    } = useFormValidation(isLogIn, signInRequestState, username, email, password, confirmPassword);
+    const { rememberMe, username, persistUsername, isUsernameValid } = useUsername();
+    const { password, isPasswordBlockingSubmit, isPasswordValid } = usePassword();
+    const isSubmitDisabled = computed(() => !username.value || !password.value);
 
-    const usernameErrorMessage = computed<string | undefined>(() => {
-      if (mode.value === Mode.LOG_IN) {
-        return undefined;
-      }
-      if (isUsernameInUse.value === true) {
-        return 'Username is taken';
-      }
-      if (username.value.length < 3 && username.value.length !== 0) {
-        return 'Username must be at least 3 characters';
-      }
-      return undefined;
-    });
-    const passwordErrorMessage = computed<string | undefined>(() => {
-      if (mode.value === Mode.SIGN_UP) {
-        if (isPasswordValid.value && !isConfirmPasswordValid.value && confirmPassword.value !== '')
-          return 'Passwords must match';
-      }
+    const logInErrorMessage = computed<string | undefined>(() => {
       if (signInRequestState.value === RequestState.FAILURE) return store.state.signInError;
 
       return undefined;
     });
 
-    // resetting
-    watch(mode, () => {
-      username.value = initializeUsername();
-      email.value = '';
-      password.value = '';
-      confirmPassword.value = '';
-    });
-
     // Submitting
     const onSubmit = async (): Promise<void> => {
       if (isSubmitDisabled.value) return;
+      if (rememberMe.value) persistUsername();
 
-      await recaptchaLoaded();
-      const recaptchaResponse = await executeRecaptcha(mode.value);
-      if (mode.value === Mode.LOG_IN) {
-        persistValue('rememberMeChecked', rememberMeChecked.value);
-        if (rememberMeChecked.value) {
-          persistValue('username', username.value);
-        }
-        store.dispatch(ActionTypes.LOG_IN, {
-          usernameOrEmail: username.value,
-          password: password.value,
-          customRedirect,
-        });
-      } else {
-        store.dispatch(ActionTypes.SIGN_UP, {
-          recaptchaResponse,
-          username: username.value,
-          email: email.value,
-          password: password.value,
-          customRedirect,
-        });
-      }
+      store.dispatch(ActionTypes.LOG_IN, {
+        usernameOrEmail: username.value,
+        password: password.value,
+        customRedirect,
+      });
     };
 
     return {
-      switchToLogIn,
-      switchToSignUp,
-      isLogIn,
-      submitTitle,
-      usernameLabel,
-      title,
+      signUpLink,
 
-      passwordAutocomplete,
-      rememberMeChecked,
-
+      rememberMe,
       username,
-      email,
       password,
-      confirmPassword,
 
       isUsernameValid,
-      isEmailValid,
       isPasswordValid,
-      isConfirmPasswordValid,
       isSubmitDisabled,
 
-      checkUsername,
-      usernameErrorMessage,
-      passwordErrorMessage,
-
       onSubmit,
+      logInErrorMessage,
     };
   },
 });
 </script>
-
-<style lang="scss" scoped>
-form {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  h2 {
-    font-size: 28px;
-    margin-bottom: 8px;
-  }
-
-  .TextInput {
-    margin-bottom: 8px;
-
-    .input-icon {
-      margin: 0 12px;
-      opacity: 0.48;
-    }
-  }
-
-  .switch-page {
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.48);
-    margin-bottom: 24px;
-  }
-
-  .error {
-    font-size: 14px;
-    padding: 0 8px;
-    margin-bottom: 8px;
-  }
-
-  .bottom-row {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 24px;
-
-    #submit {
-      align-self: flex-start;
-    }
-  }
-}
-</style>

@@ -26,6 +26,8 @@ overrides:
     excludedFiles: ['*.d.ts']
     extends:
       - plugin:@typescript-eslint/recommended
+    rules:
+      '@typescript-eslint/explicit-module-boundary-types': off
   - files: ['src/composition/*.ts']
     rules:
       '@typescript-eslint/explicit-module-boundary-types': off

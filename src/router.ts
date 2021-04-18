@@ -7,11 +7,6 @@ const routes: RouteRecordRaw[] = [
     component: () => import('./pages/Home/index.vue'),
   },
   {
-    path: '/sign-up',
-    alias: '/log-in',
-    component: () => import('./pages/LogIn/index.vue'),
-  },
-  {
     path: '/get-started',
     component: () => import('./pages/GetStarted/index.vue'),
   },
@@ -23,6 +18,48 @@ const routes: RouteRecordRaw[] = [
     path: '/contributing',
     component: () => import('./pages/Contributing.vue'),
   },
+
+  /* Policies */
+
+  {
+    path: '/policies/privacy-policy',
+    component: () => import('./pages/PrivacyPolicy.vue'),
+  },
+
+  /* Authentication Pages */
+
+  {
+    path: '/log-in',
+    component: () => import('./pages/LogIn/index.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('./pages/LogIn/LogInForm.vue'),
+      },
+    ],
+  },
+  {
+    path: '/sign-up',
+    component: () => import('./pages/LogIn/index.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('./pages/LogIn/SignUpForm.vue'),
+      },
+    ],
+  },
+  // {
+  //   path: '/forgot-password',
+  //   component: () => import('./pages/LogIn/index.vue'),
+  //   children: [
+  //     {
+  //       path: '',
+  //       component: () => import('./pages/LogIn/ForgotPasswordForm.vue'),
+  //     },
+  //   ],
+  // },
+
+  /* Account Management */
 
   {
     path: '/account',
@@ -40,11 +77,6 @@ const routes: RouteRecordRaw[] = [
         component: () => import('./pages/Account/EmailVerification.vue'),
       },
     ],
-  },
-
-  {
-    path: '/policies/privacy-policy',
-    component: () => import('./pages/PrivacyPolicy.vue'),
   },
 
   /* 404 */

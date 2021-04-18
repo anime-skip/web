@@ -88,8 +88,8 @@ export const actions: ActionTree<State, State> & Actions = {
       persistTokens(response.authToken, response.refreshToken);
 
       commit(MutationTypes.SET_ACCOUNT_INFO, response.account);
+      await plugins.router.push({ path: customRedirect ?? LOG_IN_REDIRECT });
       commit(MutationTypes.LOG_IN_REQUEST_STATE, RequestState.SUCCESS);
-      plugins.router.push({ path: customRedirect ?? LOG_IN_REDIRECT });
     } catch (err) {
       commit(MutationTypes.LOG_IN_REQUEST_STATE, RequestState.FAILURE);
       commit(MutationTypes.LOG_IN_ERROR, Errors.signInErrorMessage(err));
