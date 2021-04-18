@@ -11,6 +11,9 @@ module.exports = {
         current: 'currentColor',
         'secondary-300': "theme('colors.secondaryPalette.300')",
       },
+      border: {
+        transparent: 'transparent',
+      },
     },
   },
 };

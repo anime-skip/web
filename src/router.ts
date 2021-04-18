@@ -83,6 +83,14 @@ const routes: RouteRecordRaw[] = [
         component: () => import('./pages/Account/AccountInfo.vue'),
       },
       {
+        path: 'stats',
+        component: () => import('./pages/Account/Stats.vue'),
+      },
+      {
+        path: 'security',
+        component: () => import('./pages/Account/Security.vue'),
+      },
+      {
         path: 'email-verification',
         component: () => import('./pages/Account/EmailVerification.vue'),
       },
