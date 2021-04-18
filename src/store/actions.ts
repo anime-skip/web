@@ -8,6 +8,7 @@ import api, { persistTokens } from '@/api';
 import { RequestState } from '@/utils/enums';
 import Errors from '@/utils/errors';
 import plugins from '@/plugins';
+import { sleep } from '@/utils';
 
 //#region Types
 type AugmentedActionContext = {
@@ -25,12 +26,18 @@ export interface Actions {
       email: string;
       password: string;
       recaptchaResponse: string;
+      setErrorMessage(message: string | undefined): void;
       customRedirect?: string;
     },
   ): Promise<void>;
   [ActionTypes.LOG_IN](
     context: AugmentedActionContext,
-    payload: { usernameOrEmail: string; password: string; customRedirect?: string },
+    payload: {
+      usernameOrEmail: string;
+      password: string;
+      setErrorMessage(message: string | undefined): void;
+      customRedirect?: string;
+    },
   ): Promise<void>;
   [ActionTypes.LOG_OUT](context: AugmentedActionContext, customRedirect?: string): void;
 }
@@ -55,10 +62,10 @@ export const callApi = async <A extends any[], R>(
 export const actions: ActionTree<State, State> & Actions = {
   async [ActionTypes.SIGN_UP](
     { commit, dispatch },
-    { username, email, password, recaptchaResponse, customRedirect },
+    { username, email, password, recaptchaResponse, customRedirect, setErrorMessage },
   ) {
     commit(MutationTypes.LOG_IN_REQUEST_STATE, RequestState.LOADING);
-    commit(MutationTypes.LOG_IN_ERROR, undefined);
+    setErrorMessage(undefined);
 
     try {
       const { account, authToken, refreshToken } = await callApi(
@@ -73,15 +80,18 @@ export const actions: ActionTree<State, State> & Actions = {
 
       commit(MutationTypes.SET_ACCOUNT_INFO, account);
       commit(MutationTypes.LOG_IN_REQUEST_STATE, RequestState.SUCCESS);
-      plugins.router.push({ path: customRedirect ?? LOG_IN_REDIRECT });
+      await plugins.router.push({ path: customRedirect ?? LOG_IN_REDIRECT });
     } catch (err) {
       commit(MutationTypes.LOG_IN_REQUEST_STATE, RequestState.FAILURE);
-      commit(MutationTypes.LOG_IN_ERROR, Errors.signUpErrorMessage(err));
+      setErrorMessage(Errors.signUpErrorMessage(err));
     }
   },
-  async [ActionTypes.LOG_IN]({ commit, dispatch }, { usernameOrEmail, password, customRedirect }) {
+  async [ActionTypes.LOG_IN](
+    { commit, dispatch },
+    { usernameOrEmail, password, customRedirect, setErrorMessage },
+  ) {
     commit(MutationTypes.LOG_IN_REQUEST_STATE, RequestState.LOADING);
-    commit(MutationTypes.LOG_IN_ERROR, undefined);
+    setErrorMessage(undefined);
 
     try {
       const response = await callApi(dispatch, api.loginManual, usernameOrEmail, password);
@@ -92,7 +102,7 @@ export const actions: ActionTree<State, State> & Actions = {
       commit(MutationTypes.LOG_IN_REQUEST_STATE, RequestState.SUCCESS);
     } catch (err) {
       commit(MutationTypes.LOG_IN_REQUEST_STATE, RequestState.FAILURE);
-      commit(MutationTypes.LOG_IN_ERROR, Errors.signInErrorMessage(err));
+      setErrorMessage(Errors.logInErrorMessage(err));
     }
   },
   [ActionTypes.LOG_OUT]({ commit }, customRedirect) {

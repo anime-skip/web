@@ -1,5 +1,5 @@
 export default {
-  signInErrorMessage(err: Error): string {
+  logInErrorMessage(err: Error): string {
     return err.message === 'Bad login credentials'
       ? 'Username or password is incorrect'
       : 'Unknown error';

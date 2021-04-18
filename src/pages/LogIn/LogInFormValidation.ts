@@ -3,7 +3,7 @@ import api from '@/api';
 import { useRequestState } from '@/composition/request-state';
 import { getPersistedValue, persistValue } from '@/utils';
 
-export function useUsername() {
+export function useUsername(ignoreRememberMe = false) {
   const rememberMe = ref<boolean>(!!getPersistedValue('rememberMeChecked'));
   watch(rememberMe, () => {
     persistValue('rememberMeChecked', rememberMe.value);
@@ -11,20 +11,33 @@ export function useUsername() {
   });
 
   const hasEnteredUsername = ref<boolean>(false);
-  const username = ref<string>((rememberMe.value && getPersistedValue('username')) || '');
+  const username = ref<string>(
+    (!ignoreRememberMe && rememberMe.value && getPersistedValue('username')) || '',
+  );
   const isUsernameInUse = ref<boolean>(false);
   const hasCheckedUsername = ref<boolean>(false);
   const { tryCatch, isLoading: isCheckingUsername } = useRequestState();
 
+  /**
+   * Simple checks to make sure the entered username is a valid username string.
+   */
+  const validateUsername = computed<boolean>(() => username.value.length >= 3);
+  /**
+   * Adds to the simple checks, makes sure the username is not already in use
+   */
   const isUsernameValid = computed<boolean>(
-    () => username.value.length >= 3 && !isUsernameInUse.value,
+    () => hasCheckedUsername.value && !isUsernameInUse.value && validateUsername.value,
   );
-  const isUsernameBlockingSubmit = computed<boolean>(
-    () => !hasCheckedUsername.value || (hasEnteredUsername.value && !isUsernameValid.value),
+  /**
+   * The input will show as valid when nothing has been entered, or if the username is valid and
+   * that username is not in use
+   */
+  const isUsernameInputValid = computed<boolean>(
+    () => !hasEnteredUsername.value || (validateUsername.value && !isUsernameInUse.value),
   );
 
   const checkUsername = tryCatch(async () => {
-    if (!isUsernameValid) return;
+    if (!validateUsername.value) return;
     isUsernameInUse.value = await api.isUsernameInUse(username.value);
     hasCheckedUsername.value = true;
   });
@@ -44,11 +57,12 @@ export function useUsername() {
 
     username,
     hasEnteredUsername,
+    isUsernameInputValid,
     isUsernameValid,
-    isUsernameBlockingSubmit,
     checkUsername,
     isCheckingUsername,
     hasCheckedUsername,
+    isUsernameInUse,
     persistUsername,
   };
 }
@@ -59,8 +73,15 @@ const VALID_EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)
 export function useEmail() {
   const email = ref('');
   const hasEnteredEmail = ref(false);
+
+  /**
+   * Basic check to make sure email is a valid email string via REGEX
+   */
   const isEmailValid = computed<boolean>(() => VALID_EMAIL_REGEX.test(email.value.toLowerCase()));
-  const isEmailBlockingSubmit = computed<boolean>(() => hasEnteredEmail.value && !isEmailValid);
+  /**
+   * Uses the `isEmailValid`, but is also valid when nothing has been entered yet
+   */
+  const isEmailInputValid = computed<boolean>(() => !hasEnteredEmail.value || isEmailValid.value);
 
   watch(email, () => {
     hasEnteredEmail.value = true;
@@ -70,16 +91,23 @@ export function useEmail() {
     email,
     hasEnteredEmail,
     isEmailValid,
-    isEmailBlockingSubmit,
+    isEmailInputValid,
   };
 }
 
 export function usePassword() {
   const password = ref('');
   const hasEnteredPassword = ref(false);
+
+  /**
+   * The only password requirement is that you've entered something
+   */
   const isPasswordValid = computed<boolean>(() => !!password.value);
-  const isPasswordBlockingSubmit = computed<boolean>(
-    () => hasEnteredPassword.value && !isPasswordValid.value,
+  /**
+   * Uses the `isPasswordValid`, but is also valid when nothing has been entered yet
+   */
+  const isPasswordInputValid = computed<boolean>(
+    () => !hasEnteredPassword.value || isPasswordValid.value,
   );
 
   watch(password, () => {
@@ -90,7 +118,7 @@ export function usePassword() {
     password,
     hasEnteredPassword,
     isPasswordValid,
-    isPasswordBlockingSubmit,
+    isPasswordInputValid,
   };
 }
 
@@ -98,27 +126,23 @@ export function useConfirmPassword(password: Ref<string>) {
   const {
     hasEnteredPassword: hasEnteredConfirmPassword,
     password: confirmPassword,
-    isPasswordValid,
-    isPasswordBlockingSubmit,
   } = usePassword();
 
-  const isConfirmPasswordValid = computed<boolean>(
-    () => isPasswordValid.value && password.value === confirmPassword.value,
-  );
-  const isConfirmPasswordBlockingSubmit = computed<boolean>(
-    () => isPasswordBlockingSubmit.value || !isConfirmPasswordValid.value,
+  /**
+   * Confirm password must match the actual password
+   */
+  const isConfirmPasswordValid = computed<boolean>(() => password.value === confirmPassword.value);
+  /**
+   * Uses the `isConfirmPasswordValid`, but is also valid when nothing has been entered yet
+   */
+  const isConfirmPasswordInputValid = computed<boolean>(
+    () => !hasEnteredConfirmPassword.value || password.value === '' || isConfirmPasswordValid.value,
   );
 
   return {
     confirmPassword,
     hasEnteredConfirmPassword,
     isConfirmPasswordValid,
-    isConfirmPasswordBlockingSubmit,
-  };
-}
-
-export function useRememberMe() {
-  return {
-    rememberMe,
+    isConfirmPasswordInputValid,
   };
 }
