@@ -28,12 +28,14 @@
             <span class="flex-1">Send Install Event</span>
             <img src="../../assets/ic_chevron_right.svg" />
           </side-navigation-button>
-          <side-navigation-button
-            :class="{ 'cursor-default': !isExtensionInstalled }"
-            @click="openPlayerSettings"
-          >
-            <span class="flex-1">Player Settings</span>
-            <img src="../../assets/ic_chevron_right.svg" />
+          <side-navigation-button :disabled="!isExtensionInstalled" @click="openPlayerSettings">
+            <span class="flex-1" :class="{ 'text-opacity-medium': !isExtensionInstalled }"
+              >Player Settings</span
+            >
+            <img
+              :class="{ hidden: !isExtensionInstalled }"
+              src="../../assets/ic_chevron_right.svg"
+            />
           </side-navigation-button>
         </side-navigation-group>
       </template>
