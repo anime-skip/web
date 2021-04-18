@@ -2,10 +2,15 @@
   <div class="flex flex-col min-h-screen">
     <nav-bar
       class="fixed left-0 top-0 right-0 z-10"
-      :items="rightItems"
-      home-title="Anime Skip"
       :home-icon="homeIcon"
+      home-title="Anime Skip"
       home-link="/"
+      :left-items="leftItems"
+      :right-items="rightItems"
+      :right-menu="isLoggedIn"
+      :right-menu-items="rightMenuItems"
+      :right-menu-text="username"
+      :route="path"
     />
     <div class="flex flex-col flex-grow flex-shrink-0 mt-16">
       <slot />
@@ -15,35 +20,52 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue';
+import { computed, defineComponent, ref, watch } from 'vue';
 import SiteFooter from '@/components/SiteFooter.vue';
 import { NavBar } from '@anime-skip/ui';
 import homeIcon from '@/assets/logo_nav.svg';
 import { useStore } from 'vuex';
-
-const getStartedLink = { title: 'Get Started', link: '/get-started' };
+import useAccount from '@/composition/account';
+import { useRoute } from 'vue-router';
 
 export default defineComponent({
   components: { NavBar, SiteFooter },
   setup() {
     const store = useStore();
     const isLoggedIn = computed(() => store.getters.IS_SIGNED_IN);
+    const { username } = useAccount();
 
     const leftItems = computed(() => []);
 
     const rightItems = computed(() => {
-      if (!isLoggedIn.value) return [getStartedLink, { title: 'Log In', link: '/log-in' }];
-
-      return [
-        getStartedLink,
-        { title: 'Account', link: '/account' },
-        { title: 'Log out', link: '/log-out' },
-      ];
+      const items = [{ title: 'Get Started', link: '/get-started' }];
+      if (!isLoggedIn.value) {
+        items.push({ title: 'Log In', link: '/log-in' });
+      }
+      return items;
     });
+    const rightMenuItems = computed(() => [
+      { title: 'Account', link: '/account' },
+      { title: 'Log Out', link: '/log-out' },
+    ]);
+
+    const route = useRoute();
+    const path = ref('');
+    watch(
+      () => route.path,
+      newPath => {
+        path.value = newPath;
+      },
+    );
 
     return {
+      leftItems,
       rightItems,
+      rightMenuItems,
       homeIcon,
+      isLoggedIn,
+      username,
+      path,
     };
   },
 });
