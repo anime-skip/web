@@ -54,17 +54,17 @@
         <span v-if="!isExtensionInstalled" class="text-error">Extension not installed</span>
       </div>
       <p class="body-1 text-on-surface text-opacity-high">
-        <strong class="text-primary">If you have an account</strong> and are signed in, there are
-        two ways to edit them: the "All Settings" button in the extension's popup or on the video
-        player, or from you're
+        <i class="body-1 text-on-surface text-opacity-high">If you have an account</i> and are
+        signed in, there are two ways to edit them: the "All Settings" button in the extension's
+        popup or on the video player, or from you're
         <router-link to="/account" class="text-secondaryPalette-200 hover:underline"
           >account settings</router-link
         >.
       </p>
       <p class="body-1 text-on-surface text-opacity-high">
-        <strong class="text-primary">If you don't have an account</strong>, you can still customize
-        your keyboard shortcuts by right clicking on the extension's icon and selecting "Options" or
-        "Settings" depending on your browser.
+        <i class="body-1 text-on-surface text-opacity-high">If you don't have an account</i>, you
+        can still customize your keyboard shortcuts by right clicking on the extension's icon and
+        selecting "Options" or "Settings" depending on your browser.
       </p>
     </template>
   </Faq>
