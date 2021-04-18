@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@anime-skip/axios-api": "^1.1.2",
-    "@anime-skip/ui": "^0.0.36",
+    "@anime-skip/ui": "^0.0.39",
     "@types/node": "^14.14.37",
     "core-js": "^3.6.5",
     "vue": "^3.0.9",
