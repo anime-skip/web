@@ -7,7 +7,7 @@
 
     <section class="space-y-4">
       <h6>Update Username</h6>
-      <text-input :model-value="username" placeholder="Username" autocomplete="username" disabled>
+      <text-input v-model:value="username" placeholder="Username" autocomplete="username" disabled>
         <template #left-icon="slotProps">
           <icon-account :active="slotProps.active" :disabled="slotProps.disabled" />
         </template>
@@ -17,7 +17,7 @@
 
     <section class="space-y-4">
       <h6>Update Email</h6>
-      <text-input :model-value="email" placeholder="Email" autocomplete="email" disabled>
+      <text-input v-model:value="email" placeholder="Email" autocomplete="email" disabled>
         <template #left-icon="slotProps">
           <icon-email :active="slotProps.active" :disabled="slotProps.disabled" />
         </template>
