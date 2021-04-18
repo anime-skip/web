@@ -1,6 +1,6 @@
 <template>
   <NavAndFooterLayout>
-    <div class="min-h-screen pt-16 flex flex-col px-16">
+    <div class="min-h-90vh flex flex-col px-16">
       <div class="flex flex-col flex-1 justify-center">
         <div
           class="card w-full max-w-lg overflow-hidden lg:max-w-login-card mx-auto my-16 lg:flex lg:rounded-2xl lg:framing-shadow lg:min-h-450px"
@@ -16,7 +16,7 @@
             class="w-full lg:w-50% lg:px-16 lg:py-16 lg:self-center"
           >
             <section>
-              <div v-if="shouldShowAlreadyLoggedIn" class="space-y-4">
+              <div v-if="shouldShowAlreadyLoggedIn" class="space-y-6">
                 <h5>Already logged in</h5>
                 <div class="flex space-x-4">
                   <raised-button @click="followRedirect">Continue</raised-button>
@@ -101,6 +101,10 @@ export default defineComponent({
 
 .min-w-256px {
   min-width: 192px;
+}
+
+.min-h-90vh {
+  min-height: 90vh;
 }
 
 @media (min-width: 1024px) {

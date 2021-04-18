@@ -1,6 +1,6 @@
 <template>
   <NavAndFooterLayout>
-    <div class="mt-16 px-6">
+    <div class="px-6">
       <div class="max-w-screen-lg mx-auto space-y-4">
         <div class="h-24" />
         <h4>Get Started</h4>

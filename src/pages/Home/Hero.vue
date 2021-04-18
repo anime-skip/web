@@ -1,5 +1,5 @@
 <template>
-  <header class="bg-control mt-16 text-center md:text-left">
+  <header class="bg-control text-center md:text-left">
     <div id="stars" class="h-full flex items-center justify-center pb-16">
       <div class="grid justify-items-center md:justify-items-start">
         <h1 class="text-5xl md:text-6xl font-bold md:-mb-4">Anime Skip</h1>

@@ -7,7 +7,7 @@
       :home-icon="homeIcon"
       home-link="/"
     />
-    <div class="flex flex-col flex-grow flex-shrink-0">
+    <div class="flex flex-col flex-grow flex-shrink-0 mt-16">
       <slot />
     </div>
     <SiteFooter class="footer" />
