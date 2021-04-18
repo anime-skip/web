@@ -48,16 +48,16 @@ const routes: RouteRecordRaw[] = [
       },
     ],
   },
-  // {
-  //   path: '/forgot-password',
-  //   component: () => import('./pages/LogIn/index.vue'),
-  //   children: [
-  //     {
-  //       path: '',
-  //       component: () => import('./pages/LogIn/ForgotPasswordForm.vue'),
-  //     },
-  //   ],
-  // },
+  {
+    path: '/forgot-password',
+    component: () => import('./pages/LogIn/index.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('./pages/LogIn/ForgotPasswordForm.vue'),
+      },
+    ],
+  },
 
   /* Account Management */
 
