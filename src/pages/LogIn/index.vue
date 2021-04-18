@@ -1,6 +1,6 @@
 <template>
   <NavAndFooterLayout>
-    <div class="min-h-90vh flex flex-col px-16">
+    <div class="min-h-90vh flex flex-col px-8 lg:px-16">
       <div class="flex flex-col flex-1 justify-center">
         <div
           class="card w-full max-w-lg overflow-hidden lg:max-w-login-card mx-auto my-16 lg:flex lg:rounded-2xl lg:framing-shadow lg:min-h-450px"
@@ -13,7 +13,7 @@
           </section>
           <loading-overlay
             :is-loading="isLoggingIn"
-            class="w-full lg:w-50% lg:px-16 lg:py-16 lg:self-center"
+            class="w-full lg:w-50% px-4 box-border lg:px-16 lg:py-16 lg:self-center"
           >
             <section>
               <div v-if="shouldShowAlreadyLoggedIn" class="space-y-6">
