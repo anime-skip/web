@@ -58,6 +58,16 @@ const routes: RouteRecordRaw[] = [
       },
     ],
   },
+  {
+    path: '/log-out',
+    component: () => import('./pages/LogIn/index.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('./pages/LogIn/LogOut.vue'),
+      },
+    ],
+  },
 
   /* Account Management */
 

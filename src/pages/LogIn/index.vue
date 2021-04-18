@@ -12,11 +12,11 @@
             <h6 class="font-bold text-on-surface text-opacity-medium">watch anime like a pro</h6>
           </section>
           <loading-overlay
-            :is-loading="isSigningIn"
+            :is-loading="isLoggingIn"
             class="w-full lg:w-50% lg:px-16 lg:py-16 lg:self-center"
           >
             <section>
-              <div v-if="isSignedIn" class="space-y-4">
+              <div v-if="shouldShowAlreadyLoggedIn" class="space-y-4">
                 <h5>Already logged in</h5>
                 <div class="flex space-x-4">
                   <raised-button @click="followRedirect">Continue</raised-button>
@@ -28,7 +28,7 @@
           </loading-overlay>
         </div>
       </div>
-      <RecaptchaFooter v-if="!isSignedIn" class="justify-self-end" show-re-captcha-message />
+      <RecaptchaFooter v-if="!isLoggedIn" class="justify-self-end" show-re-captcha-message />
     </div>
   </NavAndFooterLayout>
 </template>
@@ -55,7 +55,10 @@ export default defineComponent({
     const router = useRouter();
     const route = useRoute();
 
-    const isSignedIn = computed<boolean>(() => store.getters.IS_SIGNED_IN);
+    const isLoggedIn = computed<boolean>(() => store.getters.IS_SIGNED_IN);
+    const shouldShowAlreadyLoggedIn = computed<boolean>(
+      () => isLoggedIn.value && route.path !== '/log-out',
+    );
     const followRedirect = () => {
       const redirectUrl = (route.query.redirect as string | undefined) || LOG_IN_REDIRECT;
       router.push({ path: redirectUrl });
@@ -64,14 +67,15 @@ export default defineComponent({
       store.dispatch(ActionTypes.LOG_OUT, undefined);
     };
 
-    const { isLoading: isSigningIn } = useStoreRequestState(
+    const { isLoading: isLoggingIn } = useStoreRequestState(
       s => s.state.signInRequestState,
       requestState => store.commit(MutationTypes.LOG_IN_REQUEST_STATE, requestState),
     );
 
     return {
-      isSignedIn,
-      isSigningIn,
+      isLoggedIn,
+      isLoggingIn,
+      shouldShowAlreadyLoggedIn,
       followRedirect,
       logOut,
     };
