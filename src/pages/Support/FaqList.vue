@@ -6,9 +6,9 @@
     <template #default>
       <p class="body-1 text-on-surface text-opacity-high">
         Make sure you've followed the
-        <router-link to="/get-started" class="text-secondaryPalette-200 hover:underline"
-          >getting started guide</router-link
-        >
+        <router-link to="/get-started" class="text-secondaryPalette-200 hover:underline">
+          getting started guide
+        </router-link>
         and you've properly installed the Anime Skip web extension. Also keep in mind that Anime
         Skip does not work on every streaming service, so make sure you're watching on one of the
         <a href="/#supported-services" class="text-secondaryPalette-200 hover:underline"
@@ -30,9 +30,9 @@
     <template #default>
       <p class="body-1 text-on-surface text-opacity-high">
         Head over to the
-        <router-link to="/contributing" class="text-secondaryPalette-200 hover:underline"
-          >contributing guidelines</router-link
-        >
+        <router-link to="/contributing" class="text-secondaryPalette-200 hover:underline">
+          contributing guidelines
+        </router-link>
         for an overview, best practices, and tips and tricks.
       </p>
     </template>
@@ -42,9 +42,9 @@
     <template #default>
       <p class="body-1 text-on-surface text-opacity-high">
         Keyboard shortcuts are apart of the web extension. Make sure you have followed the
-        <router-link to="/get-started" class="text-secondaryPalette-200 hover:underline"
-          >getting started guide</router-link
-        >
+        <router-link to="/get-started" class="text-secondaryPalette-200 hover:underline">
+          getting started guide
+        </router-link>
         and installed the web extension.
       </p>
       <div class="flex space-x-4 items-center">
@@ -57,8 +57,8 @@
         <i class="body-1 text-on-surface text-opacity-high">If you have an account</i> and are
         signed in, there are two ways to edit them: the "All Settings" button in the extension's
         popup or on the video player, or from you're
-        <router-link to="/account" class="text-secondaryPalette-200 hover:underline"
-          >account settings</router-link
+        <router-link to="/account" class="text-secondaryPalette-200 hover:underline">
+          account settings </router-link
         >.
       </p>
       <p class="body-1 text-on-surface text-opacity-high">

@@ -23,13 +23,11 @@
 import { defineComponent } from 'vue';
 import SectionWrapper from './SectionWrapper.vue';
 import RecentEpisodesList from '../../components/RecentEpisodesList.vue';
-import { Card } from '@anime-skip/ui';
 
 export default defineComponent({
   components: {
     SectionWrapper,
     RecentEpisodesList,
-    Card,
   },
   setup() {},
 });

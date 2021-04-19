@@ -3,7 +3,6 @@ import { Api } from '@anime-skip/types';
 import { LocalStorageKeys } from './utils/enums';
 import TimeUtils from './utils/time';
 import { UNAUTHORIZED_ERROR_MESSAGE } from './utils/constants';
-import { sleep } from './utils';
 
 export function persistTokens(accessToken: string, refreshToken: string): void;
 export function persistTokens(accessToken: undefined, refreshToken: undefined): void;

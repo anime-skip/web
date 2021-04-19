@@ -4,9 +4,9 @@
 
     <p class="body-2 text-on-surface text-opacity-medium pb-4">
       Already have an acount?
-      <router-link :to="logInLink" class="text-secondaryPalette-200 hover:underline"
-        >Log in</router-link
-      >
+      <router-link :to="logInLink" class="text-secondaryPalette-200 hover:underline">
+        Log in
+      </router-link>
     </p>
 
     <text-input

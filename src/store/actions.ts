@@ -8,7 +8,6 @@ import api, { persistTokens } from '@/api';
 import { RequestState } from '@/utils/enums';
 import Errors from '@/utils/errors';
 import plugins from '@/plugins';
-import { sleep } from '@/utils';
 
 //#region Types
 type AugmentedActionContext = {

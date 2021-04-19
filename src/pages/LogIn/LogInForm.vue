@@ -4,9 +4,9 @@
 
     <p class="body-2 text-on-surface text-opacity-medium pb-4">
       Need to create an account?
-      <router-link :to="signUpLink" class="text-secondaryPalette-200 hover:underline"
-        >Sign up</router-link
-      >
+      <router-link :to="signUpLink" class="text-secondaryPalette-200 hover:underline">
+        Sign up
+      </router-link>
     </p>
 
     <text-input
@@ -47,8 +47,9 @@
         v-if="true"
         to="/forgot-password"
         class="text-on-surface text-opacity-medium hover:underline"
-        >Forgot password?</router-link
       >
+        Forgot password?
+      </router-link>
     </div>
   </div>
 </template>
