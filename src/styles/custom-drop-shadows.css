@@ -1,0 +1,15 @@
+.framing-shadow {
+  box-shadow: 0px 4px 24px 12px rgba(0, 0, 0, 0.3);
+}
+
+@media (min-width: 768px) {
+  .md\:framing-shadow {
+    box-shadow: 0px 4px 24px 12px rgba(0, 0, 0, 0.3);
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\:framing-shadow {
+    box-shadow: 0px 4px 24px 12px rgba(0, 0, 0, 0.3);
+  }
+}

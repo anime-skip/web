@@ -1,12 +1,12 @@
 import { createApp } from 'vue';
 import plugins from '@/plugins';
 import App from '@/App.vue';
-import '@/scss/style.scss';
-import '@/scss/theme.scss';
+import '@anime-skip/ui/style.css';
+import './styles/hide-recaptcha.css';
+import './styles/custom-drop-shadows.css';
 
 import { VueReCaptcha } from 'vue-recaptcha-v3';
 
-import TextInput from '@/components/TextInput.vue';
 import Checkbox from '@/components/Checkbox.vue';
 import NavAndFooterLayout from '@/layouts/NavAndFooter.vue';
 
@@ -15,7 +15,6 @@ if (import.meta.env.VITE_APP_TITLE != null) {
 }
 
 createApp(App)
-  .component('text-input', TextInput)
   .component('checkbox', Checkbox)
   .component('NavAndFooterLayout', NavAndFooterLayout)
   .use(plugins.router)

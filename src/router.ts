@@ -7,11 +7,6 @@ const routes: RouteRecordRaw[] = [
     component: () => import('./pages/Home/index.vue'),
   },
   {
-    path: '/sign-up',
-    alias: '/log-in',
-    component: () => import('./pages/SignIn/index.vue'),
-  },
-  {
     path: '/get-started',
     component: () => import('./pages/GetStarted/index.vue'),
   },
@@ -23,6 +18,58 @@ const routes: RouteRecordRaw[] = [
     path: '/contributing',
     component: () => import('./pages/Contributing.vue'),
   },
+
+  /* Policies */
+
+  {
+    path: '/policies/privacy-policy',
+    component: () => import('./pages/PrivacyPolicy.vue'),
+  },
+
+  /* Authentication Pages */
+
+  {
+    path: '/log-in',
+    component: () => import('./pages/LogIn/index.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('./pages/LogIn/LogInForm.vue'),
+      },
+    ],
+  },
+  {
+    path: '/sign-up',
+    component: () => import('./pages/LogIn/index.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('./pages/LogIn/SignUpForm.vue'),
+      },
+    ],
+  },
+  {
+    path: '/forgot-password',
+    component: () => import('./pages/LogIn/index.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('./pages/LogIn/ForgotPasswordForm.vue'),
+      },
+    ],
+  },
+  {
+    path: '/log-out',
+    component: () => import('./pages/LogIn/index.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('./pages/LogIn/LogOut.vue'),
+      },
+    ],
+  },
+
+  /* Account Management */
 
   {
     path: '/account',
@@ -36,15 +83,18 @@ const routes: RouteRecordRaw[] = [
         component: () => import('./pages/Account/AccountInfo.vue'),
       },
       {
+        path: 'stats',
+        component: () => import('./pages/Account/Stats.vue'),
+      },
+      {
+        path: 'security',
+        component: () => import('./pages/Account/Security.vue'),
+      },
+      {
         path: 'email-verification',
         component: () => import('./pages/Account/EmailVerification.vue'),
       },
     ],
-  },
-
-  {
-    path: '/policies/privacy-policy',
-    component: () => import('./pages/PrivacyPolicy.vue'),
   },
 
   /* 404 */
@@ -59,6 +109,9 @@ export default function initializeRouter(store: Store): Router {
   const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes,
+    scrollBehavior() {
+      return { top: 0, left: 0 };
+    },
   });
   router.beforeEach((to, _, next) => {
     if (!to.meta.authenticated || store.getters.IS_SIGNED_IN) {

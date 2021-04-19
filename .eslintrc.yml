@@ -26,6 +26,8 @@ overrides:
     excludedFiles: ['*.d.ts']
     extends:
       - plugin:@typescript-eslint/recommended
+    rules:
+      '@typescript-eslint/explicit-module-boundary-types': off
   - files: ['src/composition/*.ts']
     rules:
       '@typescript-eslint/explicit-module-boundary-types': off
@@ -39,6 +41,7 @@ overrides:
       vue/html-self-closing: off
       vue/html-closing-bracket-newline: off
       vue/html-indent: off
+      vue/multiline-html-element-content-newline: off
   - files: ['*.d.ts']
     rules:
       no-unused-vars: off

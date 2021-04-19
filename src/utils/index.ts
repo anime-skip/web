@@ -63,3 +63,7 @@ export function detectBrowser(): BrowserType {
   return 'unsupported';
 }
 /* eslint-enable @typescript-eslint/ban-ts-comment */
+
+export function sleep(ms: number): Promise<void> {
+  return new Promise<void>(res => setTimeout(res, ms));
+}

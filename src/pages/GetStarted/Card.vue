@@ -1,25 +1,61 @@
 <template>
-  <div class="Card" :class="{ done, selected }">
-    <div class="left">
-      <div class="number">
-        <span v-if="!done">{{ number }}</span>
-        <img v-else src="../../assets/ic_done.svg" />
+  <div
+    :class="{
+      'pb-24': selected,
+    }"
+  >
+    <div
+      class="GetStartedCard p-7 rounded-3xl transition-all flex space-x-6 border-primary"
+      :class="{
+        done,
+        'bg-control': !selected && !done,
+        'selected framing-shadow border-2': selected,
+      }"
+    >
+      <div class="flex-grow-0">
+        <div
+          class="w-9 h-9 rounded-full flex items-center justify-center transition-all"
+          :class="{
+            'bg-primary': !done,
+            'bg-control': done,
+          }"
+        >
+          <span
+            v-if="!done"
+            class="font-heading text-on-primary font-extrabold mt-1 text-xl transition-all"
+            >{{ number }}</span
+          >
+          <icon-check v-else class="w-6 fill-on-surface" />
+        </div>
       </div>
-    </div>
-    <div class="right">
-      <h2 @click="toggleExpanded">{{ title }}</h2>
-      <slot v-if="shouldShowMessage" name="message" />
-      <div v-if="shouldShowButtons" class="buttons">
-        <slot name="buttons" />
+      <div class="Content flex-1 flex-shrink-0 space-y-6">
+        <h4
+          class="mt-1 transition-all"
+          :class="{
+            'opacity-medium': done && !expanded,
+            'cursor-pointer': done,
+          }"
+          @click="toggleExpanded"
+        >
+          {{ title }}
+        </h4>
+        <slot v-if="shouldShowMessage" name="message" />
+        <div v-if="shouldShowButtons" class="flex gap-4 flex-wrap py-1">
+          <slot name="buttons" />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import IconCheck from '@/assets/IconCheck.vue';
 import { defineComponent, computed, ref } from 'vue';
 
 export default defineComponent({
+  components: {
+    IconCheck,
+  },
   props: {
     number: { type: Number, default: undefined },
     title: { type: String, default: undefined },
@@ -51,73 +87,23 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss">
-@import '@/scss/theme.scss';
+<style>
+.GetStartedCard {
+}
 
-.Card {
-  padding: 28px;
-  background-color: $dark400;
-  border-radius: 16px;
-  transition: 500ms;
-  display: flex;
-  flex-direction: row;
+.GetStartedCard .flex-basis-0 {
+  flex-basis: 0;
+}
 
-  .left {
-    flex-grow: 0;
-  }
+.GetStartedCard .mt-5px {
+  margin-top: 8px;
+}
 
-  .right {
-    flex-grow: 1;
-    flex-basis: 0;
-
-    & > * {
-      margin-bottom: 24px;
-      &:last-child {
-        margin-bottom: 4px;
-      }
-    }
-  }
-
-  .number {
-    background-color: $primary500;
-    width: 36px;
-    height: 36px;
-    margin-right: 24px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    span {
-      font-family: $overpassFontFamily;
-      color: $textTitleColor;
-      font-weight: 700;
-      font-size: 24px;
-      margin-top: 5px;
-    }
-  }
-
-  .buttons {
-    display: flex;
-    flex-direction: row;
-    row-gap: 8px;
-    gap: 8px;
-    flex-wrap: wrap;
-    & > * {
-      margin-right: 24px;
-    }
-  }
-
-  h2 {
-    margin-top: 2px;
-    min-height: 36px;
-    line-height: 36px;
-    align-self: flex-start;
-  }
+/* .Card {
 
   &.selected {
-    background-color: $backgroundColor;
-    border: 2px solid $primary500;
+    // background-color: $backgroundColor;
+    // border: 2px solid $primary500;
     padding: 24px;
     margin-top: 0px !important;
     margin-bottom: 64px !important;
@@ -137,12 +123,12 @@ export default defineComponent({
     }
 
     .number {
-      background-color: $dark400;
+      // background-color: $dark400;
     }
 
     h2 {
-      color: $textDisabledColor;
+      // color: $textDisabledColor;
     }
   }
-}
+} */
 </style>

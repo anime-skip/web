@@ -1,107 +1,53 @@
 <template>
-  <div class="AccountInfo">
-    <h2>Account Info</h2>
-    <p>During the beta, none of this information can be updated</p>
-    <div class="user-details">
-      <label>Username</label>
-      <text-input :model-value="username" placeholder="Username" autocomplete="username" disabled>
-        <template #left>
-          <img class="input-icon" src="../../assets/ic_account.svg" />
-        </template>
-      </text-input>
+  <div class="space-y-8">
+    <section class="space-y-4">
+      <h4>Account Info</h4>
+      <p class="body-2 text-error">Not available yet!</p>
+    </section>
 
-      <label>Email</label>
-      <text-input :model-value="email" placeholder="Email" autocomplete="email" disabled>
-        <template #left>
-          <img class="input-icon" src="../../assets/ic_email.svg" />
+    <section class="space-y-4">
+      <h6>Update Username</h6>
+      <text-input v-model:value="username" placeholder="Username" autocomplete="username" disabled>
+        <template #left-icon="slotProps">
+          <icon-account :active="slotProps.active" :disabled="slotProps.disabled" />
         </template>
       </text-input>
+      <raised-button disabled>Save</raised-button>
+    </section>
 
-      <label>Change Password</label>
-      <text-input
-        v-model="password"
-        type="password"
-        placeholder="Current password"
-        autocomplete="current-password"
-        disabled
-      >
-        <template #left>
-          <img class="input-icon" src="../../assets/ic_password.svg" />
+    <section class="space-y-4">
+      <h6>Update Email</h6>
+      <text-input v-model:value="email" placeholder="Email" autocomplete="email" disabled>
+        <template #left-icon="slotProps">
+          <icon-email :active="slotProps.active" :disabled="slotProps.disabled" />
         </template>
       </text-input>
-      <text-input
-        v-model="newPassword"
-        type="password"
-        placeholder="New password"
-        autocomplete="password"
-        disabled
-      >
-        <template #left>
-          <img class="input-icon" src="../../assets/ic_password.svg" />
-        </template>
-      </text-input>
-      <text-input
-        v-model="newPassword"
-        type="password"
-        placeholder="Retype new password"
-        autocomplete="password"
-        disabled
-      >
-        <template #left>
-          <img class="input-icon" src="../../assets/ic_password.svg" />
-        </template>
-      </text-input>
-    </div>
+      <raised-button disabled>Save</raised-button>
+    </section>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 import useAccount from '@/composition/account';
-import TextInput from '@/components/TextInput.vue';
+import { TextInput, RaisedButton } from '@anime-skip/ui';
+import IconEmail from '@/assets/IconEmail.vue';
+import IconAccount from '@/assets/IconAccount.vue';
 
 export default defineComponent({
-  components: { TextInput },
+  components: {
+    TextInput,
+    IconEmail,
+    RaisedButton,
+    IconAccount,
+  },
   setup() {
     const { username, email } = useAccount();
-    const password = ref<string>('');
-    const newPassword = ref<string>('');
-    const confirmPassword = ref<string>('');
+
     return {
       username,
       email,
-      password,
-      newPassword,
-      confirmPassword,
     };
   },
 });
 </script>
-
-<style scoped lang="scss">
-@import '@/scss/theme.scss';
-
-.AccountInfo {
-  .user-details {
-    margin-top: 8px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  label {
-    margin-top: 8px;
-    margin-bottom: 4px;
-    font-size: 14px;
-    color: $textSecondaryColor;
-  }
-
-  .TextInput {
-    margin-bottom: 8px;
-
-    .input-icon {
-      margin: 0 12px;
-      opacity: 0.48;
-    }
-  }
-}
-</style>

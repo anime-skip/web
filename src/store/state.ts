@@ -13,5 +13,4 @@ export const state: State = {
   account: undefined,
   preferences: undefined,
   signInRequestState: RequestState.SUCCESS,
-  signInError: undefined,
 };

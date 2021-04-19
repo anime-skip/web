@@ -7,7 +7,6 @@ import { RequestState } from '@/utils/enums';
 export type Mutations = {
   [MutationTypes.SET_ACCOUNT_INFO](state: State, account?: Api.Account): void;
   [MutationTypes.LOG_IN_REQUEST_STATE](state: State, requestState: RequestState): void;
-  [MutationTypes.LOG_IN_ERROR](state: State, error: string | undefined): void;
 };
 
 export const mutations: MutationTree<State> & Mutations = {
@@ -22,9 +21,5 @@ export const mutations: MutationTree<State> & Mutations = {
 
   [MutationTypes.LOG_IN_REQUEST_STATE](state, requestState) {
     state.signInRequestState = requestState;
-  },
-
-  [MutationTypes.LOG_IN_ERROR](state, error) {
-    state.signInError = error;
   },
 };

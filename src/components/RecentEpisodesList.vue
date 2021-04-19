@@ -1,34 +1,33 @@
 <template>
-  <div class="RecentEpisodesList">
-    <ul v-if="requestState === RequestState.SUCCESS">
-      <li v-for="episode of recentEpisodes" :key="episode.id">
-        <div class="left">
-          <p class="title">
-            {{ listItemEpisode(episode) }}
-            <!-- TODO! What is this? -->
-            <span class="episode" />
-          </p>
-          <p class="subtitle">
-            <span class="show">{{ listItemShow(episode.show) }}</span>
-            <span>{{ listItemSubtitle(episode) }}</span>
-          </p>
-        </div>
-        <div class="right">
-          <p class="time">{{ listItemTimeSinceCreated(episode) }} ago</p>
-        </div>
-      </li>
-    </ul>
-    <div v-else-if="requestState === RequestState.LOADING" class="loading">
-      <LoadingIndicator />
-    </div>
-    <div v-else class="error">
-      <div>
-        <img src="../assets/ic_error.svg" />
+  <loading-overlay class="min-h-item" :is-loading="isLoading">
+    <div v-if="isFailure" class="p-8 flex flex-col items-center space-y-4">
+      <div class="flex space-x-4">
+        <icon-error class="fill-error" />
         <span>Hmm, something went wrong</span>
       </div>
-      <button class="button primary retry" @click="fetchEpisodes">Retry</button>
+      <raised-button @click="fetchEpisodes">Retry</raised-button>
     </div>
-  </div>
+    <ul v-else class="divide-y divide-control">
+      <li
+        v-for="episode of recentEpisodes"
+        :key="episode.id"
+        class="flex items-center px-6 pt-3 pb-4"
+      >
+        <div class="flex-1 flex flex-col space-y-1">
+          <p class="text-lg text-on-surface font-medium">
+            {{ listItemEpisode(episode) }}
+          </p>
+          <p class="body-2">
+            <span class="text-primary">{{ listItemShow(episode.show) }}</span>
+            <span class="text-on-surface text-opacity-high">{{ listItemSubtitle(episode) }}</span>
+          </p>
+        </div>
+        <p class="body-1 text-on-surface text-opacity-medium pt-1">
+          {{ listItemTimeSinceCreated(episode) }} ago
+        </p>
+      </li>
+    </ul>
+  </loading-overlay>
 </template>
 
 <script lang="ts">
@@ -37,29 +36,25 @@ import { RequestState } from '@/utils/enums';
 import { Api } from '@anime-skip/types';
 import { defineComponent, ref } from 'vue';
 import EpisodeUtils from '@/utils/EpisodeUtils';
-import LoadingIndicator from '@/components/LoadingIndicator.vue';
 import TimeUtils from '@/utils/time';
+import { RaisedButton, LoadingOverlay } from '@anime-skip/ui';
+import IconError from '@/assets/IconError.vue';
+import { useRequestState } from '@/composition/request-state';
 
 export default defineComponent({
-  components: { LoadingIndicator },
+  components: { LoadingOverlay, RaisedButton, IconError },
   setup() {
-    const requestState = ref(RequestState.LOADING);
+    const { isLoading, isFailure, tryCatch } = useRequestState(RequestState.LOADING);
     const recentEpisodes = ref<(Api.Episode & { createdAt: number })[]>([]);
-    const fetchEpisodes = async (): Promise<void> => {
-      try {
-        requestState.value = RequestState.LOADING;
-        recentEpisodes.value = await api.recentlyAddedEpisodes(10);
-        requestState.value = RequestState.SUCCESS;
-      } catch (err) {
-        requestState.value = RequestState.FAILURE;
-      }
-    };
+    const fetchEpisodes = tryCatch(async () => {
+      recentEpisodes.value = await api.recentlyAddedEpisodes(10);
+    });
 
     return {
       fetchEpisodes,
       recentEpisodes,
-      requestState,
-      RequestState,
+      isLoading,
+      isFailure,
     };
   },
   mounted(): void {
@@ -104,9 +99,12 @@ export default defineComponent({
 });
 </script>
 
-<style scoped lang="scss">
-@import '@/scss/theme.scss';
+<style scoped lang="css">
+.min-h-item {
+  min-height: 128px;
+}
 
+/*
 .RecentEpisodesList {
   width: 100%;
   max-width: 600px;
@@ -115,7 +113,7 @@ export default defineComponent({
   flex-direction: column;
 
   @media only screen and (min-width: 600px) {
-    background-color: $backgroundColor;
+    // background-color: $backgroundColor;
     border-radius: 16px;
     box-shadow: 0px 8px 24px 8px rgba(0, 0, 0, 0.24);
   }
@@ -127,7 +125,7 @@ export default defineComponent({
       align-items: center;
       list-style: none;
       padding: 16px 24px;
-      border-bottom: 1px solid $dark400;
+      // border-bottom: 1px solid $dark400;
       &:last-child {
         border-bottom: none;
       }
@@ -144,21 +142,21 @@ export default defineComponent({
       }
 
       .title {
-        color: $textTitleColor;
+        // color: $textTitleColor;
         font-size: 17px;
       }
 
       .subtitle,
       .subtitle * {
-        color: $textSecondaryColor;
+        // color: $textSecondaryColor;
         font-size: 14px;
         .show {
-          color: $primary500;
+          // color: $primary500;
         }
       }
 
       .time {
-        color: $textDisabledColor;
+        // color: $textDisabledColor;
       }
     }
   }
@@ -188,4 +186,5 @@ export default defineComponent({
     }
   }
 }
+*/
 </style>

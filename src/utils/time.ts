@@ -1,7 +1,10 @@
-export default class TimeUtils {
-  public static SECONDS = 1000;
-  public static MINUTES = 60 * TimeUtils.SECONDS;
-  public static HOURS = 60 * TimeUtils.MINUTES;
-  public static DAYS = 24 * TimeUtils.HOURS;
-  public static WEEKS = 7 * TimeUtils.DAYS;
+// prettier-ignore
+const TimeUtils = {
+  SECONDS:                  1000,
+  MINUTES:             60 * 1000,
+  HOURS:          60 * 60 * 1000,
+  DAYS:      24 * 60 * 60 * 1000,
+  WEEKS: 7 * 24 * 60 * 60 * 1000,
 }
+
+export default TimeUtils;

@@ -1,11 +1,14 @@
 <template>
   <NavAndFooterLayout>
-    <div class="GetStarted">
-      <div class="column">
-        <h1>
-          Get Started
-          <p>Start binging anime faster than ever before in just 4 easy steps</p>
-        </h1>
+    <div class="px-6">
+      <div class="max-w-screen-lg mx-auto space-y-4">
+        <div class="h-24" />
+        <h4>Get Started</h4>
+        <p class="body-1 text-on-surface text-opacity-medium">
+          Start binging anime faster than ever before in 4 easy steps
+        </p>
+        <div class="h-8" />
+
         <card
           title="Download the web extension"
           :done="isExtensionInstalled"
@@ -13,37 +16,38 @@
           :number="1"
         >
           <template #message>
-            <p :class="{ secondary: isExtensionInstalled }">
+            <p class="body-1 text-on-surface text-opacity-high">
               Anime Skip Player requires the web extension be installed on your browser before you
-              can use the service. Click
+              can use the service.
               <a
                 href="/support#web-ext-permissions"
                 target="_blank"
-                :class="{ secondary: isExtensionInstalled }"
-                >here</a
+                class="text-secondaryPalette-300 hover:underline"
+                >Click here</a
               >
               to learn more the permissions it requires.
             </p>
-            <p :class="{ secondary: isExtensionInstalled }">
+            <p class="body-1 text-on-surface text-opacity-high">
               You may need to reload this page after installing.
             </p>
           </template>
           <template #buttons>
-            <a v-if="isChrome || !isFirefox" :href="chromeUrl" class="button primary">
-              Google Chrome
-            </a>
-            <a
-              v-if="isFirefox || !isChrome"
-              :href="firefoxUrl"
-              target="_blank"
-              class="button primary"
-            >
-              Firefox
-            </a>
-            <a v-if="isFirefox" :href="chromeUrl" target="_blank" class="button transparent">
-              Google Chrome
-            </a>
-            <a v-if="isChrome" :href="firefoxUrl" class="button transparent">Firefox</a>
+            <template v-if="isFirefox">
+              <raised-button>
+                <a :href="firefoxUrl" target="_blank">Firefox</a>
+              </raised-button>
+              <flat-button transparent>
+                <a :href="chromeUrl" target="_blank">Google Chrome</a>
+              </flat-button>
+            </template>
+            <template v-else>
+              <raised-button>
+                <a :href="chromeUrl" target="_blank">Google Chrome</a>
+              </raised-button>
+              <flat-button transparent>
+                <a :href="firefoxUrl" target="_blank">Firefox</a>
+              </flat-button>
+            </template>
           </template>
         </card>
 
@@ -54,44 +58,46 @@
           :number="2"
         >
           <template #message>
-            <ul :class="{ secondary: accountStepComplete }">
-              <p :class="{ secondary: accountStepComplete }">
-                Without an account, the Anime Skip Player will not let you:
-              </p>
-              <br />
-              <li>Contributing episodes and timestamps to the community</li>
-              <li>Automatic timestamp skipping</li>
-              <li>Change playback speed</li>
+            <p class="body-1 text-on-surface text-opacity-high">
+              Without an account, the Anime Skip Player will not let you:
+            </p>
+            <ul>
+              <li class="body-1 text-on-surface text-opacity-high">
+                Contributing episodes and timestamps to the community
+              </li>
+              <li class="body-1 text-on-surface text-opacity-high">
+                Automatically skip timestamps
+              </li>
+              <li class="body-1 text-on-surface text-opacity-high">Change playback speed</li>
             </ul>
             <template v-if="notCreatingAccount && !isLoggedIn">
-              <p class="error-text">
+              <p class="body-1 text-error">
                 If you choose not to create an account, you'll be missing out on the main features
                 that make the player awesome. Those features are disabled as an incentive for users
-                to contribute - contributing is easy to do and the community will reap the benefits
+                to contribute; contributing is easy to do and the community will reap the benefits
                 of more episodes and timestamps.
               </p>
-              <p class="error-text">
+              <p class="body-1 text-error">
                 Anime Skip will not send you needless emails and we do not sell you personal data.
               </p>
             </template>
           </template>
           <template #buttons>
-            <router-link
+            <raised-button
               v-if="!isLoggedIn"
-              :to="{ path: '/sign-up', query: { redirect: '/get-started' } }"
-              class="button primary"
+              @click="router.push({ path: '/sign-up', query: { redirect: '/get-started' } })"
             >
               Create Account
-            </router-link>
+            </raised-button>
             <template v-if="!accountStepComplete">
-              <button
+              <raised-button
                 v-if="notCreatingAccount && !isLoggedIn"
-                class="error"
+                error
                 @click="setupAccountLaterForce"
               >
                 Setup Account Later
-              </button>
-              <button v-else class="transparent outline" @click="setupAccountLater">Skip</button>
+              </raised-button>
+              <flat-button v-else transparent @click="setupAccountLater">Skip</flat-button>
             </template>
           </template>
         </card>
@@ -103,64 +109,71 @@
           :number="3"
         >
           <template #message>
-            <p :class="{ secondary: isExtensionLoggedIn }">
+            <p class="body-1 text-on-surface text-opacity-high">
               Once you're logged in, you can setup the timestamps you want to skip.
             </p>
-            <p :class="{ secondary: isExtensionLoggedIn }">
+            <p class="body-1 text-on-surface text-opacity-high">
               There are a lot of different types of timestamps in anime, and you should be able to
               skip only what you want. To learn more about what each timestamp represents, checkout
               the
               <a
                 href="/support#timestamp-types"
                 target="_blank"
-                :class="{ secondary: isExtensionLoggedIn }"
+                class="text-secondaryPalette-300 hover:underline"
               >
                 FAQ page</a
-              >
-              for a summary of each.
+              >.
             </p>
           </template>
           <template v-if="!isExtensionLoggedIn" #buttons>
-            <button class="primary" :class="{ disabled: !isExtensionInstalled }" @click="openLogin">
+            <raised-button :disabled="!isExtensionInstalled" @click="openLogin">
               Login
-            </button>
-            <button class="transparent outline" @click="logIntoExtension">Skip</button>
+            </raised-button>
+            <flat-button transparent @click="logIntoExtension">Skip</flat-button>
           </template>
         </card>
 
         <card title="Watch some anime!" :selected="currentCard === 4" :number="4">
           <template #message>
-            <p>
+            <p class="body-1 text-on-surface text-opacity-high">
               You're good to go! Head over to one of the supported services and start watching some
               anime!
             </p>
+            <p class="body-1 text-on-surface text-opacity-high">
+              Join the Discord! There you'll find:
+            </p>
             <ul>
-              <p>Join the Discord! There you'll find:</p>
-              <br />
-              <li>Announcements</li>
-              <li>Support</li>
-              <li>Feature Requests</li>
-              <li>Bug reports</li>
-              <br />
-              <p>
-                Since the community is just getting started, it's pretty quiet, but we'd love to
-                have you!
-              </p>
+              <li class="body-1 text-on-surface text-opacity-high">Announcements</li>
+              <li class="body-1 text-on-surface text-opacity-high">Support</li>
+              <li class="body-1 text-on-surface text-opacity-high">Feature Requests</li>
+              <li class="body-1 text-on-surface text-opacity-high">Bug reports</li>
             </ul>
+            <p class="body-1 text-on-surface text-opacity-high">
+              Since the community is just getting started, it's pretty quiet, but we'd love to have
+              you!
+            </p>
           </template>
           <template #buttons>
-            <a href="https://discord.gg/9wVhwZg" class="button primary">Join the Discord</a>
-            <a class="button transparent outline" href="/#supported-services">Supported Servces</a>
-            <a href="/#recently-added" class="button transparent outline">Recently Added Shows</a>
+            <raised-button>
+              <a href="https://discord.gg/9wVhwZg" class="button primary">Join the Discord</a>
+            </raised-button>
+            <flat-button transparent>
+              <a class="button transparent outline" href="/#supported-services"
+                >Supported Servces</a
+              >
+            </flat-button>
+            <flat-button transparent>
+              <a href="/#recently-added" class="button transparent outline">Recently Added Shows</a>
+            </flat-button>
           </template>
         </card>
 
-        <div v-if="isDev">
-          <button class="dev transparent" @click="sendMockInstallMessage">
-            Send install event
-          </button>
-          <button class="dev transparent" @click="sendMockLoginMessage">Send log in event</button>
+        <div v-if="isDev" class="flex space-x-4">
+          <raised-button dark @click="sendMockInstallMessage"> Send install event </raised-button>
+          <raised-button dark @click="sendMockLoginMessage"> Send log in event </raised-button>
         </div>
+
+        <div class="h-24" />
       </div>
     </div>
   </NavAndFooterLayout>
@@ -174,16 +187,17 @@ import useExtensionStatus from '@/composition/extension-status';
 import useExtensionInteraction from '@/composition/extension-interaction';
 import { useStore } from 'vuex';
 import { CHROME_STORE_URL, FIREFOX_STORE_URL } from '@/utils/constants';
+import { RaisedButton, FlatButton } from '@anime-skip/ui';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
-  components: { Card },
+  components: { Card, RaisedButton, FlatButton },
   setup() {
     const { sendMockInstallMessage, sendMockLoginMessage, openLogin } = useExtensionInteraction();
     const { isExtensionInstalled, isExtensionLoggedIn, logIntoExtension } = useExtensionStatus();
 
     // Browser
     const browser = detectBrowser();
-    const isChrome = browser === 'chrome';
     const isFirefox = browser === 'firefox';
 
     // Card Checks
@@ -212,7 +226,6 @@ export default defineComponent({
       sendMockLoginMessage,
       openLogin,
 
-      isChrome,
       isFirefox,
 
       isExtensionInstalled,
@@ -227,18 +240,18 @@ export default defineComponent({
       currentCard,
       chromeUrl: CHROME_STORE_URL,
       firefoxUrl: FIREFOX_STORE_URL,
+
+      router: useRouter(),
     };
   },
 });
 </script>
 
-<style lang="scss" scoped>
-@import '@/scss/theme.scss';
-
-.GetStarted {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+<style scoped>
+ul {
+  @apply list-inside list-disc pl-4;
+}
+/* .GetStarted {
 
   .column {
     width: 1080px + 2 * 24px;
@@ -268,7 +281,7 @@ export default defineComponent({
 
   ul.secondary,
   ul.secondary * {
-    color: $textSecondaryColor;
+    // color: $textSecondaryColor;
   }
 
   li {
@@ -276,45 +289,5 @@ export default defineComponent({
     margin-bottom: 8px;
   }
 
-  .transparent {
-    color: $textSecondaryColor;
-  }
-
-  .alpha-testers {
-    margin-top: 128px;
-
-    & > * {
-      margin-bottom: 24px;
-    }
-
-    .spacer {
-      height: 24px;
-    }
-
-    .highlight {
-      color: #009ce4;
-
-      &.red {
-        color: #e57373;
-      }
-    }
-
-    p {
-      line-height: 24px;
-    }
-
-    h2 {
-      margin-bottom: 16px;
-    }
-  }
-
-  code {
-    padding: 2px 6px;
-    background-color: rgba($color: #ffffff, $alpha: 0.12);
-    color: white;
-    border-radius: 3px;
-    font-family: monospace;
-    font-size: 16px;
-  }
-}
+} */
 </style>

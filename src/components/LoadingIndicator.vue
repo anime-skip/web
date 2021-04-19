@@ -33,8 +33,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import '@/scss/theme.scss';
-
 $offset: 177;
 $duration: 2s;
 
@@ -91,13 +89,13 @@ $duration: 2s;
 
   @keyframes colors {
     0% {
-      stroke: $secondary500;
+      // stroke: $secondary500;
     }
     50% {
-      stroke: $primary500;
+      // stroke: $primary500;
     }
     100% {
-      stroke: $secondary500;
+      // stroke: $secondary500;
     }
   }
 
