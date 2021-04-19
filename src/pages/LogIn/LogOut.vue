@@ -13,7 +13,7 @@ export default defineComponent({
     const store = useStore();
     const router = useRouter();
     onMounted(async () => {
-      await store.dispatch(ActionTypes.LOG_OUT);
+      await store.dispatch(ActionTypes.LOG_OUT, undefined);
       router.push('/log-in');
     });
   },
