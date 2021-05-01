@@ -1,7 +1,7 @@
 name: Run Checks
 description: Lint, test, build, check formatting, etc
 inputs:
-  npmAuthToken:
+  mode:
     required: true
 runs:
   using: composite
@@ -12,9 +12,12 @@ runs:
       shell: bash
     - run: yarn test
       shell: bash
-    - run: yarn build:docker
+    - run: |
+        if [[ "${{ inputs.mode }}" == "prod" ]]; then
+          yarn vite build
+        else
+          yarn vite build --mode staged
+        fi
       shell: bash
-      env:
-        GITHUB_PACKAGES_TOKEN: ${{ inputs.npmAuthToken }}
     - run: yarn test:e2e
       shell: bash

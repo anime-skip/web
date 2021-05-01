@@ -1,25 +1,32 @@
-name: Verify Code
+name: PR Checks
 on:
-  push: {}
+  push:
+    branches-ignore:
+      - main
 
 jobs:
   checks:
     name: Run Checks
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/setup-node@v1
+      - name: Install node
+        uses: actions/setup-node@v1
         with:
           node-version: '12.x'
           registry-url: 'https://npm.pkg.github.com'
           scope: '@anime-skip'
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Cache node_modules
+        uses: actions/cache@v2
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-      - uses: ./.github/actions/install
+      - name: Install dependencies
+        uses: ./.github/actions/install
         with:
           npmAuthToken: ${{ secrets.ANIME_SKIP_PACKAGES_TOKEN }}
-      - uses: ./.github/actions/run-checks
+      - name: Run checks
+        uses: ./.github/actions/run-checks
         with:
-          npmAuthToken: ${{ secrets.ANIME_SKIP_PACKAGES_TOKEN }}
+          mode: prod

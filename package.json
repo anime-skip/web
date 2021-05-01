@@ -15,7 +15,10 @@
     "build": "yarn compile && vite build",
     "build:staged": "yarn build --mode staged",
     "build:docker": "npx dotenv-cli -e docker/.env -- bash -c 'docker build --build-arg GITHUB_PACKAGES_TOKEN=${GITHUB_PACKAGES_TOKEN} . -t anime-skip-web:dev'",
-    "preview": "echo 'Previewing \"dist/\" build' && vite preview"
+    "preview": "echo 'Previewing \"dist/\" build' && vite preview",
+    "deploy:prod": "./.aws/deploy-to-aws.sh prod",
+    "deploy:staged": "./.aws/deploy-to-aws.sh",
+    "cdk": "yarn --cwd .aws/cdk cdk"
   },
   "resolutions": {
     "vue": "3.0.11"

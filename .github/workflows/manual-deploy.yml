@@ -3,47 +3,77 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'Environment (production or staged)'
+        description: 'Environment (prod or staged)'
         required: true
         default: 'staged'
 
 jobs:
-  build_image:
-    name: Build Image
+  verify:
+    name: Verify Code
     runs-on: ubuntu-20.04
-    outputs:
-      imageToDeploy: ${{ steps.build-image.outputs.image }}
-      tagToDeploy: ${{ steps.build-image.outputs.image }}
     steps:
-      - uses: actions/setup-node@v1
+      - name: Install node
+        uses: actions/setup-node@v1
         with:
-          node-version: '12.x'
+          node-version: '14.15.3'
           registry-url: 'https://npm.pkg.github.com'
           scope: '@anime-skip'
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
+
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Cache node_modules
+        uses: actions/cache@v2
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-      - uses: ./.github/actions/build-image
-        id: build-image
+
+      - name: Install dependencies
+        uses: ./.github/actions/install
+        with:
+          npmAuthToken: ${{ secrets.ANIME_SKIP_PACKAGES_TOKEN }}
+
+      - name: Run checks
+        uses: ./.github/actions/run-checks
         with:
           mode: ${{ github.event.inputs.mode }}
-          npmAuthToken: ${{ secrets.ANIME_SKIP_PACKAGES_TOKEN }}
-      - uses: ./.github/actions/publish-image-to-github
+
+      - name: Upload ${{ github.event.inputs.mode }} artifact
+        uses: actions/upload-artifact@v2
         with:
-          image: '${{ steps.build-image.outputs.image }}'
+          name: website-${{ github.event.inputs.mode }}
+          path: dist/
+
   deploy:
-    name: Deploy
+    name: Deploy to S3
     runs-on: ubuntu-20.04
-    needs: build_image
+    needs: verify
     steps:
-      - uses: actions/checkout@v2
-      - uses: ./.github/actions/pull-image-from-github
+      - name: Install node
+        uses: actions/setup-node@v1
         with:
-          image: '${{ needs.build_image.outputs.imageToDeploy }}'
-      - uses: ./.github/actions/deploy-to-heroku
+          node-version: '14.15.3'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@anime-skip'
+
+      - name: Install AWS
+        uses: unfor19/install-aws-cli-action@v1
+
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Download artifact
+        uses: actions/download-artifact@v2
         with:
-          baseImage: '${{ needs.build_image.outputs.imageToDeploy }}'
-          mode: '${{ github.event.inputs.mode }}'
-          herokuToken: ${{ secrets.HEROKU_API_KEY }}
+          name: website-${{ github.event.inputs.mode }}
+          path: dist
+
+      - name: Display structure of downloaded files
+        run: ls -R
+
+      - name: Deploy to ${{ github.event.inputs.mode }}
+        run: yarn deploy:${{ github.event.inputs.mode }}
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          SKIP_BUILD: true
