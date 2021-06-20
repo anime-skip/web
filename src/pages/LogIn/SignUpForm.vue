@@ -9,6 +9,10 @@
       </router-link>
     </p>
 
+    <p v-if="signUpErrorMessage" class="body-2 text-error">
+      {{ signUpErrorMessage }}
+    </p>
+
     <text-input
       v-model:value="username"
       placeholder="Username"
@@ -66,10 +70,6 @@
         <icon-password :disabled="slotProps.disabled" :active="slotProps.focused" />
       </template>
     </text-input>
-
-    <p v-if="signUpErrorMessage" class="body-2 text-error text-center">
-      {{ signUpErrorMessage }}
-    </p>
 
     <raised-button :disabled="isSubmitDisabled" @click="onSubmit">Sign Up</raised-button>
   </div>

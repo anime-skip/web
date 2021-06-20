@@ -9,6 +9,10 @@
       </router-link>
     </p>
 
+    <p v-if="logInErrorMessage" class="body-2 text-error">
+      {{ logInErrorMessage }}
+    </p>
+
     <text-input
       v-model:value="username"
       placeholder="Username or email"
@@ -33,9 +37,6 @@
         <icon-password :disabled="slotProps.disabled" :active="slotProps.focused" />
       </template>
     </text-input>
-    <p v-if="logInErrorMessage" class="body-2 text-error text-center">
-      {{ logInErrorMessage }}
-    </p>
 
     <checkbox v-model:checked="rememberMe" label="Remember me" class="self-start" />
 
