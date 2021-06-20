@@ -72,7 +72,7 @@ mutation {
       <p class="body-1">
         Lets talk about the <code>X-Client-ID</code> header. This is just used to help me identify
         who is calling the API, as well as setup rate limiting to prevent abuse. Client IDs are tied
-        to specific origins, and can only be made from those origins.
+        to specific origins, and requests can only be made from those origins.
       </p>
       <p class="body-1">
         Don't hesitate to reach out to me to get a client ID setup for your app! It means nothing,
@@ -85,7 +85,7 @@ mutation {
           <p class="body-1">Username</p>
         </li>
         <li class="ml-8">
-          <p class="body-1">Contact email (can be different than account email)</p>
+          <p class="body-1">Account email tied to username</p>
         </li>
         <li class="ml-8">
           <p class="body-1">Description of what you're using the API for</p>
