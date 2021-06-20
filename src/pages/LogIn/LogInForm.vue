@@ -55,16 +55,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref } from 'vue';
+import IconAccount from '@/assets/IconAccount.vue';
+import IconPassword from '@/assets/IconPassword.vue';
+import { Checkbox, RaisedButton, TextInput } from '@anime-skip/ui';
+import md5 from 'md5';
+import { computed, defineComponent, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 import { ActionTypes } from '../../store/action-types';
-import { useUsername, usePassword } from './LogInFormValidation';
-import { Checkbox, RaisedButton, TextInput } from '@anime-skip/ui';
-import IconAccount from '@/assets/IconAccount.vue';
-import IconPassword from '@/assets/IconPassword.vue';
-import { useStoreRequestState } from '@/composition/request-state';
-import { MutationTypes } from '@/store/mutation-types';
+import { usePassword, useUsername } from './LogInFormValidation';
 
 export default defineComponent({
   name: 'LogInForm',
@@ -103,8 +102,8 @@ export default defineComponent({
       if (rememberMe.value) persistUsername();
 
       store.dispatch(ActionTypes.LOG_IN, {
-        usernameOrEmail: username.value,
-        password: password.value,
+        usernameEmail: username.value,
+        passwordHash: md5(password.value),
         setErrorMessage(message) {
           logInErrorMessage.value = message;
         },

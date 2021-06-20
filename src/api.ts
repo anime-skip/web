@@ -1,8 +1,7 @@
-import AxiosApi from '@anime-skip/axios-api';
-import { Api } from '@anime-skip/types';
+import createAnimeSkipClient from '@anime-skip/axios-api';
+import { UNAUTHORIZED_ERROR_MESSAGE } from './utils/constants';
 import { LocalStorageKeys } from './utils/enums';
 import TimeUtils from './utils/time';
-import { UNAUTHORIZED_ERROR_MESSAGE } from './utils/constants';
 
 export function persistTokens(accessToken: string, refreshToken: string): void;
 export function persistTokens(accessToken: undefined, refreshToken: undefined): void;
@@ -15,6 +14,7 @@ export function persistTokens(accessToken?: string, refreshToken?: string): void
     return;
   }
 
+  // TODO: un-hardcode the expiration dates
   const now = Date.now();
   const accessTokenExpiresAt = now + 12 * TimeUtils.HOURS;
   const refreshTokenExpiresAt = now + 7 * TimeUtils.DAYS;
@@ -26,7 +26,7 @@ export function persistTokens(accessToken?: string, refreshToken?: string): void
 }
 
 export async function getAccessToken(
-  refreshAccessToken: (refreshToken: string) => Promise<Api.LoginRefreshResponse>,
+  client: ReturnType<typeof createAnimeSkipClient>,
 ): Promise<string> {
   const accessToken = localStorage.getItem(LocalStorageKeys.ACCESS_TOKEN);
   const accessTokenExpiresAt = Number(
@@ -42,9 +42,11 @@ export async function getAccessToken(
   );
 
   if (!!refreshToken && refreshTokenExpiresAt > now) {
-    const { authToken: newAccessToken, refreshToken: newRefreshToken } = await refreshAccessToken(
-      refreshToken,
-    );
+    const {
+      authToken: newAccessToken,
+      refreshToken: newRefreshToken,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    } = (await client.loginRefresh(`{ authToken refreshToken }`, { refreshToken }))!;
 
     persistTokens(newAccessToken, newRefreshToken);
 
@@ -55,63 +57,23 @@ export async function getAccessToken(
   throw UNAUTHORIZED_ERROR_MESSAGE;
 }
 
-export class ExtendedApi extends AxiosApi {
-  public constructor() {
-    super(getAccessToken, import.meta.env.VITE_API_URL);
-  }
+function createExtendedClient() {
+  const url = import.meta.env.VITE_API_URL;
+  const clientId = 'th2oogUKrgOf1J8wMSIUPV0IpBMsLOJi';
+  const client = createAnimeSkipClient(url, clientId);
 
-  public async isUsernameInUse(username: string): Promise<boolean> {
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      await this.sendUnauthorizedGraphql<'findUserByUsername', any>({
-        query: `{
-          findUserByUsername(username: "${username}") {
-            username
-          }
-        }`,
-      });
-      return true;
-    } catch (err) {
-      return false;
-    }
-  }
-
-  public async getAllTimestampTypes(): Promise<Api.TimestampType[]> {
-    const response = await this.sendUnauthorizedGraphql<'allTimestampTypes', Api.TimestampType[]>({
-      query: `{
-        allTimestampTypes {
-          id
-          name
-          description
-        }
-      }`,
-    });
-    return response.data.allTimestampTypes;
-  }
-
-  public async recentlyAddedEpisodes(
-    limit?: number,
-    offset?: number,
-  ): Promise<(Api.Episode & { createdAt: number })[]> {
-    const response = await this.sendUnauthorizedGraphql<
-      'recentlyAddedEpisodes',
-      (Api.Episode & { createdAt: number })[]
-    >({
-      query: `query RecentlyAddedEpisodes($limit: Int, $offset: Int) {
-        recentlyAddedEpisodes(limit: $limit, offset: $offset) {
-          id name season number absoluteNumber createdAt
-          show {
-            name
-          }
-        }
-      }`,
-      variables: {
-        limit,
-        offset,
-      },
-    });
-    return response.data.recentlyAddedEpisodes;
-  }
+  return {
+    ...client,
+    async isUsernameInUse(username: string): Promise<boolean> {
+      try {
+        await client.findUserByUsername(`{ username }`, { username });
+        return true;
+      } catch (_) {
+        // TODO: throw actual errors
+        return false;
+      }
+    },
+  };
 }
 
-export default new ExtendedApi();
+export default createExtendedClient();

@@ -31,23 +31,48 @@
 </template>
 
 <script lang="ts">
+import { Api } from '@/@types/api';
 import api from '@/api';
-import { RequestState } from '@/utils/enums';
-import { Api } from '@anime-skip/types';
-import { defineComponent, ref } from 'vue';
-import EpisodeUtils from '@/utils/EpisodeUtils';
-import TimeUtils from '@/utils/time';
-import { RaisedButton, LoadingOverlay } from '@anime-skip/ui';
 import IconError from '@/assets/IconError.vue';
 import { useRequestState } from '@/composition/request-state';
+import { RequestState } from '@/utils/enums';
+import EpisodeUtils from '@/utils/EpisodeUtils';
+import TimeUtils from '@/utils/time';
+import { LoadingOverlay, RaisedButton } from '@anime-skip/ui';
+import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
   components: { LoadingOverlay, RaisedButton, IconError },
   setup() {
     const { isLoading, isFailure, tryCatch } = useRequestState(RequestState.LOADING);
-    const recentEpisodes = ref<(Api.Episode & { createdAt: number })[]>([]);
+    const recentEpisodes = ref<Api.RecentEpisode[]>([]);
     const fetchEpisodes = tryCatch(async () => {
-      recentEpisodes.value = await api.recentlyAddedEpisodes(10);
+      const data = await api.recentlyAddedEpisodes(
+        `{
+          id
+          name
+          season
+          number
+          absoluteNumber
+          show {
+            name
+          }
+        }`,
+        {
+          limit: 10,
+        },
+      );
+      recentEpisodes.value = (data ?? [])?.map(episode => ({
+        id: episode.id,
+        name: episode.name,
+        season: episode.season,
+        number: episode.number,
+        absoluteNumber: episode.absoluteNumber,
+        createdAt: episode.createdAt,
+        show: {
+          name: episode.show.name,
+        },
+      }));
     });
 
     return {
@@ -61,17 +86,17 @@ export default defineComponent({
     this.fetchEpisodes();
   },
   methods: {
-    listItemShow(show: Api.Show | undefined): string {
+    listItemShow(show: Api.RecentEpisode['show'] | undefined): string {
       return show?.name ?? 'Unknown Show';
     },
-    listItemEpisode(episode: Api.Episode): string {
+    listItemEpisode(episode: Api.RecentEpisode): string {
       return episode.name ?? 'Unknown Epiosde';
     },
-    listItemSubtitle(episode: Api.Episode): string {
+    listItemSubtitle(episode: Api.RecentEpisode): string {
       const result = EpisodeUtils.seasonAndNumberDisplay(episode);
       return result ? ` • ${result}` : '';
     },
-    listItemTimeSinceCreated(episode: Api.Episode & { createdAt: number }): string {
+    listItemTimeSinceCreated(episode: Api.RecentEpisode): string {
       const now = Date.now();
       /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
       const createdAt = new Date((episode as any).createdAt);

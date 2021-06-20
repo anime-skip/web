@@ -1,10 +1,10 @@
-import { Api } from '@anime-skip/types';
+import { Api } from '@/@types/api';
 import { RequestState } from '@/utils/enums';
 
 export interface State {
   // Account
-  account?: Omit<Api.Account, 'preferences'>;
-  preferences?: Api.Preferences;
+  account?: Api.StateAccount;
+  preferences?: Api.StatePreferences;
   signInRequestState: RequestState;
   signInError?: string;
 }
