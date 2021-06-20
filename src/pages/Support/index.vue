@@ -59,20 +59,28 @@
 </template>
 
 <script lang="ts">
+import { Api } from '@/@types/api';
 import api from '@/api';
-import { Api } from '@anime-skip/types';
 import { defineComponent, ref } from 'vue';
-import FaqList from './FaqList.vue';
 import Faq from './Faq.vue';
+import FaqList from './FaqList.vue';
 
 export default defineComponent({
   components: { FaqList, Faq },
   setup() {
     const timestampTypes = ref<Api.TimestampType[]>([]);
     api
-      .getAllTimestampTypes()
+      .allTimestampTypes(`{ id name description }`)
       .then(result => {
-        timestampTypes.value = result;
+        if (result == null) {
+          timestampTypes.value = [];
+        } else {
+          timestampTypes.value = result.map(type => ({
+            id: type.id,
+            name: type.name,
+            description: type.description,
+          }));
+        }
       })
       .catch(() => {
         // TODO: add a failure mode

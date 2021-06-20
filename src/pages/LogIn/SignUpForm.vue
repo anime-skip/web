@@ -76,19 +76,20 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, ref, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { useReCaptcha } from 'vue-recaptcha-v3';
-import { useStore } from 'vuex';
-import { ActionTypes } from '../../store/action-types';
 import IconAccount from '@/assets/IconAccount.vue';
-import IconPassword from '@/assets/IconPassword.vue';
-import { RaisedButton, TextInput, Loading } from '@anime-skip/ui';
 import IconEmail from '@/assets/IconEmail.vue';
+import IconPassword from '@/assets/IconPassword.vue';
 import { useStoreRequestState } from '@/composition/request-state';
 import { MutationTypes } from '@/store/mutation-types';
-import { useConfirmPassword, useEmail, usePassword, useUsername } from './LogInFormValidation';
 import { persistValue } from '@/utils';
+import { Loading, RaisedButton, TextInput } from '@anime-skip/ui';
+import md5 from 'md5';
+import { computed, defineComponent, ref } from 'vue';
+import { useReCaptcha } from 'vue-recaptcha-v3';
+import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
+import { ActionTypes } from '../../store/action-types';
+import { useConfirmPassword, useEmail, usePassword, useUsername } from './LogInFormValidation';
 
 export default defineComponent({
   name: 'LogInForm',
@@ -177,7 +178,7 @@ export default defineComponent({
         recaptchaResponse,
         username: username.value,
         email: email.value,
-        password: password.value,
+        passwordHash: md5(password.value),
         setErrorMessage(message) {
           signUpErrorMessage.value = message;
         },

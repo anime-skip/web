@@ -1,13 +1,13 @@
-import { ActionTree, ActionContext } from 'vuex';
-import { State } from './state';
-import { Mutations } from './mutations';
-import { ActionTypes } from './action-types';
-import { MutationTypes } from './mutation-types';
-import { UNAUTHORIZED_ERROR_MESSAGE, LOG_IN_REDIRECT } from '../utils/constants';
 import api, { persistTokens } from '@/api';
+import plugins from '@/plugins';
 import { RequestState } from '@/utils/enums';
 import Errors from '@/utils/errors';
-import plugins from '@/plugins';
+import { ActionContext, ActionTree } from 'vuex';
+import { LOG_IN_REDIRECT, UNAUTHORIZED_ERROR_MESSAGE } from '../utils/constants';
+import { ActionTypes } from './action-types';
+import { MutationTypes } from './mutation-types';
+import { Mutations } from './mutations';
+import { State } from './state';
 
 //#region Types
 type AugmentedActionContext = {
@@ -23,7 +23,7 @@ export interface Actions {
     payload: {
       username: string;
       email: string;
-      password: string;
+      passwordHash: string;
       recaptchaResponse: string;
       setErrorMessage(message: string | undefined): void;
       customRedirect?: string;
@@ -32,8 +32,8 @@ export interface Actions {
   [ActionTypes.LOG_IN](
     context: AugmentedActionContext,
     payload: {
-      usernameOrEmail: string;
-      password: string;
+      usernameEmail: string;
+      passwordHash: string;
       setErrorMessage(message: string | undefined): void;
       customRedirect?: string;
     },
@@ -61,20 +61,36 @@ export const callApi = async <A extends any[], R>(
 export const actions: ActionTree<State, State> & Actions = {
   async [ActionTypes.SIGN_UP](
     { commit, dispatch },
-    { username, email, password, recaptchaResponse, customRedirect, setErrorMessage },
+    { username, email, passwordHash, recaptchaResponse, customRedirect, setErrorMessage },
   ) {
     commit(MutationTypes.LOG_IN_REQUEST_STATE, RequestState.LOADING);
     setErrorMessage(undefined);
 
     try {
-      const { account, authToken, refreshToken } = await callApi(
+      const response = await callApi(
         dispatch,
         api.createAccount,
-        username,
-        email.toLowerCase(),
-        password,
-        recaptchaResponse,
+        `{
+          authToken
+          refreshToken
+          account {
+            id
+            username
+            email
+            emailVerified
+            profileUrl
+          }
+        }`,
+        {
+          username,
+          email: email.toLowerCase(),
+          passwordHash,
+          recaptchaResponse,
+        },
       );
+      if (response == null) throw Error('Internal error: account not available');
+      const { account, authToken, refreshToken } = response;
+
       persistTokens(authToken, refreshToken);
 
       commit(MutationTypes.SET_ACCOUNT_INFO, account);
@@ -87,13 +103,29 @@ export const actions: ActionTree<State, State> & Actions = {
   },
   async [ActionTypes.LOG_IN](
     { commit, dispatch },
-    { usernameOrEmail, password, customRedirect, setErrorMessage },
+    { usernameEmail, passwordHash, customRedirect, setErrorMessage },
   ) {
     commit(MutationTypes.LOG_IN_REQUEST_STATE, RequestState.LOADING);
     setErrorMessage(undefined);
 
     try {
-      const response = await callApi(dispatch, api.loginManual, usernameOrEmail, password);
+      const response = await callApi(
+        dispatch,
+        api.login,
+        `{
+          authToken
+          refreshToken
+          account {
+            id
+            username
+            email
+            emailVerified
+            profileUrl
+          }
+        }`,
+        { passwordHash, usernameEmail },
+      );
+      if (response == null) throw Error('Internal error: account not available');
       persistTokens(response.authToken, response.refreshToken);
 
       commit(MutationTypes.SET_ACCOUNT_INFO, response.account);
