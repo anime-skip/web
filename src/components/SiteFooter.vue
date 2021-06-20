@@ -28,7 +28,7 @@
       <div class="group">
         <h6>Other Resources</h6>
         <a href="https://discord.gg/9wVhwZg" target="_blank">Join the Discord</a>
-        <a href="http://test.api.anime-skip.com/graphiql" target="_blank">API Playground</a>
+        <router-link to="/api">API</router-link>
         <a href="http://tuckerchap.in/BetterVRV/">BetterVRV</a>
       </div>
     </div>

@@ -18,6 +18,10 @@ const routes: RouteRecordRaw[] = [
     path: '/contributing',
     component: () => import('./pages/Contributing.vue'),
   },
+  {
+    path: '/api',
+    component: () => import('./pages/Api.vue'),
+  },
 
   /* Policies */
 
