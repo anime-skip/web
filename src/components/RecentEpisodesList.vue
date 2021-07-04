@@ -54,6 +54,7 @@ export default defineComponent({
           season
           number
           absoluteNumber
+          createdAt
           show {
             name
           }
