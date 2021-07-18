@@ -1,6 +1,5 @@
 import { createApp } from 'vue';
 import plugins from '@/plugins';
-import App from '@/App.vue';
 import '@anime-skip/ui/style.css';
 import './styles/hide-recaptcha.css';
 import './styles/custom-drop-shadows.css';
@@ -17,6 +16,7 @@ import { VueReCaptcha } from 'vue-recaptcha-v3';
 
 import Checkbox from '@/components/Checkbox.vue';
 import NavAndFooterLayout from '@/layouts/NavAndFooter.vue';
+import { RouterView } from 'vue-router';
 
 if (import.meta.env.VITE_APP_TITLE != null) {
   document.title += ` ${import.meta.env.VITE_APP_TITLE}`;
@@ -24,7 +24,7 @@ if (import.meta.env.VITE_APP_TITLE != null) {
 
 hljsDefineGraphQL(hljs);
 
-createApp(App)
+createApp(RouterView)
   .component('checkbox', Checkbox)
   .component('NavAndFooterLayout', NavAndFooterLayout)
   .use(plugins.router)
