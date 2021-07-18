@@ -23,7 +23,10 @@
             <icon-circle-check v-if="isExtensionInstalled" class="w-6 fill-success" />
             <icon-circle-x v-else class="w-6 fill-error" />
           </side-navigation-link>
-          <side-navigation-button v-if="!isExtensionInstalled" @click="sendMockInstallMessage">
+          <side-navigation-button
+            v-if="!isShowingDevInstallEventButton"
+            @click="sendMockInstallMessage"
+          >
             <span class="flex-1">Send Install Event</span>
             <img src="../../assets/ic_chevron_right.svg" />
           </side-navigation-button>
@@ -71,6 +74,9 @@ export default defineComponent({
     const { isExtensionInstalled } = useExtensionStatus();
     const { openPlayerSettings, sendMockInstallMessage } = useExtensionInteraction();
 
+    const isDev = import.meta.env.DEV;
+    const isShowingDevInstallEventButton = computed(() => isDev && !isExtensionInstalled.value);
+
     const extensionInstalledIcon = computed(() =>
       isExtensionInstalled.value ? icCheckmarkBlue : icXRed,
     );
@@ -78,7 +84,8 @@ export default defineComponent({
       isExtensionInstalled.value ? 'Extension installed!' : 'Extension not installed',
     );
     return {
-      isDev: import.meta.env.DEV,
+      isDev,
+      isShowingDevInstallEventButton,
       isExtensionInstalled,
       extensionInstalledIcon,
       extensionInstalledTitle,
