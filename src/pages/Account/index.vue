@@ -4,7 +4,6 @@
       <template #side>
         <side-navigation-group>
           <side-navigation-link to="/account">Account Info</side-navigation-link>
-          <side-navigation-link to="/account/stats">Stats</side-navigation-link>
           <side-navigation-link to="/account/security">Security</side-navigation-link>
           <side-navigation-link to="/account/email-verification">
             Email Verification
