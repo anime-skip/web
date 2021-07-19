@@ -18,7 +18,6 @@
         class="cursor-pointer font-medium transition-all"
         :class="{
           'text-primary': expanded,
-          'text-on-surface': !expanded,
         }"
         @click="toggleExpanded"
       >

@@ -9,7 +9,7 @@
             class="hidden lg:flex bg-control bg-stars w-50% flex-col items-center justify-center space-y-8"
           >
             <img class="w-50%" src="../../assets/logo.svg" />
-            <h6 class="font-bold text-on-surface text-opacity-medium">watch anime like a pro</h6>
+            <p class="heading-6 font-bold text-opacity-medium">watch anime like a pro</p>
           </section>
           <loading-overlay
             :is-loading="isLoggingIn"

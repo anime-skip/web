@@ -2,7 +2,7 @@
   <div class="w-96 md:w-auto mx-auto space-y-4 flex flex-col items-center px-4 pb-12">
     <icon-home-benefits class="w-16 fill-secondary-300" :type="item.icon" />
     <h5>{{ item.title }}</h5>
-    <p class="body-1 text-on-surface text-opacity-high">
+    <p>
       {{ item.description }}
     </p>
   </div>

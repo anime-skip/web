@@ -2,9 +2,7 @@
   <div class="space-y-8">
     <section class="space-y-4">
       <h4>Security</h4>
-      <p class="body-1 text-on-surface text-opacity-high">
-        Manage your password and other security settings
-      </p>
+      <p>Manage your password and other security settings</p>
     </section>
 
     <section class="space-y-4">

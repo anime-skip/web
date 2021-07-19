@@ -7,10 +7,6 @@
       home-link="/"
       :left-items="leftItems"
       :right-items="rightItems"
-      :right-menu="isLoggedIn"
-      :right-menu-items="rightMenuItems"
-      :right-menu-text="username"
-      :route="path"
     />
     <div class="flex flex-col flex-grow flex-shrink-0 mt-16">
       <slot />
@@ -20,13 +16,12 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref, watch } from 'vue';
+import { computed, defineComponent } from 'vue';
 import SiteFooter from '@/components/SiteFooter.vue';
 import { NavBar } from '@anime-skip/ui';
 import homeIcon from '@/assets/logo_nav.svg';
 import { useStore } from 'vuex';
 import useAccount from '@/composition/account';
-import { useRoute } from 'vue-router';
 
 export default defineComponent({
   components: { NavBar, SiteFooter },
@@ -35,37 +30,33 @@ export default defineComponent({
     const isLoggedIn = computed(() => store.getters.IS_SIGNED_IN);
     const { username } = useAccount();
 
-    const leftItems = computed(() => []);
+    const leftItems = computed(() => [
+      { type: 'basic', key: 'get-started', title: 'Get Started', link: '/get-started' },
+    ]);
 
     const rightItems = computed(() => {
-      const items = [{ title: 'Get Started', link: '/get-started' }];
+      const items = [];
       if (!isLoggedIn.value) {
-        items.push({ title: 'Log In', link: '/log-in' });
+        items.push({ type: 'basic', key: 'log-in', title: 'Log In', link: '/log-in' });
+      } else {
+        items.push({
+          type: 'dropdown',
+          key: 'account',
+          title: username.value,
+          children: [
+            { type: 'basic', key: 'account-settings', title: 'Account', link: '/account' },
+            { type: 'basic', key: 'log-out', title: 'Log Out', link: '/log-out' },
+          ],
+        });
       }
       return items;
     });
-    const rightMenuItems = computed(() => [
-      { title: 'Account', link: '/account' },
-      { title: 'Log Out', link: '/log-out' },
-    ]);
-
-    const route = useRoute();
-    const path = ref('');
-    watch(
-      () => route.path,
-      newPath => {
-        path.value = newPath;
-      },
-    );
 
     return {
       leftItems,
       rightItems,
-      rightMenuItems,
       homeIcon,
       isLoggedIn,
-      username,
-      path,
     };
   },
 });
