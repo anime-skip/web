@@ -19,7 +19,7 @@ export function Vue3HighlightJs(app: App) {
         codeNode.textContent = binding.value;
       }
 
-      hljs.highlightBlock(codeNode);
+      hljs.highlightElement(codeNode);
     }
   });
 }
