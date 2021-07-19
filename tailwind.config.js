@@ -4,6 +4,7 @@ module.exports = {
     './index.html',
     './src/**/*.{vue,js,ts,jsx,tsx}',
     './node_modules/@anime-skip/ui/ui.*.js',
+    './node_modules/@anime-skip/ui/tailwind.css',
   ],
   theme: {
     extend: {
