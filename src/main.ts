@@ -27,8 +27,11 @@ hljsDefineGraphQL(hljs);
 createApp(RouterView)
   .component('checkbox', Checkbox)
   .component('NavAndFooterLayout', NavAndFooterLayout)
+  // @ts-expect-error: router types are mad for some reason...
   .use(plugins.router)
+  // @ts-expect-error: store types are mad for some reason...
   .use(plugins.store)
   .use(VueHighlightJS)
+  // @ts-expect-error: recaptcha types are mad for some reason...
   .use(VueReCaptcha, { siteKey: '6LdCabkZAAAAANjX98ln54xCQ5OVnuinrPeLF8Np' })
   .mount('#app');
