@@ -22,7 +22,7 @@
             <icon-circle-x v-else class="w-6 fill-error" />
           </side-navigation-link>
           <side-navigation-button
-            v-if="!isShowingDevInstallEventButton"
+            v-if="isShowingDevInstallEventButton"
             @click="sendMockInstallMessage"
           >
             <span class="flex-1">Send Install Event</span>
