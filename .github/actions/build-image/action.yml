@@ -17,7 +17,7 @@ runs:
   steps:
     - id: image-tag
       run: |
-        declare -A modesToTags=( ["production"]="prod" ["staged"]="staged" )
+        declare -A modesToTags=( ["prod"]="prod" ["staged"]="staged" )
         mode="${{ inputs.mode }}"
         tag="${modesToTags[$mode]}"
         echo "Building tag '$tag'"
