@@ -42,6 +42,10 @@ yarn test:unit
 yarn test:e2e
 ```
 
+### Visualizing Bundle Size
+
+`yarn build` will output a `stats.html`. Open it in the browser to see chunks and large modules
+
 ### IDE Setup
 
 All IDEs are supported, but I (Aaron) use VS Code. Make sure to install the [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) and [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) plug-ins. A spell checker is also recommended.

@@ -17,21 +17,16 @@
     "build:docker": "npx dotenv-cli -e docker/.env -- bash -c 'docker build --build-arg GITHUB_PACKAGES_TOKEN=${GITHUB_PACKAGES_TOKEN} . -t anime-skip-web:dev'",
     "preview": "echo 'Previewing \"dist/\" build' && vite preview"
   },
-  "resolutions": {
-    "vue": "3.0.11"
-  },
   "dependencies": {
     "@anime-skip/axios-api": "^2.1.0",
     "@anime-skip/ui": "^1.0.5",
     "@types/node": "^14.14.37",
     "core-js": "^3.6.5",
-    "highlight.js": "^11.0.1",
     "highlightjs-graphql": "^1.0.2",
     "md5": "^2.3.0",
     "vue": "^3.1.5",
     "vue-recaptcha-v3": "^2.0.0",
     "vue-router": "^4.0.10",
-    "vue3-highlightjs": "^1.0.5",
     "vuex": "^4.0.0-beta.4",
     "vuex-persist": "^2.2.0"
   },
@@ -54,10 +49,12 @@
     "prettier": "^2.2.1",
     "pretty-quick": "^3.1.0",
     "push-dir": "^0.4.1",
+    "rollup-plugin-visualizer": "^5.5.2",
     "sass": "^1.26.5",
     "tailwindcss": "^2.1.1",
     "typescript": "^4.2.3",
     "vite": "^2.4.2",
+    "vite-plugin-compress": "^2.1.0",
     "vite-tsconfig-paths": "^2.5.0",
     "vue-tsc": "^0.0.17"
   }
