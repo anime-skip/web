@@ -14,17 +14,15 @@
         class="flex items-center px-6 pt-3 pb-4"
       >
         <div class="flex-1 flex flex-col space-y-1">
-          <p class="text-lg text-on-surface font-medium">
+          <p class="text-lg font-medium">
             {{ listItemEpisode(episode) }}
           </p>
           <p class="body-2">
             <span class="text-primary">{{ listItemShow(episode.show) }}</span>
-            <span class="text-on-surface text-opacity-high">{{ listItemSubtitle(episode) }}</span>
+            <span>{{ listItemSubtitle(episode) }}</span>
           </p>
         </div>
-        <p class="body-1 text-on-surface text-opacity-medium pt-1">
-          {{ listItemTimeSinceCreated(episode) }} ago
-        </p>
+        <p class="text-opacity-medium pt-1">{{ listItemTimeSinceCreated(episode) }} ago</p>
       </li>
     </ul>
   </loading-overlay>

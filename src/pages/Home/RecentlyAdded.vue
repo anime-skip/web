@@ -7,14 +7,9 @@
     <div class="md:rounded-xl md:framing-shadow">
       <recent-episodes-list />
     </div>
-    <p class="caption text-on-surface text-opacity-medium md:text-center pt-2">
+    <p class="caption text-opacity-medium md:text-center pt-2">
       BetterVRV episodes do not show up on this list, you can view those
-      <a
-        class="text-secondaryPalette-300 hover:underline"
-        target="_blank"
-        href="http://tuckerchap.in/BetterVRV/"
-        >here</a
-      >
+      <a class="caption" target="_blank" href="http://tuckerchap.in/BetterVRV/">here</a>
     </p>
   </section-wrapper>
 </template>

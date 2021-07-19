@@ -4,9 +4,7 @@
     <p class="body-2 text-error pb-2">
       Recovering a forgotten password is not available yet. Check out the support page to get help
     </p>
-    <raised-button>
-      <router-link to="/support">Support</router-link>
-    </raised-button>
+    <raised-button link="/support">Support</raised-button>
   </div>
 </template>
 

@@ -15,9 +15,7 @@
             to="/get-started"
             :class="{ 'pointer-events-none': isExtensionInstalled }"
           >
-            <span
-              class="flex-1"
-              :class="{ 'text-on-surface text-opacity-medium': isExtensionInstalled }"
+            <span class="flex-1" :class="{ 'text-opacity-medium': isExtensionInstalled }"
               >Web Extension</span
             >
             <icon-circle-check v-if="isExtensionInstalled" class="w-6 fill-success" />

@@ -2,11 +2,9 @@
   <div class="flex flex-col w-full space-y-3">
     <h4>Welcome back!</h4>
 
-    <p class="body-2 text-on-surface text-opacity-medium pb-4">
+    <p class="body-2 text-opacity-medium pb-4">
       Need to create an account?
-      <router-link :to="signUpLink" class="text-secondaryPalette-200 hover:underline">
-        Sign up
-      </router-link>
+      <router-link :to="signUpLink" class="body-2">Sign up</router-link>
     </p>
 
     <p v-if="logInErrorMessage" class="body-2 text-error">

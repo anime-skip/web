@@ -2,31 +2,22 @@
   <section-wrapper id="about" class="max-w-screen-lg mx-auto space-y-20 px-8 md:px-16 text-center">
     <div class="space-y-8">
       <h4>What is Anime Skip?</h4>
-      <p class="body-1">
+      <p>
         Anime Skip is a community managed timestamp database, with a
-        <a
-          class="text-secondaryPalette-200 hover:underline"
-          href="http://test.api.anime-skip.com/graphiql"
-          target="_blank"
-          >public API</a
-        >
+        <router-link to="/api" target="_blank">public API</router-link>
         for devlopers to use.
       </p>
-      <p class="body-1">
+      <p>
         Anime Skip is integrated with
-        <a
-          class="text-secondaryPalette-200 hover:underline"
-          target="_blank"
-          href="http://tuckerchap.in/BetterVRV/"
-          >BetterVRV</a
-        >, another timestamp database which boasts a library of 1400 episodes. All together, Anime
-        Skip has <span class="text-primary font-medium">timestamps for over 2300 episodes</span>!
+        <a target="_blank" href="http://tuckerchap.in/BetterVRV/">BetterVRV</a>, another timestamp
+        database which boasts a library of 1400 episodes. All together, Anime Skip has
+        <span class="text-primary font-medium">timestamps for over 2800+ episodes</span>!
       </p>
     </div>
 
     <div class="space-y-8">
       <h4>Anime Skip Player</h4>
-      <p class="body-1">
+      <p>
         The Anime Skip Player is a web extension that makes watching anime and contributing
         timestamps easy!
       </p>
@@ -35,14 +26,12 @@
           class="w-full max-w-screen-md mx-auto md:rounded-lg shadow-xl"
           src="../../assets/death_note_example.jpg"
         />
-        <p class="body-2 text-opacity-medium text-on-surface">Watching Death Note on VRV</p>
+        <p class="body-2 text-opacity-medium">Watching Death Note on VRV</p>
       </div>
-      <p class="body-1">
+      <p>
         For
-        <router-link class="text-secondaryPalette-200 hover:underline" to="#supported-services"
-          >supported services</router-link
-        >, the Anime Skip Player is used instead of the default video player, adding playback
-        features that let you
+        <router-link to="#supported-services">supported services</router-link>, the Anime Skip
+        Player is used instead of the default video player, adding playback features that let you
         <span class="text-primary font-medium">passively watch anime up to 25% faster</span>!
       </p>
     </div>

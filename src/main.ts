@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
 import plugins from '@/plugins';
-import '@anime-skip/ui/style.css';
+import '@anime-skip/ui/tailwind.css';
 import './styles/hide-recaptcha.css';
 import './styles/custom-drop-shadows.css';
 

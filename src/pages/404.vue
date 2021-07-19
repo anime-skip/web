@@ -2,7 +2,7 @@
   <NavAndFooterLayout>
     <div class="flex-1 flex flex-col items-center justify-center min-h-2/3vh">
       <p class="heading-1 text-primary">404</p>
-      <p class="body-1 text-on-surface">The page you're looking for doesn't exist</p>
+      <p class="heading-6">The page you're looking for doesn't exist</p>
     </div>
   </NavAndFooterLayout>
 </template>

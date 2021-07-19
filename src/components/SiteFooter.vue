@@ -51,20 +51,19 @@ export default defineComponent({
 
 <style scoped>
 .group {
-  @apply w-72 flex flex-col px-8 space-y-1 items-start mb-16;
-}
-
-h6,
-.space {
-  @apply pb-4;
+  @apply w-72 flex flex-col px-8 space-y-3 items-start mb-16;
 }
 
 h6 {
-  @apply text-on-surface text-opacity-high;
+  @apply pb-3;
+}
+
+.space {
+  @apply pb-1;
 }
 
 a {
-  @apply text-on-surface text-opacity-medium hover:underline;
+  @apply text-on-surface text-opacity-medium;
 }
 
 /*

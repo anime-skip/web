@@ -7,11 +7,11 @@
     <ul class="list">
       <service-card v-for="service of supportedServices" :key="service.name" :service="service" />
     </ul>
-    <h5 class="text-on-surface text-opacity-medium pt-8">In the Future</h5>
+    <h5 class="text-opacity-medium pt-8">In the Future</h5>
     <ul class="list opacity-medium">
       <service-card v-for="service of futureServices" :key="service.name" :service="service" />
     </ul>
-    <p class="caption text-on-surface text-opacity-low pt-4">
+    <p class="caption text-opacity-low pt-4">
       Anime Skip is not affiliated with any of these services
     </p>
   </section-wrapper>
