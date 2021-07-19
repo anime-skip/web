@@ -31,5 +31,10 @@ runs:
     - id: output-image
       run: echo "::set-output name=image::$(echo 'docker.pkg.github.com/anime-skip/web/website:${{ steps.image-tag.outputs.tag }}')"
       shell: bash
-    - run: docker build --build-arg MODE=${{ inputs.mode }} --build-arg GITHUB_PACKAGES_TOKEN=${{ inputs.npmAuthToken }} . -t "${{ steps.output-image.outputs.image }}"
+    - run: |
+        declare -A modesToBuildModes=( ["prod"]="production" ["staged"]="staged" )
+        mode="${{ inputs.mode }}"
+        buildMode="${modesToBuildModes[$mode]}"
+        echo "Building for '$buildMode'"
+        docker build --build-arg MODE=${buildMode} --build-arg GITHUB_PACKAGES_TOKEN=${{ inputs.npmAuthToken }} . -t "${{ steps.output-image.outputs.image }}"
       shell: bash
