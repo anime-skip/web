@@ -11,7 +11,7 @@ runs:
   using: composite
   steps:
     - run: |
-        declare -A modesToApps=( ["production"]="prod-website" ["staged"]="staged-website" )
+        declare -A modesToApps=( ["prod"]="prod-website" ["staged"]="staged-website" )
         mode="${{ inputs.mode }}"
         app="${modesToApps[$mode]}"
         echo "Publishing to '$app'"
