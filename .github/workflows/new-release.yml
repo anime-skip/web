@@ -27,9 +27,9 @@ jobs:
       - run: yarn lint:no-fix
       - run: yarn test
       - name: Run docker build
-        run: docker build --build-arg GITHUB_PACKAGES_TOKEN=${GITHUB_PACKAGES_TOKEN} .
+        run: docker build --build-arg NPM_AUTH_TOKEN=${NPM_AUTH_TOKEN} .
         env:
-          GITHUB_PACKAGES_TOKEN: ${{ secrets.ANIME_SKIP_PACKAGES_TOKEN }}
+          NPM_AUTH_TOKEN: ${{ secrets.ANIME_SKIP_PACKAGES_TOKEN }}
 
   prod_deploy:
     name: Deploy Prod
@@ -49,7 +49,7 @@ jobs:
           registry: docker.pkg.github.com
           repository: anime-skip/web/website
           tags: prod, ${{ steps.tagName.outputs.tag }}
-          build_args: GITHUB_PACKAGES_TOKEN=${{ secrets.ANIME_SKIP_PACKAGES_TOKEN }}
+          build_args: NPM_AUTH_TOKEN=${{ secrets.ANIME_SKIP_PACKAGES_TOKEN }}
       - name: Deploy web
         uses: akhileshns/heroku-deploy@v3.5.7
         with:
@@ -57,6 +57,6 @@ jobs:
           heroku_app_name: prod-website
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
           usedocker: true
-          docker_build_args: GITHUB_PACKAGES_TOKEN
+          docker_build_args: NPM_AUTH_TOKEN
         env:
-          GITHUB_PACKAGES_TOKEN: ${{ secrets.ANIME_SKIP_PACKAGES_TOKEN }}
+          NPM_AUTH_TOKEN: ${{ secrets.ANIME_SKIP_PACKAGES_TOKEN }}

@@ -11,10 +11,10 @@
     "prettier": "prettier --check .",
     "prettier:write": "prettier --write .",
     "test": "echo 'TODO'",
-    "test:e2e": "echo 'TODO'",
+    "e2e": "cd e2e && docker-compose up -V --force-recreate --exit-code-from tests",
     "build": "yarn compile && vite build",
     "build:staged": "yarn build --mode staged",
-    "build:docker": "npx dotenv-cli -e docker/.env -- bash -c 'docker build --build-arg GITHUB_PACKAGES_TOKEN=${GITHUB_PACKAGES_TOKEN} . -t anime-skip-web:dev'",
+    "build:docker": "npx dotenv-cli -e docker/.env -- bash -c 'docker build --build-arg NPM_AUTH_TOKEN=${NPM_AUTH_TOKEN} . -t anime-skip-web:dev'",
     "preview": "echo 'Previewing \"dist/\" build' && vite preview"
   },
   "dependencies": {

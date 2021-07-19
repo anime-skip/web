@@ -15,6 +15,6 @@ runs:
     - run: yarn build:docker
       shell: bash
       env:
-        GITHUB_PACKAGES_TOKEN: ${{ inputs.npmAuthToken }}
-    - run: yarn test:e2e
+        NPM_AUTH_TOKEN: ${{ inputs.npmAuthToken }}
+    - run: yarn e2e
       shell: bash

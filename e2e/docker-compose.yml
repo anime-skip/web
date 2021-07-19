@@ -1,0 +1,65 @@
+services:
+  # Full Stack
+  web:
+    build:
+      context: ../
+      args:
+        NPM_AUTH_TOKEN: ${NPM_AUTH_TOKEN}
+    ports:
+      - '8080:80'
+
+  timestamp-db:
+    image: postgres:13
+    ports:
+      - '7777:7777'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      PGPORT: '7777'
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'password'
+      POSTGRES_DB: 'timestamps'
+
+  timestamp-service:
+    image: 'docker.pkg.github.com/anime-skip/backend/api:${TIMESTAMP_SERVICE_TAG:-prod}'
+    depends_on:
+      timestamp-db:
+        condition: service_healthy
+    ports:
+      - 7778:7778
+    environment:
+      PORT: '7778'
+      LOG_LEVEL: '0'
+      JWT_SECRET: 'some-secret'
+      LOG_SQL: 'true'
+      GIN_MODE: 'release'
+      ENABLE_COLOR_LOGS: 'true'
+      DISABLE_SHOW_ADMIN_DIRECTIVE: 'true'
+      DISABLE_RATE_LIMITTING: 'true'
+      DATABASE_URL: 'postgres://postgres:password@timestamp-db:7777/timestamps'
+      DATABASE_DISABLE_SSL: 'true'
+      DATABASE_ENABLE_SEEDING: 'true'
+      EMAIL_SERVICE_HOST: 'http://tests:9001'
+      EMAIL_SERVICE_SECRET: 'anything'
+      RECAPTCHA_SECRET: 'some-secret'
+      RECAPTCHA_RESPONSE_ALLOWLIST: 'allowed'
+      BETTER_VRV_APP_ID: 'some-id'
+      BETTER_VRV_API_KEY: 'some-key'
+
+  # Tests
+  tests:
+    build:
+      context: .
+    depends_on:
+      - web
+      - timestamp-db
+      - timestamp-service
+    environment:
+      CYPRESS_baseUrl: 'http://web'
+    command: npx cypress run
+    volumes:
+      - ./cypress:/app/cypress
+      - ./cypress.json:/app/cypress.json

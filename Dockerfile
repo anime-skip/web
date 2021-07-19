@@ -1,7 +1,7 @@
 # build stage
 FROM node:lts-alpine as build-stage
 WORKDIR /app
-ARG GITHUB_PACKAGES_TOKEN
+ARG NPM_AUTH_TOKEN
 ARG MODE=production
 COPY docker/.npmrc .npmrc
 COPY package.json yarn.lock ./

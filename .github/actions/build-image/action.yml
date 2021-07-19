@@ -36,5 +36,5 @@ runs:
         mode="${{ inputs.mode }}"
         buildMode="${modesToBuildModes[$mode]}"
         echo "Building for '$buildMode'"
-        docker build --build-arg MODE=${buildMode} --build-arg GITHUB_PACKAGES_TOKEN=${{ inputs.npmAuthToken }} . -t "${{ steps.output-image.outputs.image }}"
+        docker build --build-arg MODE=${buildMode} --build-arg NPM_AUTH_TOKEN=${{ inputs.npmAuthToken }} . -t "${{ steps.output-image.outputs.image }}"
       shell: bash
