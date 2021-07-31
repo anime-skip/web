@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@anime-skip/axios-api": "^2.3.1",
-    "@anime-skip/ui": "^1.0.5",
+    "@anime-skip/ui": "^1.1.0",
     "@types/node": "^14.14.37",
     "core-js": "^3.6.5",
     "highlightjs-graphql": "^1.0.2",

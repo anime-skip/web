@@ -16,12 +16,13 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue';
+import { computed, defineComponent, h } from 'vue';
 import SiteFooter from '@/components/SiteFooter.vue';
 import { NavBar } from '@anime-skip/ui';
 import homeIcon from '@/assets/logo_nav.svg';
 import { useStore } from 'vuex';
 import useAccount from '@/composition/account';
+import IconSearch from '@/assets/IconSearch.vue';
 
 export default defineComponent({
   components: { NavBar, SiteFooter },
@@ -41,6 +42,7 @@ export default defineComponent({
           key: 'search',
           title: 'Search',
           link: '/search',
+          icon: () => h(IconSearch),
         },
       ];
       if (!isLoggedIn.value) {

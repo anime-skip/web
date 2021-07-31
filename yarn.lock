@@ -10,10 +10,10 @@
     axios "^0.19.2"
     md5 "^2.3.0"
 
-"@anime-skip/ui@^1.0.5":
-  version "1.0.5"
-  resolved "https://npm.pkg.github.com/download/@anime-skip/ui/1.0.5/cb54475f5d1fc9fcb39d3f4fe0c3ae8cf3f04d40fcd165a369728d38fae07477#e013865682b1937ab091e3b97353edeac94561c7"
-  integrity sha512-zy7CeFpm+YhzLmuT7wyCQ+28NPWVe/Qq9FGu98CVPo3qSVo9E/dQIxbHS9/zpp8CRPuCzYWQd6nYuigxTS59Sg==
+"@anime-skip/ui@^1.1.0":
+  version "1.1.0"
+  resolved "https://npm.pkg.github.com/download/@anime-skip/ui/1.1.0/8f876533b1a8ed1f51e186378481dfb104a5cc2a4fc07db5d24deafc07c47d87#cbd462ffbcd77fc523cd560804c560fd7220769c"
+  integrity sha512-1rm0Gx+E2JvwxFN1/MPwvuj+ZD8W/Luv2SAWlnpVTSGA1eq5PEQk2aF+14aerYSGvuVB6L+8/v6nVQUaN7c1Pw==
   dependencies:
     "@seregpie/vue-resize-sensor" "^1.1.5"
 
