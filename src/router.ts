@@ -73,6 +73,13 @@ const routes: RouteRecordRaw[] = [
     ],
   },
 
+  /* Search */
+
+  {
+    path: '/search',
+    component: () => import('./pages/Search/index.vue'),
+  },
+
   /* Account Management */
 
   {
