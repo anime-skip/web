@@ -6,7 +6,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - run: yarn prettier
+    - run: yarn format:check
       shell: bash
     - run: yarn lint:no-fix
       shell: bash
