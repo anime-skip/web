@@ -114,7 +114,7 @@
               You're good to go! Head over to one of the supported services and start watching some
               anime!
             </p>
-            <p>Join the Discord! There you'll find:</p>
+            <p><a href="https://discord.gg/9wVhwZg">Join the Discord!</a> There you'll find:</p>
             <ul>
               <li>Announcements</li>
               <li>Support</li>
@@ -127,11 +127,9 @@
             </p>
           </template>
           <template #buttons>
-            <raised-button link="https://discord.gg/9wVhwZg" target="blank">
-              Join the Discord
-            </raised-button>
+            <raised-button link="/search?shows=true">Search Shows</raised-button>
+            <flat-button transparent link="/#recently-added">Recently Added</flat-button>
             <flat-button transparent link="/#supported-services">Supported Servces</flat-button>
-            <flat-button transparent link="/#recently-added">Recently Added Shows</flat-button>
           </template>
         </card>
 
