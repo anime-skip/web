@@ -14,7 +14,9 @@ const defaultSearchCriteria: SearchCriteria = {
   shows: true,
   episodes: true,
 };
-const defaultUpdateSearchCriteria: UpdateSearchCriteria = (): void => {};
+const defaultUpdateSearchCriteria: UpdateSearchCriteria = (): void => {
+  // noop
+};
 
 export interface SearchCriteriaState {
   searchCriteria: Ref<SearchCriteria>;
