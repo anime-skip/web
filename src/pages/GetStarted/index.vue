@@ -22,7 +22,7 @@
               <router-link to="/support#web-ext-permissions" target="_blank"
                 >Click here</router-link
               >
-              to learn more the permissions it requires.
+              to learn more about the permissions it requires.
             </p>
             <p>You may need to reload this page after installing.</p>
           </template>

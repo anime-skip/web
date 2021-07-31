@@ -62,15 +62,19 @@ function useTryCatch(
   setRequestState: (requestState: RequestState) => void,
   setError?: (err: Error) => void,
 ) {
-  function tryCatch(callback: () => Promise<void> | void) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function tryCatch(callback: () => Promise<void> | void, isError?: (error: any) => boolean) {
     return async (): Promise<void> => {
       try {
         setRequestState(RequestState.LOADING);
         await callback();
         setRequestState(RequestState.SUCCESS);
       } catch (err) {
-        setRequestState(RequestState.FAILURE);
-        setError?.(err);
+        console.log('Caught errors', err);
+        if (!isError || isError(err)) {
+          setRequestState(RequestState.FAILURE);
+          setError?.(err);
+        }
       }
     };
   }
