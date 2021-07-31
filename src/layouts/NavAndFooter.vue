@@ -35,7 +35,14 @@ export default defineComponent({
     ]);
 
     const rightItems = computed(() => {
-      const items = [];
+      const items: any[] = [
+        {
+          type: 'basic',
+          key: 'search',
+          title: 'Search',
+          link: '/search',
+        },
+      ];
       if (!isLoggedIn.value) {
         items.push({ type: 'basic', key: 'log-in', title: 'Log In', link: '/log-in' });
       } else {
