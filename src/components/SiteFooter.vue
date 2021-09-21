@@ -13,8 +13,13 @@
 
       <div class="group">
         <h6>Supported Services</h6>
-        <a href="https://vrv.co/" target="_blank">VRV</a>
-        <a href="https://www.funimation.com/" target="_blank">FunimationNow</a>
+        <a
+          v-for="service of supportedServices"
+          :key="service.name"
+          :href="service.link"
+          target="_blank"
+          >{{ service.name }}</a
+        >
       </div>
 
       <div class="group">
@@ -36,12 +41,14 @@
 </template>
 
 <script lang="ts">
-import { CHROME_STORE_URL, FIREFOX_STORE_URL } from '@/utils/constants';
+import { CHROME_STORE_URL, FIREFOX_STORE_URL, SUPPORTED_SERVICES } from '@/utils/constants';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
   setup() {
+    const supportedServices = SUPPORTED_SERVICES;
     return {
+      supportedServices,
       chromeUrl: CHROME_STORE_URL,
       firefoxUrl: FIREFOX_STORE_URL,
     };

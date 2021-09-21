@@ -18,6 +18,7 @@
 </template>
 
 <script lang="ts">
+import { ALL_SERVICES } from '@/utils/constants';
 import { computed, defineComponent, ref } from 'vue';
 import SectionWrapper from './SectionWrapper.vue';
 import ServiceCard from './ServiceCard.vue';
@@ -28,44 +29,7 @@ export default defineComponent({
     SectionWrapper,
   },
   setup() {
-    const services = ref([
-      {
-        name: 'VRV',
-        background: '#ffdd00',
-        foreground: '#000000',
-        supported: true,
-      },
-      {
-        name: 'FunimationNow',
-        background: '#4d02a3',
-        foreground: '#f9f9f9',
-        supported: true,
-      },
-      {
-        name: 'Crunchyroll',
-        background: '#f37521',
-        foreground: '#ffffff',
-        supported: true,
-      },
-      {
-        name: 'Hulu',
-        background: '#1ce783',
-        foreground: '#000000',
-        supported: false,
-      },
-      {
-        name: 'NETFLIX',
-        background: '#e30d1a',
-        foreground: '#000000',
-        supported: false,
-      },
-      {
-        name: 'Amazone Prime Video',
-        background: '#3daae0',
-        foreground: '#ffffff',
-        supported: false,
-      },
-    ]);
+    const services = ref(ALL_SERVICES);
 
     const supportedServices = computed(() => services.value.filter(({ supported }) => supported));
     const futureServices = computed(() => services.value.filter(({ supported }) => !supported));

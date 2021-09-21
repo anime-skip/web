@@ -1,9 +1,9 @@
 <template>
   <card
-    class="min-h-16 px-8 py-2 flex items-center justify-center text-center"
+    class="min-h-16 flex items-center justify-center text-center"
     :style="`background-color: ${service.background}`"
   >
-    <span class="text-3xl font-bold" :style="`color: ${service.foreground}`">{{
+    <span class="text-3xl font-bold mx-6 my-2" :style="`color: ${service.foreground}`">{{
       service.name
     }}</span>
   </card>
