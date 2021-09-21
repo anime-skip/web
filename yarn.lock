@@ -10,10 +10,10 @@
     axios "^0.19.2"
     md5 "^2.3.0"
 
-"@anime-skip/ui@^1.1.0":
-  version "1.1.0"
-  resolved "https://npm.pkg.github.com/download/@anime-skip/ui/1.1.0/8f876533b1a8ed1f51e186378481dfb104a5cc2a4fc07db5d24deafc07c47d87#cbd462ffbcd77fc523cd560804c560fd7220769c"
-  integrity sha512-1rm0Gx+E2JvwxFN1/MPwvuj+ZD8W/Luv2SAWlnpVTSGA1eq5PEQk2aF+14aerYSGvuVB6L+8/v6nVQUaN7c1Pw==
+"@anime-skip/ui@^1.2.0":
+  version "1.2.0"
+  resolved "https://npm.pkg.github.com/download/@anime-skip/ui/1.2.0/772135366cefb79930592911871b7f712c64f97e9afad13ac2ff12bd03768cc1#03b4b25378a1dd28ee595087b628de85f8dcd8ed"
+  integrity sha512-/zayCIw+LCvibfuLlxiheQRsdLEsSRlwcN1NYZo7Oi9BMsQ7rg++ZriUeMgfveDqeYFz0a05Q1bTU7sUtcELEg==
   dependencies:
     "@seregpie/vue-resize-sensor" "^1.1.5"
 
@@ -1114,9 +1114,9 @@ camelcase@^2.0.0:
   integrity sha1-fB0W1nmhu+WcoCys7PsBHiAfWh8=
 
 caniuse-lite@^1.0.30001181, caniuse-lite@^1.0.30001196:
-  version "1.0.30001208"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001208.tgz#a999014a35cebd4f98c405930a057a0d75352eb9"
-  integrity sha512-OE5UE4+nBOro8Dyvv0lfx+SRtfVIOM9uhKqFmJeUbGriqhhStgp1A0OyBpgy3OUF8AhYCT+PVwPC1gMl2ZcQMA==
+  version "1.0.30001258"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001258.tgz"
+  integrity sha512-RBByOG6xWXUp0CR2/WU2amXz3stjKpSl5J1xU49F1n2OxD//uBZO4wCKUiG+QMGf7CHGfDDcqoKriomoGVxTeA==
 
 caw@^2.0.0, caw@^2.0.1:
   version "2.0.1"
