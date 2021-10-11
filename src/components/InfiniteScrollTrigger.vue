@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { debounce } from 'lodash';
+import debounce from 'lodash.debounce';
 import { defineComponent, onMounted, onUnmounted, ref, watch } from 'vue';
 
 export default defineComponent({
