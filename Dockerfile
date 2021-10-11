@@ -1,13 +1,17 @@
+# base image
+FROM node:lts-alpine as pnpm-lts-alpine
+RUN npm i -g pnpm
+
 # build stage
-FROM node:lts-alpine as build-stage
+FROM pnpm-lts-alpine as build-stage
 WORKDIR /app
 ARG GITHUB_PACKAGES_TOKEN
 ARG MODE=production
 COPY docker/.npmrc .npmrc
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
 COPY . .
-RUN yarn run build --mode ${MODE}
+RUN pnpm build -- --mode ${MODE}
 
 # production stage
 FROM nginx:stable-alpine as production-stage

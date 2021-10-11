@@ -9,28 +9,28 @@ It uses [Vue 3](https://v3.vuejs.org/guide/introduction.html) (object syntax) as
 Standard vue project setup. See the [Vue 3 getting started page](https://v3.vuejs.org/guide/introduction.html) for more info.
 
 ```bash
-yarn install
+pnpm install
 # Run webpack and hot-reloader
-yarn start
+pnpm start
 
 # Build a /dist directory for production
-yarn build
+pnpm build
 # Lint the project
-yarn lint
+pnpm lint
 ```
 
 To run in a specific environment:
 
 ```bash
-yarn start # defaults to development
-yarn start --mode development
-yarn start --mode staged
-yarn start --mode production
+pnpm start # defaults to development
+pnpm start -- --mode development
+pnpm start -- --mode staged
+pnpm start -- --mode production
 
-yarn build # default to production
-yarn build --mode development
-yarn build --mode staged
-yarn build --mode production
+pnpm build # default to production
+pnpm build -- --mode development
+pnpm build -- --mode staged
+pnpm build -- --mode production
 ```
 
 ### Running Tests
@@ -38,13 +38,13 @@ yarn build --mode production
 Right now, there are no unit or end to end tests.
 
 ```
-yarn test:unit
-yarn test:e2e
+pnpm test:unit
+pnpm test:e2e
 ```
 
 ### Visualizing Bundle Size
 
-`yarn build` will output a `stats.html`. Open it in the browser to see chunks and large modules
+`pnpm build` will output a `stats.html`. Open it in the browser to see chunks and large modules
 
 ### IDE Setup
 

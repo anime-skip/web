@@ -15,17 +15,20 @@ jobs:
           registry-url: https://npm.pkg.github.com
           scope: '@anime-skip'
       - uses: actions/checkout@v2
-      - uses: actions/cache@v2
+      - name: Cache .pnpm-store
+        uses: actions/cache@v1
         with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-      - run: yarn install
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-node12-${{ hashFiles('**/pnpm-lock.yaml') }}
+      - name: Install pnpm
+        run: curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm@6
+      - run: pnpm install
         env:
           CI: true
           NODE_AUTH_TOKEN: ${{ secrets.ANIME_SKIP_PACKAGES_TOKEN }}
-      - run: yarn prettier
-      - run: yarn lint:no-fix
-      - run: yarn test
+      - run: pnpm prettier
+      - run: pnpm lint:no-fix
+      - run: pnpm test
       - name: Run docker build
         run: docker build --build-arg GITHUB_PACKAGES_TOKEN=${GITHUB_PACKAGES_TOKEN} .
         env:
