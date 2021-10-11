@@ -1,11 +1,13 @@
 name: Install Dependencies
+description: Installs node modules
 inputs:
   npmAuthToken:
+    description: Authorization token used to access private github packages
     required: true
 runs:
   using: composite
   steps:
-    - run: pnpm install --immutable --immutable-cache
+    - run: pnpm install --frozen-lockfile
       shell: bash
       env:
         NODE_AUTH_TOKEN: ${{ inputs.npmAuthToken }}
