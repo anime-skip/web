@@ -117,6 +117,7 @@ export default defineComponent({
               offset: PAGE_SIZE * page.value,
             },
             {
+              // @ts-ignore: Weird type error?
               cancelToken: showCancelToken.value?.token,
             },
           );
@@ -139,6 +140,7 @@ export default defineComponent({
               offset: PAGE_SIZE * page.value,
             },
             {
+              // @ts-ignore: Weird type error?
               cancelToken: episodeCancelToken.value?.token,
             },
           );

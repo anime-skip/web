@@ -1,6 +1,13 @@
 <template>
   <li
-    class="p-4 bg-on-surface bg-opacity-0 hover:bg-opacity-hover transition-colors rounded-lg space-y-1"
+    class="
+      p-4
+      bg-on-surface bg-opacity-0
+      hover:bg-opacity-hover
+      transition-colors
+      rounded-lg
+      space-y-1
+    "
   >
     <p class="heading-6 text-primary">{{ name }}</p>
     <p class="text-on-surface text-opacity-medium">

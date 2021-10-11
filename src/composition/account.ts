@@ -1,3 +1,4 @@
+import { ActionTypes } from '@/store/action-types';
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 
@@ -13,4 +14,8 @@ export default function useAccount(store = useStore()) {
     username,
     email,
   };
+}
+
+export function useReloadAccount(store = useStore()) {
+  return async () => await store.dispatch(ActionTypes.RELOAD_ACCOUNT, undefined);
 }
