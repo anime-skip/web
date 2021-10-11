@@ -17,7 +17,7 @@
           Verify Email
         </raised-button>
         <template v-if="hasRecentlySumbitted">
-          <p v-if="!sent" class="text-error">
+          <p v-if="!sent && !loading" class="text-error">
             Didn't get an email? Check your spam folder or resend it after 5 minutes
           </p>
           <p v-if="sent" class="text-success">Verification email sent!</p>
@@ -28,17 +28,16 @@
 </template>
 
 <script lang="ts" setup>
-import useAccount, { useReloadAccount } from '@/composition/account';
+import useAccount from '@/composition/account';
 import { RaisedButton, TextInput } from '@anime-skip/ui';
 import IconEmail from '@/assets/IconEmail.vue';
 import Api from '@/api';
 import { computed, onMounted, ref } from 'vue';
 import TimeUtils from '@/utils/time';
-import { useInterval } from '@/composition/timers';
-import { useWindowEvent } from '@/composition/events';
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { MutationTypes } from '@/store/mutation-types';
+import { useReCaptcha } from 'vue-recaptcha-v3';
 
 const LAST_REQUESTED_AT_STORAGE_KEY = 'email_verification_last_requested_at_ms';
 const REQUEST_TIMES_OUT_AFTER = 5 * TimeUtils.MINUTES;
@@ -46,6 +45,8 @@ const REQUEST_TIMES_OUT_AFTER = 5 * TimeUtils.MINUTES;
 const { isEmailVerified, email } = useAccount();
 
 // Requesting email be sent
+
+const { executeRecaptcha, recaptchaLoaded } = useReCaptcha()!;
 
 const lastRequestedAt = ref(getLastRequestedAt());
 function getLastRequestedAt(): number {
@@ -65,14 +66,21 @@ const hasRecentlySumbitted = computed<boolean>(
 );
 
 const sent = ref(false);
+const loading = ref(false);
 async function submitRequest(): Promise<void> {
+  loading.value = true;
   try {
     updateLastRequestedAt();
-    await Api.resendVerificationEmail('');
-    // Api.
+
+    await recaptchaLoaded();
+    const recaptchaResponse = await executeRecaptcha('sign_up');
+    await Api.resendVerificationEmail('', { recaptchaResponse });
+
     sent.value = true;
   } catch (err) {
     console.error(err);
+  } finally {
+    loading.value = false;
   }
 }
 

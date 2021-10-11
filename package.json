@@ -20,7 +20,7 @@
     "preview": "echo 'Previewing \"dist/\" build' && vite preview"
   },
   "dependencies": {
-    "@anime-skip/axios-api": "^2.4.2",
+    "@anime-skip/axios-api": "^2.5.0",
     "@anime-skip/ui": "^1.2.0",
     "@types/node": "^14.14.37",
     "axios": "^0.22.0",

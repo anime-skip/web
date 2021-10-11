@@ -1,7 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
-  '@anime-skip/axios-api': ^2.4.2
+  '@anime-skip/axios-api': ^2.5.0
   '@anime-skip/ui': ^1.2.0
   '@tailwindcss/line-clamp': ^0.2.1
   '@types/lodash.debounce': ^4.0.6
@@ -43,7 +43,7 @@ specifiers:
   vuex-persist: ^2.2.0
 
 dependencies:
-  '@anime-skip/axios-api': 2.4.2
+  '@anime-skip/axios-api': 2.5.0
   '@anime-skip/ui': 1.2.5_132416fb214aa3fde13a49e6d9d409e7
   '@types/node': 14.17.19
   axios: 0.22.0
@@ -87,11 +87,11 @@ devDependencies:
   vue-tsc: 0.0.17
 
 packages:
-  /@anime-skip/axios-api/2.4.2:
+  /@anime-skip/axios-api/2.5.0:
     resolution:
       {
-        integrity: sha512-xEIu9HaHCVu4quBC7SSq9vCqd681ZyubtMSg0ax9f/6C5v7A6F/NNsSLDIZ5ipygeaDkZphrW1Q2o/lYKR1n+w==,
-        tarball: download/@anime-skip/axios-api/2.4.2/2b7d2954c1ab8e97cefa9648d7754e1e569f9396a89991f32e71663bd0a46ec4,
+        integrity: sha512-wM3Y+r0hI0aiShBcbOgjIARFDBkRa+Y2uFskbAmgBXO5sBZhsCIN0JNkibQ2G9jC8Jj/HF1G9+2qAcJ460lK3Q==,
+        tarball: download/@anime-skip/axios-api/2.5.0/e6c0d78df36a55a45136356d278e95ee4c86c4641654dd30f955f51817fddae5,
       }
     dependencies:
       axios: 0.22.0
