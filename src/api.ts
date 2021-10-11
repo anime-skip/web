@@ -62,6 +62,17 @@ function createExtendedClient() {
   const clientId = 'th2oogUKrgOf1J8wMSIUPV0IpBMsLOJi';
   const client = createAnimeSkipClient(url, clientId);
 
+  client.axios.interceptors.request.use(config => {
+    const token = localStorage.getItem(LocalStorageKeys.ACCESS_TOKEN);
+    return {
+      ...config,
+      headers: {
+        ...config.headers,
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+    };
+  });
+
   return {
     ...client,
     async isUsernameInUse(username: string): Promise<boolean> {

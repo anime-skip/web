@@ -3,10 +3,28 @@
     <div class="min-h-90vh flex flex-col px-8 lg:px-16">
       <div class="flex flex-col flex-1 justify-center">
         <div
-          class="card w-full max-w-lg overflow-hidden lg:max-w-login-card mx-auto my-16 lg:flex lg:rounded-2xl lg:framing-shadow lg:min-h-450px"
+          class="
+            card
+            w-full
+            max-w-lg
+            overflow-hidden
+            lg:max-w-login-card
+            mx-auto
+            my-16
+            lg:flex lg:rounded-2xl lg:framing-shadow lg:min-h-450px
+          "
         >
           <section
-            class="hidden lg:flex bg-control bg-stars w-50% flex-col items-center justify-center space-y-8"
+            class="
+              hidden
+              lg:flex
+              bg-control bg-stars
+              w-50%
+              flex-col
+              items-center
+              justify-center
+              space-y-8
+            "
           >
             <img class="w-50%" src="../../assets/logo.svg" />
             <p class="heading-6 font-bold text-opacity-medium">watch anime like a pro</p>

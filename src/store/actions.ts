@@ -1,6 +1,6 @@
 import api, { persistTokens } from '@/api';
 import plugins from '@/plugins';
-import { RequestState } from '@/utils/enums';
+import { LocalStorageKeys, RequestState } from '@/utils/enums';
 import Errors from '@/utils/errors';
 import { ActionContext, ActionTree } from 'vuex';
 import { LOG_IN_REDIRECT, UNAUTHORIZED_ERROR_MESSAGE } from '../utils/constants';
@@ -39,6 +39,7 @@ export interface Actions {
     },
   ): Promise<void>;
   [ActionTypes.LOG_OUT](context: AugmentedActionContext, customRedirect?: string): void;
+  [ActionTypes.RELOAD_ACCOUNT](context: AugmentedActionContext): void;
 }
 //#endregion
 
@@ -149,5 +150,30 @@ export const actions: ActionTree<State, State> & Actions = {
       url += `&redirect=${encodeURI(customRedirect)}`;
     }
     plugins.router.push({ path: url });
+  },
+  async [ActionTypes.RELOAD_ACCOUNT]({ dispatch, commit }) {
+    try {
+      const account = await callApi(
+        dispatch,
+        api.account,
+        `{
+          id
+          username
+          email
+          emailVerified
+          profileUrl
+        }`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem(LocalStorageKeys.ACCESS_TOKEN)}`,
+          },
+        },
+      );
+      if (account == null) throw Error('Internal error: account not available');
+
+      commit(MutationTypes.SET_ACCOUNT_INFO, account);
+    } catch (err) {
+      console.error('Failed to reload account details', err);
+    }
   },
 };

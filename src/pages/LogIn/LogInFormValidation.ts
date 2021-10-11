@@ -67,8 +67,9 @@ export function useUsername(ignoreRememberMe = false) {
   };
 }
 
-// eslint-disable-next-line no-useless-escape
-const VALID_EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+const VALID_EMAIL_REGEX =
+  // eslint-disable-next-line no-useless-escape
+  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export function useEmail() {
   const email = ref('');
@@ -123,10 +124,8 @@ export function usePassword() {
 }
 
 export function useConfirmPassword(password: Ref<string>) {
-  const {
-    hasEnteredPassword: hasEnteredConfirmPassword,
-    password: confirmPassword,
-  } = usePassword();
+  const { hasEnteredPassword: hasEnteredConfirmPassword, password: confirmPassword } =
+    usePassword();
 
   /**
    * Confirm password must match the actual password

@@ -46,10 +46,10 @@
   </NavAndFooterLayout>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import useExtensionStatus from '@/composition/extension-status';
 import useExtensionInteraction from '@/composition/extension-interaction';
-import { computed, defineComponent } from 'vue';
+import { computed, onMounted } from 'vue';
 import icCheckmarkBlue from '../../assets/ic_checkmark_secondary.svg';
 import icXRed from '../../assets/ic_x_red.svg';
 import SideNavigation from '@/layouts/SideNavigation.vue';
@@ -58,38 +58,30 @@ import SideNavigationLink from '@/components/SideNavigationLink.vue';
 import SideNavigationButton from '@/components/SideNavigationButton.vue';
 import IconCircleCheck from '@/assets/IconCircleCheck.vue';
 import IconCircleX from '@/assets/IconCircleX.vue';
+import { useReloadAccount } from '@/composition/account';
+import { useWindowEvent } from '@/composition/events';
 
-export default defineComponent({
-  components: {
-    SideNavigation,
-    SideNavigationGroup,
-    SideNavigationLink,
-    SideNavigationButton,
-    IconCircleCheck,
-    IconCircleX,
-  },
-  setup() {
-    const { isExtensionInstalled } = useExtensionStatus();
-    const { openPlayerSettings, sendMockInstallMessage } = useExtensionInteraction();
+const { isExtensionInstalled } = useExtensionStatus();
+const { openPlayerSettings, sendMockInstallMessage } = useExtensionInteraction();
 
-    const isDev = import.meta.env.DEV;
-    const isShowingDevInstallEventButton = computed(() => isDev && !isExtensionInstalled.value);
+const isDev = import.meta.env.DEV;
+const isShowingDevInstallEventButton = computed(() => isDev && !isExtensionInstalled.value);
 
-    const extensionInstalledIcon = computed(() =>
-      isExtensionInstalled.value ? icCheckmarkBlue : icXRed,
-    );
-    const extensionInstalledTitle = computed(() =>
-      isExtensionInstalled.value ? 'Extension installed!' : 'Extension not installed',
-    );
-    return {
-      isDev,
-      isShowingDevInstallEventButton,
-      isExtensionInstalled,
-      extensionInstalledIcon,
-      extensionInstalledTitle,
-      openPlayerSettings,
-      sendMockInstallMessage,
-    };
-  },
+const extensionInstalledIcon = computed(() =>
+  isExtensionInstalled.value ? icCheckmarkBlue : icXRed,
+);
+const extensionInstalledTitle = computed(() =>
+  isExtensionInstalled.value ? 'Extension installed!' : 'Extension not installed',
+);
+
+const _reloadAccount = useReloadAccount();
+function reloadAccount() {
+  console.log('reloading account...');
+  _reloadAccount();
+}
+onMounted(reloadAccount);
+useWindowEvent('focus', event => {
+  // @ts-expect-error
+  if (event.explicitOriginalTarget === window) reloadAccount();
 });
 </script>

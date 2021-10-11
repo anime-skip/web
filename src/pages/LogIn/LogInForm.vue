@@ -81,13 +81,8 @@ export default defineComponent({
     const customRedirect = route.query.redirect as string | undefined;
     const signUpLink = ref({ path: '/sign-up', query: { redirect: customRedirect } });
 
-    const {
-      rememberMe,
-      username,
-      persistUsername,
-      isUsernameInputValid,
-      hasEnteredUsername,
-    } = useUsername();
+    const { rememberMe, username, persistUsername, isUsernameInputValid, hasEnteredUsername } =
+      useUsername();
     const { password, isPasswordValid, hasEnteredPassword } = usePassword();
     const isSubmitDisabled = computed(() => !username.value || !password.value);
 
