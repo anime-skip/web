@@ -6,15 +6,15 @@ inputs:
 runs:
   using: composite
   steps:
-    - run: yarn format:check
+    - run: pnpm format:check
       shell: bash
-    - run: yarn lint:no-fix
+    - run: pnpm lint:no-fix
       shell: bash
-    - run: yarn test
+    - run: pnpm test
       shell: bash
-    - run: yarn build:docker
+    - run: pnpm build:docker
       shell: bash
       env:
         GITHUB_PACKAGES_TOKEN: ${{ inputs.npmAuthToken }}
-    - run: yarn test:e2e
+    - run: pnpm test:e2e
       shell: bash

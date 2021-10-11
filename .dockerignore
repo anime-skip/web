@@ -4,4 +4,4 @@
 /dist
 /.git
 
-yarn-error.log
+*.log
