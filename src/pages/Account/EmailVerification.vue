@@ -11,17 +11,21 @@
       <p class="text-success" v-if="isEmailVerified">Your email address is verified!</p>
       <template v-else>
         <p>
-          You have to verify that your email address before you're allowed to contribute timestamps
+          After the beta, you have to verify that your email address before you're allowed to
+          contribute timestamps
         </p>
-        <raised-button :disabled="hasRecentlySumbitted" @click="submitRequest">
+        <raised-button :disabled="isLoading || hasRecentlySumbitted" @click="submitRequest">
           Verify Email
         </raised-button>
         <template v-if="hasRecentlySumbitted">
-          <p v-if="!sent && !loading" class="text-error">
+          <p class="text-success">Verification email sent!</p>
+          <p v-if="!wasSent && !isLoading">
             Didn't get an email? Check your spam folder or resend it after 5 minutes
           </p>
-          <p v-if="sent" class="text-success">Verification email sent!</p>
         </template>
+        <p v-if="errorMessage" class="text-error">
+          {{ errorMessage }}
+        </p>
       </template>
     </section>
   </div>
@@ -38,6 +42,9 @@ import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { MutationTypes } from '@/store/mutation-types';
 import { useReCaptcha } from 'vue-recaptcha-v3';
+import { useRequestState } from '@/composition/request-state';
+import { RequestState } from '@/utils/enums';
+import { usePersistedTimeoutFlag } from '@/composition/persistedTimeoutFlag';
 
 const LAST_REQUESTED_AT_STORAGE_KEY = 'email_verification_last_requested_at_ms';
 const REQUEST_TIMES_OUT_AFTER = 5 * TimeUtils.MINUTES;
@@ -48,41 +55,20 @@ const { isEmailVerified, email } = useAccount();
 
 const { executeRecaptcha, recaptchaLoaded } = useReCaptcha()!;
 
-const lastRequestedAt = ref(getLastRequestedAt());
-function getLastRequestedAt(): number {
-  const lastReqestedAtStr = localStorage.getItem(LAST_REQUESTED_AT_STORAGE_KEY);
-  const lastRequestedAtMs = lastReqestedAtStr == null ? 0 : Number(lastReqestedAtStr);
-  return isNaN(lastRequestedAtMs) ? 0 : lastRequestedAtMs;
-}
-function updateLastRequestedAt() {
-  const now = Date.now();
-  localStorage.setItem(LAST_REQUESTED_AT_STORAGE_KEY, String(Date.now()));
-  lastRequestedAt.value = now;
-}
-
-const pageLoadedAt = Date.now();
-const hasRecentlySumbitted = computed<boolean>(
-  () => pageLoadedAt < lastRequestedAt.value + REQUEST_TIMES_OUT_AFTER,
-);
-
-const sent = ref(false);
-const loading = ref(false);
-async function submitRequest(): Promise<void> {
-  loading.value = true;
-  try {
-    updateLastRequestedAt();
-
-    await recaptchaLoaded();
-    const recaptchaResponse = await executeRecaptcha('sign_up');
-    await Api.resendVerificationEmail('', { recaptchaResponse });
-
-    sent.value = true;
-  } catch (err) {
-    console.error(err);
-  } finally {
-    loading.value = false;
-  }
-}
+const {
+  isLoading,
+  errorMessage,
+  isSuccess: wasSent,
+  tryCatch,
+} = useRequestState(RequestState.NOT_REQUESTED);
+const { flag: hasRecentlySumbitted, startTimeout: startVerificationRequestTimeout } =
+  usePersistedTimeoutFlag('email_verification_request', 5 * TimeUtils.MINUTES);
+const submitRequest = tryCatch(async () => {
+  await recaptchaLoaded();
+  const recaptchaResponse = await executeRecaptcha('sign_up');
+  await Api.resendVerificationEmail('', { recaptchaResponse });
+  startVerificationRequestTimeout();
+});
 
 // Handling incoming token
 const route = useRoute();
