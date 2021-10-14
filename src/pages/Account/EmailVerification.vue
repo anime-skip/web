@@ -65,7 +65,7 @@ const { flag: hasRecentlySumbitted, startTimeout: startVerificationRequestTimeou
   usePersistedTimeoutFlag('email_verification_request', 5 * TimeUtils.MINUTES);
 const submitRequest = tryCatch(async () => {
   await recaptchaLoaded();
-  const recaptchaResponse = await executeRecaptcha('sign_up');
+  const recaptchaResponse = await executeRecaptcha('verify_email');
   await Api.resendVerificationEmail('', { recaptchaResponse });
   startVerificationRequestTimeout();
 });
