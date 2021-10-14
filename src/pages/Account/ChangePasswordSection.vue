@@ -66,30 +66,21 @@ const { tryCatch, errorMessage, isLoading, isSuccess } = useRequestState(
   RequestState.NOT_REQUESTED,
 );
 const changePassword = tryCatch(async () => {
-  try {
-    const { authToken, refreshToken } = await api.changePassword(
-      `{
+  const { authToken, refreshToken } = await api.changePassword(
+    `{
         authToken
         refreshToken
       }`,
-      {
-        oldPassword: currentPassword.value,
-        newPassword: newPassword.value,
-        confirmNewPassword: confirmNewPassword.value,
-      },
-    );
-    localStorage.setItem(LocalStorageKeys.ACCESS_TOKEN, authToken);
-    localStorage.setItem(LocalStorageKeys.REFRESH_TOKEN, refreshToken);
-    currentPassword.value = '';
-    newPassword.value = '';
-    confirmNewPassword.value = '';
-  } catch (err) {
-    if ('errors' in err) {
-      const { message } = err.errors.find((error: any) => err.message);
-      throw Error(message);
-    }
-    console.log(err);
-    throw err;
-  }
+    {
+      oldPassword: currentPassword.value,
+      newPassword: newPassword.value,
+      confirmNewPassword: confirmNewPassword.value,
+    },
+  );
+  localStorage.setItem(LocalStorageKeys.ACCESS_TOKEN, authToken);
+  localStorage.setItem(LocalStorageKeys.REFRESH_TOKEN, refreshToken);
+  currentPassword.value = '';
+  newPassword.value = '';
+  confirmNewPassword.value = '';
 });
 </script>
