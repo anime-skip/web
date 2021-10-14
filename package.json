@@ -17,7 +17,8 @@
     "build": "pnpm compile && vite build",
     "build:staged": "pnpm build -- --mode staged",
     "build:docker": "npx dotenv-cli -e docker/.env -- bash -c 'docker build --build-arg GITHUB_PACKAGES_TOKEN=${GITHUB_PACKAGES_TOKEN} . -t anime-skip-web:dev'",
-    "preview": "echo 'Previewing \"dist/\" build' && vite preview"
+    "preview": "echo 'Previewing \"dist/\" build' && vite preview",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@anime-skip/axios-api": "^2.6.0",
