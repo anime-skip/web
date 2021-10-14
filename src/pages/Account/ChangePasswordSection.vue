@@ -32,7 +32,7 @@
         <text-input
           v-model:value="confirmNewPassword"
           type="password"
-          placeholder="Retype new password"
+          placeholder="Confirm new password"
           autocomplete="new-password"
           :disabled="isLoading"
           @submit="changePassword()"
