@@ -25,7 +25,14 @@ export function useRequestState(initialState = RequestState.SUCCESS) {
       requestState.value = newRequestState;
     },
     err => {
-      errorMessage.value = err.message;
+      if ('errors' in err && Array.isArray(err.errors)) {
+        const { message } = err.errors.find((e: any) => e.message);
+        errorMessage.value = message;
+      } else if (err instanceof Error) {
+        errorMessage.value = err.message;
+      } else {
+        errorMessage.value = 'Unknown error';
+      }
     },
   );
 
@@ -61,7 +68,7 @@ export function useStoreRequestState(
 
 function useTryCatch(
   setRequestState: (requestState: RequestState) => void,
-  setError?: (err: Error) => void,
+  setError?: (err: any) => void,
 ) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function tryCatch(callback: () => Promise<void> | void, isError?: (error: any) => boolean) {
@@ -71,7 +78,7 @@ function useTryCatch(
         await callback();
         setRequestState(RequestState.SUCCESS);
       } catch (err) {
-        console.log('Caught errors', err);
+        console.log('Unknown error:', err);
         if (!isError || isError(err)) {
           setRequestState(RequestState.FAILURE);
           setError?.(err);
