@@ -11,6 +11,7 @@ export enum SessionStorageKeys {
 }
 
 export enum RequestState {
+  NOT_REQUESTED,
   LOADING,
   SUCCESS,
   FAILURE,

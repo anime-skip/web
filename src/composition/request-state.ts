@@ -31,6 +31,7 @@ export function useRequestState(initialState = RequestState.SUCCESS) {
 
   return {
     requestState,
+    errorMessage,
 
     setLoading,
     setSuccess,
