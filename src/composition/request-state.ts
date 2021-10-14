@@ -26,6 +26,7 @@ export function useRequestState(initialState = RequestState.SUCCESS) {
     },
     err => {
       if ('errors' in err && Array.isArray(err.errors)) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const { message } = err.errors.find((e: any) => e.message);
         errorMessage.value = message;
       } else if (err instanceof Error) {
@@ -68,6 +69,7 @@ export function useStoreRequestState(
 
 function useTryCatch(
   setRequestState: (requestState: RequestState) => void,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setError?: (err: any) => void,
 ) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted, Ref, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 
 const STORAGE_PREFIX = 'persisted_timeout_flag__';
 
