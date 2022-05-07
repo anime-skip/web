@@ -26,6 +26,7 @@
     "@types/node": "^14.14.37",
     "axios": "^0.22.0",
     "core-js": "^3.6.5",
+    "firebase": "^9.8.0",
     "highlight.js": "^11.2.0",
     "highlightjs-graphql": "^1.0.2",
     "lodash.debounce": "^4.0.8",

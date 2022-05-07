@@ -18,10 +18,11 @@
 </template>
 
 <script lang="ts">
-import { ALL_SERVICES } from '@/utils/constants';
 import { computed, defineComponent, ref } from 'vue';
 import SectionWrapper from './SectionWrapper.vue';
 import ServiceCard from './ServiceCard.vue';
+import { getValue, ensureInitialized } from 'firebase/remote-config';
+import { remoteConfig, Service } from '@/utils/firebase';
 
 export default defineComponent({
   components: {
@@ -29,7 +30,13 @@ export default defineComponent({
     SectionWrapper,
   },
   setup() {
-    const services = ref(ALL_SERVICES);
+    const getCurrentServices = (): Service[] =>
+      JSON.parse(getValue(remoteConfig, 'services').asString());
+    const services = ref(getCurrentServices());
+    ensureInitialized(remoteConfig).then(() => {
+      console.log('initialized', getCurrentServices());
+      services.value = getCurrentServices();
+    });
 
     const supportedServices = computed(() => services.value.filter(({ supported }) => supported));
     const futureServices = computed(() => services.value.filter(({ supported }) => !supported));

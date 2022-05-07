@@ -7,6 +7,7 @@ import { VueReCaptcha } from 'vue-recaptcha-v3';
 import NavAndFooterLayout from '@/layouts/NavAndFooter.vue';
 import { RouterView } from 'vue-router';
 import { Vue3HighlightJs } from './utils/VueHighlightJs';
+import './utils/firebase';
 
 if (import.meta.env.VITE_APP_TITLE != null) {
   document.title += ` ${import.meta.env.VITE_APP_TITLE}`;
