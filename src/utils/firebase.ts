@@ -16,9 +16,6 @@ const app = initializeApp(config);
 
 export const remoteConfig = getRemoteConfig(app);
 if (import.meta.env.DEV) remoteConfig.settings.minimumFetchIntervalMillis = 30e3;
-remoteConfig.defaultConfig = {
-  services: '[]',
-};
 fetchAndActivate(remoteConfig);
 
 export interface Service {
