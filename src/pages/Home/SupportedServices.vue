@@ -7,7 +7,7 @@
     <ul class="list">
       <service-card v-for="service of supportedServices" :key="service.name" :service="service" />
     </ul>
-    <h5 class="text-opacity-medium pt-8">In the Future</h5>
+    <h5 v-if="futureServices.length > 0" class="text-opacity-medium pt-8">In the Future</h5>
     <ul class="list opacity-medium">
       <service-card v-for="service of futureServices" :key="service.name" :service="service" />
     </ul>
@@ -21,7 +21,7 @@
 import { computed, defineComponent, ref } from 'vue';
 import SectionWrapper from './SectionWrapper.vue';
 import ServiceCard from './ServiceCard.vue';
-import { getValue, ensureInitialized } from 'firebase/remote-config';
+import { getValue, ensureInitialized, fetchConfig } from 'firebase/remote-config';
 import { remoteConfig, Service } from '@/utils/firebase';
 
 export default defineComponent({
@@ -33,7 +33,8 @@ export default defineComponent({
     const getCurrentServices = (): Service[] =>
       JSON.parse(getValue(remoteConfig, 'services').asString());
     const services = ref(getCurrentServices());
-    ensureInitialized(remoteConfig).then(() => {
+
+    fetchConfig(remoteConfig).then(() => {
       console.log('initialized', getCurrentServices());
       services.value = getCurrentServices();
     });
