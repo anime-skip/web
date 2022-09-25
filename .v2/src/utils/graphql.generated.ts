@@ -13,8 +13,8 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  Time: any;
-  UInt: any;
+  Time: string;
+  UInt: string;
 };
 
 /** Account info that should only be accessible by the authorized user */

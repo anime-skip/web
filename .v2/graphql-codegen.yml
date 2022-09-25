@@ -10,3 +10,7 @@ generates:
       - typescript
       - typescript-operations
       - typescript-graphql-request
+    config:
+      scalars:
+        Time: string
+        UInt: string
