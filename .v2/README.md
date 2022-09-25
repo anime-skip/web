@@ -1,42 +1,25 @@
-# Nuxt 3 Minimal Starter
+# Anime Skip Website
 
-Look at the [nuxt 3 documentation](https://v3.nuxtjs.org) to learn more.
+This project uses Nuxt 3, Dasiy UI, Pinia, and Apollo for it's main libraries.
 
-## Setup
+## Required Tools
 
-Make sure to install the dependencies:
+- NodeJS
+- `pnpm`: `npm i -g pnpm`
+- Docker
 
-```bash
-# yarn
-yarn install
+## Start Local Server
 
-# npm
-npm install
-
-# pnpm
-pnpm install --shamefully-hoist
-```
-
-## Development Server
-
-Start the development server on http://localhost:3000
+Install dependencies, and then run the `dev` command:
 
 ```bash
-npm run dev
+pnpm install
+pnpm dev
 ```
 
-## Production
+### Configuration
 
-Build the application for production:
-
-```bash
-npm run build
+```env
+# Choose an API endpoint to use
+VITE_API_BASE_URL=https://api.anime-skip.com
 ```
-
-Locally preview production build:
-
-```bash
-npm run preview
-```
-
-Checkout the [deployment documentation](https://v3.nuxtjs.org/guide/deploy/presets) for more information.
