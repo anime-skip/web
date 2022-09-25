@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  useApiClient()
+useApiClient();
 </script>
 
 <template>

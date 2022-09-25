@@ -14,10 +14,8 @@
   },
   "dependencies": {
     "@pinia/nuxt": "^0.4.2",
-    "async-mutex": "^0.4.0",
     "graphql": "^16.6.0",
     "graphql-request": "^5.0.0",
-    "jwt-decode": "^3.1.2",
     "md5": "^2.3.0",
     "refresh-fetch": "^0.8.0",
     "vue-query": "^1.26.0"
@@ -25,11 +23,13 @@
   "devDependencies": {
     "@graphql-codegen/cli": "2.12.1",
     "@graphql-codegen/typescript": "^2.7.3",
-    "@graphql-codegen/typescript-generic-sdk": "^3.0.1",
     "@graphql-codegen/typescript-graphql-request": "^4.5.5",
     "@graphql-codegen/typescript-operations": "^2.5.3",
+    "@iconify/json": "^2.1.112",
     "@nuxtjs/tailwindcss": "^5.3.3",
     "@types/refresh-fetch": "^0.6.1",
+    "@unocss/nuxt": "^0.45.22",
+    "@unocss/preset-icons": "^0.45.22",
     "@vueuse/core": "^9.2.0",
     "@vueuse/nuxt": "^9.2.0",
     "daisyui": "^2.31.0",

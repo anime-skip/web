@@ -7,5 +7,6 @@ export default function () {
     queryKey: 'supported-services',
     queryFn: () => getLatestRemoteConfig().then(res => res.services),
     staleTime: DAY,
+    cacheTime: DAY,
   });
 }

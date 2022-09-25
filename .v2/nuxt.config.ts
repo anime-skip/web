@@ -14,6 +14,17 @@ export default defineNuxtConfig({
       },
     ],
     '@vueuse/nuxt',
+    [
+      '@unocss/nuxt',
+      {
+        uno: false, // enabled "@unocss/preset-uno"
+        icons: true, // enabled "@unocss/preset-icons"
+        attributify: false, // enabled "@unocss/preset-attributify"
+        // core options
+        shortcuts: [],
+        rules: [],
+      },
+    ],
   ],
   runtimeConfig: {
     public: {
