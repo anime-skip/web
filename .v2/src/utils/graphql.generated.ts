@@ -1280,21 +1280,49 @@ export type LoginQueryVariables = Exact<{
 }>;
 
 
-export type LoginQuery = { __typename?: 'Query', login: { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', username: string, profileUrl: string } } };
+export type LoginQuery = { __typename?: 'Query', login: { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', username: string, email: string, profileUrl: string } } };
+
+export type LoggedInAccountFragment = { __typename?: 'Account', username: string, email: string, profileUrl: string };
+
+export type AuthDetailsFragment = { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', username: string, email: string, profileUrl: string } };
+
+export type LoginRefreshQueryVariables = Exact<{
+  refreshToken: Scalars['String'];
+}>;
 
 
+export type LoginRefreshQuery = { __typename?: 'Query', loginRefresh: { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', username: string, email: string, profileUrl: string } } };
+
+export const LoggedInAccountFragmentDoc = gql`
+    fragment LoggedInAccount on Account {
+  username
+  email
+  profileUrl
+}
+    `;
+export const AuthDetailsFragmentDoc = gql`
+    fragment AuthDetails on LoginData {
+  authToken
+  refreshToken
+  account {
+    ...LoggedInAccount
+  }
+}
+    ${LoggedInAccountFragmentDoc}`;
 export const LoginDocument = gql`
     query login($usernameEmail: String!, $passwordHash: String!) {
   login(usernameEmail: $usernameEmail, passwordHash: $passwordHash) {
-    authToken
-    refreshToken
-    account {
-      username
-      profileUrl
-    }
+    ...AuthDetails
   }
 }
-    `;
+    ${AuthDetailsFragmentDoc}`;
+export const LoginRefreshDocument = gql`
+    query loginRefresh($refreshToken: String!) {
+  loginRefresh(refreshToken: $refreshToken) {
+    ...AuthDetails
+  }
+}
+    ${AuthDetailsFragmentDoc}`;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
 
@@ -1305,6 +1333,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
   return {
     login(variables: LoginQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<LoginQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<LoginQuery>(LoginDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'login', 'query');
+    },
+    loginRefresh(variables: LoginRefreshQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<LoginRefreshQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<LoginRefreshQuery>(LoginRefreshDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'loginRefresh', 'query');
     }
   };
 }

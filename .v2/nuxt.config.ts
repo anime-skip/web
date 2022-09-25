@@ -1,4 +1,4 @@
-import DaisyUI from 'daisyui';
+import tailwindConfig from './tailwind.config';
 
 export default defineNuxtConfig({
   rootDir: 'src',
@@ -13,33 +13,17 @@ export default defineNuxtConfig({
         autoImports: ['defineStore', ['defineStore', 'definePiniaStore']],
       },
     ],
+    '@vueuse/nuxt',
   ],
+  runtimeConfig: {
+    public: {
+      API_URL: 'https://api.anime-skip.com/graphql',
+      API_CLIENT_ID: 'th2oogUKrgOf1J8wMSIUPV0IpBMsLOJi',
+    },
+  },
   // https://tailwindcss.nuxtjs.org/getting-started/options
   tailwindcss: {
     viewer: false,
-    config: {
-      theme: {
-        extend: {},
-      },
-      plugins: [DaisyUI],
-      daisyui: {
-        themes: [
-          {
-            'anime-skip': {
-              primary: '#4ec4f6',
-              secondary: '#8d5dd6',
-              accent: '#b6dd7d',
-              neutral: '#000000',
-              'base-100': '#142026',
-              info: '#b6dd7d',
-              success: '#b6dd7d',
-              warning: '#fcd34d',
-              error: '#f78250',
-            },
-          },
-        ],
-        logs: false,
-      },
-    },
+    config: tailwindConfig,
   },
 });

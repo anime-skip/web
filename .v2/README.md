@@ -20,6 +20,6 @@ pnpm dev
 ### Configuration
 
 ```env
-# Choose an API endpoint to use
-VITE_API_BASE_URL=https://api.anime-skip.com
+# Use a specific URL when making API calls (defaults to prod as shown below)
+NUXT_PUBLIC_API_URL=https://api.anime-skip.com/graphql
 ```

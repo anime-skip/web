@@ -1,9 +1,6 @@
-import { getSdk } from '../utils/graphql.generated';
-import { GraphQLClient } from 'graphql-request';
+import { getSdk } from '~~/utils/graphql.generated';
+import { createAuthorizedGraphqlClient } from '~~/utils/authorized-graphql-client';
+import { createBaseGraphqlClient } from '~~/utils/base-graphql-client';
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.anime-skip.com';
-
-export default function () {
-  const client = new GraphQLClient(BASE_URL);
-  return getSdk(client);
-}
+export default (authorized = true) =>
+  getSdk(authorized ? createAuthorizedGraphqlClient() : createBaseGraphqlClient());
