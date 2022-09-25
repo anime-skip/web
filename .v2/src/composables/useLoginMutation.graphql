@@ -1,0 +1,10 @@
+query login($usernameEmail: String!, $passwordHash: String!) {
+  login(usernameEmail: $usernameEmail, passwordHash: $passwordHash) {
+    authToken
+    refreshToken
+    account {
+      username
+      profileUrl
+    }
+  }
+}
