@@ -10,7 +10,7 @@ const supportedServices = computed(() => allServices.value.filter(s => s.support
     <div>
       <span class="footer-title">Anime Skip</span>
       <a class="link link-hover" target="_blank" :href="ExternalLinks.BUY_ME_A_COFFEE"
-        >Buy me a Pizza! 🍕</a
+        >Buy Me a Pizza! 🍕</a
       >
       <a class="link link-hover" target="_blank" :href="ExternalLinks.CHROME_WEB_STORE"
         >Chrome Extension</a
@@ -41,9 +41,6 @@ const supportedServices = computed(() => allServices.value.filter(s => s.support
         >Contact Us</a
       >
       <nuxt-link class="link link-hover" to="/docs/policies/privacy">Privacy Policy</nuxt-link>
-      <nuxt-link class="link link-hover" to="/docs/policies/terms-of-service"
-        >Terms of Service</nuxt-link
-      >
     </div>
     <div>
       <span class="footer-title">Other Resources</span>

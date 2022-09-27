@@ -27,19 +27,7 @@ function search() {
       <div class="w-full navbar bg-base-300 fixed inset-x-0 top-0 px-4">
         <div class="flex-none lg:hidden">
           <label for="default-drawer" class="btn btn-square btn-ghost">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              class="inline-block w-6 h-6 stroke-current"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4 6h16M4 12h16M4 18h16"
-              ></path>
-            </svg>
+            <div class="i-mdi:menu text-2xl inline-block w-6 h-6 stroke-current" />
           </label>
         </div>
         <div class="flex-1 gap-2">
@@ -99,9 +87,10 @@ function search() {
         <li><nuxt-link to="/get-started">Get Started</nuxt-link></li>
         <li><nuxt-link to="/search">Search</nuxt-link></li>
         <li class="divide-y" />
-        <li v-if="!auth.account">
+        <template v-if="!auth.account">
+          <nuxt-link to="/sign-up" class="btn btn-primary">Sign Up</nuxt-link>
           <nuxt-link to="/login" class="btn">Log In</nuxt-link>
-        </li>
+        </template>
         <li v-else>
           <nuxt-link to="/account">Account Settings</nuxt-link>
         </li>

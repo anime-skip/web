@@ -25,6 +25,7 @@ export default defineNuxtConfig({
         rules: [],
       },
     ],
+    '@nuxt/content',
   ],
   runtimeConfig: {
     public: {
@@ -36,5 +37,11 @@ export default defineNuxtConfig({
   tailwindcss: {
     viewer: false,
     config: tailwindConfig,
+  },
+  content: {
+    highlight: {
+      theme: 'github-dark',
+      preload: ['shell', 'graphql', 'json'],
+    },
   },
 });
