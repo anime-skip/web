@@ -47,7 +47,7 @@ const supportedServices = computed(() => allServices.value.filter(s => s.support
       <a class="link link-hover" target="_blank" :href="ExternalLinks.DISCORD_INVITE"
         >Join the Discord</a
       >
-      <nuxt-link class="link link-hover" to="/docs/api">API Docs</nuxt-link>
+      <nuxt-link class="link link-hover" to="/docs/api">API Documentation</nuxt-link>
       <a class="link link-hover" target="_blank" :href="ExternalLinks.API_PLAYGROUND"
         >API Playground</a
       >
