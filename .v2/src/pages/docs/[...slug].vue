@@ -64,5 +64,8 @@ const docPath = computed(() => route.path.replace('/docs', '') || '/');
       }
     }
   }
+  pre {
+    @apply bg-base-300;
+  }
 }
 </style>

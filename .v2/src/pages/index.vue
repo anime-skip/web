@@ -3,5 +3,8 @@ useApiClient();
 </script>
 
 <template>
-  <p class="p-4">Hello world!</p>
+  <home-section-hero />
+  <home-section-about />
+  <home-section-supported-services-list />
+  <home-section-recently-added />
 </template>

@@ -1,11 +1,13 @@
+export interface SupportedService {
+  background: string;
+  name: string;
+  supported: boolean;
+  textColor: string;
+  url: string;
+}
+
 export interface RemoteConfig {
-  services: Array<{
-    background: string;
-    name: string;
-    supported: boolean;
-    textColor: string;
-    url: string;
-  }>;
+  services: SupportedService[];
 }
 
 export function getLatestRemoteConfig(): Promise<RemoteConfig> {

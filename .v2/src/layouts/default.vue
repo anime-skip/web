@@ -16,7 +16,7 @@ function search() {
     <input id="default-drawer" type="checkbox" class="drawer-toggle" />
     <div class="drawer-content flex flex-col">
       <!-- Page content here -->
-      <div class="min-h-screen flex flex-col pt-20">
+      <div class="min-h-screen flex flex-col mt-20">
         <div class="flex-grow">
           <slot />
         </div>
