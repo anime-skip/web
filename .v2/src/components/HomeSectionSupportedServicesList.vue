@@ -16,17 +16,19 @@ const futureServices = computed(() => allServices.value?.filter(s => !s.supporte
           :service="service"
         />
       </ul>
-      <div />
-      <h5 v-if="!!futureServices?.length" class="text-xl font-stylized opacity-50">
-        In the Future
-      </h5>
-      <ul class="flex flex-wrap gap-8 max-w-screen-md justify-center opacity-50">
-        <home-section-supported-services-list-item
-          v-for="service of futureServices"
-          :key="service.name"
-          :service="service"
-        />
-      </ul>
+      <template v-if="futureServices.length > 0">
+        <div />
+        <h5 v-if="!!futureServices.length" class="text-xl font-stylized opacity-50">
+          In the Future
+        </h5>
+        <ul class="flex flex-wrap gap-8 max-w-screen-md justify-center opacity-50">
+          <home-section-supported-services-list-item
+            v-for="service of futureServices"
+            :key="service.name"
+            :service="service"
+          />
+        </ul>
+      </template>
       <p class="text-xs opacity-30 pt-4">Anime Skip is not affiliated with any of these services</p>
     </div>
   </div>
