@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import LogoNav from '~~/assets/logo-nav.svg';
 import { useAuthStore } from '~~/stores/useAuthStore';
+import { DEFAULT_PROFILE_URL } from '~~/utils/constants';
 
 const auth = useAuthStore();
 
@@ -57,7 +58,7 @@ function search() {
           <div v-if="auth.account" class="dropdown dropdown-end">
             <label tabindex="0" class="btn btn-ghost btn-circle avatar">
               <div class="w-10 rounded-full" :title="auth.account.username">
-                <img :src="auth.account.profileUrl" class="w-12 h-12" />
+                <img :src="auth.account.profileUrl || DEFAULT_PROFILE_URL" class="w-12 h-12" />
               </div>
             </label>
             <ul
