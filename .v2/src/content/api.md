@@ -1,5 +1,7 @@
 # API Documentation
 
+## Overview
+
 Anime Skip's  API uses [GraphQL](https://graphql.org/). Here's an example query:
 
 ```graphql
@@ -29,7 +31,9 @@ There are two API environments:
 | Test | <http://test.api.anime-skip.com/graphql> | <http://test.api.anime-skip.com> |
 | Production | <https://api.anime-skip.com/graphql> | <https://api.anime-skip.com> |
 
-## Get Started
+## Using the API
+
+### Playground
 
 Head over to the [test environment's playground](http://test.api.anime-skip.com) to try out the API and view the documentation in the "Docs" side menu.
 

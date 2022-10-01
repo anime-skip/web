@@ -16,7 +16,7 @@ module.exports = {
       {
         'anime-skip': {
           primary: '#4ec4f6',
-          secondary: '#8d5dd6',
+          secondary: '#a27bde',
           accent: '#b6dd7d',
           neutral: '#000000',
           'base-100': '#142026',

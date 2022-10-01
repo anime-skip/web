@@ -1,5 +1,7 @@
 # Contributing Timestamps
 
+## Overview
+
 Contributing an episode to Anime Skip consists of two parts:
 
 1. Connect the episode
