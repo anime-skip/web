@@ -1274,6 +1274,16 @@ export type User = {
   username: Scalars['String'];
 };
 
+export type CreateAccountMutationVariables = Exact<{
+  username: Scalars['String'];
+  email: Scalars['String'];
+  passwordHash: Scalars['String'];
+  recaptchaResponse: Scalars['String'];
+}>;
+
+
+export type CreateAccountMutation = { __typename?: 'Mutation', createAccount: { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', username: string, email: string, profileUrl: string } } };
+
 export type LoginQueryVariables = Exact<{
   usernameEmail: Scalars['String'];
   passwordHash: Scalars['String'];
@@ -1309,6 +1319,18 @@ export const AuthDetailsFragmentDoc = gql`
   }
 }
     ${LoggedInAccountFragmentDoc}`;
+export const CreateAccountDocument = gql`
+    mutation createAccount($username: String!, $email: String!, $passwordHash: String!, $recaptchaResponse: String!) {
+  createAccount(
+    username: $username
+    email: $email
+    passwordHash: $passwordHash
+    recaptchaResponse: $recaptchaResponse
+  ) {
+    ...AuthDetails
+  }
+}
+    ${AuthDetailsFragmentDoc}`;
 export const LoginDocument = gql`
     query login($usernameEmail: String!, $passwordHash: String!) {
   login(usernameEmail: $usernameEmail, passwordHash: $passwordHash) {
@@ -1331,6 +1353,9 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
+    createAccount(variables: CreateAccountMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateAccountMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CreateAccountMutation>(CreateAccountDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createAccount', 'mutation');
+    },
     login(variables: LoginQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<LoginQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<LoginQuery>(LoginDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'login', 'query');
     },

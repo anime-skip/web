@@ -44,39 +44,53 @@ function login() {
 </script>
 
 <template>
-  <form class="p-8 flex flex-col gap-4" @submit.prevent="login">
-    <!-- Inputs -->
-    <base-input-group
-      :label-bl="validation.usernameOrEmail.$error ? 'Username is required' : undefined"
-    >
-      <template #left><div class="i-mdi:account text-xl" /></template>
-      <template #default>
-        <input
-          class="input input-bordered focus:input-primary w-full"
-          :class="{ 'input-error': validation.usernameOrEmail.$error }"
-          v-model="validation.usernameOrEmail.$model"
-          placeholder="Username or Email"
-        />
-      </template>
-    </base-input-group>
-    <base-input-group :label-bl="validation.password.$error ? 'Password is required' : undefined">
-      <template #left><div class="i-mdi:key text-xl" /></template>
-      <template #default>
-        <input
-          class="input input-bordered focus:input-primary w-full"
-          :class="{ 'input-error': validation.password.$error }"
-          v-model="validation.password.$model"
-          type="password"
-          placeholder="Password"
-        />
-      </template>
-    </base-input-group>
+  <form class="p-8 flex flex-col gap-8" @submit.prevent="login">
+    <!-- Header -->
+    <div class="space-y-1">
+      <h1 class="font-stylized text-3xl">Welcome back!</h1>
+      <p class="text-sm">
+        <span class="text-opacity-70 text-base-content">Need to create an account?</span>
+        {{ ' ' }}
+        <nuxt-link class="link link-secondary link-hover" to="/sign-up">Sign up</nuxt-link>
+      </p>
+    </div>
 
-    <!-- Error message -->
-    <p v-if="isError" class="text-error text-sm">{{ errorMessage }}</p>
+    <div class="space-y-4">
+      <!-- Inputs -->
+      <base-input-group
+        :label-bl="validation.usernameOrEmail.$error ? 'Username is required' : undefined"
+      >
+        <template #left><div class="i-mdi:account text-xl" /></template>
+        <template #default>
+          <input
+            class="input input-bordered focus:input-primary w-full"
+            :class="{ 'input-error': validation.usernameOrEmail.$error }"
+            v-model="validation.usernameOrEmail.$model"
+            placeholder="Username or Email"
+            autocomplete="username"
+          />
+        </template>
+      </base-input-group>
+      <base-input-group :label-bl="validation.password.$error ? 'Password is required' : undefined">
+        <template #left><div class="i-mdi:key text-xl" /></template>
+        <template #default>
+          <input
+            class="input input-bordered focus:input-primary w-full"
+            :class="{ 'input-error': validation.password.$error }"
+            v-model="validation.password.$model"
+            type="password"
+            placeholder="Password"
+            autocomplete="current-password"
+          />
+        </template>
+      </base-input-group>
+
+      <!-- Error message -->
+      <p v-if="isError" class="text-error text-sm">{{ errorMessage }}</p>
+    </div>
 
     <!-- Buttons -->
-    <div class="flex flex-row-reverse items-center justify-between">
+    <div class="flex items-center gap-8">
       <button
         class="btn btn-primary"
         :class="{
@@ -87,7 +101,9 @@ function login() {
       >
         Login
       </button>
-      <nuxt-link class="link link-hover" to="/sign-up">Create Account</nuxt-link>
+      <nuxt-link class="link link-hover text-base-content text-opacity-70"
+        >Forgotten password?</nuxt-link
+      >
     </div>
   </form>
 </template>
