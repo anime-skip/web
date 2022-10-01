@@ -24,7 +24,7 @@ function search() {
       </div>
 
       <!-- Navbar -->
-      <div class="w-full navbar bg-base-300 fixed inset-x-0 top-0 px-4">
+      <div class="w-full h-[5rem] navbar bg-base-300 fixed inset-x-0 top-0 px-4">
         <div class="flex-none lg:hidden">
           <label for="default-drawer" class="btn btn-square btn-ghost">
             <div class="i-mdi:menu text-2xl inline-block w-6 h-6 stroke-current" />
