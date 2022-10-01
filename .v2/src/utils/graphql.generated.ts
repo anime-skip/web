@@ -1296,6 +1296,15 @@ export type LoggedInAccountFragment = { __typename?: 'Account', username: string
 
 export type AuthDetailsFragment = { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', username: string, email: string, profileUrl: string } };
 
+export type RecentlyAddedEpisodesQueryVariables = Exact<{
+  limit?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type RecentlyAddedEpisodesQuery = { __typename?: 'Query', recentlyAddedEpisodes: Array<{ __typename?: 'Episode', id: string, name?: string | null, season?: string | null, number?: string | null, absoluteNumber?: string | null, createdAt: string, show: { __typename?: 'Show', name: string } }> };
+
+export type RecentEpisodeFragment = { __typename?: 'Episode', id: string, name?: string | null, season?: string | null, number?: string | null, absoluteNumber?: string | null, createdAt: string, show: { __typename?: 'Show', name: string } };
+
 export type LoginRefreshQueryVariables = Exact<{
   refreshToken: Scalars['String'];
 }>;
@@ -1319,6 +1328,19 @@ export const AuthDetailsFragmentDoc = gql`
   }
 }
     ${LoggedInAccountFragmentDoc}`;
+export const RecentEpisodeFragmentDoc = gql`
+    fragment RecentEpisode on Episode {
+  id
+  name
+  season
+  number
+  absoluteNumber
+  createdAt
+  show {
+    name
+  }
+}
+    `;
 export const CreateAccountDocument = gql`
     mutation createAccount($username: String!, $email: String!, $passwordHash: String!, $recaptchaResponse: String!) {
   createAccount(
@@ -1338,6 +1360,13 @@ export const LoginDocument = gql`
   }
 }
     ${AuthDetailsFragmentDoc}`;
+export const RecentlyAddedEpisodesDocument = gql`
+    query recentlyAddedEpisodes($limit: Int) {
+  recentlyAddedEpisodes(limit: $limit) {
+    ...RecentEpisode
+  }
+}
+    ${RecentEpisodeFragmentDoc}`;
 export const LoginRefreshDocument = gql`
     query loginRefresh($refreshToken: String!) {
   loginRefresh(refreshToken: $refreshToken) {
@@ -1358,6 +1387,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     login(variables: LoginQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<LoginQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<LoginQuery>(LoginDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'login', 'query');
+    },
+    recentlyAddedEpisodes(variables?: RecentlyAddedEpisodesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<RecentlyAddedEpisodesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<RecentlyAddedEpisodesQuery>(RecentlyAddedEpisodesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'recentlyAddedEpisodes', 'query');
     },
     loginRefresh(variables: LoginRefreshQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<LoginRefreshQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<LoginRefreshQuery>(LoginRefreshDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'loginRefresh', 'query');

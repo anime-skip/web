@@ -1,0 +1,17 @@
+query recentlyAddedEpisodes($limit: Int) {
+  recentlyAddedEpisodes(limit: $limit) {
+    ...RecentEpisode
+  }
+}
+
+fragment RecentEpisode on Episode {
+  id
+  name
+  season
+  number
+  absoluteNumber
+  createdAt
+  show {
+    name
+  }
+}
