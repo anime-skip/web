@@ -5,10 +5,7 @@ import { getErrorMessage } from '~~/utils/errors';
 
 const props = defineProps<{
   defaultUsername?: string;
-}>();
-
-const emits = defineEmits<{
-  (event: 'loggedIn'): void;
+  redirect?: string;
 }>();
 
 const { state, validation } = useLoginForm();
@@ -36,7 +33,7 @@ function login() {
     {
       onSuccess: data => {
         auth.setLoggedInDetails(data.login);
-        emits('loggedIn');
+        navigateTo(props.redirect ?? '/account');
       },
     },
   );
@@ -51,7 +48,11 @@ function login() {
       <p class="text-sm">
         <span class="text-opacity-70 text-base-content">Need to create an account?</span>
         {{ ' ' }}
-        <nuxt-link class="link link-secondary link-hover" to="/sign-up">Sign up</nuxt-link>
+        <nuxt-link
+          class="link link-secondary link-hover"
+          :to="{ path: '/sign-up', query: { username: state.usernameOrEmail, redirect } }"
+          >Sign up</nuxt-link
+        >
       </p>
     </div>
 

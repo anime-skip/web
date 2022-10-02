@@ -41,6 +41,9 @@ const supportedServices = computed(() => allServices.value.filter(s => s.support
         >Contact Us</a
       >
       <nuxt-link class="link link-hover" to="/docs/policies/privacy">Privacy Policy</nuxt-link>
+      <nuxt-link class="link link-hover" to="/docs/policies/extension-privacy"
+        >Extension Privacy Policy</nuxt-link
+      >
     </div>
     <div>
       <span class="footer-title">Other Resources</span>

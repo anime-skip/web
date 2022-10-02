@@ -4,8 +4,12 @@ import { RECAPTCHA_SCRIPT } from '~~/utils/recaptcha';
 useHead({
   script: [RECAPTCHA_SCRIPT],
 });
+
+const route = useRoute();
+const defaultUsername = computed(() => route.query.username as string | undefined);
+const redirect = computed(() => route.query.redirect as string | undefined);
 </script>
 
 <template>
-  <login-form />
+  <login-form :default-username="defaultUsername" :redirect="redirect" />
 </template>

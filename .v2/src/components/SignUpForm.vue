@@ -6,10 +6,7 @@ import { executeRecaptcha } from '~~/utils/recaptcha';
 
 const props = defineProps<{
   defaultUsername?: string;
-}>();
-
-const emits = defineEmits<{
-  (event: 'signedUp'): void;
+  redirect?: string;
 }>();
 
 const { state, validation } = useSignUpForm();
@@ -40,7 +37,7 @@ async function login() {
       {
         onSuccess: data => {
           auth.setLoggedInDetails(data.createAccount);
-          emits('signedUp');
+          navigateTo(props.redirect ?? '/account');
         },
       },
     );
@@ -56,7 +53,11 @@ async function login() {
       <p class="text-sm">
         <span class="text-opacity-70 text-base-content">Already have an acount?</span>
         {{ ' ' }}
-        <nuxt-link class="link link-secondary link-hover" to="/login">Log in</nuxt-link>
+        <nuxt-link
+          class="link link-secondary link-hover"
+          :to="{ path: '/login', query: { username: state.username, redirect } }"
+          >Log in</nuxt-link
+        >
       </p>
     </div>
 
@@ -121,8 +122,19 @@ async function login() {
         </template>
       </base-input-group>
 
-      <!-- Error message -->
-      <p v-if="isError" class="text-error text-sm">{{ errorMessage }}</p>
+      <!-- Recaptcha/Error message -->
+      <p v-if="!isError" class="text-base-content text-opacity-50 text-sm">
+        This site is protected by reCAPTCHA and the Google
+        <nuxt-link target="_blank" to="https://policies.google.com/privacy"
+          >Privacy Policy</nuxt-link
+        >
+        and
+        <nuxt-link target="_blank" to="https://policies.google.com/terms"
+          >Terms of Service</nuxt-link
+        >
+        apply.
+      </p>
+      <p v-else class="text-error text-sm">{{ errorMessage }}</p>
     </div>
 
     <!-- Submit Button -->
