@@ -22,7 +22,6 @@ const currentId = ref<string>();
 useIntervalFn(() => {
   const y = document.querySelector<HTMLDivElement>('.drawer-content').scrollTop;
   const order = [y, ...headers.value.map(h => h.offsetTop - HEADER_OFFSET)].sort((l, r) => l - r);
-  console.log({ y, order });
   currentId.value = headers.value[order.indexOf(y) - 1]?.id;
 }, 500);
 
@@ -33,7 +32,7 @@ const toc = computed<ToC>(() =>
       text: header.textContent,
       level: Number(header.tagName.substring(1)) - (props.topHeading ?? 1),
     }))
-    .filter(item => item.level >= 0),
+    .filter(item => item.level >= 0 && item.id !== 'table-of-contents'),
 );
 </script>
 
