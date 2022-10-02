@@ -1,5 +1,5 @@
 <template>
-  <div class="py-32">
+  <section id="recently-added" class="py-32">
     <div class="max-w-full space-y-12">
       <h2 class="font-stylized text-2xl text-center">Recently Added Episodes</h2>
       <div class="max-w-screen-sm md:framing-shadow md:bg-base-100 md:rounded-xl mx-auto">
@@ -15,5 +15,5 @@
         >
       </p>
     </div>
-  </div>
+  </section>
 </template>

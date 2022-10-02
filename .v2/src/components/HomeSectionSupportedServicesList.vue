@@ -1,14 +1,14 @@
 <script lang="ts" setup>
 const { data: allServices } = useSupportedServicesQuery();
 
-const supportedServices = computed(() => allServices.value?.filter(s => s.supported));
-const futureServices = computed(() => allServices.value?.filter(s => !s.supported));
+const supportedServices = computed(() => allServices.value?.filter(s => s.supported) ?? []);
+const futureServices = computed(() => allServices.value?.filter(s => !s.supported) ?? []);
 </script>
 
 <template>
-  <div class="py-32 bg-base-300">
+  <section id="supported-services" class="py-32 bg-base-300">
     <div class="max-w-screen-lg mx-auto flex flex-col items-center gap-8">
-      <h4 class="text-2xl font-stylized">Supported Services</h4>
+      <h2 class="text-2xl font-stylized">Supported Services</h2>
       <ul class="flex flex-wrap gap-8 max-w-screen-md justify-center">
         <home-section-supported-services-list-item
           v-for="service of supportedServices"
@@ -18,9 +18,9 @@ const futureServices = computed(() => allServices.value?.filter(s => !s.supporte
       </ul>
       <template v-if="futureServices.length > 0">
         <div />
-        <h5 v-if="!!futureServices.length" class="text-xl font-stylized opacity-50">
+        <h3 v-if="!!futureServices.length" class="text-xl font-stylized opacity-50">
           In the Future
-        </h5>
+        </h3>
         <ul class="flex flex-wrap gap-8 max-w-screen-md justify-center opacity-50">
           <home-section-supported-services-list-item
             v-for="service of futureServices"
@@ -31,5 +31,5 @@ const futureServices = computed(() => allServices.value?.filter(s => !s.supporte
       </template>
       <p class="text-xs opacity-30 pt-4">Anime Skip is not affiliated with any of these services</p>
     </div>
-  </div>
+  </section>
 </template>

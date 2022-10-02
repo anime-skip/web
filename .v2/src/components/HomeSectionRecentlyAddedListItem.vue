@@ -24,6 +24,6 @@ const since = useTimeAgo(computed(() => props.episode.createdAt));
         <span>{{ subtitle }}</span>
       </p>
     </div>
-    <p class="text-base-content text-opacity-50 pt-1 shrink-0">{{ since }}</p>
+    <p class="text-sm uppercase text-base-content text-opacity-50 pt-1 shrink-0">{{ since }}</p>
   </li>
 </template>
