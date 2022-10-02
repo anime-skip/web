@@ -9,5 +9,6 @@ export default function () {
     queryFn: () => getLatestRemoteConfig().then(res => res.services),
     staleTime: DAY,
     cacheTime: DAY,
+    refetchOnWindowFocus: false,
   });
 }

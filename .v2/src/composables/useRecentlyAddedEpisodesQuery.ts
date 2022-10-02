@@ -4,7 +4,8 @@ import { RecentlyAddedEpisodesQueryVariables } from '~~/utils/graphql.generated'
 import { QueryKeys } from '~~/utils/query-keys';
 
 export default function (vars: Ref<RecentlyAddedEpisodesQueryVariables>) {
+  const client = useApiClient(false);
   return useQuery([QueryKeys.RECENTLY_ADDED_EPISODES, vars], () =>
-    useApiClient(false).recentlyAddedEpisodes(vars.value),
+    client.recentlyAddedEpisodes(vars.value),
   );
 }
