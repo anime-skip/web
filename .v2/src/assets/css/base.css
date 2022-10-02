@@ -1,3 +1,7 @@
 @layer base {
-  
+}
+
+/* Hide Recaptcha */
+.grecaptcha-badge {
+    opacity: 0 !important;
 }
