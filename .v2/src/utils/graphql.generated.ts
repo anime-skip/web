@@ -766,6 +766,7 @@ export type Query = {
   account: Account;
   /** List all the `TimestampType`s. Items come back in a random order */
   allTimestampTypes: Array<TimestampType>;
+  counts?: Maybe<TotalCounts>;
   /** Find an API Client that you created based on it's ID. This will not return other users' clients */
   findApiClient: ApiClient;
   /** Find episode with a matching `Episode.id` */
@@ -1256,6 +1257,17 @@ export type TimestampType = BaseModel & {
   updatedByUserId: Scalars['ID'];
 };
 
+export type TotalCounts = {
+  __typename?: 'TotalCounts';
+  episodeUrls: Scalars['Int'];
+  episodes: Scalars['Int'];
+  shows: Scalars['Int'];
+  templates: Scalars['Int'];
+  timestampTypes: Scalars['Int'];
+  timestamps: Scalars['Int'];
+  users: Scalars['Int'];
+};
+
 export type UpdatedTimestamps = {
   __typename?: 'UpdatedTimestamps';
   created: Array<Timestamp>;
@@ -1273,6 +1285,13 @@ export type User = {
   profileUrl: Scalars['String'];
   username: Scalars['String'];
 };
+
+export type CountsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CountsQuery = { __typename?: 'Query', counts?: { __typename?: 'TotalCounts', episodes: number, timestamps: number, shows: number } | null };
+
+export type HomeCountsFragment = { __typename?: 'TotalCounts', episodes: number, timestamps: number, shows: number };
 
 export type CreateAccountMutationVariables = Exact<{
   username: Scalars['String'];
@@ -1312,6 +1331,13 @@ export type LoginRefreshQueryVariables = Exact<{
 
 export type LoginRefreshQuery = { __typename?: 'Query', loginRefresh: { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', username: string, email: string, profileUrl: string } } };
 
+export const HomeCountsFragmentDoc = gql`
+    fragment HomeCounts on TotalCounts {
+  episodes
+  timestamps
+  shows
+}
+    `;
 export const LoggedInAccountFragmentDoc = gql`
     fragment LoggedInAccount on Account {
   username
@@ -1341,6 +1367,13 @@ export const RecentEpisodeFragmentDoc = gql`
   }
 }
     `;
+export const CountsDocument = gql`
+    query counts {
+  counts {
+    ...HomeCounts
+  }
+}
+    ${HomeCountsFragmentDoc}`;
 export const CreateAccountDocument = gql`
     mutation createAccount($username: String!, $email: String!, $passwordHash: String!, $recaptchaResponse: String!) {
   createAccount(
@@ -1382,6 +1415,9 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
+    counts(variables?: CountsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CountsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CountsQuery>(CountsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'counts', 'query');
+    },
     createAccount(variables: CreateAccountMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateAccountMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateAccountMutation>(CreateAccountDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createAccount', 'mutation');
     },
