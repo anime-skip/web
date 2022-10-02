@@ -1,3 +1,5 @@
+/// <reference types="nuxt" />
+
 import tailwindConfig from './tailwind.config';
 
 export default defineNuxtConfig({
