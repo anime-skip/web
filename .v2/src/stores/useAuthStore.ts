@@ -1,8 +1,7 @@
 import { AuthDetailsFragment } from '~~/utils/graphql.generated';
 import { StorageSerializers } from '@vueuse/core';
-import { Ref } from 'vue';
 
-export const useAuthStore = definePiniaStore('auth', () => {
+export const useAuthStore = defineStore('auth', () => {
   const auth = useLocalStorage<AuthDetailsFragment>('@auth/login', null, {
     serializer: StorageSerializers.object,
   });
