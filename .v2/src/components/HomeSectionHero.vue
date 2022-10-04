@@ -54,7 +54,9 @@ function scrollDown() {
 
       <!-- Buttons -->
       <div class="flex gap-12 items-center justify-center">
-        <nuxt-link to="#about-player" @click="scrollDown" class="btn">Learn More</nuxt-link>
+        <nuxt-link to="#about-player" @click="scrollDown" class="btn btn-outline btn-primary"
+          >Learn More</nuxt-link
+        >
         <nuxt-link to="/get-started" class="btn btn-primary gap-2"
           >Get Started<span class="i-mdi:arrow-right text-2xl"
         /></nuxt-link>

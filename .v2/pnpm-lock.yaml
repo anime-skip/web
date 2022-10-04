@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@formkit/auto-animate': 1.0.0-beta.3
   '@graphql-codegen/cli': 2.12.1
   '@graphql-codegen/typescript': ^2.7.3
   '@graphql-codegen/typescript-graphql-request': ^4.5.5
@@ -33,6 +34,7 @@ specifiers:
   vue-tsc: ^0.40.13
 
 dependencies:
+  '@formkit/auto-animate': 1.0.0-beta.3
   '@pinia/nuxt': 0.4.2_typescript@4.8.3
   '@vuelidate/core': 2.0.0
   '@vuelidate/validators': 2.0.0
@@ -738,6 +740,10 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@formkit/auto-animate/1.0.0-beta.3:
+    resolution: {integrity: sha512-glsi+ytwQpxT/Ctr9GtcIfVr4dO6mJ04mQbNU8MFSdCdqMopHtyfU5Fib0+9lNFIeR0luY4/0NW95/2R5pKsag==}
+    dev: false
 
   /@graphql-codegen/cli/2.12.1_wd5f2ibzrubrgidvrmdkykexam:
     resolution: {integrity: sha512-kBYArVrIceKmNy2qZeiqoAHuNFUVRuVL3f0XX3VproXNmCGjLzcYosPmzV8+2H9mjjDU+vq5mLddAc8oVNGz9g==}
@@ -1676,6 +1682,9 @@ packages:
     resolution: {integrity: sha512-JTTSTrgZfp6Ki4svhPA4mkd9nmQ/j9EfE7SbHJ1cLtthKkpW2OxsFXzSmxbhYbEkfNIyAyhle5p4SYyKRbz/jg==}
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders'
+    peerDependenciesMeta:
+      tailwindcss:
+        optional: true
     dependencies:
       lodash.castarray: 4.4.0
       lodash.isplainobject: 4.0.6
@@ -8321,6 +8330,9 @@ packages:
     hasBin: true
     peerDependencies:
       tailwindcss: 1 || 2 || 2.0.1-compat || 3
+    peerDependenciesMeta:
+      tailwindcss:
+        optional: true
     dependencies:
       '@koa/router': 9.4.0
       commander: 6.2.1

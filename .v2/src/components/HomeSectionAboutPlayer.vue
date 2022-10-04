@@ -6,9 +6,19 @@ import { ExternalLinks } from '~~/utils/external-links';
 </script>
 
 <template>
-  <section id="about-player" class="max-w-screen-md mx-auto px-4 py-32 space-y-12">
+  <section id="about-player" class="max-w-screen-md mx-auto px-4 py-32 flex flex-col gap-8">
     <!-- Title -->
     <h2 class="text-3xl font-stylized text-center">Anime Skip Player</h2>
+
+    <!-- Store Buttons -->
+    <div class="flex items-center justify-center gap-4">
+      <a target="_blank" :href="ExternalLinks.CHROME_WEB_STORE"
+        ><img class="h-16" alt="install from the Chrome Web Store" :src="ChromeWebStore"
+      /></a>
+      <a target="_blank" :href="ExternalLinks.FIREFOX_ADDON_STORE"
+        ><img class="h-16" alt="install from the Firefox Addon Store" :src="FirefoxAddonStore"
+      /></a>
+    </div>
 
     <!-- Description -->
     <p class="text-center">
@@ -22,15 +32,7 @@ import { ExternalLinks } from '~~/utils/external-links';
       :src="DeathNoteExample"
     />
 
-    <!-- Store Buttons -->
-    <div class="flex items-center justify-center gap-4">
-      <a target="_blank" :href="ExternalLinks.CHROME_WEB_STORE"
-        ><img class="h-16" alt="install from the Chrome Web Store" :src="ChromeWebStore"
-      /></a>
-      <a target="_blank" :href="ExternalLinks.FIREFOX_ADDON_STORE"
-        ><img class="h-16" alt="install from the Firefox Addon Store" :src="FirefoxAddonStore"
-      /></a>
-    </div>
+    <div />
 
     <!-- Features -->
     <div class="w-full max-w-screen-md flex flex-col md:grid md:grid-cols-2 mx-auto">
