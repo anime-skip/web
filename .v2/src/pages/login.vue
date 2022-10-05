@@ -11,5 +11,7 @@ const redirect = computed(() => route.query.redirect as string | undefined);
 </script>
 
 <template>
-  <login-form :default-username="defaultUsername" :redirect="redirect" />
+  <center-card>
+    <login-form :default-username="defaultUsername" :redirect="redirect" />
+  </center-card>
 </template>

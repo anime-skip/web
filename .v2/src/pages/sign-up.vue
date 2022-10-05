@@ -5,5 +5,7 @@ const redirect = computed(() => route.query.redirect as string | undefined);
 </script>
 
 <template>
-  <sign-up-form :default-username="defaultUsername" :redirect="redirect" />
+  <center-card>
+    <sign-up-form :default-username="defaultUsername" :redirect="redirect" />
+  </center-card>
 </template>

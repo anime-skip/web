@@ -20,7 +20,7 @@ You likely have auto-play set to "Start muted" for the website. This is a browse
 :::
 
 :::md-expandable{title="How do I submit timestamps?"}
-Head over to the [contributing guidelines](/contributing-timestamps) for an overview, best practices, and tips and tricks. 
+Head over to the [contributing guidelines](/docs/contributing-timestamps) for an overview, best practices, and tips and tricks. 
 :::
 
 :::md-expandable{title="How do I edit keyboard shortcuts?"}
