@@ -1286,6 +1286,11 @@ export type User = {
   username: Scalars['String'];
 };
 
+export type AllTimestampTypesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AllTimestampTypesQuery = { __typename?: 'Query', allTimestampTypes: Array<{ __typename?: 'TimestampType', id: string, name: string, description: string }> };
+
 export type CountsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1367,6 +1372,15 @@ export const RecentEpisodeFragmentDoc = gql`
   }
 }
     `;
+export const AllTimestampTypesDocument = gql`
+    query allTimestampTypes {
+  allTimestampTypes {
+    id
+    name
+    description
+  }
+}
+    `;
 export const CountsDocument = gql`
     query counts {
   counts {
@@ -1415,6 +1429,9 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
+    allTimestampTypes(variables?: AllTimestampTypesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<AllTimestampTypesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<AllTimestampTypesQuery>(AllTimestampTypesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'allTimestampTypes', 'query');
+    },
     counts(variables?: CountsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CountsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<CountsQuery>(CountsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'counts', 'query');
     },

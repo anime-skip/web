@@ -1,9 +1,10 @@
 <script lang="ts" setup>
-import { ENSP, HEADER_OFFSET } from '~~/utils/constants';
+import { HEADER_OFFSET } from '~~/utils/constants';
 
 const props = defineProps<{
   contentRef?: HTMLElement;
   topHeading?: number;
+  deepestHeading?: number;
 }>();
 
 type ToC = Array<{
@@ -32,7 +33,12 @@ const toc = computed<ToC>(() =>
       text: header.textContent,
       level: Number(header.tagName.substring(1)) - (props.topHeading ?? 1),
     }))
-    .filter(item => item.level >= 0 && item.id !== 'table-of-contents'),
+    .filter(
+      item =>
+        item.level >= 0 &&
+        item.id !== 'table-of-contents' &&
+        item.level <= (props.deepestHeading ?? Infinity) - (props.topHeading ?? 1),
+    ),
 );
 </script>
 

@@ -38,7 +38,7 @@ const supportedServices = computed(() => allServices.value.filter(s => s.support
       >
       <nuxt-link class="link link-hover" to="/support">Support</nuxt-link>
       <a class="link link-hover" href="mailto:support@anime-skip.com?subject=Anime Skip"
-        >Contact Us</a
+        >Contact Me</a
       >
       <nuxt-link class="link link-hover" to="/docs/policies/privacy">Privacy Policy</nuxt-link>
       <nuxt-link class="link link-hover" to="/docs/policies/extension-privacy"
