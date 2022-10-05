@@ -15,6 +15,10 @@ Make sure you've followed the [getting started guide](/) and you've properly ins
 In very rare cases, a website update can break how the Anime Skip player replaces the websites default player with it's own. If you believe this is the case, you should be able to find some kind of announcement on the :md-external-link{to="DISCORD_INVITE" text="Discord"}.
 :::
 
+:::md-expandable{title="Video starts playing as muted"}
+You likely have auto-play set to "Start muted" for the website. This is a browser setting, usually accessible to the left of the URL in the browser search bar.
+:::
+
 :::md-expandable{title="How do I submit timestamps?"}
 Head over to the [contributing guidelines](/contributing-timestamps) for an overview, best practices, and tips and tricks. 
 :::
