@@ -7,10 +7,9 @@ const errorMessage = computed(() => getErrorMessage(error));
 
 <template>
   <p v-if="isError">{{ errorMessage }}</p>
-  <ul v-else>
-    <li v-for="t of data?.allTimestampTypes">
-      <h4>{{ t.name }}</h4>
+  <template v-else>
+    <md-expandable v-for="t of data?.allTimestampTypes" :key="t.id" :title="t.name">
       <p>{{ t.description }}</p>
-    </li>
-  </ul>
+    </md-expandable>
+  </template>
 </template>

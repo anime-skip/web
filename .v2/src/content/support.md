@@ -9,23 +9,17 @@ Anime Skip is a one-man team! Feel free to reach out if you have any issues or n
 
 ## FAQ
 
-:::frequently-asked-question
-### The Anime Skip video player doesn't show up when I go to watch an episode
-
+:::md-expandable{title="The Anime Skip video player doesn't show up when I go to watch an episode"}
 Make sure you've followed the [getting started guide](/) and you've properly installed the Anime Skip web extension. Also keep in mind that Anime Skip does not work on every streaming service, so make sure you're watching on one of the [supported services](/#supported-services).
 
 In very rare cases, a website update can break how the Anime Skip player replaces the websites default player with it's own. If you believe this is the case, you should be able to find some kind of announcement on the :md-external-link{to="DISCORD_INVITE" text="Discord"}.
 :::
 
-:::frequently-asked-question
-### How do I submit timestamps?
-
+:::md-expandable{title="How do I submit timestamps?"}
 Head over to the [contributing guidelines](/contributing-timestamps) for an overview, best practices, and tips and tricks. 
 :::
 
-:::frequently-asked-question
-### How do I edit keyboard shortcuts?
-
+:::md-expandable{title="How do I edit keyboard shortcuts?"}
 Keyboard shortcuts are apart of the "all settings" page of the extension. Make sure you have followed the [getting started guide](/get-started) and installed the web extension.
 
 When watching a video, open the player settings by clicking on the menu button in the bottom right. Then click the "All Settings" button.
@@ -33,23 +27,17 @@ When watching a video, open the player settings by clicking on the menu button i
 You can also access the "all settings" page from your account page on this website! Sign in or go to your account, then click "Player Settings" on the sidebar.
 :::
 
-:::frequently-asked-question
-### I would like to delete my account, how do I go about doing that?
-
+:::md-expandable{title="I would like to delete my account, how do I go about doing that?"}
 In the future, there will be an option to delete your account from your account settings page. Until then, fill out and send [this email template](mailto:support@anime-skip.com?subject=Anime%20Skip%20-%20Delete%20Account&body=My%20email%20is%20_,%20and%20my%20username%20is%20_.) so that I can delete your account manually. 
 :::
 
-:::frequently-asked-question
-### What happens to my account and contributions when I delete my account?
-
+:::md-expandable{title="What happens to my account and contributions when I delete my account?"}
 In accordance with the [Privacy Policy](/docs/policies/privacy), your contributations are not deleted and you're account is wiped of all personal data. No history of your personal information is ever stored. 
 
 This is done so that Anime Skip still knows which account created an episode or timestamp. This way we can tell deleted users apart and still provide a robust interface with any apps that depend on that data, while respecting your right to your data. 
 :::
 
-:::frequently-asked-question
-### What permissions does the extension use, and why?
-
+:::md-expandable{title="What permissions does the extension use, and why?"}
 #### Host
 
 This is used to replace the original serice's video player with Anime Skips.
