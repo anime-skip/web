@@ -348,6 +348,25 @@ export type InputTimestampType = {
   name: Scalars['String'];
 };
 
+export type InputUserReport = {
+  /** The ID of an episode if you're reporting an issue with a specific episode. */
+  episodeId?: InputMaybe<Scalars['ID']>;
+  /**
+   * The URL of the epiosde URL if you're reporting an issue with a specific episode URL.
+   *
+   * This is different from `reportedFromUrl`, this is related to an EpisodeUrl model, not the url the report is coming from.
+   */
+  episodeUrl?: InputMaybe<Scalars['String']>;
+  /** The content of the report stating what is wrong with the reported data. */
+  message: Scalars['String'];
+  /** The URL the user made the report from so the reviewer can easily navigate to it. */
+  reportedFromUrl: Scalars['String'];
+  /** The ID of an show if you're reporting an issue with a specific show. */
+  showId?: InputMaybe<Scalars['ID']>;
+  /** The ID of a timestamp if you're reporting an issue with a specific timestamp. */
+  timestampId?: InputMaybe<Scalars['ID']>;
+};
+
 /** When logging in with a password or refresh token, you can get new tokens and account info */
 export type LoginData = {
   __typename?: 'LoginData';
@@ -399,6 +418,8 @@ export type Mutation = {
    * > `@hasRole(role: ADMIN)` - The user must have the `ADMIN` role to perform this action
    */
   createTimestampType: TimestampType;
+  /** Report an issue with a single timestamp, episode, episode URL, or show. */
+  createUserReport: UserReport;
   /** Handle a deleteToken from `deleteAccountRequest` and actually delete the user's account */
   deleteAccount: Account;
   /**
@@ -466,6 +487,8 @@ export type Mutation = {
    * This step is pretty self explanatory, this is when the password is actually reset for a user
    */
   resetPassword: LoginData;
+  /** Mark a report as fixed */
+  resolveUserReport: UserReport;
   /** Update user preferences */
   savePreferences: Preferences;
   /** Update one of the authenticated user's API clients */
@@ -566,6 +589,11 @@ export type MutationCreateTimestampTypeArgs = {
 };
 
 
+export type MutationCreateUserReportArgs = {
+  report?: InputMaybe<InputUserReport>;
+};
+
+
 export type MutationDeleteAccountArgs = {
   deleteToken: Scalars['String'];
 };
@@ -642,6 +670,11 @@ export type MutationResetPasswordArgs = {
   confirmNewPassword: Scalars['String'];
   newPassword: Scalars['String'];
   passwordResetToken: Scalars['String'];
+};
+
+
+export type MutationResolveUserReportArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -835,6 +868,10 @@ export type Query = {
   findUser: User;
   /** Find user with a matching `User.username` */
   findUserByUsername: User;
+  /** Get a single user report, even if it's been resolved/deleted. */
+  findUserReport: UserReport;
+  /** List all user reports, by default only unresolved ones. */
+  findUserReports: Array<UserReport>;
   /**
    * Use either the username or email and an md5 hash of the user's password to get an access and
    * refresh token
@@ -961,6 +998,19 @@ export type QueryFindUserArgs = {
 
 export type QueryFindUserByUsernameArgs = {
   username: Scalars['String'];
+};
+
+
+export type QueryFindUserReportArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryFindUserReportsArgs = {
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  resolved?: InputMaybe<Scalars['Boolean']>;
+  sort?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -1286,6 +1336,31 @@ export type User = {
   username: Scalars['String'];
 };
 
+export type UserReport = BaseModel & {
+  __typename?: 'UserReport';
+  createdAt: Scalars['Time'];
+  createdBy: User;
+  createdByUserId: Scalars['ID'];
+  deletedAt?: Maybe<Scalars['Time']>;
+  deletedBy?: Maybe<User>;
+  deletedByUserId?: Maybe<Scalars['ID']>;
+  episode?: Maybe<Episode>;
+  episodeId?: Maybe<Scalars['ID']>;
+  episodeUrl?: Maybe<EpisodeUrl>;
+  episodeUrlString?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  message: Scalars['String'];
+  reportedFromUrl: Scalars['String'];
+  resolved: Scalars['Boolean'];
+  show?: Maybe<Show>;
+  showId?: Maybe<Scalars['ID']>;
+  timestamp?: Maybe<Timestamp>;
+  timestampId?: Maybe<Scalars['ID']>;
+  updatedAt: Scalars['Time'];
+  updatedBy: User;
+  updatedByUserId: Scalars['ID'];
+};
+
 export type AllTimestampTypesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1335,6 +1410,23 @@ export type LoginRefreshQueryVariables = Exact<{
 
 
 export type LoginRefreshQuery = { __typename?: 'Query', loginRefresh: { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', username: string, email: string, profileUrl: string } } };
+
+export type RequestPasswordResetMutationVariables = Exact<{
+  email: Scalars['String'];
+  recaptchaResponse: Scalars['String'];
+}>;
+
+
+export type RequestPasswordResetMutation = { __typename?: 'Mutation', requestPasswordReset: boolean };
+
+export type ResetPasswordMutationVariables = Exact<{
+  passwordResetToken: Scalars['String'];
+  newPassword: Scalars['String'];
+  confirmNewPassword: Scalars['String'];
+}>;
+
+
+export type ResetPasswordMutation = { __typename?: 'Mutation', resetPassword: { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', username: string, email: string, profileUrl: string } } };
 
 export const HomeCountsFragmentDoc = gql`
     fragment HomeCounts on TotalCounts {
@@ -1421,6 +1513,22 @@ export const LoginRefreshDocument = gql`
   }
 }
     ${AuthDetailsFragmentDoc}`;
+export const RequestPasswordResetDocument = gql`
+    mutation requestPasswordReset($email: String!, $recaptchaResponse: String!) {
+  requestPasswordReset(email: $email, recaptchaResponse: $recaptchaResponse)
+}
+    `;
+export const ResetPasswordDocument = gql`
+    mutation resetPassword($passwordResetToken: String!, $newPassword: String!, $confirmNewPassword: String!) {
+  resetPassword(
+    passwordResetToken: $passwordResetToken
+    newPassword: $newPassword
+    confirmNewPassword: $confirmNewPassword
+  ) {
+    ...AuthDetails
+  }
+}
+    ${AuthDetailsFragmentDoc}`;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
 
@@ -1446,6 +1554,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     loginRefresh(variables: LoginRefreshQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<LoginRefreshQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<LoginRefreshQuery>(LoginRefreshDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'loginRefresh', 'query');
+    },
+    requestPasswordReset(variables: RequestPasswordResetMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<RequestPasswordResetMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<RequestPasswordResetMutation>(RequestPasswordResetDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'requestPasswordReset', 'mutation');
+    },
+    resetPassword(variables: ResetPasswordMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<ResetPasswordMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<ResetPasswordMutation>(ResetPasswordDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'resetPassword', 'mutation');
     }
   };
 }

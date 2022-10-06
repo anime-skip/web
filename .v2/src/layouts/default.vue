@@ -74,7 +74,7 @@ function search() {
           </div>
           <template v-else>
             <nuxt-link to="/sign-up" class="btn btn-primary">Sign Up</nuxt-link>
-            <nuxt-link to="/login" class="btn">Login</nuxt-link>
+            <nuxt-link to="/login" class="btn btn-primary btn-outline">Login</nuxt-link>
           </template>
         </div>
       </div>

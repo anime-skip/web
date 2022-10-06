@@ -102,8 +102,8 @@ function login() {
       >
         Login
       </button>
-      <nuxt-link class="link link-hover text-base-content text-opacity-70"
-        >Forgotten password?</nuxt-link
+      <nuxt-link class="link link-hover text-base-content text-opacity-70" to="/forgot-password"
+        >Forgot password?</nuxt-link
       >
     </div>
   </form>

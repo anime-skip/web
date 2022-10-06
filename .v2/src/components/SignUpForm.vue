@@ -3,6 +3,7 @@ import { useAuthStore } from '~~/stores/useAuthStore';
 import md5 from 'md5';
 import { getErrorMessage } from '~~/utils/errors';
 import { executeRecaptcha } from '~~/utils/recaptcha';
+import RecaptchaDisclaimer from './RecaptchaDisclaimer.vue';
 
 const props = defineProps<{
   defaultUsername?: string;
@@ -123,17 +124,7 @@ async function login() {
       </base-input-group>
 
       <!-- Recaptcha/Error message -->
-      <p v-if="!isError" class="text-base-content text-opacity-50 text-sm">
-        This site is protected by reCAPTCHA and the Google
-        <nuxt-link target="_blank" to="https://policies.google.com/privacy"
-          >Privacy Policy</nuxt-link
-        >
-        and
-        <nuxt-link target="_blank" to="https://policies.google.com/terms"
-          >Terms of Service</nuxt-link
-        >
-        apply.
-      </p>
+      <recaptcha-disclaimer v-if="!isError" />
       <p v-else class="text-error text-sm">{{ errorMessage }}</p>
     </div>
 
