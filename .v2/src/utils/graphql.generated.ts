@@ -1428,6 +1428,30 @@ export type ResetPasswordMutationVariables = Exact<{
 
 export type ResetPasswordMutation = { __typename?: 'Mutation', resetPassword: { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', username: string, email: string, profileUrl: string } } };
 
+export type SearchEpisodesQueryVariables = Exact<{
+  search?: InputMaybe<Scalars['String']>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  sort?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type SearchEpisodesQuery = { __typename?: 'Query', searchEpisodes: Array<{ __typename?: 'Episode', id: string, name?: string | null, number?: string | null, absoluteNumber?: string | null, season?: string | null, show: { __typename?: 'Show', id: string, name: string }, timestamps: Array<{ __typename?: 'Timestamp', id: string, at: number, type: { __typename?: 'TimestampType', id: string, name: string } }> }> };
+
+export type EpisodeSearchResultFragment = { __typename?: 'Episode', id: string, name?: string | null, number?: string | null, absoluteNumber?: string | null, season?: string | null, show: { __typename?: 'Show', id: string, name: string }, timestamps: Array<{ __typename?: 'Timestamp', id: string, at: number, type: { __typename?: 'TimestampType', id: string, name: string } }> };
+
+export type SearchShowsQueryVariables = Exact<{
+  search?: InputMaybe<Scalars['String']>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  sort?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type SearchShowsQuery = { __typename?: 'Query', searchShows: Array<{ __typename?: 'Show', id: string, name: string, episodeCount: number, seasonCount: number, image?: string | null }> };
+
+export type ShowSearchResultFragment = { __typename?: 'Show', id: string, name: string, episodeCount: number, seasonCount: number, image?: string | null };
+
 export const HomeCountsFragmentDoc = gql`
     fragment HomeCounts on TotalCounts {
   episodes
@@ -1462,6 +1486,36 @@ export const RecentEpisodeFragmentDoc = gql`
   show {
     name
   }
+}
+    `;
+export const EpisodeSearchResultFragmentDoc = gql`
+    fragment EpisodeSearchResult on Episode {
+  id
+  name
+  number
+  absoluteNumber
+  season
+  show {
+    id
+    name
+  }
+  timestamps {
+    id
+    at
+    type {
+      id
+      name
+    }
+  }
+}
+    `;
+export const ShowSearchResultFragmentDoc = gql`
+    fragment ShowSearchResult on Show {
+  id
+  name
+  episodeCount
+  seasonCount
+  image
 }
     `;
 export const AllTimestampTypesDocument = gql`
@@ -1529,6 +1583,20 @@ export const ResetPasswordDocument = gql`
   }
 }
     ${AuthDetailsFragmentDoc}`;
+export const SearchEpisodesDocument = gql`
+    query searchEpisodes($search: String, $limit: Int, $offset: Int, $sort: String) {
+  searchEpisodes(search: $search, limit: $limit, offset: $offset, sort: $sort) {
+    ...EpisodeSearchResult
+  }
+}
+    ${EpisodeSearchResultFragmentDoc}`;
+export const SearchShowsDocument = gql`
+    query searchShows($search: String, $limit: Int, $offset: Int, $sort: String) {
+  searchShows(search: $search, limit: $limit, offset: $offset, sort: $sort) {
+    ...ShowSearchResult
+  }
+}
+    ${ShowSearchResultFragmentDoc}`;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
 
@@ -1560,6 +1628,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     resetPassword(variables: ResetPasswordMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<ResetPasswordMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<ResetPasswordMutation>(ResetPasswordDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'resetPassword', 'mutation');
+    },
+    searchEpisodes(variables?: SearchEpisodesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<SearchEpisodesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<SearchEpisodesQuery>(SearchEpisodesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'searchEpisodes', 'query');
+    },
+    searchShows(variables?: SearchShowsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<SearchShowsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<SearchShowsQuery>(SearchShowsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'searchShows', 'query');
     }
   };
 }

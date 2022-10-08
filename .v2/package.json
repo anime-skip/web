@@ -57,6 +57,7 @@
         "tailwindcss",
         "ts-node",
         "vite",
+        "vue-router",
         "vue",
         "webpack"
       ]
