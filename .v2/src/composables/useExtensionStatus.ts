@@ -17,6 +17,7 @@ export default function () {
   const logIntoExtension = () => {
     isExtensionLoggedIn.value = true;
   };
+  const openAllSettings = () => {};
   function extensionMessageListener(event: MessageEvent) {
     if (event.data === '@anime-skip/login-check') {
       isExtensionLoggedIn.value = true;
@@ -31,5 +32,6 @@ export default function () {
     installExtension,
     isExtensionLoggedIn,
     logIntoExtension,
+    openAllSettings,
   };
 }
