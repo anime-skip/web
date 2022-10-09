@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const { isExtensionInstalled, openAllSettings } = useExtensionStatus();
+const { isExtensionInstalled, openPlayerSettings } = useExtensionStatus();
 </script>
 
 <template>
@@ -33,7 +33,7 @@ const { isExtensionInstalled, openAllSettings } = useExtensionStatus();
             >
           </li>
           <li v-if="isExtensionInstalled">
-            <button class="flex" @click="openAllSettings()">
+            <button class="flex" @click="openPlayerSettings()">
               <span class="i-mdi-open-in-new text-xl" />
               <span class="truncate flex-1 text-left">Player Settings</span>
             </button>

@@ -11,13 +11,10 @@ export default function () {
 
   const isExtensionInstalled = useSessionStorage(SessionStorageKeys.EXTENSION_INSTALLED, false);
   const isExtensionLoggedIn = useSessionStorage(SessionStorageKeys.EXTENSION_LOGGED_IN, false);
-  const installExtension = () => {
-    isExtensionInstalled.value = true;
-  };
-  const logIntoExtension = () => {
-    isExtensionLoggedIn.value = true;
-  };
-  const openAllSettings = () => {};
+  const installExtension = () => window.postMessage('@anime-skip/install-check', '*');
+  const logIntoExtension = () => window.postMessage('@anime-skip/login-check', '*');
+  const openPlayerSettings = () =>
+    document.dispatchEvent(new CustomEvent('@anime-skip/open-all-settings'));
   function extensionMessageListener(event: MessageEvent) {
     if (event.data === '@anime-skip/login-check') {
       isExtensionLoggedIn.value = true;
@@ -32,6 +29,6 @@ export default function () {
     installExtension,
     isExtensionLoggedIn,
     logIntoExtension,
-    openAllSettings,
+    openPlayerSettings,
   };
 }
