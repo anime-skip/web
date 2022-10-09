@@ -1366,6 +1366,15 @@ export type AllTimestampTypesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type AllTimestampTypesQuery = { __typename?: 'Query', allTimestampTypes: Array<{ __typename?: 'TimestampType', id: string, name: string, description: string }> };
 
+export type ChangePasswordMutationVariables = Exact<{
+  oldPassword: Scalars['String'];
+  newPassword: Scalars['String'];
+  confirmNewPassword: Scalars['String'];
+}>;
+
+
+export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword: { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', username: string, email: string, emailVerified: boolean, profileUrl: string } } };
+
 export type CountsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1542,6 +1551,17 @@ export const AllTimestampTypesDocument = gql`
   }
 }
     `;
+export const ChangePasswordDocument = gql`
+    mutation changePassword($oldPassword: String!, $newPassword: String!, $confirmNewPassword: String!) {
+  changePassword(
+    oldPassword: $oldPassword
+    newPassword: $newPassword
+    confirmNewPassword: $confirmNewPassword
+  ) {
+    ...AuthDetails
+  }
+}
+    ${AuthDetailsFragmentDoc}`;
 export const CountsDocument = gql`
     query counts {
   counts {
@@ -1634,6 +1654,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
   return {
     allTimestampTypes(variables?: AllTimestampTypesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<AllTimestampTypesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<AllTimestampTypesQuery>(AllTimestampTypesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'allTimestampTypes', 'query');
+    },
+    changePassword(variables: ChangePasswordMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<ChangePasswordMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<ChangePasswordMutation>(ChangePasswordDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'changePassword', 'mutation');
     },
     counts(variables?: CountsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CountsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<CountsQuery>(CountsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'counts', 'query');

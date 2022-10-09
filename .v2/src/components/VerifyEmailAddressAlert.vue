@@ -41,8 +41,13 @@ const errorMessage = computed(() => getErrorMessage(error.value));
 
     <!-- Success -->
     <base-alert v-else-if="isSuccess" class="alert-success">
-      <p class="font-bold">Email sent to {{ auth.account.email }}!</p>
-      <p class="text-sm">Follow the directions in the email to verify your email address.</p>
+      <template #icon>
+        <div class="i-mdi-check-circle text-xl" />
+      </template>
+      <template #default>
+        <p class="font-bold">Email sent to {{ auth.account.email }}!</p>
+        <p class="text-sm">Follow the directions in the email to verify your email address.</p>
+      </template>
     </base-alert>
 
     <!-- Error -->
