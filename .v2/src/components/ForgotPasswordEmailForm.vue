@@ -37,9 +37,7 @@ function login() {
 
     <div class="space-y-4">
       <!-- Inputs -->
-      <base-input-group
-        :label-bl="validation.email.$error ? 'A valid email address is required' : undefined"
-      >
+      <base-input-group>
         <template #left><div class="i-mdi:email text-xl" /></template>
         <template #default>
           <input
@@ -49,6 +47,9 @@ function login() {
             placeholder="Email address"
             autocomplete="username"
           />
+        </template>
+        <template v-if="validation.email.$error" #labelBl>
+          <span class="text-error">A valid email address is required</span>
         </template>
       </base-input-group>
 

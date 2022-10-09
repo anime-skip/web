@@ -45,7 +45,7 @@ async function resetPassword() {
 
     <div class="space-y-4">
       <!-- Inputs -->
-      <base-input-group :label-bl="validation.password.$error ? 'Password is required' : undefined">
+      <base-input-group>
         <template #left><div class="i-mdi:key text-xl" /></template>
         <template #default>
           <input
@@ -57,10 +57,11 @@ async function resetPassword() {
             autocomplete="new-password"
           />
         </template>
+        <template v-if="validation.empasswordail.$error" #labelBl>
+          <span class="text-error">Password is required</span>
+        </template>
       </base-input-group>
-      <base-input-group
-        :label-bl="validation.confirmPassword.$error ? 'Passwords do not match' : undefined"
-      >
+      <base-input-group>
         <template #left><div class="i-mdi:key text-xl" /></template>
         <template #default>
           <input
@@ -71,6 +72,9 @@ async function resetPassword() {
             placeholder="Confirm Password"
             autocomplete="new-password"
           />
+        </template>
+        <template v-if="validation.confirmPassword.$error" #labelBl>
+          <span class="text-error">Passwords do not match</span>
         </template>
       </base-input-group>
 

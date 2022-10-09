@@ -10,6 +10,8 @@ function search() {
   navigateTo({ path: '/search', query: { q: searchText.value } });
   searchText.value = '';
 }
+
+const profileUrl = useProfileUrl();
 </script>
 
 <template>
@@ -58,7 +60,7 @@ function search() {
           <div v-if="auth.account" class="dropdown dropdown-end">
             <label tabindex="0" class="btn btn-ghost btn-circle avatar">
               <div class="w-10 rounded-full" :title="auth.account.username">
-                <img :src="auth.account.profileUrl || DEFAULT_PROFILE_URL" class="w-12 h-12" />
+                <img :src="profileUrl" class="w-12 h-12" />
               </div>
             </label>
             <ul

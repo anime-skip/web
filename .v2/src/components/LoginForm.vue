@@ -58,9 +58,7 @@ function login() {
 
     <div class="space-y-4">
       <!-- Inputs -->
-      <base-input-group
-        :label-bl="validation.usernameOrEmail.$error ? 'Username is required' : undefined"
-      >
+      <base-input-group>
         <template #left><div class="i-mdi:account text-xl" /></template>
         <template #default>
           <input
@@ -71,8 +69,11 @@ function login() {
             autocomplete="username"
           />
         </template>
+        <template v-if="validation.usernameOrEmail.$error" #labelBl>
+          <span class="text-error">Username is required</span>
+        </template>
       </base-input-group>
-      <base-input-group :label-bl="validation.password.$error ? 'Password is required' : undefined">
+      <base-input-group>
         <template #left><div class="i-mdi:key text-xl" /></template>
         <template #default>
           <input
@@ -83,6 +84,9 @@ function login() {
             placeholder="Password"
             autocomplete="current-password"
           />
+        </template>
+        <template v-if="validation.password.$error" #labelBl>
+          <span class="text-error">Password is required</span>
         </template>
       </base-input-group>
 

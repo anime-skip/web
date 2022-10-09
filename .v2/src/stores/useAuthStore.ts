@@ -1,4 +1,4 @@
-import { AuthDetailsFragment } from '~~/utils/graphql.generated';
+import { AuthDetailsFragment, LoggedInAccountFragment } from '~~/utils/graphql.generated';
 import { StorageSerializers } from '@vueuse/core';
 
 export const useAuthStore = defineStore('auth', () => {
@@ -8,6 +8,12 @@ export const useAuthStore = defineStore('auth', () => {
 
   function setLoggedInDetails(authDetails: AuthDetailsFragment) {
     auth.value = authDetails;
+  }
+  function setAccount(account: LoggedInAccountFragment) {
+    auth.value = {
+      ...auth.value,
+      account,
+    };
   }
   function clearLoggedInDetails() {
     auth.value = null;
@@ -21,6 +27,7 @@ export const useAuthStore = defineStore('auth', () => {
     refreshToken,
     account,
     setLoggedInDetails,
+    setAccount,
     clearLoggedInDetails,
   };
 });

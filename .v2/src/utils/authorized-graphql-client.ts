@@ -22,6 +22,9 @@ export function createAuthorizedGraphqlClient(): GraphQLClient {
         return false;
       },
     }),
-    headers: () => ({ Authorization: `Bearer ${auth.accessToken}` }),
+    headers: () => ({
+      Authorization: `Bearer ${auth.accessToken}`,
+      'X-Client-ID': config.public.API_CLIENT_ID,
+    }),
   });
 }

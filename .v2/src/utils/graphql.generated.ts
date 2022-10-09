@@ -1381,7 +1381,7 @@ export type CreateAccountMutationVariables = Exact<{
 }>;
 
 
-export type CreateAccountMutation = { __typename?: 'Mutation', createAccount: { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', username: string, email: string, profileUrl: string } } };
+export type CreateAccountMutation = { __typename?: 'Mutation', createAccount: { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', username: string, email: string, emailVerified: boolean, profileUrl: string } } };
 
 export type LoginQueryVariables = Exact<{
   usernameEmail: Scalars['String'];
@@ -1389,11 +1389,11 @@ export type LoginQueryVariables = Exact<{
 }>;
 
 
-export type LoginQuery = { __typename?: 'Query', login: { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', username: string, email: string, profileUrl: string } } };
+export type LoginQuery = { __typename?: 'Query', login: { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', username: string, email: string, emailVerified: boolean, profileUrl: string } } };
 
-export type LoggedInAccountFragment = { __typename?: 'Account', username: string, email: string, profileUrl: string };
+export type LoggedInAccountFragment = { __typename?: 'Account', username: string, email: string, emailVerified: boolean, profileUrl: string };
 
-export type AuthDetailsFragment = { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', username: string, email: string, profileUrl: string } };
+export type AuthDetailsFragment = { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', username: string, email: string, emailVerified: boolean, profileUrl: string } };
 
 export type RecentlyAddedEpisodesQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']>;
@@ -1409,7 +1409,7 @@ export type LoginRefreshQueryVariables = Exact<{
 }>;
 
 
-export type LoginRefreshQuery = { __typename?: 'Query', loginRefresh: { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', username: string, email: string, profileUrl: string } } };
+export type LoginRefreshQuery = { __typename?: 'Query', loginRefresh: { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', username: string, email: string, emailVerified: boolean, profileUrl: string } } };
 
 export type RequestPasswordResetMutationVariables = Exact<{
   email: Scalars['String'];
@@ -1419,6 +1419,13 @@ export type RequestPasswordResetMutationVariables = Exact<{
 
 export type RequestPasswordResetMutation = { __typename?: 'Mutation', requestPasswordReset: boolean };
 
+export type ResendVerificationEmailMutationVariables = Exact<{
+  recaptchaResponse: Scalars['String'];
+}>;
+
+
+export type ResendVerificationEmailMutation = { __typename?: 'Mutation', resendVerificationEmail?: boolean | null };
+
 export type ResetPasswordMutationVariables = Exact<{
   passwordResetToken: Scalars['String'];
   newPassword: Scalars['String'];
@@ -1426,7 +1433,7 @@ export type ResetPasswordMutationVariables = Exact<{
 }>;
 
 
-export type ResetPasswordMutation = { __typename?: 'Mutation', resetPassword: { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', username: string, email: string, profileUrl: string } } };
+export type ResetPasswordMutation = { __typename?: 'Mutation', resetPassword: { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', username: string, email: string, emailVerified: boolean, profileUrl: string } } };
 
 export type SearchEpisodesQueryVariables = Exact<{
   search?: InputMaybe<Scalars['String']>;
@@ -1452,6 +1459,13 @@ export type SearchShowsQuery = { __typename?: 'Query', searchShows: Array<{ __ty
 
 export type ShowSearchResultFragment = { __typename?: 'Show', id: string, name: string, episodeCount: number, seasonCount: number, image?: string | null };
 
+export type VerifyEmailAddressMutationVariables = Exact<{
+  validationToken: Scalars['String'];
+}>;
+
+
+export type VerifyEmailAddressMutation = { __typename?: 'Mutation', verifyEmailAddress: { __typename?: 'Account', username: string, email: string, emailVerified: boolean, profileUrl: string } };
+
 export const HomeCountsFragmentDoc = gql`
     fragment HomeCounts on TotalCounts {
   episodes
@@ -1463,6 +1477,7 @@ export const LoggedInAccountFragmentDoc = gql`
     fragment LoggedInAccount on Account {
   username
   email
+  emailVerified
   profileUrl
 }
     `;
@@ -1572,6 +1587,11 @@ export const RequestPasswordResetDocument = gql`
   requestPasswordReset(email: $email, recaptchaResponse: $recaptchaResponse)
 }
     `;
+export const ResendVerificationEmailDocument = gql`
+    mutation resendVerificationEmail($recaptchaResponse: String!) {
+  resendVerificationEmail(recaptchaResponse: $recaptchaResponse)
+}
+    `;
 export const ResetPasswordDocument = gql`
     mutation resetPassword($passwordResetToken: String!, $newPassword: String!, $confirmNewPassword: String!) {
   resetPassword(
@@ -1597,6 +1617,13 @@ export const SearchShowsDocument = gql`
   }
 }
     ${ShowSearchResultFragmentDoc}`;
+export const VerifyEmailAddressDocument = gql`
+    mutation verifyEmailAddress($validationToken: String!) {
+  verifyEmailAddress(validationToken: $validationToken) {
+    ...LoggedInAccount
+  }
+}
+    ${LoggedInAccountFragmentDoc}`;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
 
@@ -1626,6 +1653,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     requestPasswordReset(variables: RequestPasswordResetMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<RequestPasswordResetMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<RequestPasswordResetMutation>(RequestPasswordResetDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'requestPasswordReset', 'mutation');
     },
+    resendVerificationEmail(variables: ResendVerificationEmailMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<ResendVerificationEmailMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<ResendVerificationEmailMutation>(ResendVerificationEmailDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'resendVerificationEmail', 'mutation');
+    },
     resetPassword(variables: ResetPasswordMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<ResetPasswordMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<ResetPasswordMutation>(ResetPasswordDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'resetPassword', 'mutation');
     },
@@ -1634,6 +1664,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     searchShows(variables?: SearchShowsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<SearchShowsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<SearchShowsQuery>(SearchShowsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'searchShows', 'query');
+    },
+    verifyEmailAddress(variables: VerifyEmailAddressMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<VerifyEmailAddressMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<VerifyEmailAddressMutation>(VerifyEmailAddressDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'verifyEmailAddress', 'mutation');
     }
   };
 }

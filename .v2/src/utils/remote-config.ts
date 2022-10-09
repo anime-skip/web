@@ -11,7 +11,7 @@ export interface RemoteConfig {
 }
 
 export function getLatestRemoteConfig(): Promise<RemoteConfig> {
-  return fetch('http://remote-config.anime-skip.com/api/config/anime-skip.com').then(res =>
+  return fetch('https://remote-config.anime-skip.com/api/config/anime-skip.com').then(res =>
     res.json(),
   );
 }

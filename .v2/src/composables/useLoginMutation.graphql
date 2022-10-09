@@ -7,6 +7,7 @@ query login($usernameEmail: String!, $passwordHash: String!) {
 fragment LoggedInAccount on Account {
   username
   email
+  emailVerified
   profileUrl
 }
 

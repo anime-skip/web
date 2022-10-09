@@ -2,7 +2,6 @@
 defineProps<{
   labelTl?: string;
   labelTr?: string;
-  labelBl?: string;
   labelBr?: string;
 }>();
 </script>
@@ -19,8 +18,8 @@ defineProps<{
       <slot />
       <span v-if="$slots.right"><slot name="right" /></span>
     </label>
-    <label v-if="labelBl || labelBr" class="label">
-      <span v-if="labelBl" class="label-text">{{ labelBl }}</span>
+    <label v-if="$slots.labelBl || labelBr" class="label">
+      <span v-if="$slots.labelBl" class="label-text"><slot name="labelBl" /></span>
       <span v-if="labelBr" class="label-text-alt">{{ labelBr }}</span>
     </label>
   </div>

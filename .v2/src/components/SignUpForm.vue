@@ -64,11 +64,7 @@ async function login() {
 
     <div class="space-y-4">
       <!-- Inputs -->
-      <base-input-group
-        :label-bl="
-          validation.username.$error ? 'Username must be at least 3 characters long' : undefined
-        "
-      >
+      <base-input-group>
         <template #left><div class="i-mdi:account text-xl" /></template>
         <template #default>
           <input
@@ -79,10 +75,11 @@ async function login() {
             autocomplete="username"
           />
         </template>
+        <template v-if="validation.username.$error" #labelBl>
+          <span class="text-error">Username must be at least 3 characters long</span>
+        </template>
       </base-input-group>
-      <base-input-group
-        :label-bl="validation.email.$error ? 'Email must be a valid email address' : undefined"
-      >
+      <base-input-group>
         <template #left><div class="i-mdi:email text-xl" /></template>
         <template #default>
           <input
@@ -93,8 +90,11 @@ async function login() {
             autocomplete="email"
           />
         </template>
+        <template v-if="validation.email.$error" #labelBl>
+          <span class="text-error">Email must be a valid email address</span>
+        </template>
       </base-input-group>
-      <base-input-group :label-bl="validation.password.$error ? 'Password is required' : undefined">
+      <base-input-group>
         <template #left><div class="i-mdi:key text-xl" /></template>
         <template #default>
           <input
@@ -106,10 +106,11 @@ async function login() {
             autocomplete="new-password"
           />
         </template>
+        <template v-if="validation.password.$error" #labelBl>
+          <span class="text-error">Password is required</span>
+        </template>
       </base-input-group>
-      <base-input-group
-        :label-bl="validation.confirmPassword.$error ? 'Passwords do not match' : undefined"
-      >
+      <base-input-group>
         <template #left><div class="i-mdi:key text-xl" /></template>
         <template #default>
           <input
@@ -120,6 +121,9 @@ async function login() {
             placeholder="Confirm Password"
             autocomplete="new-password"
           />
+        </template>
+        <template v-if="validation.confirmPassword.$error" #labelBl>
+          <span class="text-error">Passwords do not match</span>
         </template>
       </base-input-group>
 
