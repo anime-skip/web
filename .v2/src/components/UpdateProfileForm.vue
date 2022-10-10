@@ -8,7 +8,7 @@ const profileUrl = useProfileUrl();
 
 <template>
   <form class="space-y-4" @submit.prevent>
-    <h1 class="font-stylized text-3xl font-bold flex items-start gap-2">
+    <h1 class="font-stylized text-3xl font-bold flex items-start gap-2 truncate">
       Profile Settings
       <span class="badge badge-primary">Coming soon</span>
     </h1>

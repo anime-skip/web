@@ -1,6 +1,6 @@
 <template>
   <form class="space-y-4" @submit.prevent>
-    <h2 class="font-stylized text-xl font-bold flex items-start gap-2">
+    <h2 class="font-stylized text-xl font-bold flex items-start gap-2 truncate">
       Delete Account
       <span class="badge badge-sm badge-primary">Coming Soon</span>
     </h2>
