@@ -1,6 +1,6 @@
 # Anime Skip Website
 
-This project uses Nuxt 3, Dasiy UI, Pinia, and Apollo for it's main libraries.
+This project uses Nuxt 3, Dasiy UI, Pinia, and Vue Query for it's main libraries.
 
 ## Required Tools
 
