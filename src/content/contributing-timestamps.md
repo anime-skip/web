@@ -29,23 +29,23 @@ After you're done editing, make sure you save your chnage!
 
 ### Timestamp Placement
 
-When there is a hard cut between two frames (cuts to black or a different scene), place the timestamp after 
+When there is a hard cut between two frames (cuts to black or a different scene), place the timestamp after
 
 When there is a transition between two sections it's a bit harder to nail down the start. These can be a bit less strict, and probably won't be frame perfect. In this situation, there are a couple ways to define the start of the next section.
 
 - If it's a fade to white/black, put the timestamp after the fade is finished.
 - If it's a fade from white/black, put the timestamp right at the beginning of the fade
-- If there's some kind of overlay that shows over the previous section, put it on the first frame the overlay/animation becomes visible 
+- If there's some kind of overlay that shows over the previous section, put it on the first frame the overlay/animation becomes visible
 
 ### Timestamp Types
 
-Make sure to check out the list of [timestamp types](https://www.anime-skip.com/support#timestamp-types). Most should be obvious from the name, but if you're confused which ones should be used, you can click to on them and see their description. 
+Make sure to check out the list of [timestamp types](https://www.anime-skip.com/support#timestamp-types). Most should be obvious from the name, but if you're confused which ones should be used, you can click to on them and see their description.
 
 ### Add Ending Timestamps
 
 Since timestamps only go a the beginning of sections, it can be easy to forget to start the next section, especailly when the section was very short or the transition didn't interupt the episode.
 
-Future versions of the Anime Skip Player will attempt to warn you if you forgot to start a new section. For now, an easy way to check this is after you save the timestamps, look at the non-skipped sections in the video progress bar to see if there are large chunks of the episode skipped. 
+Future versions of the Anime Skip Player will attempt to warn you if you forgot to start a new section. For now, an easy way to check this is after you save the timestamps, look at the non-skipped sections in the video progress bar to see if there are large chunks of the episode skipped.
 
 ## Tips & Tricks
 

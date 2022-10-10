@@ -1,2 +1,5 @@
 .nuxt
 pnpm-lock.yaml
+.output
+*.generated.*
+src/content/policies/*.md
