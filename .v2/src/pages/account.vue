@@ -48,7 +48,9 @@ const { isExtensionInstalled, openPlayerSettings } = useExtensionStatus();
       </div>
     </template>
     <template #content>
-      <nuxt-child />
+      <client-only>
+        <nuxt-child />
+      </client-only>
     </template>
   </sidebar-layout>
 </template>
