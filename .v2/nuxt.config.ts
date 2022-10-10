@@ -7,6 +7,18 @@ export default defineNuxtConfig({
   typescript: {
     shim: false,
   },
+  app: {
+    head: {
+      script: [
+        {
+          async: '',
+          defer: '',
+          'data-website-id': '521bc067-e68b-4e33-90db-5f3f40344bd0',
+          src: 'https://stats.aklinker1.io/umami.js',
+        },
+      ],
+    },
+  },
   modules: [
     '@nuxtjs/tailwindcss',
     [
