@@ -1,3 +1,9 @@
+<script lang="ts" setup>
+useHead({
+  title: 'Security – Anime Skip',
+});
+</script>
+
 <template>
   <div class="space-y-8">
     <div>

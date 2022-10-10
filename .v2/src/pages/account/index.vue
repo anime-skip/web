@@ -2,6 +2,7 @@
 import { RECAPTCHA_SCRIPT } from '~~/utils/recaptcha';
 
 useHead({
+  title: 'Account – Anime Skip',
   script: [RECAPTCHA_SCRIPT],
 });
 </script>

@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+useHead({
+  title: 'Anime Skip',
+});
+
 useApiClient();
 </script>
 

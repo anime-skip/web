@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-const route = useRoute();
 const content = ref<HTMLElement>();
 
-// Removed the /^\/docs/ from the path as if the content were served from /
-const docPath = computed(() => route.path.replace('/docs', '') || '/');
+useHead({
+  title: 'Support – Anime Skip',
+});
 </script>
 
 <template>

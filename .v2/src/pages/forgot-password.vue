@@ -2,6 +2,7 @@
 import { RECAPTCHA_SCRIPT } from '~~/utils/recaptcha';
 
 useHead({
+  title: 'Forgot Password – Anime Skip',
   script: [RECAPTCHA_SCRIPT],
 });
 

@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+useHead({
+  title: 'Search – Anime Skip',
+});
+
 const query = useRouteQueryString('q');
 const includeShows = useRouteQueryBoolean('shows');
 const includeEpisodes = useRouteQueryBoolean('episodes');

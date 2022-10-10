@@ -1,8 +1,10 @@
 <script lang="ts" setup>
-// navigateTo('/account');
-
 import { useAuthStore } from '~~/stores/useAuthStore';
 import { getErrorMessage } from '~~/utils/errors';
+
+useHead({
+  title: 'Email Verification – Anime Skip',
+});
 
 const auth = useAuthStore();
 

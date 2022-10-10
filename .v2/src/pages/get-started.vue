@@ -1,3 +1,9 @@
+<script lang="ts" setup>
+useHead({
+  title: 'Get Started – Anime Skip',
+});
+</script>
+
 <template>
   <main class="p-16 max-w-screen-lg mx-auto space-y-4">
     <!-- Header -->
