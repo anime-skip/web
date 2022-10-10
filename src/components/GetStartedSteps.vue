@@ -25,8 +25,6 @@ const activeStep = computed(() => {
   if (!isExtensionLoginComplete.value) return Steps.EXTENSION_LOGIN;
   return Steps.NEXT_STEPS;
 });
-
-const isDev = process.env.NODE_ENV;
 </script>
 
 <template>
@@ -126,11 +124,5 @@ const isDev = process.env.NODE_ENV;
         <nuxt-link to="/#recently-added" class="btn gap-2">Recently Added</nuxt-link>
       </div>
     </get-started-step>
-
-    <!-- Dev Helpers -->
-    <li v-if="isDev" class="flex gap-6">
-      <button class="btn" @click="installExtension()">Install Extension</button>
-      <button class="btn" @click="logIntoExtension()">Log Into Extension</button>
-    </li>
   </ol>
 </template>
