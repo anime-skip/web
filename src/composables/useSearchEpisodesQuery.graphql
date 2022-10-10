@@ -1,0 +1,25 @@
+query searchEpisodes($search: String, $limit: Int, $offset: Int, $sort: String) {
+  searchEpisodes(search: $search, limit: $limit, offset: $offset, sort: $sort) {
+    ...EpisodeSearchResult
+  }
+}
+
+fragment EpisodeSearchResult on Episode {
+  id
+  name
+  number
+  absoluteNumber
+  season
+  show {
+    id
+    name
+  }
+  timestamps {
+    id
+    at
+    type {
+      id
+      name
+    }
+  }
+}

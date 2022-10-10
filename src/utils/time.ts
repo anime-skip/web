@@ -1,10 +1,7 @@
-// prettier-ignore
-const TimeUtils = {
-  SECONDS:                  1000,
-  MINUTES:             60 * 1000,
-  HOURS:          60 * 60 * 1000,
-  DAYS:      24 * 60 * 60 * 1000,
-  WEEKS: 7 * 24 * 60 * 60 * 1000,
-}
-
-export default TimeUtils;
+export const MS = 1;
+export const SECOND = 1000 * MS;
+export const MINUTE = 60 * SECOND;
+export const HOUR = 60 * MINUTE;
+export const DAY = 24 * HOUR;
+export const WEEK = 7 * DAY;
+export const MONTH = 30 * DAY;

@@ -1,1 +1,2 @@
-/public/static/policies/*.html linguist-vendored
+**/*.generated.* linguist-generated
+src/content/policies/* linguist-generated

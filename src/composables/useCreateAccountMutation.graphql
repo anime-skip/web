@@ -1,0 +1,15 @@
+mutation createAccount(
+  $username: String!
+  $email: String!
+  $passwordHash: String!
+  $recaptchaResponse: String!
+) {
+  createAccount(
+    username: $username
+    email: $email
+    passwordHash: $passwordHash
+    recaptchaResponse: $recaptchaResponse
+  ) {
+    ...AuthDetails
+  }
+}

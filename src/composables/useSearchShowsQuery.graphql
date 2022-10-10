@@ -1,0 +1,13 @@
+query searchShows($search: String, $limit: Int, $offset: Int, $sort: String) {
+  searchShows(search: $search, limit: $limit, offset: $offset, sort: $sort) {
+    ...ShowSearchResult
+  }
+}
+
+fragment ShowSearchResult on Show {
+  id
+  name
+  episodeCount
+  seasonCount
+  image
+}

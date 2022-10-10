@@ -1,0 +1,7 @@
+query allTimestampTypes {
+  allTimestampTypes {
+    id
+    name
+    description
+  }
+}

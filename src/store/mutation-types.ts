@@ -1,4 +1,0 @@
-export enum MutationTypes {
-  SET_ACCOUNT_INFO = 'SET_ACCOUNT_INFO',
-  LOG_IN_REQUEST_STATE = 'LOG_IN_REQUEST_STATE',
-}

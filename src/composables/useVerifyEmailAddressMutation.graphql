@@ -1,0 +1,5 @@
+mutation verifyEmailAddress($validationToken: String!) {
+  verifyEmailAddress(validationToken: $validationToken) {
+    ...LoggedInAccount
+  }
+}

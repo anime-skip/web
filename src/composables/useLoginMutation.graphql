@@ -1,0 +1,20 @@
+query login($usernameEmail: String!, $passwordHash: String!) {
+  login(usernameEmail: $usernameEmail, passwordHash: $passwordHash) {
+    ...AuthDetails
+  }
+}
+
+fragment LoggedInAccount on Account {
+  username
+  email
+  emailVerified
+  profileUrl
+}
+
+fragment AuthDetails on LoginData {
+  authToken
+  refreshToken
+  account {
+    ...LoggedInAccount
+  }
+}

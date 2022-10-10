@@ -1,0 +1,11 @@
+query counts {
+  counts {
+    ...HomeCounts
+  }
+}
+
+fragment HomeCounts on TotalCounts {
+  episodes
+  timestamps
+  shows
+}

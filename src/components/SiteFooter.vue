@@ -1,120 +1,60 @@
-<template>
-  <footer class="bg-control pt-24">
-    <div class="px-2 flex flex-wrap justify-center">
-      <div class="group">
-        <h6>Anime Skip</h6>
-        <a href="https://www.buymeacoffee.com/anime.skip" target="_blank"
-          >Buy me a pizza! <span>🍕</span></a
-        >
-        <div class="space" />
-        <a :href="chromeUrl" target="_blank">Chrome Extension</a>
-        <a :href="firefoxUrl" target="_blank">Firefox Addon</a>
-      </div>
+<script lang="ts" setup>
+import { ExternalLinks } from '~~/utils/external-links';
 
-      <div class="group">
-        <h6>Supported Services</h6>
+const { data: allServices, isLoading } = useSupportedServicesQuery();
+const supportedServices = computed(() => allServices.value.filter(s => s.supported));
+</script>
+
+<template>
+  <footer class="footer p-10 bg-neutral text-neutral-content">
+    <div>
+      <span class="footer-title">Anime Skip</span>
+      <a class="link link-hover" target="_blank" :href="ExternalLinks.BUY_ME_A_COFFEE"
+        >Buy Me a Pizza! 🍕</a
+      >
+      <a class="link link-hover" target="_blank" :href="ExternalLinks.CHROME_WEB_STORE"
+        >Chrome Extension</a
+      >
+      <a class="link link-hover" target="_blank" :href="ExternalLinks.FIREFOX_ADDON_STORE"
+        >Firefox Addon</a
+      >
+    </div>
+    <div>
+      <span class="footer-title">Supported Services</span>
+      <template v-if="!isLoading">
         <a
           v-for="service of supportedServices"
-          :key="service.name"
-          :href="service.link"
+          class="link link-hover"
           target="_blank"
+          :href="service.url"
           >{{ service.name }}</a
         >
-      </div>
-
-      <div class="group">
-        <h6>Help Center</h6>
-        <router-link to="/contributing">Contributing</router-link>
-        <router-link to="/support">Support</router-link>
-        <a href="mailto:support@anime-skip.com?subject=Anime Skip">Contact Us</a>
-        <router-link to="/policies/privacy-policy">Privacy Policy</router-link>
-      </div>
-
-      <div class="group">
-        <h6>Other Resources</h6>
-        <a href="https://discord.gg/9wVhwZg" target="_blank">Join the Discord</a>
-        <router-link to="/api">API</router-link>
-        <a href="http://tuckerchap.in/BetterVRV/">BetterVRV</a>
-      </div>
+      </template>
+    </div>
+    <div>
+      <span class="footer-title">Help Center</span>
+      <nuxt-link class="link link-hover" to="/docs/contributing-timestamps"
+        >Contributing Timestamps</nuxt-link
+      >
+      <nuxt-link class="link link-hover" to="/support">Support</nuxt-link>
+      <a class="link link-hover" href="mailto:support@anime-skip.com?subject=Anime Skip"
+        >Contact Me</a
+      >
+      <nuxt-link class="link link-hover" to="/docs/policies/privacy">Privacy Policy</nuxt-link>
+      <nuxt-link class="link link-hover" to="/docs/policies/extension-privacy"
+        >Extension Privacy Policy</nuxt-link
+      >
+    </div>
+    <div>
+      <span class="footer-title">Other Resources</span>
+      <a class="link link-hover" target="_blank" :href="ExternalLinks.DISCORD_INVITE"
+        >Join the Discord</a
+      >
+      <nuxt-link class="link link-hover" to="/docs/api">API Documentation</nuxt-link>
+      <a class="link link-hover" target="_blank" :href="ExternalLinks.API_PLAYGROUND"
+        >API Playground</a
+      >
+      <a class="link link-hover" target="_blank" :href="ExternalLinks.BETTER_VRV">BetterVRV</a>
     </div>
   </footer>
 </template>
-
-<script lang="ts">
-import { CHROME_STORE_URL, FIREFOX_STORE_URL, SUPPORTED_SERVICES } from '@/utils/constants';
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-  setup() {
-    const supportedServices = SUPPORTED_SERVICES;
-    return {
-      supportedServices,
-      chromeUrl: CHROME_STORE_URL,
-      firefoxUrl: FIREFOX_STORE_URL,
-    };
-  },
-});
-</script>
-
-<style scoped>
-.group {
-  @apply w-72 flex flex-col px-8 space-y-3 items-start mb-16;
-}
-
-h6 {
-  @apply pb-3;
-}
-
-.space {
-  @apply pb-1;
-}
-
-a {
-  @apply text-on-surface text-opacity-medium;
-}
-
-/*
-footer {
-  padding: 16px 48px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  .column {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    width: 100%;
-    max-width: 1128px;
-  }
-
-  * {
-    // color: $textDisabledColor;
-    text-decoration: none;
-  }
-
-  .group {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 32px;
-    flex-shrink: 0;
-
-    h6 {
-      // color: $textPrimaryColor;
-      text-transform: uppercase;
-      margin-bottom: 16px;
-    }
-
-    .space {
-      height: 16px;
-    }
-
-    a {
-      margin: 4px 0;
-    }
-  }
-}
-*/
-</style>

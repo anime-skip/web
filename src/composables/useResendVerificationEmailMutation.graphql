@@ -1,0 +1,3 @@
+mutation resendVerificationEmail($recaptchaResponse: String!) {
+  resendVerificationEmail(recaptchaResponse: $recaptchaResponse)
+}

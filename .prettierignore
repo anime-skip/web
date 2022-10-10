@@ -1,3 +1,5 @@
-dist
-public/static/policies/privacy-policy.html
-stats.html
+.nuxt
+pnpm-lock.yaml
+.output
+*.generated.*
+src/content/policies/*.md
