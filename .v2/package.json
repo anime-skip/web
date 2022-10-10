@@ -1,10 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "build": "nuxt build",
     "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
+    "build": "nuxt generate",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "postinstall": "nuxt prepare",
