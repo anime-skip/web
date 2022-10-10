@@ -3,7 +3,7 @@ schema:
   - https://api.anime-skip.com/graphql:
       headers:
         X-Client-ID: th2oogUKrgOf1J8wMSIUPV0IpBMsLOJi
-documents: "src/**/*.graphql"
+documents: 'src/**/*.graphql'
 generates:
   src/utils/graphql.generated.ts:
     plugins:

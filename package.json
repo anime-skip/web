@@ -6,7 +6,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "postinstall": "nuxt prepare",
-    "prepare": "cd .. && husky install",
+    "prepare": "husky install",
     "typecheck": "nuxi typecheck",
     "generate:graphql": "graphql-codegen --config graphql-codegen.yml"
   },

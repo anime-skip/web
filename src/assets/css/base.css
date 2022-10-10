@@ -3,5 +3,5 @@
 
 /* Hide Recaptcha */
 .grecaptcha-badge {
-    opacity: 0 !important;
+  opacity: 0 !important;
 }
