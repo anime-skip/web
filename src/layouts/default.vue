@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import LogoNav from '~~/assets/logo-nav.svg';
 import { useAuthStore } from '~~/stores/useAuthStore';
-import { DEFAULT_PROFILE_URL } from '~~/utils/constants';
 
 const auth = useAuthStore();
 
