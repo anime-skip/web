@@ -15,7 +15,7 @@ function toggleExpanded() {
   <div :id="id" class="flex flex-col p-4">
     <div class="flex gap-4 cursor-pointer items-center" @click="toggleExpanded">
       <div
-        class="i-mdi:chevron-down text-base-content text-opacity-70 text-xl transition-transform"
+        class="i-mdi-chevron-down text-base-content text-opacity-70 text-xl transition-transform"
         :class="{
           'rotate-180': expanded,
         }"

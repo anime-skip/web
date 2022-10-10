@@ -36,20 +36,20 @@ import { ExternalLinks } from '~~/utils/external-links';
 
     <!-- Features -->
     <div class="w-full max-w-screen-md flex flex-col md:grid md:grid-cols-2 mx-auto">
-      <home-section-about-player-grid-item title="Auto-skip Timestamps" icon="i-mdi:fast-forward">
+      <home-section-about-player-grid-item title="Auto-skip Timestamps" icon="i-mdi-fast-forward">
         <p class="text-base-content text-opacity-70">
           Don't want to watch intros? You don't have to move a finger. Anything you don't want to
           watch is automatically skipped
         </p>
       </home-section-about-player-grid-item>
-      <home-section-about-player-grid-item title="Advanced Player Controls" icon="i-mdi:arm-flex">
+      <home-section-about-player-grid-item title="Advanced Player Controls" icon="i-mdi-arm-flex">
         <p class="text-base-content text-opacity-70">
           Playback speed up to 4x, advance between timestamps, 4 levels of fast forwards and rewinds
         </p>
       </home-section-about-player-grid-item>
       <home-section-about-player-grid-item
         title="Custom Keyboard Shortcuts"
-        icon="i-mdi:keyboard-variant"
+        icon="i-mdi-keyboard-variant"
       >
         <p class="text-base-content text-opacity-70">
           Over a dozen fully customizable keyboard shortcuts for navigation, volume, fullscreen, and

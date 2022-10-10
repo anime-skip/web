@@ -30,7 +30,7 @@ const profileUrl = useProfileUrl();
       <div class="w-full h-[5rem] navbar bg-base-300 fixed inset-x-0 top-0 px-4">
         <div class="flex-none lg:hidden">
           <label for="default-drawer" class="btn btn-square btn-ghost">
-            <div class="i-mdi:menu text-2xl inline-block w-6 h-6 stroke-current" />
+            <div class="i-mdi-menu text-2xl inline-block w-6 h-6 stroke-current" />
           </label>
         </div>
         <div class="flex-1 gap-2">
@@ -52,7 +52,7 @@ const profileUrl = useProfileUrl();
                   placeholder="Search Shows & Episodes..."
                 />
                 <button class="btn btn-square" type="submit">
-                  <span class="i-mdi:search group-focus-within:text-primary text-xl" />
+                  <span class="i-mdi-search group-focus-within:text-primary text-xl" />
                 </button>
               </div>
             </div>

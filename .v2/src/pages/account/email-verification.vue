@@ -8,18 +8,19 @@ useHead({
 
 const auth = useAuthStore();
 
-const validationToken = (useRoute().query.token as string | undefined) ?? '';
+const validationToken = useRoute().query.token as string | undefined;
 
 const { mutate, isError, error } = useVerifyEmailAddressMutation();
-mutate(
-  { validationToken },
-  {
-    onSuccess(data) {
-      auth.setAccount(data.verifyEmailAddress);
-      navigateTo('/account');
+if (validationToken)
+  mutate(
+    { validationToken },
+    {
+      onSuccess(data) {
+        auth.setAccount(data.verifyEmailAddress);
+        navigateTo('/account');
+      },
     },
-  },
-);
+  );
 const errorMessage = computed(() => getErrorMessage(error));
 </script>
 

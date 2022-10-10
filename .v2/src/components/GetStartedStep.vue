@@ -44,7 +44,7 @@ const [parent] = useAutoAnimate();
             'bg-primary text-primary-content': !completed,
           }"
         >
-          <div v-if="completed" key="icon" class="i-mdi:check text-2xl" />
+          <div v-if="completed" key="icon" class="i-mdi-check text-2xl" />
           <span v-else key="number" class="mt-1 font-stylized font-bold text-lg">{{ number }}</span>
         </div>
         <h2

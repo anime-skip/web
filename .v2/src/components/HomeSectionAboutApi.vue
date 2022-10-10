@@ -8,7 +8,7 @@ import Logo from '~~/assets/logo.svg';
       <p class="flex gap-4 justify-center items-center">
         <img class="w-16" alt="Anime Skip logo" :src="Logo" />
         <span class="text-4xl opacity-50">+</span>
-        <div class="i-logos:graphql text-6xl" />
+        <div class="i-logos-graphql text-6xl" />
       </p>
       <h2 class="text-3xl font-stylized">Anime Skip API</h2>
       <p>

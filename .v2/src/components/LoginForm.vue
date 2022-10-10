@@ -59,7 +59,7 @@ function login() {
     <div class="space-y-4">
       <!-- Inputs -->
       <base-input-group>
-        <template #left><div class="i-mdi:account text-xl" /></template>
+        <template #left><div class="i-mdi-account text-xl" /></template>
         <template #default>
           <input
             class="input input-bordered focus:input-primary w-full"
@@ -74,7 +74,7 @@ function login() {
         </template>
       </base-input-group>
       <base-input-group>
-        <template #left><div class="i-mdi:key text-xl" /></template>
+        <template #left><div class="i-mdi-key text-xl" /></template>
         <template #default>
           <input
             class="input input-bordered focus:input-primary w-full"

@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { useAuthStore } from '~~/stores/useAuthStore';
-import { ICON_OPEN_IN_NEW } from '~~/utils/constants';
 import { ExternalLinks } from '~~/utils/external-links';
 
 enum Steps {
@@ -49,10 +48,10 @@ const isDev = process.env.NODE_ENV;
       <p>You may need to reload this page after installing.</p>
       <div class="flex gap-6 flex-wrap">
         <nuxt-link :to="ExternalLinks.CHROME_WEB_STORE" class="btn btn-primary gap-2"
-          >Google Chrome <span :class="`${ICON_OPEN_IN_NEW} text-xl`"
+          >Google Chrome <span class="i-mdi-open-in-new text-xl"
         /></nuxt-link>
         <nuxt-link class="btn gap-2" :to="ExternalLinks.FIREFOX_ADDON_STORE"
-          >Firefox<span :class="`${ICON_OPEN_IN_NEW} text-xl`"
+          >Firefox<span class="i-mdi-open-in-new text-xl"
         /></nuxt-link>
       </div>
     </get-started-step>

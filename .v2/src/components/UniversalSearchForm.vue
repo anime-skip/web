@@ -57,7 +57,7 @@ watch([() => state.includeShows, () => state.includeEpisodes], updateVariables);
             placeholder="Search..."
           />
           <button class="btn btn-square btn-primary" type="submit">
-            <span class="i-mdi:search text-xl" />
+            <span class="i-mdi-search text-xl" />
           </button>
         </div>
       </div>

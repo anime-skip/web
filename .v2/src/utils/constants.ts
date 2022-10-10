@@ -5,5 +5,3 @@ export const ENSP = ' ';
 export const HEADER_OFFSET = 128;
 
 export const DEFAULT_PROFILE_URL = 'https://avatars3.githubusercontent.com/u/1400247?s=460&v=4';
-
-export const ICON_OPEN_IN_NEW = 'i-mdi:open-in-new';
