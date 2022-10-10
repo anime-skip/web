@@ -12,11 +12,16 @@ function search() {
 }
 
 const profileUrl = useProfileUrl();
+
+const drawerOpen = ref(false);
+function closeDrawer() {
+  drawerOpen.value = false;
+}
 </script>
 
 <template>
   <div class="drawer">
-    <input id="default-drawer" type="checkbox" class="drawer-toggle" />
+    <input id="default-drawer" v-model="drawerOpen" type="checkbox" class="drawer-toggle" />
     <div class="drawer-content flex flex-col">
       <!-- Page content here -->
       <div class="min-h-screen flex flex-col mt-20">
@@ -36,14 +41,14 @@ const profileUrl = useProfileUrl();
         <div class="flex-1 gap-2">
           <nuxt-link class="px-2 mx-2 flex items-center gap-4" to="/">
             <img :src="LogoNav" alt="Simple Anime Skip logo" class="h-6" />
-            <span class="font-stylized text-2xl">Anime Skip</span>
+            <span class="font-stylized text-2xl font-bold truncate text-clip">Anime Skip</span>
           </nuxt-link>
           <ul class="hidden lg:flex menu menu-horizontal p-2 rounded-box">
             <li><nuxt-link to="/get-started">Get Started</nuxt-link></li>
           </ul>
         </div>
-        <div class="flex-none hidden lg:flex lg:gap-4">
-          <form @submit.prevent="search">
+        <div class="flex-none flex gap-4">
+          <form class="hidden lg:block" @submit.prevent="search">
             <div class="form-control">
               <div class="input-group group">
                 <input
@@ -65,7 +70,7 @@ const profileUrl = useProfileUrl();
             </label>
             <ul
               tabindex="0"
-              class="mt-3 p-2 shadow menu menu-compact dropdown-content bg-neutral rounded-box w-52"
+              class="mt-3 p-2 shadow menu md:menu-compact dropdown-content bg-neutral rounded-box w-52"
             >
               <li class="menu-title">
                 <span>{{ auth.account.username }}</span>
@@ -75,7 +80,7 @@ const profileUrl = useProfileUrl();
             </ul>
           </div>
           <template v-else>
-            <nuxt-link to="/sign-up" class="btn btn-primary">Sign Up</nuxt-link>
+            <nuxt-link to="/sign-up" class="btn btn-primary hidden lg:flex">Sign Up</nuxt-link>
             <nuxt-link to="/login" class="btn btn-primary btn-outline">Login</nuxt-link>
           </template>
         </div>
@@ -84,19 +89,22 @@ const profileUrl = useProfileUrl();
 
     <div class="drawer-side">
       <label for="default-drawer" class="drawer-overlay"></label>
-      <ul class="menu p-4 overflow-y-auto w-80 bg-base-100">
+      <ul class="menu p-4 overflow-y-auto gap-2 w-80 bg-base-100">
         <!-- Sidebar content here -->
-        <li><nuxt-link to="/" class="font-stylized text-2xl mx-auto">Anime Skip</nuxt-link></li>
-        <li><nuxt-link to="/get-started">Get Started</nuxt-link></li>
-        <li><nuxt-link to="/search">Search</nuxt-link></li>
-        <li class="divide-y" />
-        <template v-if="!auth.account">
-          <nuxt-link to="/sign-up" class="btn btn-primary">Sign Up</nuxt-link>
-          <nuxt-link to="/login" class="btn">Log In</nuxt-link>
-        </template>
-        <li v-else>
-          <nuxt-link to="/account">Account Settings</nuxt-link>
+        <li>
+          <nuxt-link to="/" class="font-stylized text-2xl mx-auto" @click="closeDrawer"
+            >Anime Skip</nuxt-link
+          >
         </li>
+        <li><nuxt-link to="/get-started" @click="closeDrawer">Get Started</nuxt-link></li>
+        <li><nuxt-link to="/search" @click="closeDrawer">Search</nuxt-link></li>
+        <template v-if="!auth.account">
+          <li class="divide-y" />
+          <nuxt-link to="/sign-up" class="btn btn-primary" @click="closeDrawer">Sign Up</nuxt-link>
+          <nuxt-link to="/login" class="btn btn-primary btn-outline" @click="closeDrawer"
+            >Log In</nuxt-link
+          >
+        </template>
       </ul>
     </div>
   </div>
