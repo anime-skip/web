@@ -109,3 +109,9 @@ function closeDrawer() {
     </div>
   </div>
 </template>
+
+<style scoped>
+li a.router-link-exact-active {
+  @apply bg-primary bg-opacity-20 text-primary;
+}
+</style>
