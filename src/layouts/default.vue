@@ -48,18 +48,11 @@ function closeDrawer() {
         </div>
         <div class="flex-none flex gap-4">
           <form class="hidden lg:block" @submit.prevent="search">
-            <div class="form-control">
-              <div class="input-group group">
-                <input
-                  class="input input-bordered focus:input-primary"
-                  v-model="searchText"
-                  placeholder="Search Shows & Episodes..."
-                />
-                <button class="btn btn-square" type="submit">
-                  <span class="i-mdi-search group-focus-within:text-primary text-xl" />
-                </button>
-              </div>
-            </div>
+            <input
+              class="input input-bordered focus:input-primary min-w-0 w-64"
+              v-model="searchText"
+              placeholder="Search Shows & Episodes..."
+            />
           </form>
           <div v-if="auth.account" class="dropdown dropdown-end">
             <label tabindex="0" class="btn btn-ghost btn-circle avatar">
