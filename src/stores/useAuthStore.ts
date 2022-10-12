@@ -1,4 +1,4 @@
-import { AuthDetailsFragment, LoggedInAccountFragment } from '~~/utils/graphql.generated';
+import { AuthDetailsFragment, LoggedInAccountFragment, Role } from '~~/utils/graphql.generated';
 import { StorageSerializers } from '@vueuse/core';
 
 export const useAuthStore = defineStore('auth', () => {
@@ -22,6 +22,14 @@ export const useAuthStore = defineStore('auth', () => {
   const accessToken = computed(() => auth.value?.authToken);
   const refreshToken = computed(() => auth.value?.refreshToken);
   const account = computed(() => auth.value?.account);
+
+  const canAccessAdminDashboard = computed(() =>
+    [Role.Admin, Role.Dev, Role.Reviewer].includes(account.value?.role),
+  );
+  const canAccessUserReports = computed(() =>
+    [Role.Admin, Role.Dev, Role.Reviewer].includes(account.value?.role),
+  );
+
   return {
     accessToken,
     refreshToken,
@@ -29,5 +37,7 @@ export const useAuthStore = defineStore('auth', () => {
     setLoggedInDetails,
     setAccount,
     clearLoggedInDetails,
+    canAccessAdminDashboard,
+    canAccessUserReports,
   };
 });

@@ -1,0 +1,25 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "pnpm dev",
+      "detail": "Start Dev server",
+      "command": "pnpm",
+      "args": ["dev"],
+      "group": "build",
+      "runOptions": {
+        "instanceLimit": 1
+      }
+    },
+    {
+      "label": "pnpm genearte:graphql",
+      "detail": "Generate GraphQL SDK",
+      "command": "pnpm",
+      "args": ["generate:graphql"],
+      "group": "build",
+      "runOptions": {
+        "instanceLimit": 1
+      }
+    }
+  ]
+}

@@ -6,6 +6,8 @@ export enum QueryKeys {
   UNIVERSAL_SEARCH = 'universal-search',
   SEARCH_EPISODES = 'search-episodes',
   SEARCH_SHOWS = 'search-shows',
+  MY_ACCOUNT = 'my-account',
+  FIND_USER_REPORTS = 'find-user-reports',
 }
 
 export enum SessionStorageKeys {

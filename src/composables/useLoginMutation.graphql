@@ -5,10 +5,12 @@ query login($usernameEmail: String!, $passwordHash: String!) {
 }
 
 fragment LoggedInAccount on Account {
+  id
   username
   email
   emailVerified
   profileUrl
+  role
 }
 
 fragment AuthDetails on LoginData {
