@@ -180,6 +180,21 @@ export type Episode = BaseModel & {
   updatedByUserId: Scalars['ID'];
   /** The list of urls and services that the episode can be accessed from */
   urls: Array<EpisodeUrl>;
+  /**
+   * List the user reports for the episode. Requires the REVIEWER role.
+   *
+   * > `@hasRole(role: REVIEWER)` - The user must have the `REVIEWER` role to query this property.
+   */
+  userReports: Array<UserReport>;
+};
+
+
+/**
+ * Basic information about an episode, including season, numbers, a list of timestamps, and urls that
+ * it can be watched at
+ */
+export type EpisodeUserReportsArgs = {
+  resolved?: InputMaybe<Scalars['Boolean']>;
 };
 
 /**
@@ -487,7 +502,11 @@ export type Mutation = {
    * This step is pretty self explanatory, this is when the password is actually reset for a user
    */
   resetPassword: LoginData;
-  /** Mark a report as fixed */
+  /**
+   * Mark a report as fixed
+   *
+   * > `@hasRole(role: REVIEWER)` - The user must have the `REVIEWER` role to perform this operation.
+   */
   resolveUserReport: UserReport;
   /** Update user preferences */
   savePreferences: Preferences;
@@ -675,6 +694,7 @@ export type MutationResetPasswordArgs = {
 
 export type MutationResolveUserReportArgs = {
   id: Scalars['ID'];
+  resolvedMessage?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -868,9 +888,17 @@ export type Query = {
   findUser: User;
   /** Find user with a matching `User.username` */
   findUserByUsername: User;
-  /** Get a single user report, even if it's been resolved/deleted. */
+  /**
+   * Get a single user report, even if it's been resolved/deleted.
+   *
+   * > `@hasRole(role: REVIEWER)` - The user must have the `REVIEWER` role to perform this query.
+   */
   findUserReport: UserReport;
-  /** List all user reports, by default only unresolved ones. */
+  /**
+   * List all user reports.
+   *
+   * > `@hasRole(role: REVIEWER)` - The user must have the `REVIEWER` role to perform this query.
+   */
   findUserReports: Array<UserReport>;
   /**
    * Use either the username or email and an md5 hash of the user's password to get an access and
@@ -1064,6 +1092,8 @@ export enum Role {
   Admin = 'ADMIN',
   /** Highest role. Has super user access to all queries and mutations */
   Dev = 'DEV',
+  /** Reviewer role. Lets the user review issues with timestamps */
+  Reviewer = 'REVIEWER',
   /** Basic role. Has no elevated permissions */
   User = 'USER'
 }
@@ -1352,6 +1382,7 @@ export type UserReport = BaseModel & {
   message: Scalars['String'];
   reportedFromUrl: Scalars['String'];
   resolved: Scalars['Boolean'];
+  resolvedMessage?: Maybe<Scalars['String']>;
   show?: Maybe<Show>;
   showId?: Maybe<Scalars['ID']>;
   timestamp?: Maybe<Timestamp>;
@@ -1360,6 +1391,11 @@ export type UserReport = BaseModel & {
   updatedBy: User;
   updatedByUserId: Scalars['ID'];
 };
+
+export type AccountQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AccountQuery = { __typename?: 'Query', account: { __typename?: 'Account', id: string, username: string, email: string, emailVerified: boolean, profileUrl: string, role: Role } };
 
 export type AllTimestampTypesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1373,7 +1409,7 @@ export type ChangePasswordMutationVariables = Exact<{
 }>;
 
 
-export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword: { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', username: string, email: string, emailVerified: boolean, profileUrl: string } } };
+export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword: { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', id: string, username: string, email: string, emailVerified: boolean, profileUrl: string, role: Role } } };
 
 export type CountsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1390,7 +1426,19 @@ export type CreateAccountMutationVariables = Exact<{
 }>;
 
 
-export type CreateAccountMutation = { __typename?: 'Mutation', createAccount: { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', username: string, email: string, emailVerified: boolean, profileUrl: string } } };
+export type CreateAccountMutation = { __typename?: 'Mutation', createAccount: { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', id: string, username: string, email: string, emailVerified: boolean, profileUrl: string, role: Role } } };
+
+export type FindUserReportsQueryVariables = Exact<{
+  resolved?: InputMaybe<Scalars['Boolean']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']>;
+  sort?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type FindUserReportsQuery = { __typename?: 'Query', findUserReports: Array<{ __typename?: 'UserReport', id: string, createdAt: string, reportedFromUrl: string, message: string, timestampId?: string | null, episodeId?: string | null, episodeUrlString?: string | null, showId?: string | null, createdBy: { __typename?: 'User', id: string, username: string, profileUrl: string } }> };
+
+export type UserReportListItemFragment = { __typename?: 'UserReport', id: string, createdAt: string, reportedFromUrl: string, message: string, timestampId?: string | null, episodeId?: string | null, episodeUrlString?: string | null, showId?: string | null, createdBy: { __typename?: 'User', id: string, username: string, profileUrl: string } };
 
 export type LoginQueryVariables = Exact<{
   usernameEmail: Scalars['String'];
@@ -1398,11 +1446,11 @@ export type LoginQueryVariables = Exact<{
 }>;
 
 
-export type LoginQuery = { __typename?: 'Query', login: { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', username: string, email: string, emailVerified: boolean, profileUrl: string } } };
+export type LoginQuery = { __typename?: 'Query', login: { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', id: string, username: string, email: string, emailVerified: boolean, profileUrl: string, role: Role } } };
 
-export type LoggedInAccountFragment = { __typename?: 'Account', username: string, email: string, emailVerified: boolean, profileUrl: string };
+export type LoggedInAccountFragment = { __typename?: 'Account', id: string, username: string, email: string, emailVerified: boolean, profileUrl: string, role: Role };
 
-export type AuthDetailsFragment = { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', username: string, email: string, emailVerified: boolean, profileUrl: string } };
+export type AuthDetailsFragment = { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', id: string, username: string, email: string, emailVerified: boolean, profileUrl: string, role: Role } };
 
 export type RecentlyAddedEpisodesQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']>;
@@ -1418,7 +1466,7 @@ export type LoginRefreshQueryVariables = Exact<{
 }>;
 
 
-export type LoginRefreshQuery = { __typename?: 'Query', loginRefresh: { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', username: string, email: string, emailVerified: boolean, profileUrl: string } } };
+export type LoginRefreshQuery = { __typename?: 'Query', loginRefresh: { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', id: string, username: string, email: string, emailVerified: boolean, profileUrl: string, role: Role } } };
 
 export type RequestPasswordResetMutationVariables = Exact<{
   email: Scalars['String'];
@@ -1442,7 +1490,7 @@ export type ResetPasswordMutationVariables = Exact<{
 }>;
 
 
-export type ResetPasswordMutation = { __typename?: 'Mutation', resetPassword: { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', username: string, email: string, emailVerified: boolean, profileUrl: string } } };
+export type ResetPasswordMutation = { __typename?: 'Mutation', resetPassword: { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', id: string, username: string, email: string, emailVerified: boolean, profileUrl: string, role: Role } } };
 
 export type SearchEpisodesQueryVariables = Exact<{
   search?: InputMaybe<Scalars['String']>;
@@ -1473,7 +1521,7 @@ export type VerifyEmailAddressMutationVariables = Exact<{
 }>;
 
 
-export type VerifyEmailAddressMutation = { __typename?: 'Mutation', verifyEmailAddress: { __typename?: 'Account', username: string, email: string, emailVerified: boolean, profileUrl: string } };
+export type VerifyEmailAddressMutation = { __typename?: 'Mutation', verifyEmailAddress: { __typename?: 'Account', id: string, username: string, email: string, emailVerified: boolean, profileUrl: string, role: Role } };
 
 export const HomeCountsFragmentDoc = gql`
     fragment HomeCounts on TotalCounts {
@@ -1482,12 +1530,31 @@ export const HomeCountsFragmentDoc = gql`
   shows
 }
     `;
+export const UserReportListItemFragmentDoc = gql`
+    fragment UserReportListItem on UserReport {
+  id
+  createdAt
+  createdBy {
+    id
+    username
+    profileUrl
+  }
+  reportedFromUrl
+  message
+  timestampId
+  episodeId
+  episodeUrlString
+  showId
+}
+    `;
 export const LoggedInAccountFragmentDoc = gql`
     fragment LoggedInAccount on Account {
+  id
   username
   email
   emailVerified
   profileUrl
+  role
 }
     `;
 export const AuthDetailsFragmentDoc = gql`
@@ -1542,6 +1609,13 @@ export const ShowSearchResultFragmentDoc = gql`
   image
 }
     `;
+export const AccountDocument = gql`
+    query account {
+  account {
+    ...LoggedInAccount
+  }
+}
+    ${LoggedInAccountFragmentDoc}`;
 export const AllTimestampTypesDocument = gql`
     query allTimestampTypes {
   allTimestampTypes {
@@ -1581,6 +1655,18 @@ export const CreateAccountDocument = gql`
   }
 }
     ${AuthDetailsFragmentDoc}`;
+export const FindUserReportsDocument = gql`
+    query findUserReports($resolved: Boolean, $offset: Int, $limit: Int, $sort: String) {
+  findUserReports(
+    resolved: $resolved
+    offset: $offset
+    limit: $limit
+    sort: $sort
+  ) {
+    ...UserReportListItem
+  }
+}
+    ${UserReportListItemFragmentDoc}`;
 export const LoginDocument = gql`
     query login($usernameEmail: String!, $passwordHash: String!) {
   login(usernameEmail: $usernameEmail, passwordHash: $passwordHash) {
@@ -1652,6 +1738,9 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
+    account(variables?: AccountQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<AccountQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<AccountQuery>(AccountDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'account', 'query');
+    },
     allTimestampTypes(variables?: AllTimestampTypesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<AllTimestampTypesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<AllTimestampTypesQuery>(AllTimestampTypesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'allTimestampTypes', 'query');
     },
@@ -1663,6 +1752,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     createAccount(variables: CreateAccountMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateAccountMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateAccountMutation>(CreateAccountDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createAccount', 'mutation');
+    },
+    findUserReports(variables?: FindUserReportsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<FindUserReportsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<FindUserReportsQuery>(FindUserReportsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'findUserReports', 'query');
     },
     login(variables: LoginQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<LoginQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<LoginQuery>(LoginDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'login', 'query');

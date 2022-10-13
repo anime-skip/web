@@ -1,0 +1,21 @@
+query findUserReports($resolved: Boolean, $offset: Int, $limit: Int, $sort: String) {
+  findUserReports(resolved: $resolved, offset: $offset, limit: $limit, sort: $sort) {
+    ...UserReportListItem
+  }
+}
+
+fragment UserReportListItem on UserReport {
+  id
+  createdAt
+  createdBy {
+    id
+    username
+    profileUrl
+  }
+  reportedFromUrl
+  message
+  timestampId
+  episodeId
+  episodeUrlString
+  showId
+}

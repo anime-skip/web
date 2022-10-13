@@ -1,5 +1,16 @@
 <script lang="ts" setup>
+import { useAuthStore } from '~~/stores/useAuthStore';
+
 const { isExtensionInstalled, openPlayerSettings } = useExtensionStatus();
+
+// Update account details every once in a while
+if (!process.server) {
+  const auth = useAuthStore();
+  const { data: account } = useAccountQuery();
+  watch(account, newAccount => {
+    if (newAccount) auth.setAccount(newAccount.account);
+  });
+}
 </script>
 
 <template>
