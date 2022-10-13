@@ -12,10 +12,23 @@ const auth = useAuthStore();
       <ul class="menu rounded-box gap-2 p-2">
         <li class="menu-title"><span>Admin</span></li>
         <li v-if="auth.canAccessUserReports">
-          <nuxt-link to="/admin/user-reports">User Reports</nuxt-link>
+          <nuxt-link
+            :class="{
+              'bg-primary bg-opacity-20 text-primary':
+                $route.path.startsWith('/admin/user-reports'),
+            }"
+            to="/admin/user-reports"
+            >User Reports</nuxt-link
+          >
         </li>
         <li v-if="auth.canAccessValidationErrors">
-          <nuxt-link to="/admin/validation-errors">Validation Errors</nuxt-link>
+          <nuxt-link
+            :class="{
+              'bg-primary bg-opacity-20 text-primary': $route.path.startsWith('/validation-errors'),
+            }"
+            to="/admin/validation-errors"
+            >Validation Errors</nuxt-link
+          >
         </li>
       </ul>
     </nav>

@@ -38,9 +38,23 @@ function closeDrawer() {
             <span class="font-stylized text-2xl font-bold truncate text-clip">Anime Skip</span>
           </nuxt-link>
           <ul class="hidden lg:flex menu menu-horizontal p-2 gap-2 rounded-box">
-            <li><nuxt-link to="/get-started">Get Started</nuxt-link></li>
+            <li>
+              <nuxt-link
+                :class="{
+                  'bg-primary bg-opacity-20 text-primary': $route.path.startsWith('/get-started'),
+                }"
+                to="/get-started"
+                >Get Started</nuxt-link
+              >
+            </li>
             <li v-if="auth.canAccessAdminDashboard">
-              <nuxt-link to="/admin">Admin</nuxt-link>
+              <nuxt-link
+                :class="{
+                  'bg-primary bg-opacity-20 text-primary': $route.path.startsWith('/admin'),
+                }"
+                to="/admin"
+                >Admin</nuxt-link
+              >
             </li>
           </ul>
         </div>
@@ -65,11 +79,27 @@ function closeDrawer() {
               <li class="menu-title">
                 <span>{{ auth.account.username }}</span>
               </li>
-              <li><nuxt-link to="/account">Account</nuxt-link></li>
-              <li v-if="auth.canAccessAdminDashboard">
-                <nuxt-link to="/admin">Admin</nuxt-link>
+              <li>
+                <nuxt-link
+                  :class="{
+                    'bg-primary bg-opacity-20 text-primary': $route.path.startsWith('/account'),
+                  }"
+                  to="/account"
+                  >Account</nuxt-link
+                >
               </li>
-              <li><nuxt-link to="/logout">Logout</nuxt-link></li>
+              <li v-if="auth.canAccessAdminDashboard">
+                <nuxt-link
+                  :class="{
+                    'bg-primary bg-opacity-20 text-primary': $route.path.startsWith('/admin'),
+                  }"
+                  to="/admin"
+                  >Admin</nuxt-link
+                >
+              </li>
+              <li>
+                <nuxt-link to="/logout">Logout</nuxt-link>
+              </li>
             </ul>
           </div>
           <template v-else>
@@ -102,9 +132,3 @@ function closeDrawer() {
     </div>
   </div>
 </template>
-
-<style scoped>
-li a.router-link-exact-active {
-  @apply bg-primary bg-opacity-20 text-primary;
-}
-</style>
