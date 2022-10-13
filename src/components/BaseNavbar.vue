@@ -37,7 +37,7 @@ function closeDrawer() {
             <img :src="LogoNav" alt="Simple Anime Skip logo" class="h-6" />
             <span class="font-stylized text-2xl font-bold truncate text-clip">Anime Skip</span>
           </nuxt-link>
-          <ul class="hidden lg:flex menu menu-horizontal p-2 rounded-box">
+          <ul class="hidden lg:flex menu menu-horizontal p-2 gap-2 rounded-box">
             <li><nuxt-link to="/get-started">Get Started</nuxt-link></li>
             <li v-if="auth.canAccessAdminDashboard">
               <nuxt-link to="/admin">Admin</nuxt-link>
