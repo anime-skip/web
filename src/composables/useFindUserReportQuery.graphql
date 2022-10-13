@@ -1,0 +1,47 @@
+query findUserReport($id: ID!) {
+  findUserReport(id: $id) {
+    ...ReviewableUserReport
+  }
+}
+
+fragment ReviewableUserReport on UserReport {
+  id
+  createdAt
+  createdBy {
+    ...OtherUser
+  }
+  updatedAt
+  updatedBy {
+    ...OtherUser
+  }
+  reportedFromUrl
+  message
+  resolved
+  resolvedMessage
+  timestamp {
+    id
+    type {
+      id
+      name
+      description
+    }
+  }
+  episode {
+    id
+    name
+    userReports(resolved: false) {
+      ...UserReportListItem
+    }
+  }
+  episodeUrl {
+    url
+    episode {
+      id
+      name
+    }
+  }
+  show {
+    id
+    name
+  }
+}

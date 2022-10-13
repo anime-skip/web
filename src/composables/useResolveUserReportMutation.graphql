@@ -1,0 +1,5 @@
+mutation resolveUserReport($id: ID!, $resolvedMessage: String!) {
+  resolveUserReport(id: $id, resolvedMessage: $resolvedMessage) {
+    ...ReviewableUserReport
+  }
+}

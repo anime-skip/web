@@ -3,9 +3,18 @@ import { Ref, reactive } from 'vue';
 export default function <T>(items: Ref<T[] | undefined>, getId: (t: T) => string) {
   const selected = ref<Record<string, boolean>>({});
   const isAllSelected = computed(
-    () => Object.values(selected.value).length === items.value?.length,
+    () => items.value?.length > 0 && Object.values(selected.value).length === items.value?.length,
   );
   const isNoneSelected = computed(() => Object.values(selected.value).length === 0);
+
+  // Remove missing items when list changes
+  watch(items, () => {
+    selected.value = Object.keys(selected.value).reduce((map, id) => {
+      const hasId = !!items.value?.find(item => getId(item) === id);
+      if (hasId) map[id] = true;
+      return map;
+    }, {});
+  });
 
   function toggleSelectAll() {
     if (isAllSelected.value) {

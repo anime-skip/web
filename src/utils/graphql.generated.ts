@@ -1428,6 +1428,15 @@ export type CreateAccountMutationVariables = Exact<{
 
 export type CreateAccountMutation = { __typename?: 'Mutation', createAccount: { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', id: string, username: string, email: string, emailVerified: boolean, profileUrl: string, role: Role } } };
 
+export type FindUserReportQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type FindUserReportQuery = { __typename?: 'Query', findUserReport: { __typename?: 'UserReport', id: string, createdAt: string, updatedAt: string, reportedFromUrl: string, message: string, resolved: boolean, resolvedMessage?: string | null, createdBy: { __typename?: 'User', id: string, username: string, profileUrl: string }, updatedBy: { __typename?: 'User', id: string, username: string, profileUrl: string }, timestamp?: { __typename?: 'Timestamp', id: string, type: { __typename?: 'TimestampType', id: string, name: string, description: string } } | null, episode?: { __typename?: 'Episode', id: string, name?: string | null, userReports: Array<{ __typename?: 'UserReport', id: string, createdAt: string, updatedAt: string, reportedFromUrl: string, message: string, resolved: boolean, timestampId?: string | null, episodeId?: string | null, episodeUrlString?: string | null, showId?: string | null, createdBy: { __typename?: 'User', id: string, username: string, profileUrl: string }, updatedBy: { __typename?: 'User', id: string, username: string, profileUrl: string } }> } | null, episodeUrl?: { __typename?: 'EpisodeUrl', url: string, episode: { __typename?: 'Episode', id: string, name?: string | null } } | null, show?: { __typename?: 'Show', id: string, name: string } | null } };
+
+export type ReviewableUserReportFragment = { __typename?: 'UserReport', id: string, createdAt: string, updatedAt: string, reportedFromUrl: string, message: string, resolved: boolean, resolvedMessage?: string | null, createdBy: { __typename?: 'User', id: string, username: string, profileUrl: string }, updatedBy: { __typename?: 'User', id: string, username: string, profileUrl: string }, timestamp?: { __typename?: 'Timestamp', id: string, type: { __typename?: 'TimestampType', id: string, name: string, description: string } } | null, episode?: { __typename?: 'Episode', id: string, name?: string | null, userReports: Array<{ __typename?: 'UserReport', id: string, createdAt: string, updatedAt: string, reportedFromUrl: string, message: string, resolved: boolean, timestampId?: string | null, episodeId?: string | null, episodeUrlString?: string | null, showId?: string | null, createdBy: { __typename?: 'User', id: string, username: string, profileUrl: string }, updatedBy: { __typename?: 'User', id: string, username: string, profileUrl: string } }> } | null, episodeUrl?: { __typename?: 'EpisodeUrl', url: string, episode: { __typename?: 'Episode', id: string, name?: string | null } } | null, show?: { __typename?: 'Show', id: string, name: string } | null };
+
 export type FindUserReportsQueryVariables = Exact<{
   resolved?: InputMaybe<Scalars['Boolean']>;
   offset?: InputMaybe<Scalars['Int']>;
@@ -1436,9 +1445,11 @@ export type FindUserReportsQueryVariables = Exact<{
 }>;
 
 
-export type FindUserReportsQuery = { __typename?: 'Query', findUserReports: Array<{ __typename?: 'UserReport', id: string, createdAt: string, reportedFromUrl: string, message: string, timestampId?: string | null, episodeId?: string | null, episodeUrlString?: string | null, showId?: string | null, createdBy: { __typename?: 'User', id: string, username: string, profileUrl: string } }> };
+export type FindUserReportsQuery = { __typename?: 'Query', findUserReports: Array<{ __typename?: 'UserReport', id: string, createdAt: string, updatedAt: string, reportedFromUrl: string, message: string, resolved: boolean, timestampId?: string | null, episodeId?: string | null, episodeUrlString?: string | null, showId?: string | null, createdBy: { __typename?: 'User', id: string, username: string, profileUrl: string }, updatedBy: { __typename?: 'User', id: string, username: string, profileUrl: string } }> };
 
-export type UserReportListItemFragment = { __typename?: 'UserReport', id: string, createdAt: string, reportedFromUrl: string, message: string, timestampId?: string | null, episodeId?: string | null, episodeUrlString?: string | null, showId?: string | null, createdBy: { __typename?: 'User', id: string, username: string, profileUrl: string } };
+export type UserReportListItemFragment = { __typename?: 'UserReport', id: string, createdAt: string, updatedAt: string, reportedFromUrl: string, message: string, resolved: boolean, timestampId?: string | null, episodeId?: string | null, episodeUrlString?: string | null, showId?: string | null, createdBy: { __typename?: 'User', id: string, username: string, profileUrl: string }, updatedBy: { __typename?: 'User', id: string, username: string, profileUrl: string } };
+
+export type OtherUserFragment = { __typename?: 'User', id: string, username: string, profileUrl: string };
 
 export type LoginQueryVariables = Exact<{
   usernameEmail: Scalars['String'];
@@ -1492,6 +1503,14 @@ export type ResetPasswordMutationVariables = Exact<{
 
 export type ResetPasswordMutation = { __typename?: 'Mutation', resetPassword: { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', id: string, username: string, email: string, emailVerified: boolean, profileUrl: string, role: Role } } };
 
+export type ResolveUserReportMutationVariables = Exact<{
+  id: Scalars['ID'];
+  resolvedMessage: Scalars['String'];
+}>;
+
+
+export type ResolveUserReportMutation = { __typename?: 'Mutation', resolveUserReport: { __typename?: 'UserReport', id: string, createdAt: string, updatedAt: string, reportedFromUrl: string, message: string, resolved: boolean, resolvedMessage?: string | null, createdBy: { __typename?: 'User', id: string, username: string, profileUrl: string }, updatedBy: { __typename?: 'User', id: string, username: string, profileUrl: string }, timestamp?: { __typename?: 'Timestamp', id: string, type: { __typename?: 'TimestampType', id: string, name: string, description: string } } | null, episode?: { __typename?: 'Episode', id: string, name?: string | null, userReports: Array<{ __typename?: 'UserReport', id: string, createdAt: string, updatedAt: string, reportedFromUrl: string, message: string, resolved: boolean, timestampId?: string | null, episodeId?: string | null, episodeUrlString?: string | null, showId?: string | null, createdBy: { __typename?: 'User', id: string, username: string, profileUrl: string }, updatedBy: { __typename?: 'User', id: string, username: string, profileUrl: string } }> } | null, episodeUrl?: { __typename?: 'EpisodeUrl', url: string, episode: { __typename?: 'Episode', id: string, name?: string | null } } | null, show?: { __typename?: 'Show', id: string, name: string } | null } };
+
 export type SearchEpisodesQueryVariables = Exact<{
   search?: InputMaybe<Scalars['String']>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -1530,23 +1549,77 @@ export const HomeCountsFragmentDoc = gql`
   shows
 }
     `;
+export const OtherUserFragmentDoc = gql`
+    fragment OtherUser on User {
+  id
+  username
+  profileUrl
+}
+    `;
 export const UserReportListItemFragmentDoc = gql`
     fragment UserReportListItem on UserReport {
   id
   createdAt
   createdBy {
-    id
-    username
-    profileUrl
+    ...OtherUser
+  }
+  updatedAt
+  updatedBy {
+    ...OtherUser
   }
   reportedFromUrl
   message
+  resolved
   timestampId
   episodeId
   episodeUrlString
   showId
 }
-    `;
+    ${OtherUserFragmentDoc}`;
+export const ReviewableUserReportFragmentDoc = gql`
+    fragment ReviewableUserReport on UserReport {
+  id
+  createdAt
+  createdBy {
+    ...OtherUser
+  }
+  updatedAt
+  updatedBy {
+    ...OtherUser
+  }
+  reportedFromUrl
+  message
+  resolved
+  resolvedMessage
+  timestamp {
+    id
+    type {
+      id
+      name
+      description
+    }
+  }
+  episode {
+    id
+    name
+    userReports(resolved: false) {
+      ...UserReportListItem
+    }
+  }
+  episodeUrl {
+    url
+    episode {
+      id
+      name
+    }
+  }
+  show {
+    id
+    name
+  }
+}
+    ${OtherUserFragmentDoc}
+${UserReportListItemFragmentDoc}`;
 export const LoggedInAccountFragmentDoc = gql`
     fragment LoggedInAccount on Account {
   id
@@ -1655,6 +1728,13 @@ export const CreateAccountDocument = gql`
   }
 }
     ${AuthDetailsFragmentDoc}`;
+export const FindUserReportDocument = gql`
+    query findUserReport($id: ID!) {
+  findUserReport(id: $id) {
+    ...ReviewableUserReport
+  }
+}
+    ${ReviewableUserReportFragmentDoc}`;
 export const FindUserReportsDocument = gql`
     query findUserReports($resolved: Boolean, $offset: Int, $limit: Int, $sort: String) {
   findUserReports(
@@ -1709,6 +1789,13 @@ export const ResetPasswordDocument = gql`
   }
 }
     ${AuthDetailsFragmentDoc}`;
+export const ResolveUserReportDocument = gql`
+    mutation resolveUserReport($id: ID!, $resolvedMessage: String!) {
+  resolveUserReport(id: $id, resolvedMessage: $resolvedMessage) {
+    ...ReviewableUserReport
+  }
+}
+    ${ReviewableUserReportFragmentDoc}`;
 export const SearchEpisodesDocument = gql`
     query searchEpisodes($search: String, $limit: Int, $offset: Int, $sort: String) {
   searchEpisodes(search: $search, limit: $limit, offset: $offset, sort: $sort) {
@@ -1753,6 +1840,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     createAccount(variables: CreateAccountMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateAccountMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateAccountMutation>(CreateAccountDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createAccount', 'mutation');
     },
+    findUserReport(variables: FindUserReportQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<FindUserReportQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<FindUserReportQuery>(FindUserReportDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'findUserReport', 'query');
+    },
     findUserReports(variables?: FindUserReportsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<FindUserReportsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<FindUserReportsQuery>(FindUserReportsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'findUserReports', 'query');
     },
@@ -1773,6 +1863,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     resetPassword(variables: ResetPasswordMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<ResetPasswordMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<ResetPasswordMutation>(ResetPasswordDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'resetPassword', 'mutation');
+    },
+    resolveUserReport(variables: ResolveUserReportMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<ResolveUserReportMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<ResolveUserReportMutation>(ResolveUserReportDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'resolveUserReport', 'mutation');
     },
     searchEpisodes(variables?: SearchEpisodesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<SearchEpisodesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<SearchEpisodesQuery>(SearchEpisodesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'searchEpisodes', 'query');
