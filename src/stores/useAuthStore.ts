@@ -29,6 +29,9 @@ export const useAuthStore = defineStore('auth', () => {
   const canAccessUserReports = computed(() =>
     [Role.Admin, Role.Dev, Role.Reviewer].includes(account.value?.role),
   );
+  const canAccessValidationErrors = computed(() =>
+    [Role.Admin, Role.Dev].includes(account.value?.role),
+  );
 
   return {
     accessToken,
@@ -39,5 +42,6 @@ export const useAuthStore = defineStore('auth', () => {
     clearLoggedInDetails,
     canAccessAdminDashboard,
     canAccessUserReports,
+    canAccessValidationErrors,
   };
 });

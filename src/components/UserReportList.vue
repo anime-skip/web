@@ -3,10 +3,31 @@ import { QueryFindUserReportsArgs } from '~~/utils/graphql.generated';
 
 const vars = ref<QueryFindUserReportsArgs>({ resolved: false });
 
-const { data, isSuccess, isError, isLoading, error, refetch } = useFindUserReportsQuery(vars);
+const {
+  data,
+  isSuccess,
+  isError,
+  isLoading,
+  error,
+  refetch,
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
+} = useFindUserReportsQuery(vars);
 const reports = computed(() => data.value?.pages.flatMap(res => res.findUserReports));
 
 const selection = useSelection(reports, report => report.id);
+
+const footer = ref<HTMLElement>(null);
+useIntersectionObserver(
+  footer,
+  () => {
+    if (!hasNextPage.value) return;
+    console.log('fetching next page');
+    void fetchNextPage.value();
+  },
+  { threshold: 0.1 },
+);
 </script>
 
 <template>
@@ -17,7 +38,7 @@ const selection = useSelection(reports, report => report.id);
     <table v-if="isSuccess || isLoading" class="table table-zebra w-full">
       <thead>
         <tr>
-          <th>
+          <th v-if="false">
             <label class="pt-1">
               <span class="sr-only">Select/Deselect All</span>
               <input
@@ -29,8 +50,8 @@ const selection = useSelection(reports, report => report.id);
               />
             </label>
           </th>
-          <th>Message</th>
           <th></th>
+          <th>Message</th>
           <th>Type</th>
           <th>Created At</th>
           <th></th>
@@ -46,7 +67,8 @@ const selection = useSelection(reports, report => report.id);
           @deselected="selection.deselectItem"
         />
       </tbody>
+      <tfoot ref="footer" />
     </table>
-    <div v-if="isLoading" class="text-center p-8">Loading...</div>
+    <div v-if="isLoading || isFetchingNextPage" class="text-center p-8">Loading...</div>
   </div>
 </template>

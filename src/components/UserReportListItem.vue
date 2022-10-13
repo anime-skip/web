@@ -3,7 +3,7 @@ import { UserReportListItemFragment } from '~~/utils/graphql.generated';
 
 const props = defineProps<{
   report: UserReportListItemFragment;
-  selected: boolean;
+  selected?: boolean;
 }>();
 
 const emits = defineEmits<{
@@ -21,13 +21,7 @@ function toggleSelection(e: Event) {
 
 <template>
   <tr :data-report-id="report.id">
-    <!-- Header Row -->
-    <!-- <nuxt-link
-      class="flex py-4 px-8 gap-8 items-center cursor-pointer"
-      :to="`/admin/user-reports/${report.id}`"
-    > -->
-
-    <th>
+    <th v-if="false">
       <label class="pt-1">
         <span class="sr-only">Select/Deleselect</span>
         <input
@@ -40,15 +34,16 @@ function toggleSelection(e: Event) {
       </label>
     </th>
 
-    <td>
+    <td class="pl-8">
       <profile-picture class="w-10 h-10" :user="report.createdBy" />
     </td>
 
     <td class="w-full">
-      <nuxt-link class="h-full flex" :to="`/admin/user-reports/${report.id}`">
-        <p class="truncate text-lg flex-1 min-w-[5rem]">
-          {{ report.message }}
-        </p>
+      <nuxt-link
+        class="truncate link link-hover link-primary text-lg flex-1 min-w-[5rem]"
+        :to="`/admin/user-reports/${report.id}`"
+      >
+        {{ report.message }}
       </nuxt-link>
     </td>
 
@@ -79,7 +74,7 @@ function toggleSelection(e: Event) {
       {{ timeAgo }}
     </td>
 
-    <td>
+    <td class="pr-8">
       <nuxt-link
         target="_blank"
         class="btn btn-ghost btn-circle"
