@@ -84,6 +84,5 @@ function toggleSelection(e: Event) {
         <div class="i-mdi-open-in-new text-2xl" />
       </nuxt-link>
     </td>
-    <!-- </nuxt-link> -->
   </tr>
 </template>

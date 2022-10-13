@@ -1,3 +1,5 @@
+<!-- TODO: Use for all API failure displays -->
+
 <script lang="ts" setup>
 import { getErrorMessage } from '~~/utils/errors';
 
