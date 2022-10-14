@@ -1,11 +1,11 @@
 import { useVuelidate } from '@vuelidate/core';
-import { required, numeric } from '@vuelidate/validators';
+import { required, numeric, minLength } from '@vuelidate/validators';
 
 export default function () {
   const rules = {
-    appName: { required },
-    description: { required },
-    rateLimitRpm: { numeric },
+    appName: { required, minLength: minLength(1) },
+    description: { required, minLength: minLength(1) },
+    rateLimitRpm: { required, numeric },
   };
   const state = reactive({
     appName: '',

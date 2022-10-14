@@ -5,6 +5,7 @@ import { getErrorMessage } from '~~/utils/errors';
 
 defineProps<{
   error?: unknown;
+  hideRetry?: boolean;
 }>();
 
 const emits = defineEmits<{
@@ -20,7 +21,7 @@ const emits = defineEmits<{
     <template #default>
       <p class="text-lg">Error: {{ getErrorMessage(error) }}</p>
     </template>
-    <template #buttons>
+    <template v-if="!hideRetry" #buttons>
       <button class="btn" @click="emits('retry')">Retry</button>
     </template>
   </base-alert>

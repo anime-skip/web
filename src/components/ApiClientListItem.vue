@@ -3,17 +3,11 @@ import { ManagedApiClientFragment } from '~~/utils/graphql.generated';
 
 defineProps<{
   client: ManagedApiClientFragment;
-  active: boolean;
 }>();
 </script>
 
 <template>
-  <li
-    class="rounded-xl p-4 bg-base-300"
-    :class="{
-      'framing-shadow': active,
-    }"
-  >
-    <api-client-form :defaults="client" submit-label="Save Client" disabled />
+  <li class="rounded-xl px-8 pb-8 pt-6 bg-base-200 flex flex-col gap-4">
+    <edit-api-client-form :client="client" />
   </li>
 </template>
