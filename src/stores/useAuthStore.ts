@@ -32,6 +32,9 @@ export const useAuthStore = defineStore('auth', () => {
   const canAccessValidationErrors = computed(() =>
     [Role.Admin, Role.Dev].includes(account.value?.role),
   );
+  const canChangeApiClientRateLimit = computed(() =>
+    [Role.Admin, Role.Dev].includes(account.value?.role),
+  );
 
   return {
     accessToken,
@@ -43,5 +46,6 @@ export const useAuthStore = defineStore('auth', () => {
     canAccessAdminDashboard,
     canAccessUserReports,
     canAccessValidationErrors,
+    canChangeApiClientRateLimit,
   };
 });

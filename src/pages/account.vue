@@ -28,6 +28,11 @@ if (!process.server) {
               ><span class="i-mdi-lock text-xl" />Security</nuxt-link
             >
           </li>
+          <li>
+            <nuxt-link to="/account/api-clients"
+              ><span class="i-mdi-graphql text-xl" />API Clients</nuxt-link
+            >
+          </li>
         </ul>
 
         <!-- Extension menu -->
