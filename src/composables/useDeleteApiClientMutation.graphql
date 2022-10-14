@@ -1,0 +1,5 @@
+mutation deleteApiClient($id: String!) {
+  deleteApiClient(id: $id) {
+    ...ManagedApiClient
+  }
+}
