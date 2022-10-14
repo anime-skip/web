@@ -8,14 +8,23 @@ fragment UserReportListItem on UserReport {
   id
   createdAt
   createdBy {
-    id
-    username
-    profileUrl
+    ...OtherUser
+  }
+  updatedAt
+  updatedBy {
+    ...OtherUser
   }
   reportedFromUrl
   message
+  resolved
   timestampId
   episodeId
   episodeUrlString
   showId
+}
+
+fragment OtherUser on User {
+  id
+  username
+  profileUrl
 }

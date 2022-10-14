@@ -4,6 +4,7 @@ import { UserReportListItemFragment } from '~~/utils/graphql.generated';
 const props = defineProps<{
   report: UserReportListItemFragment;
   selected?: boolean;
+  hideSelection?: boolean;
 }>();
 
 const emits = defineEmits<{
@@ -21,7 +22,7 @@ function toggleSelection(e: Event) {
 
 <template>
   <tr :data-report-id="report.id">
-    <th v-if="false">
+    <th v-if="!hideSelection">
       <label class="pt-1">
         <span class="sr-only">Select/Deleselect</span>
         <input

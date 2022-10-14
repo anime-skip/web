@@ -33,7 +33,7 @@ const auth = useAuthStore();
       </ul>
     </nav>
     <div class="w-px bg-base-content bg-opacity-20 shrink-0" />
-    <main class="flex-1 overflow-x-auto">
+    <main class="flex-1 overflow-x-auto pb-16">
       <nuxt-child />
     </main>
   </div>
