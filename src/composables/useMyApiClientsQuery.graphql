@@ -1,0 +1,14 @@
+query myApiClients($search: String, $offset: Int, $limit: Int, $sort: String) {
+  myApiClients(search: $search, offset: $offset, limit: $limit, sort: $sort) {
+    ...ManagedApiClient
+  }
+}
+
+fragment ManagedApiClient on ApiClient {
+  id
+  createdAt
+  updatedAt
+  appName
+  description
+  rateLimitRpm
+}

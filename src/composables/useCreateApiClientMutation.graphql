@@ -1,0 +1,5 @@
+mutation createApiClient($client: CreateApiClient!) {
+  createApiClient(client: $client) {
+    ...ManagedApiClient
+  }
+}

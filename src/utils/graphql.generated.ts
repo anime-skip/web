@@ -1428,6 +1428,20 @@ export type CreateAccountMutationVariables = Exact<{
 
 export type CreateAccountMutation = { __typename?: 'Mutation', createAccount: { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', id: string, username: string, email: string, emailVerified: boolean, profileUrl: string, role: Role } } };
 
+export type CreateApiClientMutationVariables = Exact<{
+  client: CreateApiClient;
+}>;
+
+
+export type CreateApiClientMutation = { __typename?: 'Mutation', createApiClient: { __typename?: 'ApiClient', id: string, createdAt: string, updatedAt: string, appName: string, description: string, rateLimitRpm?: string | null } };
+
+export type DeleteApiClientMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteApiClientMutation = { __typename?: 'Mutation', deleteApiClient: { __typename?: 'ApiClient', id: string, createdAt: string, updatedAt: string, appName: string, description: string, rateLimitRpm?: string | null } };
+
 export type FindUserReportQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -1462,6 +1476,18 @@ export type LoginQuery = { __typename?: 'Query', login: { __typename?: 'LoginDat
 export type LoggedInAccountFragment = { __typename?: 'Account', id: string, username: string, email: string, emailVerified: boolean, profileUrl: string, role: Role };
 
 export type AuthDetailsFragment = { __typename?: 'LoginData', authToken: string, refreshToken: string, account: { __typename?: 'Account', id: string, username: string, email: string, emailVerified: boolean, profileUrl: string, role: Role } };
+
+export type MyApiClientsQueryVariables = Exact<{
+  search?: InputMaybe<Scalars['String']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']>;
+  sort?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type MyApiClientsQuery = { __typename?: 'Query', myApiClients: Array<{ __typename?: 'ApiClient', id: string, createdAt: string, updatedAt: string, appName: string, description: string, rateLimitRpm?: string | null }> };
+
+export type ManagedApiClientFragment = { __typename?: 'ApiClient', id: string, createdAt: string, updatedAt: string, appName: string, description: string, rateLimitRpm?: string | null };
 
 export type RecentlyAddedEpisodesQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']>;
@@ -1534,6 +1560,14 @@ export type SearchShowsQueryVariables = Exact<{
 export type SearchShowsQuery = { __typename?: 'Query', searchShows: Array<{ __typename?: 'Show', id: string, name: string, episodeCount: number, seasonCount: number, image?: string | null }> };
 
 export type ShowSearchResultFragment = { __typename?: 'Show', id: string, name: string, episodeCount: number, seasonCount: number, image?: string | null };
+
+export type UpdateApiClientMutationVariables = Exact<{
+  id: Scalars['String'];
+  changes: ApiClientChanges;
+}>;
+
+
+export type UpdateApiClientMutation = { __typename?: 'Mutation', updateApiClient: { __typename?: 'ApiClient', id: string, createdAt: string, updatedAt: string, appName: string, description: string, rateLimitRpm?: string | null } };
 
 export type VerifyEmailAddressMutationVariables = Exact<{
   validationToken: Scalars['String'];
@@ -1639,6 +1673,16 @@ export const AuthDetailsFragmentDoc = gql`
   }
 }
     ${LoggedInAccountFragmentDoc}`;
+export const ManagedApiClientFragmentDoc = gql`
+    fragment ManagedApiClient on ApiClient {
+  id
+  createdAt
+  updatedAt
+  appName
+  description
+  rateLimitRpm
+}
+    `;
 export const RecentEpisodeFragmentDoc = gql`
     fragment RecentEpisode on Episode {
   id
@@ -1728,6 +1772,20 @@ export const CreateAccountDocument = gql`
   }
 }
     ${AuthDetailsFragmentDoc}`;
+export const CreateApiClientDocument = gql`
+    mutation createApiClient($client: CreateApiClient!) {
+  createApiClient(client: $client) {
+    ...ManagedApiClient
+  }
+}
+    ${ManagedApiClientFragmentDoc}`;
+export const DeleteApiClientDocument = gql`
+    mutation deleteApiClient($id: String!) {
+  deleteApiClient(id: $id) {
+    ...ManagedApiClient
+  }
+}
+    ${ManagedApiClientFragmentDoc}`;
 export const FindUserReportDocument = gql`
     query findUserReport($id: ID!) {
   findUserReport(id: $id) {
@@ -1754,6 +1812,13 @@ export const LoginDocument = gql`
   }
 }
     ${AuthDetailsFragmentDoc}`;
+export const MyApiClientsDocument = gql`
+    query myApiClients($search: String, $offset: Int, $limit: Int, $sort: String) {
+  myApiClients(search: $search, offset: $offset, limit: $limit, sort: $sort) {
+    ...ManagedApiClient
+  }
+}
+    ${ManagedApiClientFragmentDoc}`;
 export const RecentlyAddedEpisodesDocument = gql`
     query recentlyAddedEpisodes($limit: Int) {
   recentlyAddedEpisodes(limit: $limit) {
@@ -1810,6 +1875,13 @@ export const SearchShowsDocument = gql`
   }
 }
     ${ShowSearchResultFragmentDoc}`;
+export const UpdateApiClientDocument = gql`
+    mutation updateApiClient($id: String!, $changes: ApiClientChanges!) {
+  updateApiClient(id: $id, changes: $changes) {
+    ...ManagedApiClient
+  }
+}
+    ${ManagedApiClientFragmentDoc}`;
 export const VerifyEmailAddressDocument = gql`
     mutation verifyEmailAddress($validationToken: String!) {
   verifyEmailAddress(validationToken: $validationToken) {
@@ -1840,6 +1912,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     createAccount(variables: CreateAccountMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateAccountMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateAccountMutation>(CreateAccountDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createAccount', 'mutation');
     },
+    createApiClient(variables: CreateApiClientMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateApiClientMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CreateApiClientMutation>(CreateApiClientDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createApiClient', 'mutation');
+    },
+    deleteApiClient(variables: DeleteApiClientMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<DeleteApiClientMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<DeleteApiClientMutation>(DeleteApiClientDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'deleteApiClient', 'mutation');
+    },
     findUserReport(variables: FindUserReportQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<FindUserReportQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<FindUserReportQuery>(FindUserReportDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'findUserReport', 'query');
     },
@@ -1848,6 +1926,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     login(variables: LoginQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<LoginQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<LoginQuery>(LoginDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'login', 'query');
+    },
+    myApiClients(variables?: MyApiClientsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<MyApiClientsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<MyApiClientsQuery>(MyApiClientsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'myApiClients', 'query');
     },
     recentlyAddedEpisodes(variables?: RecentlyAddedEpisodesQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<RecentlyAddedEpisodesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<RecentlyAddedEpisodesQuery>(RecentlyAddedEpisodesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'recentlyAddedEpisodes', 'query');
@@ -1872,6 +1953,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     searchShows(variables?: SearchShowsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<SearchShowsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<SearchShowsQuery>(SearchShowsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'searchShows', 'query');
+    },
+    updateApiClient(variables: UpdateApiClientMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<UpdateApiClientMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UpdateApiClientMutation>(UpdateApiClientDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'updateApiClient', 'mutation');
     },
     verifyEmailAddress(variables: VerifyEmailAddressMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<VerifyEmailAddressMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<VerifyEmailAddressMutation>(VerifyEmailAddressDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'verifyEmailAddress', 'mutation');

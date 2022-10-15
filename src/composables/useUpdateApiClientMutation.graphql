@@ -1,0 +1,5 @@
+mutation updateApiClient($id: String!, $changes: ApiClientChanges!) {
+  updateApiClient(id: $id, changes: $changes) {
+    ...ManagedApiClient
+  }
+}

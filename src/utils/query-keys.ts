@@ -9,6 +9,7 @@ export enum QueryKeys {
   MY_ACCOUNT = 'my-account',
   FIND_USER_REPORTS = 'find-user-reports',
   FIND_USER_REPORT = 'find-user-report',
+  MY_API_CLEINTS = 'my-api-clients',
 }
 
 export enum SessionStorageKeys {
