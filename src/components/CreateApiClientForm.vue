@@ -33,7 +33,12 @@ function createClient(
 
 <template>
   <div>
-    <base-api-client-form ref="form" :defaults="defaultApiClient" @submit="createClient">
+    <base-api-client-form
+      ref="form"
+      :defaults="defaultApiClient"
+      @submit="createClient"
+      hide-rate-limit
+    >
       <template #title>
         <h3 class="text-2xl font-stylized font-bold">New API Client</h3>
       </template>

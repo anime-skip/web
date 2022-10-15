@@ -6,6 +6,7 @@ type FormData = Pick<ManagedApiClientFragment, 'appName' | 'description' | 'rate
 
 const props = defineProps<{
   defaults: FormData;
+  hideRateLimit?: boolean;
 }>();
 
 const emits = defineEmits<{
@@ -50,7 +51,13 @@ defineExpose({ reset });
     </div>
 
     <!-- App Name -->
-    <labeled-value class="col-span-2" label="App Name">
+    <labeled-value
+      :class="{
+        'col-span-2': !hideRateLimit,
+        'col-span-3': hideRateLimit,
+      }"
+      label="App Name"
+    >
       <input
         class="input input-bordered focus:input-primary w-full"
         :class="{ 'input-error': validation.appName.$error }"
@@ -60,7 +67,7 @@ defineExpose({ reset });
     </labeled-value>
 
     <!-- Rate Limit -->
-    <labeled-value class="col-span-1" label="Rate Limit (Requests/Minute)">
+    <labeled-value v-if="!hideRateLimit" class="col-span-1" label="Rate Limit (Requests/Minute)">
       <input
         class="input input-bordered focus:input-primary w-full"
         :class="{ 'input-error': validation.rateLimitRpm.$error }"
@@ -68,6 +75,9 @@ defineExpose({ reset });
         v-model="validation.rateLimitRpm.$model"
         placeholder="None"
         :disabled="!auth.canChangeApiClientRateLimit"
+        :title="
+          !auth.canChangeApiClientRateLimit ? 'Only admins can update the rate limit' : undefined
+        "
       />
     </labeled-value>
 
