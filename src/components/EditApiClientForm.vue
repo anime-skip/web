@@ -46,16 +46,7 @@ function saveChanges(
   <li class="rounded-xl px-8 pb-8 pt-6 bg-base-200 flex flex-col gap-4">
     <base-api-client-form ref="form" :defaults="client" @submit="saveChanges">
       <template #title>
-        <div>
-          <h2 class="font-mono text-2xl font-bold text-primary truncate">{{ client.id }}</h2>
-          <!-- <p class="text-base-content text-opacity-70 text-sm mt-1">
-            To use, pass
-            <code class="px-2 py-1 rounded bg-base-content bg-opacity-10"
-              >X-Client-ID: {{ client.id }}</code
-            >
-            as a header.
-          </p> -->
-        </div>
+        <h2 class="font-mono text-2xl font-bold text-primary truncate">{{ client.id }}</h2>
       </template>
 
       <template #buttons="{ hasChange }">
@@ -69,7 +60,6 @@ function saveChanges(
             Save Changes
           </button>
 
-          <!-- Use P instead of button to not trigger the submit event -->
           <button
             class="flex-shrink-0 btn btn-primary btn-outline"
             :disabled="isUpdateLoading || isDeleteLoading"
@@ -79,7 +69,6 @@ function saveChanges(
           </button>
         </template>
 
-        <!-- Use P instead of button to not trigger the submit event -->
         <button
           class="flex-shrink-0 btn btn-outline btn-error justify-self-end"
           :class="{ loading: isDeleteLoading }"
