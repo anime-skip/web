@@ -1,6 +1,10 @@
 <script lang="ts" setup>
 import { useAuthStore } from '~~/stores/useAuthStore';
 
+definePageMeta({
+  middleware: ['logged-in'],
+});
+
 const { isExtensionInstalled, openPlayerSettings } = useExtensionStatus();
 
 // Update account details every once in a while
