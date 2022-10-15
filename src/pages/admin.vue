@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useAuthStore } from '~~/stores/useAuthStore';
 
-definePageMeta({ layout: 'full-width' });
+definePageMeta({ layout: 'full-width', middleware: ['is-admin'] });
 
 const auth = useAuthStore();
 </script>
