@@ -41,31 +41,15 @@ If you're ready to use the API in your own app, please start out in the test env
 
 ### Client IDs
 
-To use the API, and client ID is required. You can use a shared client ID to get started:
+To use the API, a client ID is required. You can use a shared client ID to get started:
 
 ```
 X-Client-ID: ZGfO0sMF3eCwLYf8yMSCJjlynwNGRXWE
 ```
 
-It is heavily rate limitted and not suited for use in production. Pass the ID in the `X-Client-ID` header. To create a client ID, use the `createApiClient` mutation:
+It is heavily rate limitted and not suited for use in production. Pass the ID in the `X-Client-ID` header.
 
-```graphql
-mutation ($client: CreateApiClient!) {
-  createApiClient(client: $client) {
-    id
-  }
-}
-```
-
-```json
-// Variables
-{
-  "client": {
-    "appName": "<client-app-name>",
-    "description": "<client-app-description>"
-  }
-}
-```
+You can create a client ID for your app from your [account settings](/account/api-clients).
 
 ### Authorization
 
