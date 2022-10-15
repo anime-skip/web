@@ -11,7 +11,10 @@ const showCreateForm = ref(false);
     <div>
       <h1 class="font-stylized text-3xl font-bold">API Clients</h1>
       <p class="text-base-content text-opacity-70">
-        Manage your API clients used to access the Anime Skip API.
+        Manage your API clients used to access the Anime Skip API. See
+        <nuxt-link class="link link-hover link-secondary" to="/docs/api#client-ids"
+          >API documentation</nuxt-link
+        >.
       </p>
     </div>
 
