@@ -19,9 +19,8 @@ export default defineNuxtConfig({
       script: [
         {
           async: '',
-          defer: '',
-          'data-website-id': '521bc067-e68b-4e33-90db-5f3f40344bd0',
-          src: 'https://stats.aklinker1.io/umami.js',
+          'data-website-id': 'ab4ba531-12ca-4b74-83cc-f7a84d06f430',
+          src: 'https://umami.aklinker1.io/script.js',
         },
       ],
     },
