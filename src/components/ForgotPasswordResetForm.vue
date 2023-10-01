@@ -57,7 +57,7 @@ async function resetPassword() {
             autocomplete="new-password"
           />
         </template>
-        <template v-if="validation.empasswordail.$error" #labelBl>
+        <template v-if="validation.password.$error" #labelBl>
           <span class="text-error">Password is required</span>
         </template>
       </base-input-group>
