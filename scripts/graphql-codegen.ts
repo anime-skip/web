@@ -12,57 +12,44 @@ let schema: DocumentNode;
 
 export async function generateGraphqlCode() {
   const typesOutput = "shared/graphql-types.gen.d.ts";
-  const resolversOutput = "shared/graphql-resolvers.gen.d.ts";
+  const resolversOutput = "server/graphql/resolver-types.gen.ts";
   logger.info("Generating GraphQL types...");
   logger.verbose(
-    `  - Types: ${Color.Cyan}./${typesOutput}${Color.Reset}`,
+    `  - Types:     ${Color.Cyan}./${typesOutput}${Color.Reset}`,
   );
   logger.verbose(
-    `  - Resolvers:  ${Color.Cyan}./${resolversOutput}${Color.Reset}`,
+    `  - Resolvers: ${Color.Cyan}./${resolversOutput}${Color.Reset}`,
   );
   const codegenTimer = createTimer();
 
   schema = await loadGraphqlSchema();
 
   await generate<typescriptPlugin.TypeScriptPluginConfig>(
-    "shared/graphql-types.gen.d.ts",
+    typesOutput,
     typescriptPlugin,
-    {},
+    {
+      typesPrefix: "Gql",
+      noExport: true,
+      enumsAsTypes: true,
+    },
   );
   await generate<typescriptResolversPlugin.TypeScriptResolversPluginConfig>(
-    "shared/graphql-resolvers.gen.d.ts",
+    resolversOutput,
     typescriptResolversPlugin,
-    {},
-  );
-  const outputFile = "shared/graphql-types.gen.d.ts";
-  const code = await codegen({
-    schema: await loadGraphqlSchema(),
-    config: {},
-    documents: [],
-    filename: outputFile,
-    plugins: [
-      {
-        typescript: {} satisfies typescriptPlugin.TypeScriptPluginConfig,
-      },
-      {
-        typescriptResolvers:
-          {} satisfies typescriptResolversPlugin.TypeScriptResolversPluginConfig,
-      },
-    ],
-    pluginMap: {
-      typescript: typescriptPlugin,
-      typescriptResolvers: typescriptResolversPlugin,
+    {
+      contextType: "server/state.ts#ServerState",
+      useTypeImports: true,
+      typesPrefix: "Gql",
     },
-  });
-
-  await Deno.writeTextFile(outputFile, code);
+  );
 
   logger.info("Generated in", codegenTimer.duration());
 }
 
-async function generate<T>(
+// deno-lint-ignore ban-types
+async function generate<T extends {}>(
   filename: string,
-  plugin: CodegenPlugin<T>,
+  plugin: CodegenPlugin,
   config: T,
 ): Promise<void> {
   const code = await codegen({
@@ -72,18 +59,15 @@ async function generate<T>(
     filename,
     plugins: [
       {
-        typescript: {} satisfies typescriptPlugin.TypeScriptPluginConfig,
-      },
-      {
-        typescriptResolvers:
-          {} satisfies typescriptResolversPlugin.TypeScriptResolversPluginConfig,
+        plugin: config,
       },
     ],
     pluginMap: {
-      typescript: typescriptPlugin,
-      typescriptResolvers: typescriptResolversPlugin,
+      plugin: plugin,
     },
   });
 
-  await Deno.writeTextFile(filename, code);
+  await Deno.writeTextFile(filename, `// deno-lint-ignore-file\n${code}`);
 }
+
+if (import.meta.main) await generateGraphqlCode();

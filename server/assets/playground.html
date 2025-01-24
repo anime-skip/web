@@ -46,15 +46,21 @@
             const root = ReactDOM.createRoot(
                 document.getElementById("graphiql"),
             );
+            const headers = {
+                "X-Client-ID": "{{CLIENT_ID}}",
+            };
             const fetcher = GraphiQL.createFetcher({
                 url: "/graphql",
             });
             const explorerPlugin = GraphiQLPluginExplorer.explorerPlugin();
             root.render(
                 React.createElement(GraphiQL, {
+                    tabs: true,
                     fetcher,
                     defaultEditorToolsVisibility: true,
                     plugins: [explorerPlugin],
+                    headers: JSON.stringify(headers, null, 2),
+                    headerEditorEnabled: true,
                 }),
             );
         </script>

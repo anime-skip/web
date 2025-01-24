@@ -1,14 +1,13 @@
-import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
-export type Maybe<T> = T | null;
-export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
-export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
-export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
+// deno-lint-ignore-file
+type Maybe<T> = T | null;
+type InputMaybe<T> = Maybe<T>;
+type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
+type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 /** All built-in and custom scalars, mapped to their actual values */
-export type Scalars = {
+type Scalars = {
   ID: { input: string; output: string; }
   String: { input: string; output: string; }
   Boolean: { input: boolean; output: boolean; }
@@ -32,99 +31,93 @@ export type Scalars = {
  * A user's role in the system. Higher roles allow a user write access to certain data that a normal
  * user would not. Some queries and mutations are only allowed by certain roles
  */
-export enum Role {
+type GqlRole =
   /** Highest role. Has super user access to all queries and mutations */
-  Dev = 'DEV',
+  | 'DEV'
   /** Administrator role. Has some elevated permissions */
-  Admin = 'ADMIN',
+  | 'ADMIN'
   /** Reviewer role. Lets the user review issues with timestamps */
-  Reviewer = 'REVIEWER',
+  | 'REVIEWER'
   /** Basic role. Has no elevated permissions */
-  User = 'USER'
-}
+  | 'USER';
 
 /**
  * Which of the supported services the `EpisodeUrl` was created for. This is a simple enum that allows
  * for simple checks, but this data can also be pulled from the url in the case of UNKNOWN
  */
-export enum EpisodeSource {
+type GqlEpisodeSource =
   /** Data came from an external source */
-  Unknown = 'UNKNOWN',
+  | 'UNKNOWN'
   /** Data is from <vrv.co> */
-  Vrv = 'VRV',
+  | 'VRV'
   /** Data is from <funimation.com> */
-  Funimation = 'FUNIMATION',
+  | 'FUNIMATION'
   /** Data is from <crunchyroll.com> and <beta.crunchyroll.com> */
-  Crunchyroll = 'CRUNCHYROLL'
-}
+  | 'CRUNCHYROLL';
 
 /** Where a timestamp originated from */
-export enum TimestampSource {
-  AnimeSkip = 'ANIME_SKIP',
-  BetterVrv = 'BETTER_VRV'
-}
+type GqlTimestampSource =
+  | 'ANIME_SKIP'
+  | 'BETTER_VRV';
 
 /** The scope that a template applies to */
-export enum TemplateType {
+type GqlTemplateType =
   /** The template is loaded for all episodes of a given show */
-  Show = 'SHOW',
+  | 'SHOW'
   /** The template is loaded for episodes of a given show where their season is included in `Template.seasons` */
-  Seasons = 'SEASONS'
-}
+  | 'SEASONS';
 
 /** Color theme the user prefers */
-export enum ColorTheme {
+type GqlColorTheme =
   /** Change to match where you're watching */
-  PerService = 'PER_SERVICE',
-  AnimeSkipBlue = 'ANIME_SKIP_BLUE',
-  VrvYellow = 'VRV_YELLOW',
-  FunimationPurple = 'FUNIMATION_PURPLE',
-  CrunchyrollOrange = 'CRUNCHYROLL_ORANGE'
-}
+  | 'PER_SERVICE'
+  | 'ANIME_SKIP_BLUE'
+  | 'VRV_YELLOW'
+  | 'FUNIMATION_PURPLE'
+  | 'CRUNCHYROLL_ORANGE';
 
 /** Allowed services for show's external links */
-export enum ExternalService {
-  Anilist = 'ANILIST'
-}
+type GqlExternalService =
+  | 'ANILIST';
 
 /** When logging in with a password or refresh token, you can get new tokens and account info */
-export type LoginData = {
+type GqlLoginData = {
   __typename?: 'LoginData';
   /** A JWT that should be used in the header of all requests: `Authorization: Bearer <authToken>` */
   authToken: Scalars['String']['output'];
   /** A JWT used for the `loginRefresh` query to get new `LoginData` */
   refreshToken: Scalars['String']['output'];
   /** The personal account information of the user that got authenticated */
-  account: Account;
+  account: GqlAccount;
 };
 
-export type UpdatedTimestamps = {
+type GqlUpdatedTimestamps = {
   __typename?: 'UpdatedTimestamps';
-  created: Array<Timestamp>;
-  updated: Array<Timestamp>;
-  deleted: Array<Timestamp>;
+  created: Array<GqlTimestamp>;
+  updated: Array<GqlTimestamp>;
+  deleted: Array<GqlTimestamp>;
 };
 
-export type Mutation = {
+type GqlMutation = {
   __typename?: 'Mutation';
   /**
    * Create a user account. 3rd party applications will not have access to this function because of
    * `recaptchaResponse`. Redirect new users to create an account on <anime-skip.com>
    */
-  createAccount: LoginData;
+  createAccount: GqlLoginData;
   /**
    * Change a user's password by first confirming the old one. This is not a forgot password flow
    *
    * > Note the passwords aren't md5 hashes. The regular login will be moving to this as well eventually
    */
-  changePassword: LoginData;
+  changePassword: GqlLoginData;
   /** Resend the verification email for the account of the authenticated user */
   resendVerificationEmail?: Maybe<Scalars['Boolean']['output']>;
   /**
    * Callback to handle the verification token included in the email sent using
    * `resendVerificationEmail`
    */
-  verifyEmailAddress: Account;
+  verifyEmailAddress: GqlAccount;
   /**
    * The first step in the password reset process
    *
@@ -139,118 +132,118 @@ export type Mutation = {
    *
    * This step is pretty self explanatory, this is when the password is actually reset for a user
    */
-  resetPassword: LoginData;
+  resetPassword: GqlLoginData;
   /**
    * Request your account be deleted. The user will receive an email with a link to confirm deleting
    * their account
    */
-  deleteAccountRequest: Account;
+  deleteAccountRequest: GqlAccount;
   /** Handle a deleteToken from `deleteAccountRequest` and actually delete the user's account */
-  deleteAccount: Account;
+  deleteAccount: GqlAccount;
   /** Update user preferences */
-  savePreferences: Preferences;
+  savePreferences: GqlPreferences;
   /** Create a show and optionally become an admin */
-  createShow: Show;
+  createShow: GqlShow;
   /** Update show data */
-  updateShow: Show;
+  updateShow: GqlShow;
   /**
    * Delete a show and all it's children (episodes, episode urls, timestamps, admins, etc)
    *
    * > `@hasRole(role: ADMIN)` - The user must have the `ADMIN` role to perform this action
    */
-  deleteShow: Show;
+  deleteShow: GqlShow;
   /**
    * Give admin privilege to a user for a show.
    *
    * > `@isShowAdmin` - You need to be an admin of the show to do this action
    */
-  createShowAdmin: ShowAdmin;
+  createShowAdmin: GqlShowAdmin;
   /**
    * Remove admin privileges from a user for a show.
    *
    * > `@isShowAdmin` - You need to be an admin of the show to do this action
    */
-  deleteShowAdmin: ShowAdmin;
+  deleteShowAdmin: GqlShowAdmin;
   /** Create an episode under a `Show` */
-  createEpisode: Episode;
+  createEpisode: GqlEpisode;
   /** Update episode info */
-  updateEpisode: Episode;
+  updateEpisode: GqlEpisode;
   /**
    * Delete an episode and all it's child data
    *
    * > `@isShowAdmin` - You need to be an admin of the show to do this action
    */
-  deleteEpisode: Episode;
+  deleteEpisode: GqlEpisode;
   /** Link an `Episode` to a service URL */
-  createEpisodeUrl: EpisodeUrl;
+  createEpisodeUrl: GqlEpisodeUrl;
   /**
    * Unlink an `Episode` to from service URL
    *
    * > `@isShowAdmin` - You need to be an admin of the show to do this action
    */
-  deleteEpisodeUrl: EpisodeUrl;
+  deleteEpisodeUrl: GqlEpisodeUrl;
   /** Update episode url info */
-  updateEpisodeUrl: EpisodeUrl;
+  updateEpisodeUrl: GqlEpisodeUrl;
   /** Add a timestamp to an `Episode` */
-  createTimestamp: Timestamp;
+  createTimestamp: GqlTimestamp;
   /** Update timestamp data */
-  updateTimestamp: Timestamp;
+  updateTimestamp: GqlTimestamp;
   /** Delete a timestamp */
-  deleteTimestamp: Timestamp;
+  deleteTimestamp: GqlTimestamp;
   /** Will create, update, and delete timestamps as passed. Partial failures are completely rolled back */
-  updateTimestamps: UpdatedTimestamps;
+  updateTimestamps: GqlUpdatedTimestamps;
   /**
    * Create a timestamp type
    *
    * > `@hasRole(role: ADMIN)` - The user must have the `ADMIN` role to perform this action
    */
-  createTimestampType: TimestampType;
+  createTimestampType: GqlTimestampType;
   /**
    * Update a timestamp type
    *
    * > `@hasRole(role: ADMIN)` - The user must have the `ADMIN` role to perform this action
    */
-  updateTimestampType: TimestampType;
+  updateTimestampType: GqlTimestampType;
   /**
    * Delete a timestamp type
    *
    * > `@hasRole(role: ADMIN)` - The user must have the `ADMIN` role to perform this action
    */
-  deleteTimestampType: TimestampType;
+  deleteTimestampType: GqlTimestampType;
   /** Make changes to an existing template */
-  createTemplate: Template;
+  createTemplate: GqlTemplate;
   /** Make changes to an existing template */
-  updateTemplate: Template;
+  updateTemplate: GqlTemplate;
   /**
    * Delete an existing template
    *
    * > `@isShowAdmin` - You need to be an admin of the show to do this action
    */
-  deleteTemplate: Template;
+  deleteTemplate: GqlTemplate;
   /** Add a timestamp to an existing template */
-  addTimestampToTemplate: TemplateTimestamp;
+  addTimestampToTemplate: GqlTemplateTimestamp;
   /** Remove a timestamp from an existing template */
-  removeTimestampFromTemplate: TemplateTimestamp;
+  removeTimestampFromTemplate: GqlTemplateTimestamp;
   /** Create a new API client for the authenticated user to use */
-  createApiClient: ApiClient;
+  createApiClient: GqlApiClient;
   /** Update one of the authenticated user's API clients */
-  updateApiClient: ApiClient;
+  updateApiClient: GqlApiClient;
   /** Delete one of the authenticated user's API clients */
-  deleteApiClient: ApiClient;
-  addExternalLink: ExternalLink;
-  removeExternalLink: ExternalLink;
+  deleteApiClient: GqlApiClient;
+  addExternalLink: GqlExternalLink;
+  removeExternalLink: GqlExternalLink;
   /** Report an issue with a single timestamp, episode, episode URL, or show. */
-  createUserReport: UserReport;
+  createUserReport: GqlUserReport;
   /**
    * Mark a report as fixed
    *
    * > `@hasRole(role: REVIEWER)` - The user must have the `REVIEWER` role to perform this operation.
    */
-  resolveUserReport: UserReport;
+  resolveUserReport: GqlUserReport;
 };
 
 
-export type MutationCreateAccountArgs = {
+type GqlMutationCreateAccountArgs = {
   username: Scalars['String']['input'];
   email: Scalars['String']['input'];
   passwordHash: Scalars['String']['input'];
@@ -258,263 +251,263 @@ export type MutationCreateAccountArgs = {
 };
 
 
-export type MutationChangePasswordArgs = {
+type GqlMutationChangePasswordArgs = {
   oldPassword: Scalars['String']['input'];
   newPassword: Scalars['String']['input'];
   confirmNewPassword: Scalars['String']['input'];
 };
 
 
-export type MutationResendVerificationEmailArgs = {
+type GqlMutationResendVerificationEmailArgs = {
   recaptchaResponse: Scalars['String']['input'];
 };
 
 
-export type MutationVerifyEmailAddressArgs = {
+type GqlMutationVerifyEmailAddressArgs = {
   validationToken: Scalars['String']['input'];
 };
 
 
-export type MutationRequestPasswordResetArgs = {
+type GqlMutationRequestPasswordResetArgs = {
   recaptchaResponse: Scalars['String']['input'];
   email: Scalars['String']['input'];
 };
 
 
-export type MutationResetPasswordArgs = {
+type GqlMutationResetPasswordArgs = {
   passwordResetToken: Scalars['String']['input'];
   newPassword: Scalars['String']['input'];
   confirmNewPassword: Scalars['String']['input'];
 };
 
 
-export type MutationDeleteAccountRequestArgs = {
+type GqlMutationDeleteAccountRequestArgs = {
   passwordHash: Scalars['String']['input'];
 };
 
 
-export type MutationDeleteAccountArgs = {
+type GqlMutationDeleteAccountArgs = {
   deleteToken: Scalars['String']['input'];
 };
 
 
-export type MutationSavePreferencesArgs = {
-  preferences: InputPreferences;
+type GqlMutationSavePreferencesArgs = {
+  preferences: GqlInputPreferences;
 };
 
 
-export type MutationCreateShowArgs = {
-  showInput: InputShow;
+type GqlMutationCreateShowArgs = {
+  showInput: GqlInputShow;
   becomeAdmin: Scalars['Boolean']['input'];
 };
 
 
-export type MutationUpdateShowArgs = {
+type GqlMutationUpdateShowArgs = {
   showId: Scalars['ID']['input'];
-  newShow: InputShow;
+  newShow: GqlInputShow;
 };
 
 
-export type MutationDeleteShowArgs = {
+type GqlMutationDeleteShowArgs = {
   showId: Scalars['ID']['input'];
 };
 
 
-export type MutationCreateShowAdminArgs = {
-  showAdminInput: InputShowAdmin;
+type GqlMutationCreateShowAdminArgs = {
+  showAdminInput: GqlInputShowAdmin;
 };
 
 
-export type MutationDeleteShowAdminArgs = {
+type GqlMutationDeleteShowAdminArgs = {
   showAdminId: Scalars['ID']['input'];
 };
 
 
-export type MutationCreateEpisodeArgs = {
+type GqlMutationCreateEpisodeArgs = {
   showId: Scalars['ID']['input'];
-  episodeInput: InputEpisode;
+  episodeInput: GqlInputEpisode;
 };
 
 
-export type MutationUpdateEpisodeArgs = {
+type GqlMutationUpdateEpisodeArgs = {
   episodeId: Scalars['ID']['input'];
-  newEpisode: InputEpisode;
+  newEpisode: GqlInputEpisode;
 };
 
 
-export type MutationDeleteEpisodeArgs = {
+type GqlMutationDeleteEpisodeArgs = {
   episodeId: Scalars['ID']['input'];
 };
 
 
-export type MutationCreateEpisodeUrlArgs = {
+type GqlMutationCreateEpisodeUrlArgs = {
   episodeId: Scalars['ID']['input'];
-  episodeUrlInput: InputEpisodeUrl;
+  episodeUrlInput: GqlInputEpisodeUrl;
 };
 
 
-export type MutationDeleteEpisodeUrlArgs = {
+type GqlMutationDeleteEpisodeUrlArgs = {
   episodeUrl: Scalars['String']['input'];
 };
 
 
-export type MutationUpdateEpisodeUrlArgs = {
+type GqlMutationUpdateEpisodeUrlArgs = {
   episodeUrl: Scalars['String']['input'];
-  newEpisodeUrl: InputEpisodeUrl;
+  newEpisodeUrl: GqlInputEpisodeUrl;
 };
 
 
-export type MutationCreateTimestampArgs = {
+type GqlMutationCreateTimestampArgs = {
   episodeId: Scalars['ID']['input'];
-  timestampInput: InputTimestamp;
+  timestampInput: GqlInputTimestamp;
 };
 
 
-export type MutationUpdateTimestampArgs = {
+type GqlMutationUpdateTimestampArgs = {
   timestampId: Scalars['ID']['input'];
-  newTimestamp: InputTimestamp;
+  newTimestamp: GqlInputTimestamp;
 };
 
 
-export type MutationDeleteTimestampArgs = {
+type GqlMutationDeleteTimestampArgs = {
   timestampId: Scalars['ID']['input'];
 };
 
 
-export type MutationUpdateTimestampsArgs = {
-  create: Array<InputTimestampOn>;
-  update: Array<InputExistingTimestamp>;
+type GqlMutationUpdateTimestampsArgs = {
+  create: Array<GqlInputTimestampOn>;
+  update: Array<GqlInputExistingTimestamp>;
   delete: Array<Scalars['ID']['input']>;
 };
 
 
-export type MutationCreateTimestampTypeArgs = {
-  timestampTypeInput: InputTimestampType;
+type GqlMutationCreateTimestampTypeArgs = {
+  timestampTypeInput: GqlInputTimestampType;
 };
 
 
-export type MutationUpdateTimestampTypeArgs = {
+type GqlMutationUpdateTimestampTypeArgs = {
   timestampTypeId: Scalars['ID']['input'];
-  newTimestampType: InputTimestampType;
+  newTimestampType: GqlInputTimestampType;
 };
 
 
-export type MutationDeleteTimestampTypeArgs = {
+type GqlMutationDeleteTimestampTypeArgs = {
   timestampTypeId: Scalars['ID']['input'];
 };
 
 
-export type MutationCreateTemplateArgs = {
-  newTemplate: InputTemplate;
+type GqlMutationCreateTemplateArgs = {
+  newTemplate: GqlInputTemplate;
 };
 
 
-export type MutationUpdateTemplateArgs = {
+type GqlMutationUpdateTemplateArgs = {
   templateId: Scalars['ID']['input'];
-  newTemplate: InputTemplate;
+  newTemplate: GqlInputTemplate;
 };
 
 
-export type MutationDeleteTemplateArgs = {
+type GqlMutationDeleteTemplateArgs = {
   templateId: Scalars['ID']['input'];
 };
 
 
-export type MutationAddTimestampToTemplateArgs = {
-  templateTimestamp: InputTemplateTimestamp;
+type GqlMutationAddTimestampToTemplateArgs = {
+  templateTimestamp: GqlInputTemplateTimestamp;
 };
 
 
-export type MutationRemoveTimestampFromTemplateArgs = {
-  templateTimestamp: InputTemplateTimestamp;
+type GqlMutationRemoveTimestampFromTemplateArgs = {
+  templateTimestamp: GqlInputTemplateTimestamp;
 };
 
 
-export type MutationCreateApiClientArgs = {
-  client: CreateApiClient;
+type GqlMutationCreateApiClientArgs = {
+  client: GqlCreateApiClient;
 };
 
 
-export type MutationUpdateApiClientArgs = {
+type GqlMutationUpdateApiClientArgs = {
   id: Scalars['String']['input'];
-  changes: ApiClientChanges;
+  changes: GqlApiClientChanges;
 };
 
 
-export type MutationDeleteApiClientArgs = {
+type GqlMutationDeleteApiClientArgs = {
   id: Scalars['String']['input'];
 };
 
 
-export type MutationAddExternalLinkArgs = {
+type GqlMutationAddExternalLinkArgs = {
   showId: Scalars['ID']['input'];
   url: Scalars['String']['input'];
 };
 
 
-export type MutationRemoveExternalLinkArgs = {
+type GqlMutationRemoveExternalLinkArgs = {
   showId: Scalars['ID']['input'];
   url: Scalars['String']['input'];
 };
 
 
-export type MutationCreateUserReportArgs = {
-  report?: InputMaybe<InputUserReport>;
+type GqlMutationCreateUserReportArgs = {
+  report?: InputMaybe<GqlInputUserReport>;
 };
 
 
-export type MutationResolveUserReportArgs = {
+type GqlMutationResolveUserReportArgs = {
   id: Scalars['ID']['input'];
   resolvedMessage?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type Query = {
+type GqlQuery = {
   __typename?: 'Query';
   /** Get the logged in user's private account information */
-  account: Account;
+  account: GqlAccount;
   /**
    * Use either the username or email and an md5 hash of the user's password to get an access and
    * refresh token
    */
-  login: LoginData;
+  login: GqlLoginData;
   /** Use a refresh token get a new access and refresh token */
-  loginRefresh: LoginData;
+  loginRefresh: GqlLoginData;
   /** Find user with a matching `User.id` */
-  findUser: User;
+  findUser: GqlUser;
   /** Find user with a matching `User.username` */
-  findUserByUsername: User;
+  findUserByUsername: GqlUser;
   /** Find show with a matching `Show.id` */
-  findShow: Show;
-  findShowsByExternalId: Array<Show>;
+  findShow: GqlShow;
+  findShowsByExternalId: Array<GqlShow>;
   /**
    * Search for shows that include the `search` in the `Show.name`. Results are sorted by `Show.name`
    * as `ASC` or `DESC`
    */
-  searchShows: Array<Show>;
+  searchShows: Array<GqlShow>;
   /** Find show admin with a matching `ShowAdmin.id` */
-  findShowAdmin: ShowAdmin;
+  findShowAdmin: GqlShowAdmin;
   /** Get a list of admins for a given `Show.id` */
-  findShowAdminsByShowId: Array<ShowAdmin>;
+  findShowAdminsByShowId: Array<GqlShowAdmin>;
   /** Get a list of show admins for a given `User.id` */
-  findShowAdminsByUserId: Array<ShowAdmin>;
+  findShowAdminsByUserId: Array<GqlShowAdmin>;
   /**
    * Get a list of recently added episodes that have timestamps.
    *
    * > Since this is a rather intensive query, it is cached for 20 minutes before it will look for new
    * > episodes again
    */
-  recentlyAddedEpisodes: Array<Episode>;
+  recentlyAddedEpisodes: Array<GqlEpisode>;
   /** Find episode with a matching `Episode.id` */
-  findEpisode: Episode;
+  findEpisode: GqlEpisode;
   /** Get a list of episodes for a given `Show.id` */
-  findEpisodesByShowId: Array<Episode>;
+  findEpisodesByShowId: Array<GqlEpisode>;
   /**
    * Search for episodes that include the `search` in the `Episode.name`. Results are sorted by
    * `Show.name`as `ASC` or `DESC`
    *
    * Results can be limited to a single show by passing `showId`
    */
-  searchEpisodes: Array<Episode>;
+  searchEpisodes: Array<GqlEpisode>;
   /**
    * Get a list of third party episodes for a given `Episode.name`. Since this can return an array of
    * multiple items, always use `findEpisodeUrl` first, then fallback to this query.
@@ -524,36 +517,36 @@ export type Query = {
    *
    * > See `ThirdPartyEpisode` for more information about how to create data based on this type
    */
-  findEpisodeByName: Array<ThirdPartyEpisode>;
+  findEpisodeByName: Array<GqlThirdPartyEpisode>;
   /**
    * Find an episode based on a URL. This is the primary method used to lookup data for a known service
    * URL. See `findEpisodeByName` for looking up fallback data.
    */
-  findEpisodeUrl: EpisodeUrl;
+  findEpisodeUrl: GqlEpisodeUrl;
   /** List all the `EpisodeUrl`s for a given `Episode.id` */
-  findEpisodeUrlsByEpisodeId: Array<EpisodeUrl>;
+  findEpisodeUrlsByEpisodeId: Array<GqlEpisodeUrl>;
   /** Get timestamp info based on a `Timestamp.id` */
-  findTimestamp: Timestamp;
+  findTimestamp: GqlTimestamp;
   /** Get all the timestamps for an episode */
-  findTimestampsByEpisodeId: Array<Timestamp>;
+  findTimestampsByEpisodeId: Array<GqlTimestamp>;
   /** Get timestamp type info based on a `TimestampType.id` */
-  findTimestampType: TimestampType;
+  findTimestampType: GqlTimestampType;
   /** List all the `TimestampType`s. Items come back in a random order */
-  allTimestampTypes: Array<TimestampType>;
+  allTimestampTypes: Array<GqlTimestampType>;
   /**
    * Get template info based on a `Template.id`
    *
    * Only templates you've created are returned. If you don't include a token in the authorization
    * header, you will get a not found error, same as if the template was not found.
    */
-  findTemplate: Template;
+  findTemplate: GqlTemplate;
   /**
    * Get a list of templates based on the `Template.showId`
    *
    * Only templates you've created are returned. If you don't include a token in the authorization
    * header, you will receive an empty list.
    */
-  findTemplatesByShowId: Array<Template>;
+  findTemplatesByShowId: Array<GqlTemplate>;
   /**
    * Find the most relevant template based on a few search criteria. If multiple templates are found,
    * their priority is like so:
@@ -565,60 +558,60 @@ export type Query = {
    * Only templates you've created are returned. If you don't include a token in the authorization
    * header, you will get a not found error, same as if the template was not found.
    */
-  findTemplateByDetails: Template;
+  findTemplateByDetails: GqlTemplate;
   /** List or search through the authenticated user's API clients */
-  myApiClients: Array<ApiClient>;
+  myApiClients: Array<GqlApiClient>;
   /** Find an API Client that you created based on it's ID. This will not return other users' clients */
-  findApiClient: ApiClient;
-  counts?: Maybe<TotalCounts>;
+  findApiClient: GqlApiClient;
+  counts?: Maybe<GqlTotalCounts>;
   /**
    * List all user reports.
    *
    * > `@hasRole(role: REVIEWER)` - The user must have the `REVIEWER` role to perform this query.
    */
-  findUserReports: Array<UserReport>;
+  findUserReports: Array<GqlUserReport>;
   /**
    * Get a single user report, even if it's been resolved/deleted.
    *
    * > `@hasRole(role: REVIEWER)` - The user must have the `REVIEWER` role to perform this query.
    */
-  findUserReport: UserReport;
+  findUserReport: GqlUserReport;
 };
 
 
-export type QueryLoginArgs = {
+type GqlQueryLoginArgs = {
   usernameEmail: Scalars['String']['input'];
   passwordHash: Scalars['String']['input'];
 };
 
 
-export type QueryLoginRefreshArgs = {
+type GqlQueryLoginRefreshArgs = {
   refreshToken: Scalars['String']['input'];
 };
 
 
-export type QueryFindUserArgs = {
+type GqlQueryFindUserArgs = {
   userId: Scalars['ID']['input'];
 };
 
 
-export type QueryFindUserByUsernameArgs = {
+type GqlQueryFindUserByUsernameArgs = {
   username: Scalars['String']['input'];
 };
 
 
-export type QueryFindShowArgs = {
+type GqlQueryFindShowArgs = {
   showId: Scalars['ID']['input'];
 };
 
 
-export type QueryFindShowsByExternalIdArgs = {
-  service: ExternalService;
+type GqlQueryFindShowsByExternalIdArgs = {
+  service: GqlExternalService;
   serviceId: Scalars['String']['input'];
 };
 
 
-export type QuerySearchShowsArgs = {
+type GqlQuerySearchShowsArgs = {
   search?: InputMaybe<Scalars['String']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -626,38 +619,38 @@ export type QuerySearchShowsArgs = {
 };
 
 
-export type QueryFindShowAdminArgs = {
+type GqlQueryFindShowAdminArgs = {
   showAdminId: Scalars['ID']['input'];
 };
 
 
-export type QueryFindShowAdminsByShowIdArgs = {
+type GqlQueryFindShowAdminsByShowIdArgs = {
   showId: Scalars['ID']['input'];
 };
 
 
-export type QueryFindShowAdminsByUserIdArgs = {
+type GqlQueryFindShowAdminsByUserIdArgs = {
   userId: Scalars['ID']['input'];
 };
 
 
-export type QueryRecentlyAddedEpisodesArgs = {
+type GqlQueryRecentlyAddedEpisodesArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
-export type QueryFindEpisodeArgs = {
+type GqlQueryFindEpisodeArgs = {
   episodeId: Scalars['ID']['input'];
 };
 
 
-export type QueryFindEpisodesByShowIdArgs = {
+type GqlQueryFindEpisodesByShowIdArgs = {
   showId: Scalars['ID']['input'];
 };
 
 
-export type QuerySearchEpisodesArgs = {
+type GqlQuerySearchEpisodesArgs = {
   search?: InputMaybe<Scalars['String']['input']>;
   showId?: InputMaybe<Scalars['ID']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -666,54 +659,54 @@ export type QuerySearchEpisodesArgs = {
 };
 
 
-export type QueryFindEpisodeByNameArgs = {
+type GqlQueryFindEpisodeByNameArgs = {
   name: Scalars['String']['input'];
 };
 
 
-export type QueryFindEpisodeUrlArgs = {
+type GqlQueryFindEpisodeUrlArgs = {
   episodeUrl: Scalars['String']['input'];
 };
 
 
-export type QueryFindEpisodeUrlsByEpisodeIdArgs = {
+type GqlQueryFindEpisodeUrlsByEpisodeIdArgs = {
   episodeId: Scalars['ID']['input'];
 };
 
 
-export type QueryFindTimestampArgs = {
+type GqlQueryFindTimestampArgs = {
   timestampId: Scalars['ID']['input'];
 };
 
 
-export type QueryFindTimestampsByEpisodeIdArgs = {
+type GqlQueryFindTimestampsByEpisodeIdArgs = {
   episodeId: Scalars['ID']['input'];
 };
 
 
-export type QueryFindTimestampTypeArgs = {
+type GqlQueryFindTimestampTypeArgs = {
   timestampTypeId: Scalars['ID']['input'];
 };
 
 
-export type QueryFindTemplateArgs = {
+type GqlQueryFindTemplateArgs = {
   templateId: Scalars['ID']['input'];
 };
 
 
-export type QueryFindTemplatesByShowIdArgs = {
+type GqlQueryFindTemplatesByShowIdArgs = {
   showId: Scalars['ID']['input'];
 };
 
 
-export type QueryFindTemplateByDetailsArgs = {
+type GqlQueryFindTemplateByDetailsArgs = {
   episodeId?: InputMaybe<Scalars['ID']['input']>;
   showName?: InputMaybe<Scalars['String']['input']>;
   season?: InputMaybe<Scalars['String']['input']>;
 };
 
 
-export type QueryMyApiClientsArgs = {
+type GqlQueryMyApiClientsArgs = {
   search?: InputMaybe<Scalars['String']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -721,12 +714,12 @@ export type QueryMyApiClientsArgs = {
 };
 
 
-export type QueryFindApiClientArgs = {
+type GqlQueryFindApiClientArgs = {
   id: Scalars['String']['input'];
 };
 
 
-export type QueryFindUserReportsArgs = {
+type GqlQueryFindUserReportsArgs = {
   resolved?: InputMaybe<Scalars['Boolean']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -734,29 +727,29 @@ export type QueryFindUserReportsArgs = {
 };
 
 
-export type QueryFindUserReportArgs = {
+type GqlQueryFindUserReportArgs = {
   id: Scalars['ID']['input'];
 };
 
-export type InputExistingTimestamp = {
+type GqlInputExistingTimestamp = {
   /** The id of the timestamp you want to modify */
   id: Scalars['ID']['input'];
   /** The new values for the timestamp */
-  timestamp: InputTimestamp;
+  timestamp: GqlInputTimestamp;
 };
 
-export type InputTimestampOn = {
+type GqlInputTimestampOn = {
   /** The episode id the timestamp will be created on */
   episodeId: Scalars['ID']['input'];
   /** The new values for the timestamp */
-  timestamp: InputTimestamp;
+  timestamp: GqlInputTimestamp;
 };
 
 /**
  * The base model has all the fields you would expect a fully fleshed out item in the database would
  * have. It is used to track who create, updated, and deleted items
  */
-export type BaseModel = {
+type GqlBaseModel = {
   /** Unique, v4 UUID. When asked for an `id` of an object, use this field */
   id: Scalars['ID']['output'];
   /** Time that the item was created at */
@@ -764,37 +757,37 @@ export type BaseModel = {
   /** The user's `id` that created the item */
   createdByUserId: Scalars['ID']['output'];
   /** The entire user that created the item */
-  createdBy: User;
+  createdBy: GqlUser;
   /** Time that the item was updated at */
   updatedAt: Scalars['Time']['output'];
   /** The user's `id` that last updated the item */
   updatedByUserId: Scalars['ID']['output'];
   /** The entire user that last updated the item */
-  updatedBy: User;
+  updatedBy: GqlUser;
   /** Time that the item was updated at. If this value is present, the item is considered deleted */
   deletedAt?: Maybe<Scalars['Time']['output']>;
   /** The user's `id` that deleted the item */
   deletedByUserId?: Maybe<Scalars['ID']['output']>;
   /** The entire user that deleted the item */
-  deletedBy?: Maybe<User>;
+  deletedBy?: Maybe<GqlUser>;
 };
 
 /**
  * Basic information about an episode, including season, numbers, a list of timestamps, and urls that
  * it can be watched at
  */
-export type Episode = BaseModel & {
+type GqlEpisode = GqlBaseModel & {
   __typename?: 'Episode';
   id: Scalars['ID']['output'];
   createdAt: Scalars['Time']['output'];
   createdByUserId: Scalars['ID']['output'];
-  createdBy: User;
+  createdBy: GqlUser;
   updatedAt: Scalars['Time']['output'];
   updatedByUserId: Scalars['ID']['output'];
-  updatedBy: User;
+  updatedBy: GqlUser;
   deletedAt?: Maybe<Scalars['Time']['output']>;
   deletedByUserId?: Maybe<Scalars['ID']['output']>;
-  deletedBy?: Maybe<User>;
+  deletedBy?: Maybe<GqlUser>;
   /**
    * The season number that this episode belongs to
    *
@@ -833,7 +826,7 @@ export type Episode = BaseModel & {
   /** The episode's name */
   name?: Maybe<Scalars['String']['output']>;
   /** The show that the episode belongs to */
-  show: Show;
+  show: GqlShow;
   /** The id of the show that the episode belongs to */
   showId: Scalars['ID']['output'];
   /**
@@ -842,17 +835,17 @@ export type Episode = BaseModel & {
    * Timestamps are apart apart of the `Episode` instead of the `EpisodeUrl` so that they can be shared
    * between urls and not need duplicate data
    */
-  timestamps: Array<Timestamp>;
+  timestamps: Array<GqlTimestamp>;
   /** The list of urls and services that the episode can be accessed from */
-  urls: Array<EpisodeUrl>;
+  urls: Array<GqlEpisodeUrl>;
   /** If the episode is the source episode for a `Template`, this will resolve to that template */
-  template?: Maybe<Template>;
+  template?: Maybe<GqlTemplate>;
   /**
    * List the user reports for the episode. Requires the REVIEWER role.
    *
    * > `@hasRole(role: REVIEWER)` - The user must have the `REVIEWER` role to query this property.
    */
-  userReports: Array<UserReport>;
+  userReports: Array<GqlUserReport>;
 };
 
 
@@ -860,7 +853,7 @@ export type Episode = BaseModel & {
  * Basic information about an episode, including season, numbers, a list of timestamps, and urls that
  * it can be watched at
  */
-export type EpisodeUserReportsArgs = {
+type GqlEpisodeUserReportsArgs = {
   resolved?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
@@ -875,7 +868,7 @@ export type EpisodeUserReportsArgs = {
  *
  * > Make sure to fill out the `source` field so that original owner of the timestamp is maintained
  */
-export type ThirdPartyEpisode = {
+type GqlThirdPartyEpisode = {
   __typename?: 'ThirdPartyEpisode';
   /** The Anime Skip `Episode.id` when the `source` is `ANIME_SKIP`, otherwise this is null */
   id?: Maybe<Scalars['ID']['output']>;
@@ -884,15 +877,15 @@ export type ThirdPartyEpisode = {
   absoluteNumber?: Maybe<Scalars['String']['output']>;
   baseDuration?: Maybe<Scalars['Float']['output']>;
   name?: Maybe<Scalars['String']['output']>;
-  source?: Maybe<TimestampSource>;
-  timestamps: Array<ThirdPartyTimestamp>;
+  source?: Maybe<GqlTimestampSource>;
+  timestamps: Array<GqlThirdPartyTimestamp>;
   /** The id of the show from the third party */
   showId: Scalars['String']['output'];
-  show: ThirdPartyShow;
+  show: GqlThirdPartyShow;
 };
 
 /** Data required to create a new `Episode`. See `Episode` for a description of each field */
-export type InputEpisode = {
+type GqlInputEpisode = {
   /** See `Episode.season` */
   season?: InputMaybe<Scalars['String']['input']>;
   /** See `Episode.number` */
@@ -906,7 +899,7 @@ export type InputEpisode = {
 };
 
 /** Stores information about what where an episode can be watched from */
-export type EpisodeUrl = {
+type GqlEpisodeUrl = {
   __typename?: 'EpisodeUrl';
   /**
    * The url that would take a user to watch the `episode`.
@@ -916,10 +909,10 @@ export type EpisodeUrl = {
   url: Scalars['String']['output'];
   createdAt: Scalars['Time']['output'];
   createdByUserId: Scalars['ID']['output'];
-  createdBy: User;
+  createdBy: GqlUser;
   updatedAt: Scalars['Time']['output'];
   updatedByUserId: Scalars['ID']['output'];
-  updatedBy: User;
+  updatedBy: GqlUser;
   /**
    * The length of the episode at this url. For more information on why this field exists, check out
    * the `Episode.baseDuration`. If an `Episode` does not have a duration, that `Episode` and this
@@ -936,20 +929,20 @@ export type EpisodeUrl = {
   /** The `Episode.id` that this url belongs to */
   episodeId: Scalars['ID']['output'];
   /** The `Episode` that this url belongs to */
-  episode: Episode;
+  episode: GqlEpisode;
   /** What service this url points to. This is computed when the `EpisodeUrl` is created */
-  source: EpisodeSource;
+  source: GqlEpisodeSource;
 };
 
 /** Data required to create a new `EpisodeUrl`. See `EpisodeUrl` for a description of each field */
-export type InputEpisodeUrl = {
+type GqlInputEpisodeUrl = {
   url: Scalars['String']['input'];
   duration?: InputMaybe<Scalars['Float']['input']>;
   timestampsOffset?: InputMaybe<Scalars['Float']['input']>;
 };
 
 /** Account info that should only be accessible by the authorized user */
-export type Account = {
+type GqlAccount = {
   __typename?: 'Account';
   id: Scalars['ID']['output'];
   createdAt: Scalars['Time']['output'];
@@ -964,20 +957,20 @@ export type Account = {
    *
    * > This data is also accessible on the `User` model. It has been added here for convenience
    */
-  adminOfShows: Array<ShowAdmin>;
+  adminOfShows: Array<GqlShowAdmin>;
   /** If the user's email is verified. Emails must be verified before the user can call a mutation */
   emailVerified: Scalars['Boolean']['output'];
   /** The user's administrative role. Most users are `Role.USER` */
-  role: Role;
+  role: GqlRole;
   /** The user's preferences */
-  preferences: Preferences;
+  preferences: GqlPreferences;
 };
 
 /**
  * Where all the user preferences are stored. This includes what timestamps the user doesn't want to
  * watch
  */
-export type Preferences = {
+type GqlPreferences = {
   __typename?: 'Preferences';
   id: Scalars['ID']['output'];
   createdAt: Scalars['Time']['output'];
@@ -986,7 +979,7 @@ export type Preferences = {
   /** The `User.id` that this preferences object belongs to */
   userId: Scalars['ID']['output'];
   /** The `User` that the preferences belong to */
-  user: User;
+  user: GqlUser;
   /** Whether or not the user wants to automatically skip section. Default: `true` */
   enableAutoSkip: Scalars['Boolean']['output'];
   /** Whether or not the user wants to auto-play the videos. Default: `true` */
@@ -1001,7 +994,7 @@ export type Preferences = {
    * hidden completely
    */
   hideTimelineWhenMinimized: Scalars['Boolean']['output'];
-  colorTheme: ColorTheme;
+  colorTheme: GqlColorTheme;
   /** Whether or not the user whats to skip branding timestamps. Default: `true` */
   skipBranding: Scalars['Boolean']['output'];
   /** Whether or not the user whats to skip regular intros. Default: `true` */
@@ -1034,12 +1027,12 @@ export type Preferences = {
  * Data used to update a user's `Preferences`. See `Preferences` for a description of each field. If a
  * field is not passed or passed as `null`, it will leave the value as is and skip updating it
  */
-export type InputPreferences = {
+type GqlInputPreferences = {
   enableAutoSkip?: InputMaybe<Scalars['Boolean']['input']>;
   enableAutoPlay?: InputMaybe<Scalars['Boolean']['input']>;
   minimizeToolbarWhenEditing?: InputMaybe<Scalars['Boolean']['input']>;
   hideTimelineWhenMinimized?: InputMaybe<Scalars['Boolean']['input']>;
-  colorTheme?: InputMaybe<ColorTheme>;
+  colorTheme?: InputMaybe<GqlColorTheme>;
   skipBranding?: InputMaybe<Scalars['Boolean']['input']>;
   skipIntros?: InputMaybe<Scalars['Boolean']['input']>;
   skipNewIntros?: InputMaybe<Scalars['Boolean']['input']>;
@@ -1056,18 +1049,18 @@ export type InputPreferences = {
 };
 
 /** A show containing a list of episodes and relevant links */
-export type Show = BaseModel & {
+type GqlShow = GqlBaseModel & {
   __typename?: 'Show';
   id: Scalars['ID']['output'];
   createdAt: Scalars['Time']['output'];
   createdByUserId: Scalars['ID']['output'];
-  createdBy: User;
+  createdBy: GqlUser;
   updatedAt: Scalars['Time']['output'];
   updatedByUserId: Scalars['ID']['output'];
-  updatedBy: User;
+  updatedBy: GqlUser;
   deletedAt?: Maybe<Scalars['Time']['output']>;
   deletedByUserId?: Maybe<Scalars['ID']['output']>;
-  deletedBy?: Maybe<User>;
+  deletedBy?: Maybe<GqlUser>;
   /**
    * The show name
    *
@@ -1091,20 +1084,20 @@ export type Show = BaseModel & {
   /** A link to a show poster */
   image?: Maybe<Scalars['String']['output']>;
   /** The list of admins for the show */
-  admins: Array<ShowAdmin>;
+  admins: Array<GqlShowAdmin>;
   /** All the episodes that belong to the show */
-  episodes: Array<Episode>;
+  episodes: Array<GqlEpisode>;
   /** All the templates that belong to this show */
-  templates: Array<Template>;
+  templates: Array<GqlTemplate>;
   /** Any links to external sites (just Anilist right now) for the show */
-  externalLinks: Array<ExternalLink>;
+  externalLinks: Array<GqlExternalLink>;
   /** How many seasons are associated with this show */
   seasonCount: Scalars['Int']['output'];
   /** How many episodes are apart of this show */
   episodeCount: Scalars['Int']['output'];
 };
 
-export type ThirdPartyShow = {
+type GqlThirdPartyShow = {
   __typename?: 'ThirdPartyShow';
   name: Scalars['String']['output'];
   createdAt?: Maybe<Scalars['Time']['output']>;
@@ -1112,7 +1105,7 @@ export type ThirdPartyShow = {
 };
 
 /** Data required to create a new `Show`. See `Show` for a description of each field */
-export type InputShow = {
+type GqlInputShow = {
   name: Scalars['String']['input'];
   originalName?: InputMaybe<Scalars['String']['input']>;
   website?: InputMaybe<Scalars['String']['input']>;
@@ -1129,63 +1122,63 @@ export type InputShow = {
  *
  * Admins can be created using the API and will soon come to the Anime Skip player/website.
  */
-export type ShowAdmin = BaseModel & {
+type GqlShowAdmin = GqlBaseModel & {
   __typename?: 'ShowAdmin';
   id: Scalars['ID']['output'];
   createdAt: Scalars['Time']['output'];
   createdByUserId: Scalars['ID']['output'];
-  createdBy: User;
+  createdBy: GqlUser;
   updatedAt: Scalars['Time']['output'];
   updatedByUserId: Scalars['ID']['output'];
-  updatedBy: User;
+  updatedBy: GqlUser;
   deletedAt?: Maybe<Scalars['Time']['output']>;
   deletedByUserId?: Maybe<Scalars['ID']['output']>;
-  deletedBy?: Maybe<User>;
+  deletedBy?: Maybe<GqlUser>;
   /** The `Show.id` that the admin has elevated privileges for */
   showId: Scalars['ID']['output'];
   /** The `Show` that the admin has elevated privileges for */
-  show: Show;
+  show: GqlShow;
   /** The `User.id` that the admin privileges belong to */
   userId: Scalars['ID']['output'];
   /** The `User` that the admin privileges belong to */
-  user: User;
+  user: GqlUser;
 };
 
 /** Data required to create a new `ShowAdmin`. See `ShowAdmin` for a description of each field */
-export type InputShowAdmin = {
+type GqlInputShowAdmin = {
   showId: Scalars['ID']['input'];
   userId: Scalars['ID']['input'];
 };
 
-export type Timestamp = BaseModel & {
+type GqlTimestamp = GqlBaseModel & {
   __typename?: 'Timestamp';
   id: Scalars['ID']['output'];
   createdAt: Scalars['Time']['output'];
   createdByUserId: Scalars['ID']['output'];
-  createdBy: User;
+  createdBy: GqlUser;
   updatedAt: Scalars['Time']['output'];
   updatedByUserId: Scalars['ID']['output'];
-  updatedBy: User;
+  updatedBy: GqlUser;
   deletedAt?: Maybe<Scalars['Time']['output']>;
   deletedByUserId?: Maybe<Scalars['ID']['output']>;
-  deletedBy?: Maybe<User>;
+  deletedBy?: Maybe<GqlUser>;
   /** The actual time the timestamp is at */
   at: Scalars['Float']['output'];
-  source: TimestampSource;
+  source: GqlTimestampSource;
   /** The id specifying the type the timestamp is */
   typeId: Scalars['ID']['output'];
   /**
    * The type the timestamp is. This field is a constant string so including it has no effect on
    * performance or query complexity.
    */
-  type: TimestampType;
+  type: GqlTimestampType;
   /** The `Episode.id` that the timestamp belongs to */
   episodeId: Scalars['ID']['output'];
   /** The `Episode` that the timestamp belongs to */
-  episode: Episode;
+  episode: GqlEpisode;
 };
 
-export type ThirdPartyTimestamp = {
+type GqlThirdPartyTimestamp = {
   __typename?: 'ThirdPartyTimestamp';
   /** The Anime Skip `Timestamp.id` when the `Episode.source` is `ANIME_SKIP`, otherwise this is null */
   id?: Maybe<Scalars['ID']['output']>;
@@ -1193,14 +1186,14 @@ export type ThirdPartyTimestamp = {
   at: Scalars['Float']['output'];
   /** The id specifying the type the timestamp is */
   typeId: Scalars['ID']['output'];
-  type: TimestampType;
+  type: GqlTimestampType;
 };
 
 /** Data required to create a new `Timestamp`. See `Timestamp` for a description of each field */
-export type InputTimestamp = {
+type GqlInputTimestamp = {
   at: Scalars['Float']['input'];
   typeId: Scalars['ID']['input'];
-  source?: InputMaybe<TimestampSource>;
+  source?: InputMaybe<GqlTimestampSource>;
 };
 
 /**
@@ -1209,18 +1202,18 @@ export type InputTimestamp = {
  * data, but a third party might want to fetch and cache this instead since you won't know when Anime
  * Skip adds timestamps
  */
-export type TimestampType = BaseModel & {
+type GqlTimestampType = GqlBaseModel & {
   __typename?: 'TimestampType';
   id: Scalars['ID']['output'];
   createdAt: Scalars['Time']['output'];
   createdByUserId: Scalars['ID']['output'];
-  createdBy: User;
+  createdBy: GqlUser;
   updatedAt: Scalars['Time']['output'];
   updatedByUserId: Scalars['ID']['output'];
-  updatedBy: User;
+  updatedBy: GqlUser;
   deletedAt?: Maybe<Scalars['Time']['output']>;
   deletedByUserId?: Maybe<Scalars['ID']['output']>;
-  deletedBy?: Maybe<User>;
+  deletedBy?: Maybe<GqlUser>;
   /** The name of the timestamp type */
   name: Scalars['String']['output'];
   /** The description for what this type represents */
@@ -1228,49 +1221,49 @@ export type TimestampType = BaseModel & {
 };
 
 /** Data required to create a new `TimestampType`. See `TimestampType` for a description of each field */
-export type InputTimestampType = {
+type GqlInputTimestampType = {
   name: Scalars['String']['input'];
   description: Scalars['String']['input'];
 };
 
 /** Information about a user that is public. See `Account` for a description of each field */
-export type User = {
+type GqlUser = {
   __typename?: 'User';
   id: Scalars['ID']['output'];
   createdAt: Scalars['Time']['output'];
   deletedAt?: Maybe<Scalars['Time']['output']>;
   username: Scalars['String']['output'];
   profileUrl: Scalars['String']['output'];
-  adminOfShows: Array<ShowAdmin>;
+  adminOfShows: Array<GqlShowAdmin>;
 };
 
 /** When no timestamps exist for a specific episode, templates are setup to provide fallback timestamps */
-export type Template = BaseModel & {
+type GqlTemplate = GqlBaseModel & {
   __typename?: 'Template';
   id: Scalars['ID']['output'];
   createdAt: Scalars['Time']['output'];
   createdByUserId: Scalars['ID']['output'];
-  createdBy: User;
+  createdBy: GqlUser;
   updatedAt: Scalars['Time']['output'];
   updatedByUserId: Scalars['ID']['output'];
-  updatedBy: User;
+  updatedBy: GqlUser;
   deletedAt?: Maybe<Scalars['Time']['output']>;
   deletedByUserId?: Maybe<Scalars['ID']['output']>;
-  deletedBy?: Maybe<User>;
+  deletedBy?: Maybe<GqlUser>;
   /** The id of the show that this template is for */
   showId: Scalars['ID']['output'];
   /** The show that this template is for */
-  show: Show;
+  show: GqlShow;
   /** Specify the scope of the template, if it's for the entire show, or just for a set of seasons */
-  type: TemplateType;
+  type: GqlTemplateType;
   /** When the template is for a set of seasons, this is the set of seasons it is applied to */
   seasons?: Maybe<Array<Scalars['String']['output']>>;
   /** The id of the episode used to create the template. All the timestamps are from this episode */
   sourceEpisodeId: Scalars['ID']['output'];
   /** The episode used to create the template. All the timestamps are from this episode */
-  sourceEpisode: Episode;
+  sourceEpisode: GqlEpisode;
   /** The list of timestamps that are apart of this template */
-  timestamps: Array<Timestamp>;
+  timestamps: Array<GqlTimestamp>;
   /**
    * The list of timestamp ids that are apart of this template. Since this is a many-to-many
    * relationship, this field will resolve quicker than `timestamps` since it doesn't have to do an
@@ -1283,71 +1276,71 @@ export type Template = BaseModel & {
 };
 
 /** Data required to create a new template. See `Template` for a description of each field */
-export type InputTemplate = {
+type GqlInputTemplate = {
   showId: Scalars['ID']['input'];
-  type: TemplateType;
+  type: GqlTemplateType;
   seasons?: InputMaybe<Array<Scalars['String']['input']>>;
   sourceEpisodeId: Scalars['ID']['input'];
 };
 
 /** The many to many object that links a timestamp to a template */
-export type TemplateTimestamp = {
+type GqlTemplateTimestamp = {
   __typename?: 'TemplateTimestamp';
   templateId: Scalars['ID']['output'];
-  template: Template;
+  template: GqlTemplate;
   timestampId: Scalars['ID']['output'];
-  timestamp: Timestamp;
+  timestamp: GqlTimestamp;
 };
 
 /** Data required to modify the timestamps on a template */
-export type InputTemplateTimestamp = {
+type GqlInputTemplateTimestamp = {
   templateId: Scalars['ID']['input'];
   timestampId: Scalars['ID']['input'];
 };
 
-export type ApiClient = {
+type GqlApiClient = {
   __typename?: 'ApiClient';
   id: Scalars['String']['output'];
   createdAt: Scalars['Time']['output'];
   createdByUserId: Scalars['ID']['output'];
-  createdBy: User;
+  createdBy: GqlUser;
   updatedAt: Scalars['Time']['output'];
   updatedByUserId: Scalars['ID']['output'];
-  updatedBy: User;
+  updatedBy: GqlUser;
   deletedAt?: Maybe<Scalars['Time']['output']>;
   deletedByUserId?: Maybe<Scalars['ID']['output']>;
-  deletedBy?: Maybe<User>;
+  deletedBy?: Maybe<GqlUser>;
   /** The ID of the user this client belongs to */
   userId: Scalars['ID']['output'];
   /** The user this client belongs to */
-  user: User;
+  user: GqlUser;
   appName: Scalars['String']['output'];
   description: Scalars['String']['output'];
   rateLimitRpm?: Maybe<Scalars['UInt']['output']>;
 };
 
-export type CreateApiClient = {
+type GqlCreateApiClient = {
   appName: Scalars['String']['input'];
   description: Scalars['String']['input'];
 };
 
-export type ApiClientChanges = {
+type GqlApiClientChanges = {
   appName?: InputMaybe<Scalars['String']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   /** Rate limits can only be changed by admins */
   rateLimitRpm?: InputMaybe<Scalars['UInt']['input']>;
 };
 
-export type ExternalLink = {
+type GqlExternalLink = {
   __typename?: 'ExternalLink';
   url: Scalars['String']['output'];
   showId: Scalars['ID']['output'];
-  show: Show;
+  show: GqlShow;
   service: Scalars['String']['output'];
   serviceId?: Maybe<Scalars['String']['output']>;
 };
 
-export type TotalCounts = {
+type GqlTotalCounts = {
   __typename?: 'TotalCounts';
   episodes: Scalars['Int']['output'];
   episodeUrls: Scalars['Int']['output'];
@@ -1358,33 +1351,33 @@ export type TotalCounts = {
   templates: Scalars['Int']['output'];
 };
 
-export type UserReport = BaseModel & {
+type GqlUserReport = GqlBaseModel & {
   __typename?: 'UserReport';
   id: Scalars['ID']['output'];
   createdAt: Scalars['Time']['output'];
   createdByUserId: Scalars['ID']['output'];
-  createdBy: User;
+  createdBy: GqlUser;
   updatedAt: Scalars['Time']['output'];
   updatedByUserId: Scalars['ID']['output'];
-  updatedBy: User;
+  updatedBy: GqlUser;
   deletedAt?: Maybe<Scalars['Time']['output']>;
   deletedByUserId?: Maybe<Scalars['ID']['output']>;
-  deletedBy?: Maybe<User>;
+  deletedBy?: Maybe<GqlUser>;
   message: Scalars['String']['output'];
   reportedFromUrl: Scalars['String']['output'];
   resolved: Scalars['Boolean']['output'];
   resolvedMessage?: Maybe<Scalars['String']['output']>;
   timestampId?: Maybe<Scalars['ID']['output']>;
-  timestamp?: Maybe<Timestamp>;
+  timestamp?: Maybe<GqlTimestamp>;
   episodeId?: Maybe<Scalars['ID']['output']>;
-  episode?: Maybe<Episode>;
+  episode?: Maybe<GqlEpisode>;
   episodeUrlString?: Maybe<Scalars['String']['output']>;
-  episodeUrl?: Maybe<EpisodeUrl>;
+  episodeUrl?: Maybe<GqlEpisodeUrl>;
   showId?: Maybe<Scalars['ID']['output']>;
-  show?: Maybe<Show>;
+  show?: Maybe<GqlShow>;
 };
 
-export type InputUserReport = {
+type GqlInputUserReport = {
   /** The content of the report stating what is wrong with the reported data. */
   message: Scalars['String']['input'];
   /** The URL the user made the report from so the reviewer can easily navigate to it. */
@@ -1401,638 +1394,4 @@ export type InputUserReport = {
   episodeUrl?: InputMaybe<Scalars['String']['input']>;
   /** The ID of an show if you're reporting an issue with a specific show. */
   showId?: InputMaybe<Scalars['ID']['input']>;
-};
-
-
-
-export type ResolverTypeWrapper<T> = Promise<T> | T;
-
-
-export type ResolverWithResolve<TResult, TParent, TContext, TArgs> = {
-  resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
-};
-export type Resolver<TResult, TParent = {}, TContext = {}, TArgs = {}> = ResolverFn<TResult, TParent, TContext, TArgs> | ResolverWithResolve<TResult, TParent, TContext, TArgs>;
-
-export type ResolverFn<TResult, TParent, TContext, TArgs> = (
-  parent: TParent,
-  args: TArgs,
-  context: TContext,
-  info: GraphQLResolveInfo
-) => Promise<TResult> | TResult;
-
-export type SubscriptionSubscribeFn<TResult, TParent, TContext, TArgs> = (
-  parent: TParent,
-  args: TArgs,
-  context: TContext,
-  info: GraphQLResolveInfo
-) => AsyncIterable<TResult> | Promise<AsyncIterable<TResult>>;
-
-export type SubscriptionResolveFn<TResult, TParent, TContext, TArgs> = (
-  parent: TParent,
-  args: TArgs,
-  context: TContext,
-  info: GraphQLResolveInfo
-) => TResult | Promise<TResult>;
-
-export interface SubscriptionSubscriberObject<TResult, TKey extends string, TParent, TContext, TArgs> {
-  subscribe: SubscriptionSubscribeFn<{ [key in TKey]: TResult }, TParent, TContext, TArgs>;
-  resolve?: SubscriptionResolveFn<TResult, { [key in TKey]: TResult }, TContext, TArgs>;
-}
-
-export interface SubscriptionResolverObject<TResult, TParent, TContext, TArgs> {
-  subscribe: SubscriptionSubscribeFn<any, TParent, TContext, TArgs>;
-  resolve: SubscriptionResolveFn<TResult, any, TContext, TArgs>;
-}
-
-export type SubscriptionObject<TResult, TKey extends string, TParent, TContext, TArgs> =
-  | SubscriptionSubscriberObject<TResult, TKey, TParent, TContext, TArgs>
-  | SubscriptionResolverObject<TResult, TParent, TContext, TArgs>;
-
-export type SubscriptionResolver<TResult, TKey extends string, TParent = {}, TContext = {}, TArgs = {}> =
-  | ((...args: any[]) => SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>)
-  | SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>;
-
-export type TypeResolveFn<TTypes, TParent = {}, TContext = {}> = (
-  parent: TParent,
-  context: TContext,
-  info: GraphQLResolveInfo
-) => Maybe<TTypes> | Promise<Maybe<TTypes>>;
-
-export type IsTypeOfResolverFn<T = {}, TContext = {}> = (obj: T, context: TContext, info: GraphQLResolveInfo) => boolean | Promise<boolean>;
-
-export type NextResolverFn<T> = () => Promise<T>;
-
-export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs = {}> = (
-  next: NextResolverFn<TResult>,
-  parent: TParent,
-  args: TArgs,
-  context: TContext,
-  info: GraphQLResolveInfo
-) => TResult | Promise<TResult>;
-
-
-/** Mapping of interface types */
-export type ResolversInterfaceTypes<_RefType extends Record<string, unknown>> = {
-  BaseModel: ( Episode ) | ( Show ) | ( ShowAdmin ) | ( Timestamp ) | ( TimestampType ) | ( Template ) | ( UserReport );
-};
-
-/** Mapping between all available schema types and the resolvers types */
-export type ResolversTypes = {
-  Role: Role;
-  EpisodeSource: EpisodeSource;
-  TimestampSource: TimestampSource;
-  TemplateType: TemplateType;
-  ColorTheme: ColorTheme;
-  ExternalService: ExternalService;
-  Time: ResolverTypeWrapper<Scalars['Time']['output']>;
-  UInt: ResolverTypeWrapper<Scalars['UInt']['output']>;
-  LoginData: ResolverTypeWrapper<LoginData>;
-  String: ResolverTypeWrapper<Scalars['String']['output']>;
-  UpdatedTimestamps: ResolverTypeWrapper<UpdatedTimestamps>;
-  Mutation: ResolverTypeWrapper<{}>;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
-  ID: ResolverTypeWrapper<Scalars['ID']['output']>;
-  Query: ResolverTypeWrapper<{}>;
-  Int: ResolverTypeWrapper<Scalars['Int']['output']>;
-  InputExistingTimestamp: InputExistingTimestamp;
-  InputTimestampOn: InputTimestampOn;
-  BaseModel: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['BaseModel']>;
-  Episode: ResolverTypeWrapper<Episode>;
-  Float: ResolverTypeWrapper<Scalars['Float']['output']>;
-  ThirdPartyEpisode: ResolverTypeWrapper<ThirdPartyEpisode>;
-  InputEpisode: InputEpisode;
-  EpisodeUrl: ResolverTypeWrapper<EpisodeUrl>;
-  InputEpisodeUrl: InputEpisodeUrl;
-  Account: ResolverTypeWrapper<Account>;
-  Preferences: ResolverTypeWrapper<Preferences>;
-  InputPreferences: InputPreferences;
-  Show: ResolverTypeWrapper<Show>;
-  ThirdPartyShow: ResolverTypeWrapper<ThirdPartyShow>;
-  InputShow: InputShow;
-  ShowAdmin: ResolverTypeWrapper<ShowAdmin>;
-  InputShowAdmin: InputShowAdmin;
-  Timestamp: ResolverTypeWrapper<Timestamp>;
-  ThirdPartyTimestamp: ResolverTypeWrapper<ThirdPartyTimestamp>;
-  InputTimestamp: InputTimestamp;
-  TimestampType: ResolverTypeWrapper<TimestampType>;
-  InputTimestampType: InputTimestampType;
-  User: ResolverTypeWrapper<User>;
-  Template: ResolverTypeWrapper<Template>;
-  InputTemplate: InputTemplate;
-  TemplateTimestamp: ResolverTypeWrapper<TemplateTimestamp>;
-  InputTemplateTimestamp: InputTemplateTimestamp;
-  ApiClient: ResolverTypeWrapper<ApiClient>;
-  CreateApiClient: CreateApiClient;
-  ApiClientChanges: ApiClientChanges;
-  ExternalLink: ResolverTypeWrapper<ExternalLink>;
-  TotalCounts: ResolverTypeWrapper<TotalCounts>;
-  UserReport: ResolverTypeWrapper<UserReport>;
-  InputUserReport: InputUserReport;
-};
-
-/** Mapping between all available schema types and the resolvers parents */
-export type ResolversParentTypes = {
-  Time: Scalars['Time']['output'];
-  UInt: Scalars['UInt']['output'];
-  LoginData: LoginData;
-  String: Scalars['String']['output'];
-  UpdatedTimestamps: UpdatedTimestamps;
-  Mutation: {};
-  Boolean: Scalars['Boolean']['output'];
-  ID: Scalars['ID']['output'];
-  Query: {};
-  Int: Scalars['Int']['output'];
-  InputExistingTimestamp: InputExistingTimestamp;
-  InputTimestampOn: InputTimestampOn;
-  BaseModel: ResolversInterfaceTypes<ResolversParentTypes>['BaseModel'];
-  Episode: Episode;
-  Float: Scalars['Float']['output'];
-  ThirdPartyEpisode: ThirdPartyEpisode;
-  InputEpisode: InputEpisode;
-  EpisodeUrl: EpisodeUrl;
-  InputEpisodeUrl: InputEpisodeUrl;
-  Account: Account;
-  Preferences: Preferences;
-  InputPreferences: InputPreferences;
-  Show: Show;
-  ThirdPartyShow: ThirdPartyShow;
-  InputShow: InputShow;
-  ShowAdmin: ShowAdmin;
-  InputShowAdmin: InputShowAdmin;
-  Timestamp: Timestamp;
-  ThirdPartyTimestamp: ThirdPartyTimestamp;
-  InputTimestamp: InputTimestamp;
-  TimestampType: TimestampType;
-  InputTimestampType: InputTimestampType;
-  User: User;
-  Template: Template;
-  InputTemplate: InputTemplate;
-  TemplateTimestamp: TemplateTimestamp;
-  InputTemplateTimestamp: InputTemplateTimestamp;
-  ApiClient: ApiClient;
-  CreateApiClient: CreateApiClient;
-  ApiClientChanges: ApiClientChanges;
-  ExternalLink: ExternalLink;
-  TotalCounts: TotalCounts;
-  UserReport: UserReport;
-  InputUserReport: InputUserReport;
-};
-
-export type AuthenticatedDirectiveArgs = { };
-
-export type AuthenticatedDirectiveResolver<Result, Parent, ContextType = any, Args = AuthenticatedDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type OptionalAuthenticatedDirectiveArgs = { };
-
-export type OptionalAuthenticatedDirectiveResolver<Result, Parent, ContextType = any, Args = OptionalAuthenticatedDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type HasRoleDirectiveArgs = {
-  role: Role;
-};
-
-export type HasRoleDirectiveResolver<Result, Parent, ContextType = any, Args = HasRoleDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export type IsShowAdminDirectiveArgs = { };
-
-export type IsShowAdminDirectiveResolver<Result, Parent, ContextType = any, Args = IsShowAdminDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export interface TimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Time'], any> {
-  name: 'Time';
-}
-
-export interface UIntScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['UInt'], any> {
-  name: 'UInt';
-}
-
-export type LoginDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['LoginData'] = ResolversParentTypes['LoginData']> = {
-  authToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  refreshToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  account?: Resolver<ResolversTypes['Account'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type UpdatedTimestampsResolvers<ContextType = any, ParentType extends ResolversParentTypes['UpdatedTimestamps'] = ResolversParentTypes['UpdatedTimestamps']> = {
-  created?: Resolver<Array<ResolversTypes['Timestamp']>, ParentType, ContextType>;
-  updated?: Resolver<Array<ResolversTypes['Timestamp']>, ParentType, ContextType>;
-  deleted?: Resolver<Array<ResolversTypes['Timestamp']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  createAccount?: Resolver<ResolversTypes['LoginData'], ParentType, ContextType, RequireFields<MutationCreateAccountArgs, 'username' | 'email' | 'passwordHash' | 'recaptchaResponse'>>;
-  changePassword?: Resolver<ResolversTypes['LoginData'], ParentType, ContextType, RequireFields<MutationChangePasswordArgs, 'oldPassword' | 'newPassword' | 'confirmNewPassword'>>;
-  resendVerificationEmail?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationResendVerificationEmailArgs, 'recaptchaResponse'>>;
-  verifyEmailAddress?: Resolver<ResolversTypes['Account'], ParentType, ContextType, RequireFields<MutationVerifyEmailAddressArgs, 'validationToken'>>;
-  requestPasswordReset?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationRequestPasswordResetArgs, 'recaptchaResponse' | 'email'>>;
-  resetPassword?: Resolver<ResolversTypes['LoginData'], ParentType, ContextType, RequireFields<MutationResetPasswordArgs, 'passwordResetToken' | 'newPassword' | 'confirmNewPassword'>>;
-  deleteAccountRequest?: Resolver<ResolversTypes['Account'], ParentType, ContextType, RequireFields<MutationDeleteAccountRequestArgs, 'passwordHash'>>;
-  deleteAccount?: Resolver<ResolversTypes['Account'], ParentType, ContextType, RequireFields<MutationDeleteAccountArgs, 'deleteToken'>>;
-  savePreferences?: Resolver<ResolversTypes['Preferences'], ParentType, ContextType, RequireFields<MutationSavePreferencesArgs, 'preferences'>>;
-  createShow?: Resolver<ResolversTypes['Show'], ParentType, ContextType, RequireFields<MutationCreateShowArgs, 'showInput' | 'becomeAdmin'>>;
-  updateShow?: Resolver<ResolversTypes['Show'], ParentType, ContextType, RequireFields<MutationUpdateShowArgs, 'showId' | 'newShow'>>;
-  deleteShow?: Resolver<ResolversTypes['Show'], ParentType, ContextType, RequireFields<MutationDeleteShowArgs, 'showId'>>;
-  createShowAdmin?: Resolver<ResolversTypes['ShowAdmin'], ParentType, ContextType, RequireFields<MutationCreateShowAdminArgs, 'showAdminInput'>>;
-  deleteShowAdmin?: Resolver<ResolversTypes['ShowAdmin'], ParentType, ContextType, RequireFields<MutationDeleteShowAdminArgs, 'showAdminId'>>;
-  createEpisode?: Resolver<ResolversTypes['Episode'], ParentType, ContextType, RequireFields<MutationCreateEpisodeArgs, 'showId' | 'episodeInput'>>;
-  updateEpisode?: Resolver<ResolversTypes['Episode'], ParentType, ContextType, RequireFields<MutationUpdateEpisodeArgs, 'episodeId' | 'newEpisode'>>;
-  deleteEpisode?: Resolver<ResolversTypes['Episode'], ParentType, ContextType, RequireFields<MutationDeleteEpisodeArgs, 'episodeId'>>;
-  createEpisodeUrl?: Resolver<ResolversTypes['EpisodeUrl'], ParentType, ContextType, RequireFields<MutationCreateEpisodeUrlArgs, 'episodeId' | 'episodeUrlInput'>>;
-  deleteEpisodeUrl?: Resolver<ResolversTypes['EpisodeUrl'], ParentType, ContextType, RequireFields<MutationDeleteEpisodeUrlArgs, 'episodeUrl'>>;
-  updateEpisodeUrl?: Resolver<ResolversTypes['EpisodeUrl'], ParentType, ContextType, RequireFields<MutationUpdateEpisodeUrlArgs, 'episodeUrl' | 'newEpisodeUrl'>>;
-  createTimestamp?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType, RequireFields<MutationCreateTimestampArgs, 'episodeId' | 'timestampInput'>>;
-  updateTimestamp?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType, RequireFields<MutationUpdateTimestampArgs, 'timestampId' | 'newTimestamp'>>;
-  deleteTimestamp?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType, RequireFields<MutationDeleteTimestampArgs, 'timestampId'>>;
-  updateTimestamps?: Resolver<ResolversTypes['UpdatedTimestamps'], ParentType, ContextType, RequireFields<MutationUpdateTimestampsArgs, 'create' | 'update' | 'delete'>>;
-  createTimestampType?: Resolver<ResolversTypes['TimestampType'], ParentType, ContextType, RequireFields<MutationCreateTimestampTypeArgs, 'timestampTypeInput'>>;
-  updateTimestampType?: Resolver<ResolversTypes['TimestampType'], ParentType, ContextType, RequireFields<MutationUpdateTimestampTypeArgs, 'timestampTypeId' | 'newTimestampType'>>;
-  deleteTimestampType?: Resolver<ResolversTypes['TimestampType'], ParentType, ContextType, RequireFields<MutationDeleteTimestampTypeArgs, 'timestampTypeId'>>;
-  createTemplate?: Resolver<ResolversTypes['Template'], ParentType, ContextType, RequireFields<MutationCreateTemplateArgs, 'newTemplate'>>;
-  updateTemplate?: Resolver<ResolversTypes['Template'], ParentType, ContextType, RequireFields<MutationUpdateTemplateArgs, 'templateId' | 'newTemplate'>>;
-  deleteTemplate?: Resolver<ResolversTypes['Template'], ParentType, ContextType, RequireFields<MutationDeleteTemplateArgs, 'templateId'>>;
-  addTimestampToTemplate?: Resolver<ResolversTypes['TemplateTimestamp'], ParentType, ContextType, RequireFields<MutationAddTimestampToTemplateArgs, 'templateTimestamp'>>;
-  removeTimestampFromTemplate?: Resolver<ResolversTypes['TemplateTimestamp'], ParentType, ContextType, RequireFields<MutationRemoveTimestampFromTemplateArgs, 'templateTimestamp'>>;
-  createApiClient?: Resolver<ResolversTypes['ApiClient'], ParentType, ContextType, RequireFields<MutationCreateApiClientArgs, 'client'>>;
-  updateApiClient?: Resolver<ResolversTypes['ApiClient'], ParentType, ContextType, RequireFields<MutationUpdateApiClientArgs, 'id' | 'changes'>>;
-  deleteApiClient?: Resolver<ResolversTypes['ApiClient'], ParentType, ContextType, RequireFields<MutationDeleteApiClientArgs, 'id'>>;
-  addExternalLink?: Resolver<ResolversTypes['ExternalLink'], ParentType, ContextType, RequireFields<MutationAddExternalLinkArgs, 'showId' | 'url'>>;
-  removeExternalLink?: Resolver<ResolversTypes['ExternalLink'], ParentType, ContextType, RequireFields<MutationRemoveExternalLinkArgs, 'showId' | 'url'>>;
-  createUserReport?: Resolver<ResolversTypes['UserReport'], ParentType, ContextType, Partial<MutationCreateUserReportArgs>>;
-  resolveUserReport?: Resolver<ResolversTypes['UserReport'], ParentType, ContextType, RequireFields<MutationResolveUserReportArgs, 'id'>>;
-};
-
-export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  account?: Resolver<ResolversTypes['Account'], ParentType, ContextType>;
-  login?: Resolver<ResolversTypes['LoginData'], ParentType, ContextType, RequireFields<QueryLoginArgs, 'usernameEmail' | 'passwordHash'>>;
-  loginRefresh?: Resolver<ResolversTypes['LoginData'], ParentType, ContextType, RequireFields<QueryLoginRefreshArgs, 'refreshToken'>>;
-  findUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<QueryFindUserArgs, 'userId'>>;
-  findUserByUsername?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<QueryFindUserByUsernameArgs, 'username'>>;
-  findShow?: Resolver<ResolversTypes['Show'], ParentType, ContextType, RequireFields<QueryFindShowArgs, 'showId'>>;
-  findShowsByExternalId?: Resolver<Array<ResolversTypes['Show']>, ParentType, ContextType, RequireFields<QueryFindShowsByExternalIdArgs, 'service' | 'serviceId'>>;
-  searchShows?: Resolver<Array<ResolversTypes['Show']>, ParentType, ContextType, RequireFields<QuerySearchShowsArgs, 'search' | 'offset' | 'limit' | 'sort'>>;
-  findShowAdmin?: Resolver<ResolversTypes['ShowAdmin'], ParentType, ContextType, RequireFields<QueryFindShowAdminArgs, 'showAdminId'>>;
-  findShowAdminsByShowId?: Resolver<Array<ResolversTypes['ShowAdmin']>, ParentType, ContextType, RequireFields<QueryFindShowAdminsByShowIdArgs, 'showId'>>;
-  findShowAdminsByUserId?: Resolver<Array<ResolversTypes['ShowAdmin']>, ParentType, ContextType, RequireFields<QueryFindShowAdminsByUserIdArgs, 'userId'>>;
-  recentlyAddedEpisodes?: Resolver<Array<ResolversTypes['Episode']>, ParentType, ContextType, RequireFields<QueryRecentlyAddedEpisodesArgs, 'limit' | 'offset'>>;
-  findEpisode?: Resolver<ResolversTypes['Episode'], ParentType, ContextType, RequireFields<QueryFindEpisodeArgs, 'episodeId'>>;
-  findEpisodesByShowId?: Resolver<Array<ResolversTypes['Episode']>, ParentType, ContextType, RequireFields<QueryFindEpisodesByShowIdArgs, 'showId'>>;
-  searchEpisodes?: Resolver<Array<ResolversTypes['Episode']>, ParentType, ContextType, RequireFields<QuerySearchEpisodesArgs, 'search' | 'offset' | 'limit' | 'sort'>>;
-  findEpisodeByName?: Resolver<Array<ResolversTypes['ThirdPartyEpisode']>, ParentType, ContextType, RequireFields<QueryFindEpisodeByNameArgs, 'name'>>;
-  findEpisodeUrl?: Resolver<ResolversTypes['EpisodeUrl'], ParentType, ContextType, RequireFields<QueryFindEpisodeUrlArgs, 'episodeUrl'>>;
-  findEpisodeUrlsByEpisodeId?: Resolver<Array<ResolversTypes['EpisodeUrl']>, ParentType, ContextType, RequireFields<QueryFindEpisodeUrlsByEpisodeIdArgs, 'episodeId'>>;
-  findTimestamp?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType, RequireFields<QueryFindTimestampArgs, 'timestampId'>>;
-  findTimestampsByEpisodeId?: Resolver<Array<ResolversTypes['Timestamp']>, ParentType, ContextType, RequireFields<QueryFindTimestampsByEpisodeIdArgs, 'episodeId'>>;
-  findTimestampType?: Resolver<ResolversTypes['TimestampType'], ParentType, ContextType, RequireFields<QueryFindTimestampTypeArgs, 'timestampTypeId'>>;
-  allTimestampTypes?: Resolver<Array<ResolversTypes['TimestampType']>, ParentType, ContextType>;
-  findTemplate?: Resolver<ResolversTypes['Template'], ParentType, ContextType, RequireFields<QueryFindTemplateArgs, 'templateId'>>;
-  findTemplatesByShowId?: Resolver<Array<ResolversTypes['Template']>, ParentType, ContextType, RequireFields<QueryFindTemplatesByShowIdArgs, 'showId'>>;
-  findTemplateByDetails?: Resolver<ResolversTypes['Template'], ParentType, ContextType, Partial<QueryFindTemplateByDetailsArgs>>;
-  myApiClients?: Resolver<Array<ResolversTypes['ApiClient']>, ParentType, ContextType, RequireFields<QueryMyApiClientsArgs, 'offset' | 'limit' | 'sort'>>;
-  findApiClient?: Resolver<ResolversTypes['ApiClient'], ParentType, ContextType, RequireFields<QueryFindApiClientArgs, 'id'>>;
-  counts?: Resolver<Maybe<ResolversTypes['TotalCounts']>, ParentType, ContextType>;
-  findUserReports?: Resolver<Array<ResolversTypes['UserReport']>, ParentType, ContextType, RequireFields<QueryFindUserReportsArgs, 'offset' | 'limit' | 'sort'>>;
-  findUserReport?: Resolver<ResolversTypes['UserReport'], ParentType, ContextType, RequireFields<QueryFindUserReportArgs, 'id'>>;
-};
-
-export type BaseModelResolvers<ContextType = any, ParentType extends ResolversParentTypes['BaseModel'] = ResolversParentTypes['BaseModel']> = {
-  __resolveType: TypeResolveFn<'Episode' | 'Show' | 'ShowAdmin' | 'Timestamp' | 'TimestampType' | 'Template' | 'UserReport', ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['Time'], ParentType, ContextType>;
-  createdByUserId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  createdBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['Time'], ParentType, ContextType>;
-  updatedByUserId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  updatedBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  deletedAt?: Resolver<Maybe<ResolversTypes['Time']>, ParentType, ContextType>;
-  deletedByUserId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  deletedBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
-};
-
-export type EpisodeResolvers<ContextType = any, ParentType extends ResolversParentTypes['Episode'] = ResolversParentTypes['Episode']> = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['Time'], ParentType, ContextType>;
-  createdByUserId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  createdBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['Time'], ParentType, ContextType>;
-  updatedByUserId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  updatedBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  deletedAt?: Resolver<Maybe<ResolversTypes['Time']>, ParentType, ContextType>;
-  deletedByUserId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  deletedBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
-  season?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  number?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  absoluteNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  baseDuration?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  show?: Resolver<ResolversTypes['Show'], ParentType, ContextType>;
-  showId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  timestamps?: Resolver<Array<ResolversTypes['Timestamp']>, ParentType, ContextType>;
-  urls?: Resolver<Array<ResolversTypes['EpisodeUrl']>, ParentType, ContextType>;
-  template?: Resolver<Maybe<ResolversTypes['Template']>, ParentType, ContextType>;
-  userReports?: Resolver<Array<ResolversTypes['UserReport']>, ParentType, ContextType, Partial<EpisodeUserReportsArgs>>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type ThirdPartyEpisodeResolvers<ContextType = any, ParentType extends ResolversParentTypes['ThirdPartyEpisode'] = ResolversParentTypes['ThirdPartyEpisode']> = {
-  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  season?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  number?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  absoluteNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  baseDuration?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  source?: Resolver<Maybe<ResolversTypes['TimestampSource']>, ParentType, ContextType>;
-  timestamps?: Resolver<Array<ResolversTypes['ThirdPartyTimestamp']>, ParentType, ContextType>;
-  showId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  show?: Resolver<ResolversTypes['ThirdPartyShow'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type EpisodeUrlResolvers<ContextType = any, ParentType extends ResolversParentTypes['EpisodeUrl'] = ResolversParentTypes['EpisodeUrl']> = {
-  url?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['Time'], ParentType, ContextType>;
-  createdByUserId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  createdBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['Time'], ParentType, ContextType>;
-  updatedByUserId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  updatedBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  duration?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  timestampsOffset?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  episodeId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  episode?: Resolver<ResolversTypes['Episode'], ParentType, ContextType>;
-  source?: Resolver<ResolversTypes['EpisodeSource'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type AccountResolvers<ContextType = any, ParentType extends ResolversParentTypes['Account'] = ResolversParentTypes['Account']> = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['Time'], ParentType, ContextType>;
-  deletedAt?: Resolver<Maybe<ResolversTypes['Time']>, ParentType, ContextType>;
-  username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  profileUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  adminOfShows?: Resolver<Array<ResolversTypes['ShowAdmin']>, ParentType, ContextType>;
-  emailVerified?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  role?: Resolver<ResolversTypes['Role'], ParentType, ContextType>;
-  preferences?: Resolver<ResolversTypes['Preferences'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type PreferencesResolvers<ContextType = any, ParentType extends ResolversParentTypes['Preferences'] = ResolversParentTypes['Preferences']> = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['Time'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['Time'], ParentType, ContextType>;
-  deletedAt?: Resolver<Maybe<ResolversTypes['Time']>, ParentType, ContextType>;
-  userId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  enableAutoSkip?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  enableAutoPlay?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  minimizeToolbarWhenEditing?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  hideTimelineWhenMinimized?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  colorTheme?: Resolver<ResolversTypes['ColorTheme'], ParentType, ContextType>;
-  skipBranding?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  skipIntros?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  skipNewIntros?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  skipMixedIntros?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  skipRecaps?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  skipFiller?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  skipCanon?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  skipTransitions?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  skipCredits?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  skipNewCredits?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  skipMixedCredits?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  skipPreview?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  skipTitleCard?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type ShowResolvers<ContextType = any, ParentType extends ResolversParentTypes['Show'] = ResolversParentTypes['Show']> = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['Time'], ParentType, ContextType>;
-  createdByUserId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  createdBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['Time'], ParentType, ContextType>;
-  updatedByUserId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  updatedBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  deletedAt?: Resolver<Maybe<ResolversTypes['Time']>, ParentType, ContextType>;
-  deletedByUserId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  deletedBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  originalName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  website?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  image?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  admins?: Resolver<Array<ResolversTypes['ShowAdmin']>, ParentType, ContextType>;
-  episodes?: Resolver<Array<ResolversTypes['Episode']>, ParentType, ContextType>;
-  templates?: Resolver<Array<ResolversTypes['Template']>, ParentType, ContextType>;
-  externalLinks?: Resolver<Array<ResolversTypes['ExternalLink']>, ParentType, ContextType>;
-  seasonCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  episodeCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type ThirdPartyShowResolvers<ContextType = any, ParentType extends ResolversParentTypes['ThirdPartyShow'] = ResolversParentTypes['ThirdPartyShow']> = {
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  createdAt?: Resolver<Maybe<ResolversTypes['Time']>, ParentType, ContextType>;
-  updatedAt?: Resolver<Maybe<ResolversTypes['Time']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type ShowAdminResolvers<ContextType = any, ParentType extends ResolversParentTypes['ShowAdmin'] = ResolversParentTypes['ShowAdmin']> = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['Time'], ParentType, ContextType>;
-  createdByUserId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  createdBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['Time'], ParentType, ContextType>;
-  updatedByUserId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  updatedBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  deletedAt?: Resolver<Maybe<ResolversTypes['Time']>, ParentType, ContextType>;
-  deletedByUserId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  deletedBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
-  showId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  show?: Resolver<ResolversTypes['Show'], ParentType, ContextType>;
-  userId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type TimestampResolvers<ContextType = any, ParentType extends ResolversParentTypes['Timestamp'] = ResolversParentTypes['Timestamp']> = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['Time'], ParentType, ContextType>;
-  createdByUserId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  createdBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['Time'], ParentType, ContextType>;
-  updatedByUserId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  updatedBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  deletedAt?: Resolver<Maybe<ResolversTypes['Time']>, ParentType, ContextType>;
-  deletedByUserId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  deletedBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
-  at?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  source?: Resolver<ResolversTypes['TimestampSource'], ParentType, ContextType>;
-  typeId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  type?: Resolver<ResolversTypes['TimestampType'], ParentType, ContextType>;
-  episodeId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  episode?: Resolver<ResolversTypes['Episode'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type ThirdPartyTimestampResolvers<ContextType = any, ParentType extends ResolversParentTypes['ThirdPartyTimestamp'] = ResolversParentTypes['ThirdPartyTimestamp']> = {
-  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  at?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  typeId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  type?: Resolver<ResolversTypes['TimestampType'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type TimestampTypeResolvers<ContextType = any, ParentType extends ResolversParentTypes['TimestampType'] = ResolversParentTypes['TimestampType']> = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['Time'], ParentType, ContextType>;
-  createdByUserId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  createdBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['Time'], ParentType, ContextType>;
-  updatedByUserId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  updatedBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  deletedAt?: Resolver<Maybe<ResolversTypes['Time']>, ParentType, ContextType>;
-  deletedByUserId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  deletedBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['Time'], ParentType, ContextType>;
-  deletedAt?: Resolver<Maybe<ResolversTypes['Time']>, ParentType, ContextType>;
-  username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  profileUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  adminOfShows?: Resolver<Array<ResolversTypes['ShowAdmin']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type TemplateResolvers<ContextType = any, ParentType extends ResolversParentTypes['Template'] = ResolversParentTypes['Template']> = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['Time'], ParentType, ContextType>;
-  createdByUserId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  createdBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['Time'], ParentType, ContextType>;
-  updatedByUserId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  updatedBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  deletedAt?: Resolver<Maybe<ResolversTypes['Time']>, ParentType, ContextType>;
-  deletedByUserId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  deletedBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
-  showId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  show?: Resolver<ResolversTypes['Show'], ParentType, ContextType>;
-  type?: Resolver<ResolversTypes['TemplateType'], ParentType, ContextType>;
-  seasons?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
-  sourceEpisodeId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  sourceEpisode?: Resolver<ResolversTypes['Episode'], ParentType, ContextType>;
-  timestamps?: Resolver<Array<ResolversTypes['Timestamp']>, ParentType, ContextType>;
-  timestampIds?: Resolver<Array<ResolversTypes['ID']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type TemplateTimestampResolvers<ContextType = any, ParentType extends ResolversParentTypes['TemplateTimestamp'] = ResolversParentTypes['TemplateTimestamp']> = {
-  templateId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  template?: Resolver<ResolversTypes['Template'], ParentType, ContextType>;
-  timestampId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  timestamp?: Resolver<ResolversTypes['Timestamp'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type ApiClientResolvers<ContextType = any, ParentType extends ResolversParentTypes['ApiClient'] = ResolversParentTypes['ApiClient']> = {
-  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['Time'], ParentType, ContextType>;
-  createdByUserId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  createdBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['Time'], ParentType, ContextType>;
-  updatedByUserId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  updatedBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  deletedAt?: Resolver<Maybe<ResolversTypes['Time']>, ParentType, ContextType>;
-  deletedByUserId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  deletedBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
-  userId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  appName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  rateLimitRpm?: Resolver<Maybe<ResolversTypes['UInt']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type ExternalLinkResolvers<ContextType = any, ParentType extends ResolversParentTypes['ExternalLink'] = ResolversParentTypes['ExternalLink']> = {
-  url?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  showId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  show?: Resolver<ResolversTypes['Show'], ParentType, ContextType>;
-  service?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  serviceId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type TotalCountsResolvers<ContextType = any, ParentType extends ResolversParentTypes['TotalCounts'] = ResolversParentTypes['TotalCounts']> = {
-  episodes?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  episodeUrls?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  shows?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  timestamps?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  timestampTypes?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  users?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  templates?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type UserReportResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserReport'] = ResolversParentTypes['UserReport']> = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['Time'], ParentType, ContextType>;
-  createdByUserId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  createdBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['Time'], ParentType, ContextType>;
-  updatedByUserId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  updatedBy?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  deletedAt?: Resolver<Maybe<ResolversTypes['Time']>, ParentType, ContextType>;
-  deletedByUserId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  deletedBy?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
-  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  reportedFromUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  resolved?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  resolvedMessage?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  timestampId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  timestamp?: Resolver<Maybe<ResolversTypes['Timestamp']>, ParentType, ContextType>;
-  episodeId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  episode?: Resolver<Maybe<ResolversTypes['Episode']>, ParentType, ContextType>;
-  episodeUrlString?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  episodeUrl?: Resolver<Maybe<ResolversTypes['EpisodeUrl']>, ParentType, ContextType>;
-  showId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  show?: Resolver<Maybe<ResolversTypes['Show']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type Resolvers<ContextType = any> = {
-  Time?: GraphQLScalarType;
-  UInt?: GraphQLScalarType;
-  LoginData?: LoginDataResolvers<ContextType>;
-  UpdatedTimestamps?: UpdatedTimestampsResolvers<ContextType>;
-  Mutation?: MutationResolvers<ContextType>;
-  Query?: QueryResolvers<ContextType>;
-  BaseModel?: BaseModelResolvers<ContextType>;
-  Episode?: EpisodeResolvers<ContextType>;
-  ThirdPartyEpisode?: ThirdPartyEpisodeResolvers<ContextType>;
-  EpisodeUrl?: EpisodeUrlResolvers<ContextType>;
-  Account?: AccountResolvers<ContextType>;
-  Preferences?: PreferencesResolvers<ContextType>;
-  Show?: ShowResolvers<ContextType>;
-  ThirdPartyShow?: ThirdPartyShowResolvers<ContextType>;
-  ShowAdmin?: ShowAdminResolvers<ContextType>;
-  Timestamp?: TimestampResolvers<ContextType>;
-  ThirdPartyTimestamp?: ThirdPartyTimestampResolvers<ContextType>;
-  TimestampType?: TimestampTypeResolvers<ContextType>;
-  User?: UserResolvers<ContextType>;
-  Template?: TemplateResolvers<ContextType>;
-  TemplateTimestamp?: TemplateTimestampResolvers<ContextType>;
-  ApiClient?: ApiClientResolvers<ContextType>;
-  ExternalLink?: ExternalLinkResolvers<ContextType>;
-  TotalCounts?: TotalCountsResolvers<ContextType>;
-  UserReport?: UserReportResolvers<ContextType>;
-};
-
-export type DirectiveResolvers<ContextType = any> = {
-  authenticated?: AuthenticatedDirectiveResolver<any, any, ContextType>;
-  optionalAuthenticated?: OptionalAuthenticatedDirectiveResolver<any, any, ContextType>;
-  hasRole?: HasRoleDirectiveResolver<any, any, ContextType>;
-  isShowAdmin?: IsShowAdminDirectiveResolver<any, any, ContextType>;
 };
