@@ -5,7 +5,7 @@ import { errors } from "@oak/commons/http_errors";
 
 /** Map of paths to their prerendered public files */
 const PRERENDERED_MAPPING: Record<string, string> = {
-  // "/": "public/.prerendered/home.html",
+  "/": "public/home.html",
 };
 
 const indexHtml = Deno.readTextFile("public/index.html");
