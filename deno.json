@@ -2,11 +2,11 @@
   "version": "2.0.0-alpha.1",
   "$schema": "https://deno.land/x/deno/cli/schemas/config-file.v1.json",
   "tasks": {
-    "dev": "deno run --watch --env-file --allow-net -E=\"NODE_ENV,AS_*\" -R=server/assets,public -W=shared/graphql-types.gen.d.ts,shared/graphql-resolvers.gen.d.ts scripts/dev.ts",
+    "dev": "deno run --watch --env-file -A scripts/dev.ts",
     "check": "deno check .",
     "build": "deno run -A scripts/build.ts",
     "build:app": "deno -A npm:vite build app",
-    "preview": "cd .output && deno task server/main.ts"
+    "preview": "cd .output && deno run --env-file=../.env.prod -A server/main.ts"
   },
   "imports": {
     "@deno-libs/gql": "jsr:@deno-libs/gql@^3.0.1",
