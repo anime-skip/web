@@ -59,6 +59,13 @@ export const users = pgTable("users", {
 export type DbUser = typeof users.$inferSelect;
 export type DbUserInsert = typeof users.$inferInsert;
 
+export enum DbUserRole {
+  Dev = 0,
+  Admin = 1,
+  User = 2,
+  Reviewer = 3,
+}
+
 export const userReports = pgTable("user_reports", {
   id: uuid().primaryKey().notNull(),
   createdAt,
@@ -115,8 +122,15 @@ export const episodeUrls = pgTable("episode_urls", {
   duration: numeric(),
   timestampsOffset: numeric(),
 });
-export type DbEpisodeUrlReport = typeof episodeUrls.$inferSelect;
-export type DbEpisodeUrlReportInsert = typeof episodeUrls.$inferInsert;
+export type DbEpisodeUrl = typeof episodeUrls.$inferSelect;
+export type DbEpisodeUrlInsert = typeof episodeUrls.$inferInsert;
+
+export enum DbEpisodeSource {
+  Unknown = 0,
+  Vrv = 1,
+  Funimation = 2,
+  Crunchyroll = 3,
+}
 
 export const episodes = pgTable("episodes", {
   id: uuid().default(sql`uuid_generate_v4()`).primaryKey().notNull(),
@@ -133,8 +147,8 @@ export const episodes = pgTable("episodes", {
   showId: uuid().notNull(),
   baseDuration: numeric(),
 });
-export type DbepisodeUrlReport = typeof episodes.$inferSelect;
-export type DbepisodeUrlReportInsert = typeof episodes.$inferInsert;
+export type DbEpisode = typeof episodes.$inferSelect;
+export type DbEpisodeInsert = typeof episodes.$inferInsert;
 
 export const migrations = pgTable("migrations", {
   id: varchar({ length: 255 }).primaryKey().notNull(),
@@ -195,6 +209,11 @@ export const templates = pgTable("templates", {
 export type DbTemplate = typeof templates.$inferSelect;
 export type DbTemplateInsert = typeof templates.$inferInsert;
 
+export enum DbTemplateType {
+  Show = 0,
+  Seasons = 1,
+}
+
 export const timestampTypes = pgTable("timestamp_types", {
   id: uuid().default(sql`uuid_generate_v4()`).primaryKey().notNull(),
   createdAt,
@@ -224,6 +243,11 @@ export const timestamps = pgTable("timestamps", {
 });
 export type DbTimestamp = typeof timestamps.$inferSelect;
 export type DbTimestampInsert = typeof timestamps.$inferInsert;
+
+export enum DbTimestampSource {
+  AnimeSkip = 0,
+  BetterVrv = 1,
+}
 
 export const preferences = pgTable("preferences", {
   id: uuid().default(sql`uuid_generate_v4()`).primaryKey().notNull(),
@@ -256,6 +280,14 @@ export const preferences = pgTable("preferences", {
 });
 export type DbPreferences = typeof preferences.$inferSelect;
 export type DbPreferencesInsert = typeof preferences.$inferInsert;
+
+export enum DbColorTheme {
+  PerService = 0,
+  AnimeSkipBlue = 1,
+  VrvYellow = 2,
+  FunimationPurple = 3,
+  CrunchyrollOrange = 4,
+}
 
 export const externalLinks = pgTable("external_links", {
   url: text().notNull(),

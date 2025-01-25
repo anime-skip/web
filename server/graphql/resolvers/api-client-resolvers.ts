@@ -16,8 +16,11 @@ export const apiClientResolvers: GqlResolvers = {
     myApiClients: (_parent, _args, _ctx) => todo(),
   },
   ApiClient: {
-    createdBy: createUserResolver("createdByUserId"),
-    updatedBy: createUserResolver("updatedByUserId"),
-    deletedBy: createMaybeUserResolver("deletedByUserId"),
+    createdBy: ({ createdByUserId: id }, _, ctx) =>
+      ctx.usersDataloader.load(id),
+    updatedBy: ({ updatedByUserId: id }, _, ctx) =>
+      ctx.usersDataloader.load(id),
+    deletedBy: ({ deletedByUserId: id }, _, ctx) =>
+      id == null ? null : ctx.usersDataloader.load(id),
   },
 };

@@ -39,9 +39,18 @@ export type AnimeSkipDatabase = NodePgDatabase<typeof dbSchema>;
 
 export function createDrizzleDataloader<
   T extends TableConfig & { columns: { id: PgColumn } },
->(db: AnimeSkipDatabase, table: PgTableWithColumns<T>) {
-  return new DataLoader<string, typeof table.$inferSelect>(async (ids) =>
+  V,
+>(
+  db: AnimeSkipDatabase,
+  table: PgTableWithColumns<T>,
+  mapper: (model: typeof table.$inferSelect) => V,
+) {
+  return new DataLoader<string, V>(async (ids) => {
     // @ts-expect-error: Crazy types going on here, ignoring them
-    await db.select().from(table).where(inArray(table.id, ids))
-  );
+    const items: Array<typeof table.$inferSelect> = await db.select().from(
+      table,
+      // @ts-expect-error: Crazy types going on here, ignoring them
+    ).where(inArray(table.id, ids));
+    return items.map(mapper);
+  });
 }
