@@ -14,12 +14,15 @@
   },
   "imports": {
     "@deno-libs/gql": "jsr:@deno-libs/gql@^3.0.1",
+    "@egoist/tailwindcss-icons": "npm:@egoist/tailwindcss-icons@^1.9.0",
     "@es-toolkit/es-toolkit": "jsr:@es-toolkit/es-toolkit@^1.31.0",
     "@graphql-codegen/core": "npm:@graphql-codegen/core@^4.0.2",
     "@graphql-codegen/plugin-helpers": "npm:@graphql-codegen/plugin-helpers@^5.1.0",
     "@graphql-codegen/typescript": "npm:@graphql-codegen/typescript@^4.1.2",
+    "@graphql-codegen/typescript-operations": "npm:@graphql-codegen/typescript-operations@^4.4.0",
     "@graphql-codegen/typescript-resolvers": "npm:@graphql-codegen/typescript-resolvers@^4.4.1",
     "@graphql-tools/schema": "npm:@graphql-tools/schema@^10.0.16",
+    "@iconify-json/heroicons": "npm:@iconify-json/heroicons@^1.2.2",
     "@oak/commons": "jsr:@oak/commons@^1.0.0",
     "@oak/oak": "jsr:@oak/oak@^17.1.4",
     "@std/assert": "jsr:@std/assert@1",
@@ -27,6 +30,8 @@
     "@std/media-types": "jsr:@std/media-types@^1.1.0",
     "@tailwindcss/vite": "npm:@tailwindcss/vite@^4.0.0",
     "@types/pg": "npm:@types/pg@^8.11.11",
+    "@vitejs/plugin-vue": "npm:@vitejs/plugin-vue@^5.2.1",
+    "@vueuse/core": "npm:@vueuse/core@^12.5.0",
     "app/": "./app/",
     "consola": "npm:consola@^3.4.0",
     "dataloader": "npm:dataloader@^2.2.3",
@@ -35,10 +40,13 @@
     "graphql": "npm:graphql@^16.10.0",
     "graphql-tag": "npm:graphql-tag@^2.12.6",
     "pg": "npm:pg@^8.13.1",
+    "reka-ui": "npm:reka-ui@^1.0.0-alpha.8",
     "server/": "./server/",
     "shared/": "./shared/",
     "tailwindcss": "npm:tailwindcss@^4.0.0",
-    "vite": "npm:vite@^6.0.11"
+    "vite": "npm:vite@^6.0.11",
+    "vue": "npm:vue@^3.5.13",
+    "vue-router": "npm:vue-router@^4.5.0"
   },
   "compilerOptions": {
     "verbatimModuleSyntax": true
