@@ -8,7 +8,7 @@ import { inArray } from "drizzle-orm";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
 import * as dbSchema from "server/db/schema.ts";
 import { logger } from "server/utils/logger.ts";
-import DataLoader from "dataloader";
+import Dataloader from "dataloader";
 
 const dbLogger = logger.extend("db");
 
@@ -37,20 +37,18 @@ export async function openAnimeSkipDatabase(): Promise<AnimeSkipDatabase> {
 
 export type AnimeSkipDatabase = NodePgDatabase<typeof dbSchema>;
 
-export function createDrizzleDataloader<
-  T extends TableConfig & { columns: { id: PgColumn } },
-  V,
->(
+export function createDrizzleDataloader<DbModel, GqlModel>(
   db: AnimeSkipDatabase,
-  table: PgTableWithColumns<T>,
-  mapper: (model: typeof table.$inferSelect) => V,
+  // deno-lint-ignore no-explicit-any
+  table: PgTableWithColumns<any>,
+  idKey: keyof DbModel,
+  mapper: (db: DbModel) => GqlModel,
 ) {
-  return new DataLoader<string, V>(async (ids) => {
-    // @ts-expect-error: Crazy types going on here, ignoring them
-    const items: Array<typeof table.$inferSelect> = await db.select().from(
-      table,
-      // @ts-expect-error: Crazy types going on here, ignoring them
-    ).where(inArray(table.id, ids));
-    return items.map(mapper);
+  return new Dataloader(async (ids) => {
+    // @ts-expect-error: We don't type the table, so there's a type error here
+    const rows: DbModel[] = await db.select().from(table).where(
+      inArray(table[idKey], [...ids]),
+    );
+    return rows.map(mapper);
   });
 }

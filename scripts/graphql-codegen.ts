@@ -10,14 +10,16 @@ import { Color } from "server/utils/logger.ts";
 
 let schema: DocumentNode;
 
+const codegenLogger = logger.extend("graphql-codegen");
+
 export async function generateGraphqlCode() {
   const typesOutput = "shared/graphql-types.gen.d.ts";
   const resolversOutput = "server/graphql/resolver-types.gen.ts";
-  logger.info("Generating GraphQL types...");
-  logger.verbose(
+  codegenLogger.info("Generating GraphQL types...");
+  codegenLogger.verbose(
     `  - Types:     ${Color.Cyan}./${typesOutput}${Color.Reset}`,
   );
-  logger.verbose(
+  codegenLogger.verbose(
     `  - Resolvers: ${Color.Cyan}./${resolversOutput}${Color.Reset}`,
   );
   const codegenTimer = createTimer();
@@ -37,13 +39,13 @@ export async function generateGraphqlCode() {
     resolversOutput,
     typescriptResolversPlugin,
     {
-      contextType: "server/state.ts#ServerState",
+      contextType: "server/graphql/context.ts#GqlContext",
       useTypeImports: true,
       typesPrefix: "Gql",
     },
   );
 
-  logger.info("Generated in", codegenTimer.duration());
+  codegenLogger.info("Generated in", codegenTimer.duration());
 }
 
 // deno-lint-ignore ban-types

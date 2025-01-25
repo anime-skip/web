@@ -1,6 +1,6 @@
 // deno-lint-ignore-file
 import type { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
-import type { ServerState } from 'server/state.ts';
+import type { GqlContext } from 'server/graphql/context.ts';
 export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 
 
@@ -179,21 +179,21 @@ export type GqlResolversParentTypes = {
 
 export type GqlAuthenticatedDirectiveArgs = { };
 
-export type GqlAuthenticatedDirectiveResolver<Result, Parent, ContextType = ServerState, Args = GqlAuthenticatedDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+export type GqlAuthenticatedDirectiveResolver<Result, Parent, ContextType = GqlContext, Args = GqlAuthenticatedDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type GqlOptionalAuthenticatedDirectiveArgs = { };
 
-export type GqlOptionalAuthenticatedDirectiveResolver<Result, Parent, ContextType = ServerState, Args = GqlOptionalAuthenticatedDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+export type GqlOptionalAuthenticatedDirectiveResolver<Result, Parent, ContextType = GqlContext, Args = GqlOptionalAuthenticatedDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type GqlHasRoleDirectiveArgs = {
   role: GqlRole;
 };
 
-export type GqlHasRoleDirectiveResolver<Result, Parent, ContextType = ServerState, Args = GqlHasRoleDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+export type GqlHasRoleDirectiveResolver<Result, Parent, ContextType = GqlContext, Args = GqlHasRoleDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type GqlIsShowAdminDirectiveArgs = { };
 
-export type GqlIsShowAdminDirectiveResolver<Result, Parent, ContextType = ServerState, Args = GqlIsShowAdminDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+export type GqlIsShowAdminDirectiveResolver<Result, Parent, ContextType = GqlContext, Args = GqlIsShowAdminDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export interface GqlTimeScalarConfig extends GraphQLScalarTypeConfig<GqlResolversTypes['Time'], any> {
   name: 'Time';
@@ -203,21 +203,21 @@ export interface GqlUIntScalarConfig extends GraphQLScalarTypeConfig<GqlResolver
   name: 'UInt';
 }
 
-export type GqlLoginDataResolvers<ContextType = ServerState, ParentType extends GqlResolversParentTypes['LoginData'] = GqlResolversParentTypes['LoginData']> = {
+export type GqlLoginDataResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['LoginData'] = GqlResolversParentTypes['LoginData']> = {
   authToken?: Resolver<GqlResolversTypes['String'], ParentType, ContextType>;
   refreshToken?: Resolver<GqlResolversTypes['String'], ParentType, ContextType>;
   account?: Resolver<GqlResolversTypes['Account'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type GqlUpdatedTimestampsResolvers<ContextType = ServerState, ParentType extends GqlResolversParentTypes['UpdatedTimestamps'] = GqlResolversParentTypes['UpdatedTimestamps']> = {
+export type GqlUpdatedTimestampsResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['UpdatedTimestamps'] = GqlResolversParentTypes['UpdatedTimestamps']> = {
   created?: Resolver<Array<GqlResolversTypes['Timestamp']>, ParentType, ContextType>;
   updated?: Resolver<Array<GqlResolversTypes['Timestamp']>, ParentType, ContextType>;
   deleted?: Resolver<Array<GqlResolversTypes['Timestamp']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type GqlMutationResolvers<ContextType = ServerState, ParentType extends GqlResolversParentTypes['Mutation'] = GqlResolversParentTypes['Mutation']> = {
+export type GqlMutationResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['Mutation'] = GqlResolversParentTypes['Mutation']> = {
   createAccount?: Resolver<GqlResolversTypes['LoginData'], ParentType, ContextType, RequireFields<GqlMutationCreateAccountArgs, 'username' | 'email' | 'passwordHash' | 'recaptchaResponse'>>;
   changePassword?: Resolver<GqlResolversTypes['LoginData'], ParentType, ContextType, RequireFields<GqlMutationChangePasswordArgs, 'oldPassword' | 'newPassword' | 'confirmNewPassword'>>;
   resendVerificationEmail?: Resolver<Maybe<GqlResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<GqlMutationResendVerificationEmailArgs, 'recaptchaResponse'>>;
@@ -259,7 +259,7 @@ export type GqlMutationResolvers<ContextType = ServerState, ParentType extends G
   resolveUserReport?: Resolver<GqlResolversTypes['UserReport'], ParentType, ContextType, RequireFields<GqlMutationResolveUserReportArgs, 'id'>>;
 };
 
-export type GqlQueryResolvers<ContextType = ServerState, ParentType extends GqlResolversParentTypes['Query'] = GqlResolversParentTypes['Query']> = {
+export type GqlQueryResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['Query'] = GqlResolversParentTypes['Query']> = {
   account?: Resolver<GqlResolversTypes['Account'], ParentType, ContextType>;
   login?: Resolver<GqlResolversTypes['LoginData'], ParentType, ContextType, RequireFields<GqlQueryLoginArgs, 'usernameEmail' | 'passwordHash'>>;
   loginRefresh?: Resolver<GqlResolversTypes['LoginData'], ParentType, ContextType, RequireFields<GqlQueryLoginRefreshArgs, 'refreshToken'>>;
@@ -292,7 +292,7 @@ export type GqlQueryResolvers<ContextType = ServerState, ParentType extends GqlR
   findUserReport?: Resolver<GqlResolversTypes['UserReport'], ParentType, ContextType, RequireFields<GqlQueryFindUserReportArgs, 'id'>>;
 };
 
-export type GqlBaseModelResolvers<ContextType = ServerState, ParentType extends GqlResolversParentTypes['BaseModel'] = GqlResolversParentTypes['BaseModel']> = {
+export type GqlBaseModelResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['BaseModel'] = GqlResolversParentTypes['BaseModel']> = {
   __resolveType: TypeResolveFn<'Episode' | 'Show' | 'ShowAdmin' | 'Timestamp' | 'TimestampType' | 'Template' | 'UserReport', ParentType, ContextType>;
   id?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
   createdAt?: Resolver<GqlResolversTypes['Time'], ParentType, ContextType>;
@@ -306,7 +306,7 @@ export type GqlBaseModelResolvers<ContextType = ServerState, ParentType extends 
   deletedBy?: Resolver<Maybe<GqlResolversTypes['User']>, ParentType, ContextType>;
 };
 
-export type GqlEpisodeResolvers<ContextType = ServerState, ParentType extends GqlResolversParentTypes['Episode'] = GqlResolversParentTypes['Episode']> = {
+export type GqlEpisodeResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['Episode'] = GqlResolversParentTypes['Episode']> = {
   id?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
   createdAt?: Resolver<GqlResolversTypes['Time'], ParentType, ContextType>;
   createdByUserId?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
@@ -331,7 +331,7 @@ export type GqlEpisodeResolvers<ContextType = ServerState, ParentType extends Gq
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type GqlThirdPartyEpisodeResolvers<ContextType = ServerState, ParentType extends GqlResolversParentTypes['ThirdPartyEpisode'] = GqlResolversParentTypes['ThirdPartyEpisode']> = {
+export type GqlThirdPartyEpisodeResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['ThirdPartyEpisode'] = GqlResolversParentTypes['ThirdPartyEpisode']> = {
   id?: Resolver<Maybe<GqlResolversTypes['ID']>, ParentType, ContextType>;
   season?: Resolver<Maybe<GqlResolversTypes['String']>, ParentType, ContextType>;
   number?: Resolver<Maybe<GqlResolversTypes['String']>, ParentType, ContextType>;
@@ -345,7 +345,7 @@ export type GqlThirdPartyEpisodeResolvers<ContextType = ServerState, ParentType 
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type GqlEpisodeUrlResolvers<ContextType = ServerState, ParentType extends GqlResolversParentTypes['EpisodeUrl'] = GqlResolversParentTypes['EpisodeUrl']> = {
+export type GqlEpisodeUrlResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['EpisodeUrl'] = GqlResolversParentTypes['EpisodeUrl']> = {
   url?: Resolver<GqlResolversTypes['String'], ParentType, ContextType>;
   createdAt?: Resolver<GqlResolversTypes['Time'], ParentType, ContextType>;
   createdByUserId?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
@@ -361,7 +361,7 @@ export type GqlEpisodeUrlResolvers<ContextType = ServerState, ParentType extends
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type GqlAccountResolvers<ContextType = ServerState, ParentType extends GqlResolversParentTypes['Account'] = GqlResolversParentTypes['Account']> = {
+export type GqlAccountResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['Account'] = GqlResolversParentTypes['Account']> = {
   id?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
   createdAt?: Resolver<GqlResolversTypes['Time'], ParentType, ContextType>;
   deletedAt?: Resolver<Maybe<GqlResolversTypes['Time']>, ParentType, ContextType>;
@@ -375,7 +375,7 @@ export type GqlAccountResolvers<ContextType = ServerState, ParentType extends Gq
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type GqlPreferencesResolvers<ContextType = ServerState, ParentType extends GqlResolversParentTypes['Preferences'] = GqlResolversParentTypes['Preferences']> = {
+export type GqlPreferencesResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['Preferences'] = GqlResolversParentTypes['Preferences']> = {
   id?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
   createdAt?: Resolver<GqlResolversTypes['Time'], ParentType, ContextType>;
   updatedAt?: Resolver<GqlResolversTypes['Time'], ParentType, ContextType>;
@@ -403,7 +403,7 @@ export type GqlPreferencesResolvers<ContextType = ServerState, ParentType extend
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type GqlShowResolvers<ContextType = ServerState, ParentType extends GqlResolversParentTypes['Show'] = GqlResolversParentTypes['Show']> = {
+export type GqlShowResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['Show'] = GqlResolversParentTypes['Show']> = {
   id?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
   createdAt?: Resolver<GqlResolversTypes['Time'], ParentType, ContextType>;
   createdByUserId?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
@@ -427,14 +427,14 @@ export type GqlShowResolvers<ContextType = ServerState, ParentType extends GqlRe
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type GqlThirdPartyShowResolvers<ContextType = ServerState, ParentType extends GqlResolversParentTypes['ThirdPartyShow'] = GqlResolversParentTypes['ThirdPartyShow']> = {
+export type GqlThirdPartyShowResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['ThirdPartyShow'] = GqlResolversParentTypes['ThirdPartyShow']> = {
   name?: Resolver<GqlResolversTypes['String'], ParentType, ContextType>;
   createdAt?: Resolver<Maybe<GqlResolversTypes['Time']>, ParentType, ContextType>;
   updatedAt?: Resolver<Maybe<GqlResolversTypes['Time']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type GqlShowAdminResolvers<ContextType = ServerState, ParentType extends GqlResolversParentTypes['ShowAdmin'] = GqlResolversParentTypes['ShowAdmin']> = {
+export type GqlShowAdminResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['ShowAdmin'] = GqlResolversParentTypes['ShowAdmin']> = {
   id?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
   createdAt?: Resolver<GqlResolversTypes['Time'], ParentType, ContextType>;
   createdByUserId?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
@@ -452,7 +452,7 @@ export type GqlShowAdminResolvers<ContextType = ServerState, ParentType extends 
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type GqlTimestampResolvers<ContextType = ServerState, ParentType extends GqlResolversParentTypes['Timestamp'] = GqlResolversParentTypes['Timestamp']> = {
+export type GqlTimestampResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['Timestamp'] = GqlResolversParentTypes['Timestamp']> = {
   id?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
   createdAt?: Resolver<GqlResolversTypes['Time'], ParentType, ContextType>;
   createdByUserId?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
@@ -472,7 +472,7 @@ export type GqlTimestampResolvers<ContextType = ServerState, ParentType extends 
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type GqlThirdPartyTimestampResolvers<ContextType = ServerState, ParentType extends GqlResolversParentTypes['ThirdPartyTimestamp'] = GqlResolversParentTypes['ThirdPartyTimestamp']> = {
+export type GqlThirdPartyTimestampResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['ThirdPartyTimestamp'] = GqlResolversParentTypes['ThirdPartyTimestamp']> = {
   id?: Resolver<Maybe<GqlResolversTypes['ID']>, ParentType, ContextType>;
   at?: Resolver<GqlResolversTypes['Float'], ParentType, ContextType>;
   typeId?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
@@ -480,7 +480,7 @@ export type GqlThirdPartyTimestampResolvers<ContextType = ServerState, ParentTyp
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type GqlTimestampTypeResolvers<ContextType = ServerState, ParentType extends GqlResolversParentTypes['TimestampType'] = GqlResolversParentTypes['TimestampType']> = {
+export type GqlTimestampTypeResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['TimestampType'] = GqlResolversParentTypes['TimestampType']> = {
   id?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
   createdAt?: Resolver<GqlResolversTypes['Time'], ParentType, ContextType>;
   createdByUserId?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
@@ -496,7 +496,7 @@ export type GqlTimestampTypeResolvers<ContextType = ServerState, ParentType exte
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type GqlUserResolvers<ContextType = ServerState, ParentType extends GqlResolversParentTypes['User'] = GqlResolversParentTypes['User']> = {
+export type GqlUserResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['User'] = GqlResolversParentTypes['User']> = {
   id?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
   createdAt?: Resolver<GqlResolversTypes['Time'], ParentType, ContextType>;
   deletedAt?: Resolver<Maybe<GqlResolversTypes['Time']>, ParentType, ContextType>;
@@ -506,7 +506,7 @@ export type GqlUserResolvers<ContextType = ServerState, ParentType extends GqlRe
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type GqlTemplateResolvers<ContextType = ServerState, ParentType extends GqlResolversParentTypes['Template'] = GqlResolversParentTypes['Template']> = {
+export type GqlTemplateResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['Template'] = GqlResolversParentTypes['Template']> = {
   id?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
   createdAt?: Resolver<GqlResolversTypes['Time'], ParentType, ContextType>;
   createdByUserId?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
@@ -528,7 +528,7 @@ export type GqlTemplateResolvers<ContextType = ServerState, ParentType extends G
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type GqlTemplateTimestampResolvers<ContextType = ServerState, ParentType extends GqlResolversParentTypes['TemplateTimestamp'] = GqlResolversParentTypes['TemplateTimestamp']> = {
+export type GqlTemplateTimestampResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['TemplateTimestamp'] = GqlResolversParentTypes['TemplateTimestamp']> = {
   templateId?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
   template?: Resolver<GqlResolversTypes['Template'], ParentType, ContextType>;
   timestampId?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
@@ -536,7 +536,7 @@ export type GqlTemplateTimestampResolvers<ContextType = ServerState, ParentType 
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type GqlApiClientResolvers<ContextType = ServerState, ParentType extends GqlResolversParentTypes['ApiClient'] = GqlResolversParentTypes['ApiClient']> = {
+export type GqlApiClientResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['ApiClient'] = GqlResolversParentTypes['ApiClient']> = {
   id?: Resolver<GqlResolversTypes['String'], ParentType, ContextType>;
   createdAt?: Resolver<GqlResolversTypes['Time'], ParentType, ContextType>;
   createdByUserId?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
@@ -555,7 +555,7 @@ export type GqlApiClientResolvers<ContextType = ServerState, ParentType extends 
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type GqlExternalLinkResolvers<ContextType = ServerState, ParentType extends GqlResolversParentTypes['ExternalLink'] = GqlResolversParentTypes['ExternalLink']> = {
+export type GqlExternalLinkResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['ExternalLink'] = GqlResolversParentTypes['ExternalLink']> = {
   url?: Resolver<GqlResolversTypes['String'], ParentType, ContextType>;
   showId?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
   show?: Resolver<GqlResolversTypes['Show'], ParentType, ContextType>;
@@ -564,7 +564,7 @@ export type GqlExternalLinkResolvers<ContextType = ServerState, ParentType exten
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type GqlTotalCountsResolvers<ContextType = ServerState, ParentType extends GqlResolversParentTypes['TotalCounts'] = GqlResolversParentTypes['TotalCounts']> = {
+export type GqlTotalCountsResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['TotalCounts'] = GqlResolversParentTypes['TotalCounts']> = {
   episodes?: Resolver<GqlResolversTypes['Int'], ParentType, ContextType>;
   episodeUrls?: Resolver<GqlResolversTypes['Int'], ParentType, ContextType>;
   shows?: Resolver<GqlResolversTypes['Int'], ParentType, ContextType>;
@@ -575,7 +575,7 @@ export type GqlTotalCountsResolvers<ContextType = ServerState, ParentType extend
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type GqlUserReportResolvers<ContextType = ServerState, ParentType extends GqlResolversParentTypes['UserReport'] = GqlResolversParentTypes['UserReport']> = {
+export type GqlUserReportResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['UserReport'] = GqlResolversParentTypes['UserReport']> = {
   id?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
   createdAt?: Resolver<GqlResolversTypes['Time'], ParentType, ContextType>;
   createdByUserId?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
@@ -601,7 +601,7 @@ export type GqlUserReportResolvers<ContextType = ServerState, ParentType extends
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type GqlResolvers<ContextType = ServerState> = {
+export type GqlResolvers<ContextType = GqlContext> = {
   Time?: GraphQLScalarType;
   UInt?: GraphQLScalarType;
   LoginData?: GqlLoginDataResolvers<ContextType>;
@@ -629,7 +629,7 @@ export type GqlResolvers<ContextType = ServerState> = {
   UserReport?: GqlUserReportResolvers<ContextType>;
 };
 
-export type GqlDirectiveResolvers<ContextType = ServerState> = {
+export type GqlDirectiveResolvers<ContextType = GqlContext> = {
   authenticated?: GqlAuthenticatedDirectiveResolver<any, any, ContextType>;
   optionalAuthenticated?: GqlOptionalAuthenticatedDirectiveResolver<any, any, ContextType>;
   hasRole?: GqlHasRoleDirectiveResolver<any, any, ContextType>;

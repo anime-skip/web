@@ -14,11 +14,11 @@ export const showResolvers: GqlResolvers = {
   },
   Show: {
     createdBy: ({ createdByUserId: id }, _, ctx) =>
-      ctx.usersDataloader.load(id),
+      ctx.dataloaders.users.load(id),
     updatedBy: ({ updatedByUserId: id }, _, ctx) =>
-      ctx.usersDataloader.load(id),
+      ctx.dataloaders.users.load(id),
     deletedBy: ({ deletedByUserId: id }, _, ctx) =>
-      id == null ? null : ctx.usersDataloader.load(id),
+      id == null ? null : ctx.dataloaders.users.load(id),
     admins: (_parent, _args, _ctx) => todo(),
     episodes: (_parent, _args, _ctx) => todo(),
     templates: (_parent, _args, _ctx) => todo(),

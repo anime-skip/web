@@ -49,7 +49,8 @@
     "vue-router": "npm:vue-router@^4.5.0"
   },
   "compilerOptions": {
-    "verbatimModuleSyntax": true
+    "verbatimModuleSyntax": true,
+    "lib": ["deno.window", "dom"]
   },
   "exclude": [".output", ".vite", "node_modules"],
   "nodeModulesDir": "auto"

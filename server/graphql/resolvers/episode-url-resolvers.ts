@@ -13,9 +13,9 @@ export const episodeUrlResolvers: GqlResolvers = {
   },
   EpisodeUrl: {
     createdBy: ({ createdByUserId: id }, _, ctx) =>
-      ctx.usersDataloader.load(id),
+      ctx.dataloaders.users.load(id),
     updatedBy: ({ updatedByUserId: id }, _, ctx) =>
-      ctx.usersDataloader.load(id),
+      ctx.dataloaders.users.load(id),
     episode: (_parent, _args, _ctx) => todo(),
     url: (_parent, _args, _ctx) => todo(),
   },

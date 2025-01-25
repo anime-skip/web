@@ -14,11 +14,11 @@ export const timestampResolvers: GqlResolvers = {
   },
   Timestamp: {
     createdBy: ({ createdByUserId: id }, _, ctx) =>
-      ctx.usersDataloader.load(id),
+      ctx.dataloaders.users.load(id),
     updatedBy: ({ updatedByUserId: id }, _, ctx) =>
-      ctx.usersDataloader.load(id),
+      ctx.dataloaders.users.load(id),
     deletedBy: ({ deletedByUserId: id }, _, ctx) =>
-      id == null ? null : ctx.usersDataloader.load(id),
+      id == null ? null : ctx.dataloaders.users.load(id),
     type: (_parent, _args, _ctx) => todo(),
     episode: (_parent, _args, _ctx) => todo(),
   },

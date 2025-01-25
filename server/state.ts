@@ -1,13 +1,5 @@
-import {
-  createDrizzleDataloader,
-  openAnimeSkipDatabase,
-} from "server/utils/db.ts";
-import { apiClients, preferences, users } from "server/db/schema.ts";
+import { openAnimeSkipDatabase } from "server/utils/db.ts";
 import { logger } from "server/utils/logger.ts";
-import {
-  mapDbPreferencesToGqlPreferences,
-  mapDbUserToGqlUser,
-} from "server/graphql/mappers.ts";
 
 export async function createServerState() {
   const port = Number(Deno.env.get("AS_PORT")) || 3000;
@@ -24,21 +16,6 @@ export async function createServerState() {
     origin,
     logger,
     db,
-    usersDataloader: createDrizzleDataloader(
-      db,
-      users,
-      mapDbUserToGqlUser,
-    ),
-    preferencesDataLoader: createDrizzleDataloader(
-      db,
-      preferences,
-      mapDbPreferencesToGqlPreferences,
-    ),
-    apiClientDataLoader: createDrizzleDataloader(
-      db,
-      apiClients,
-      mapDbApiClientToGqlApiClient,
-    ),
   };
 }
 

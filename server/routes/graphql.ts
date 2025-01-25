@@ -5,11 +5,12 @@ import { makeExecutableSchema } from "@graphql-tools/schema";
 import { logger } from "server/utils/logger.ts";
 import { rootResolver } from "server/graphql/resolvers.ts";
 import type { ServerState } from "server/state.ts";
+import { createGqlContext } from "server/graphql/context.ts";
 
 const graphqlLogger = logger.extend("graphql");
 
 export const graphqlHandler = (
-  context: ServerState,
+  state: ServerState,
 ): AnimeSkipServerHandler<"/graphql"> => {
   const handleGraphql = loadGraphqlSchema().then((typeDefs) => {
     const schema = makeExecutableSchema({
@@ -18,14 +19,9 @@ export const graphqlHandler = (
     });
     return GraphQLHTTP<Request>({
       schema,
-      context: {
-        ...context,
-        // @ts-ignore: Bad typing
-        logger: graphqlLogger,
-      },
-      onOperation: (_req, op) => {
-        graphqlLogger.http(op.operationName || "Unknown");
-      },
+      context: (request) => createGqlContext(state, logger, request),
+      onOperation: (_req, op) =>
+        graphqlLogger.http(op.operationName || "Unnamed Operation"),
     });
   });
 

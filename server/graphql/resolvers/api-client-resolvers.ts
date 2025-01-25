@@ -1,9 +1,5 @@
 import type { GqlResolvers } from "server/graphql/resolver-types.gen.ts";
 import { todo } from "shared/utils.ts";
-import {
-  createMaybeUserResolver,
-  createUserResolver,
-} from "server/graphql/utils.ts";
 
 export const apiClientResolvers: GqlResolvers = {
   Mutation: {
@@ -17,10 +13,10 @@ export const apiClientResolvers: GqlResolvers = {
   },
   ApiClient: {
     createdBy: ({ createdByUserId: id }, _, ctx) =>
-      ctx.usersDataloader.load(id),
+      ctx.dataloaders.users.load(id),
     updatedBy: ({ updatedByUserId: id }, _, ctx) =>
-      ctx.usersDataloader.load(id),
+      ctx.dataloaders.users.load(id),
     deletedBy: ({ deletedByUserId: id }, _, ctx) =>
-      id == null ? null : ctx.usersDataloader.load(id),
+      id == null ? null : ctx.dataloaders.users.load(id),
   },
 };
