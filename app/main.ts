@@ -1,15 +1,26 @@
 import { createApp } from "vue";
-// @ts-expect-error: Deno doesn't like importing .vue modules in .ts files
-import App from "app/App.vue";
-import { createRouter, createWebHistory } from "vue-router";
-
-const app = createApp(App);
+import { createRouter, createWebHistory, RouterView } from "vue-router";
 
 const router = createRouter({
-  routes: [],
+  routes: [
+    {
+      path: "/",
+      component: () => import("app/layouts/DefaultLayout.vue"),
+      children: [
+        {
+          path: "",
+          component: () => import("app/pages/Home.vue"),
+        },
+        {
+          path: "get-started",
+          component: () => import("app/pages/GetStarted.vue"),
+        },
+      ],
+    },
+  ],
   history: createWebHistory(),
 });
 
+const app = createApp(RouterView);
 app.use(router);
-
 app.mount(document.body);

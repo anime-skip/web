@@ -29,6 +29,7 @@ export const graphqlHandler = (
     ctx,
   ) => {
     const response = await (await handleGraphql)(ctx.request.source!);
-    ctx.response.with(response);
+    ctx.response.status = response.status;
+    ctx.response.body = response.body;
   };
 };

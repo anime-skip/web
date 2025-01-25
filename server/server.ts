@@ -10,22 +10,42 @@ import { staticHandler } from "server/routes/static.ts";
 import { requestLoggerMiddleware } from "server/middleware/request-logger.ts";
 import { apiNotFoundHandler } from "server/routes/api/not-found.ts";
 import { createServerState, type ServerState } from "server/state.ts";
+import { resolveApiClientMiddleware } from "server/middleware/resolve-api-client.ts";
+import { rateLimiterMiddleware } from "server/middleware/rate-limiter.ts";
 
 export async function createServer(): Promise<AnimeSkipServer> {
   const state = await createServerState();
 
   const router = new Router<ServerState>();
-  router.get("/api/status", apiStatusHandler);
-  router.all("/api/(.*)", apiNotFoundHandler);
-  router.add(["GET", "POST"], "/graphql", graphqlHandler(state));
+  router.get(
+    "/api/status",
+    resolveApiClientMiddleware,
+    rateLimiterMiddleware,
+    apiStatusHandler,
+  );
+  router.all(
+    "/api/(.*)",
+    resolveApiClientMiddleware,
+    rateLimiterMiddleware,
+    apiNotFoundHandler,
+  );
+  router.add(
+    ["GET", "POST"],
+    "/graphql",
+    resolveApiClientMiddleware,
+    rateLimiterMiddleware,
+    graphqlHandler(state),
+  );
   router.get("/playground", playgroundHandler);
   router.get("/(.*)", staticHandler);
 
-  const app: AnimeSkipServer = new Application({ state });
+  const app: AnimeSkipServer = new Application({
+    state,
+    contextState: "alias",
+  });
   app.use(requestLoggerMiddleware);
   app.use(errorHandlerMiddleware);
-  app.use(router.routes());
-  app.use(router.allowedMethods());
+  app.use(router.routes(), router.allowedMethods());
   app.addEventListener("listen", () => {
     logger.info(
       `Server started @ ${Color.Dim}${Color.Underline}http://localhost:${state.port}${Color.Reset}`,

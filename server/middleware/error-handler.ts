@@ -13,6 +13,7 @@ export const errorHandlerMiddleware: AnimeSkipServerMiddleware = async (
     const err = isHttpError(_err)
       ? _err
       : new errors.InternalServerError("Unhandled error", { cause: _err });
+    ctx.state.logger.error(err);
     ctx.response.status = err.status;
     ctx.response.body = {
       status: err.status,

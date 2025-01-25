@@ -13,13 +13,15 @@
     --color-base: #0a1013;
     --color-base-content: #ffffff;
     /* Neutral highlight color */
-    --color-neutral: #142026;
+    --color-neutral: #282f37;
     --color-neutral-content: #ffffff;
 
     --font-sans: InterVariable, sans-serif;
     --font-overpass: "Overpass", ui-sans-serif, system-ui, sans-serif,
         "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
         "Noto Color Emoji";
+
+    --spacing-main-navigation: calc(16 * var(--spacing));
 }
 
 @plugin '@egoist/tailwindcss-icons' {

@@ -2,20 +2,21 @@
 defineProps<{
     icon: string;
     feature: string;
-    description: string;
+    body?: string;
 }>();
 </script>
 
 <template>
     <li
-        class="bg-secondary/10 ring ring-inset ring-secondary/50 p-8 rounded-xl"
+        class="bg-secondary/10 ring ring-inset ring-secondary/50 p-8 rounded-xl space-y-2"
     >
         <p
-            class="text-secondary pb-4 text-lg font-overpass font-bold flex items-center gap-4"
+            class="text-secondary text-lg font-overpass font-bold flex items-center gap-4"
         >
             <span :class="`${icon} size-7 text-secondary`" />
             <span class="pt-1">{{ feature }}</span>
         </p>
-        <p>{{ description }}</p>
+        <p v-if="body">{{ body }}</p>
+        <slot v-else />
     </li>
 </template>
