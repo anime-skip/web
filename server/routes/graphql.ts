@@ -7,7 +7,7 @@ import { logger } from "server/utils/logger.ts";
 import { rootResolver } from "server/graphql/resolvers.ts";
 import type { ServerState } from "server/state.ts";
 import { createGqlContext } from "server/graphql/context.ts";
-import { defaultFieldResolver, type GraphQLSchema } from "graphql";
+import { defaultFieldResolver } from "graphql";
 import type { GqlDirectiveResolvers } from "server/graphql/resolver-types.gen.ts";
 import { directiveResolvers } from "server/graphql/directives.ts";
 
@@ -17,11 +17,13 @@ export const graphqlHandler = (
   state: ServerState,
 ): AnimeSkipServerHandler<"/graphql"> => {
   const handleGraphql = loadGraphqlSchema().then((typeDefs) => {
-    const schema = makeExecutableSchema({
+    // deno-lint-ignore no-explicit-any
+    const schema: any = makeExecutableSchema({
       resolvers: rootResolver,
       typeDefs,
     });
-    const schemaWithDirectives = attachDirectiveResolvers(
+    // deno-lint-ignore no-explicit-any
+    const schemaWithDirectives: any = attachDirectiveResolvers(
       schema,
       directiveResolvers,
     );
@@ -45,9 +47,11 @@ export const graphqlHandler = (
 
 /** https://the-guild.dev/graphql/tools/docs/schema-directives#what-about-directiveresolvers */
 export function attachDirectiveResolvers(
-  schema: GraphQLSchema,
+  // deno-lint-ignore no-explicit-any
+  schema: any,
   directiveResolvers: GqlDirectiveResolvers,
-): GraphQLSchema {
+  // deno-lint-ignore no-explicit-any
+): any {
   // ... argument validation ...
 
   return mapSchema(schema, {
@@ -71,6 +75,7 @@ export function attachDirectiveResolvers(
                     source,
                     originalArgs,
                     context,
+                    // deno-lint-ignore no-explicit-any
                     info as any,
                   );
                   if (result instanceof Error) {
@@ -79,8 +84,10 @@ export function attachDirectiveResolvers(
                   resolve(result);
                 }),
               source,
+              // deno-lint-ignore no-explicit-any
               directiveArgs as any,
               context,
+              // deno-lint-ignore no-explicit-any
               info as any,
             );
           };

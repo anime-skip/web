@@ -8,6 +8,7 @@ export const apiClientResolvers: GqlResolvers = {
   Mutation: {
     createApiClient: async (_parent, args, ctx) => {
       const userId = ctx.authUserId!;
+      todo();
     },
 
     updateApiClient: async (_parent, args, ctx) => {
