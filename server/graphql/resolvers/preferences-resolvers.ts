@@ -6,6 +6,6 @@ export const preferencesResolvers: GqlResolvers = {
     savePreferences: (_parent, _args, _ctx) => todo(),
   },
   Preferences: {
-    user: (_parent, _args, _ctx) => todo(),
+    user: (parent, _args, ctx) => ctx.dataloaders.users.load(parent.userId),
   },
 };

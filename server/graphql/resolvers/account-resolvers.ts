@@ -21,6 +21,7 @@ import {
   sendPasswordResetEmail,
   sendWelcomeEmail,
 } from "server/utils/emails.ts";
+import type { GqlContext } from "server/graphql/context.ts";
 
 export const accountResolvers: GqlResolvers = {
   Mutation: {
@@ -93,7 +94,7 @@ export const accountResolvers: GqlResolvers = {
 
     changePassword: async (_parent, args, ctx) => {
       const userId = ctx.authUserId!;
-      const user = await requireUser(ctx.db, userId);
+      const user = await requireUser(ctx, userId);
 
       const oldPassword = md5(args.oldPassword.trim());
       const isMatch = await auth.comparePasswords(
@@ -111,7 +112,7 @@ export const accountResolvers: GqlResolvers = {
       const userId = ctx.authUserId!;
 
       await verifyRecaptcha(args.recaptchaResponse, ctx.ipAddress);
-      const user = await requireUser(ctx.db, userId);
+      const user = await requireUser(ctx, userId);
       const token = await auth.createToken("verify-email", { userId });
       await sendAccountVerificationEmail(user, token);
 
@@ -123,7 +124,7 @@ export const accountResolvers: GqlResolvers = {
         "verify-email",
         args.validationToken,
       );
-      const user = await requireUser(ctx.db, userId);
+      const user = await requireUser(ctx, userId);
 
       await ctx.db.update(users).set({ emailVerified: true }).where(
         eq(users.id, userId),
@@ -156,14 +157,14 @@ export const accountResolvers: GqlResolvers = {
         "reset-password",
         args.passwordResetToken,
       );
-      const user = await requireUser(ctx.db, userId);
+      const user = await requireUser(ctx, userId);
 
       return await updatePassword(ctx.db, user, args);
     },
 
     deleteAccountRequest: async (_parent, { passwordHash }, ctx) => {
       const userId = ctx.authUserId!;
-      const user = await requireUser(ctx.db, userId);
+      const user = await requireUser(ctx, userId);
 
       const isMatch = await auth.comparePasswords(
         passwordHash,
@@ -181,7 +182,7 @@ export const accountResolvers: GqlResolvers = {
         "delete-account",
         deleteToken,
       );
-      const _user = await requireUser(ctx.db, userId);
+      const _user = await requireUser(ctx, userId);
 
       todo();
     },
@@ -215,12 +216,12 @@ export const accountResolvers: GqlResolvers = {
 
     loginRefresh: async (_parent, { refreshToken }, ctx) => {
       const { userId } = await auth.validateToken("refresh", refreshToken);
-      const user = await requireUser(ctx.db, userId);
+      const user = await requireUser(ctx, userId);
       return createLoginData(user);
     },
 
     account: (_parent, _args, ctx) =>
-      ctx.dataloaders.accounts.load(ctx.authUserId),
+      ctx.dataloaders.accounts.load(ctx.authUserId!),
   },
   Account: {
     preferences: (parent, _args, ctx) =>
@@ -236,12 +237,10 @@ export const accountResolvers: GqlResolvers = {
 };
 
 async function requireUser(
-  db: AnimeSkipDatabase,
+  ctx: GqlContext,
   userId: string,
 ): Promise<DbUser> {
-  const user = await db.query.users.findFirst({
-    where: eq(users.id, userId),
-  });
+  const user = await ctx.dataloaders.dbUsers.load(userId);
   if (user == null) {
     throw Error(`User not found with id: ${userId}`);
   }

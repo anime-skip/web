@@ -4,10 +4,14 @@ import { todo } from "shared/utils.ts";
 export const templateTimestampResolvers: GqlResolvers = {
   Mutation: {
     addTimestampToTemplate: (_parent, _args, _ctx) => todo(),
+
     removeTimestampFromTemplate: (_parent, _args, _ctx) => todo(),
   },
   TemplateTimestamp: {
-    template: (_parent, _args, _ctx) => todo(),
-    timestamp: (_parent, _args, _ctx) => todo(),
+    template: (parent, _args, ctx) =>
+      ctx.dataloaders.templates.load(parent.templateId),
+
+    timestamp: (parent, _args, ctx) =>
+      ctx.dataloaders.timestamps.load(parent.timestampId),
   },
 };

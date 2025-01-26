@@ -24,16 +24,22 @@ export const countResolvers: GqlResolvers = {
   },
   TotalCounts: {
     episodeUrls: (_parent, _args, { db }) => db.$count(episodeUrls),
+
     episodes: (_parent, _args, { db }) =>
       db.$count(episodes, isNull(episodes.deletedAt)),
+
     shows: (_parent, _args, { db }) =>
       db.$count(shows, isNull(shows.deletedAt)),
+
     templates: (_parent, _args, { db }) =>
       db.$count(templates, isNull(templates.deletedAt)),
+
     timestampTypes: (_parent, _args, { db }) =>
       db.$count(timestampTypes, isNull(timestampTypes.deletedAt)),
+
     timestamps: (_parent, _args, { db }) =>
       db.$count(timestamps, isNull(timestamps.deletedAt)),
+
     users: (_parent, _args, { db }) =>
       db.$count(users, isNull(users.deletedAt)),
   },

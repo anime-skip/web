@@ -10,6 +10,13 @@ export function createGqlContext(
   // deno-lint-ignore no-explicit-any
   request: any,
 ) {
+  const dbUsersDataloader = createDrizzleDataloader(
+    state.db,
+    tables.users,
+    "id",
+    (v: tables.DbUser) => v,
+  );
+
   return {
     ...state,
     logger,
@@ -19,9 +26,11 @@ export function createGqlContext(
 
     // deno-fmt-ignore
     dataloaders: {
+      dbUsers: dbUsersDataloader,
+      accounts: { load: (key:string) => dbUsersDataloader.load(key).then(mappers.mapDbUserToGqlAccount) },
+      users:    { load: (key:string) => dbUsersDataloader.load(key).then(mappers.mapDbUserToGqlUser) },
+
       apiClients:     createDrizzleDataloader(state.db, tables.apiClients,     "id",  mappers.mapDbApiClientToGqlApiClient),
-      accounts:       createDrizzleDataloader(state.db, tables.users,          "id",  mappers.mapDbUserToGqlAccount),
-      users:          createDrizzleDataloader(state.db, tables.users,          "id",  mappers.mapDbUserToGqlUser),
       userReports:    createDrizzleDataloader(state.db, tables.userReports,    "id",  mappers.mapDbUserReportToGqlUserReport),
       episodeUrls:    createDrizzleDataloader(state.db, tables.episodeUrls,    "url", mappers.mapDbEpisodeUrlToGqlEpisodeUrl),
       episodes:       createDrizzleDataloader(state.db, tables.episodes,       "id",  mappers.mapDbEpisodeToGqlEpisode),
@@ -31,6 +40,7 @@ export function createGqlContext(
       timestampTypes: createDrizzleDataloader(state.db, tables.timestampTypes, "id",  mappers.mapDbTimestampTypeToGqlTimestampType),
       timestamps:     createDrizzleDataloader(state.db, tables.timestamps,     "id",  mappers.mapDbTimestampToGqlTimestamp),
       externalLinks:  createDrizzleDataloader(state.db, tables.externalLinks,  "url", mappers.mapDbExternalLinkToGqlExternalLink),
+
       preferences: {
         byId:     createDrizzleDataloader(state.db, tables.preferences, "id",     mappers.mapDbPreferencesToGqlPreferences),
         byUserId: createDrizzleDataloader(state.db, tables.preferences, "userId", mappers.mapDbPreferencesToGqlPreferences),
