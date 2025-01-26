@@ -1,5 +1,8 @@
 import { merge } from "@es-toolkit/es-toolkit";
 
+// @ts-types="@types/md5"
+export { default as md5 } from "md5";
+
 export function todo(message?: string): never {
   throw Error(message ? `TODO: ${message}` : "TODO");
 }

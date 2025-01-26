@@ -26,14 +26,14 @@ type TypeSafeDbMapping<T> = NoOptionals<T>;
 // deno-lint-ignore no-explicit-any
 const unresolved = Symbol("Needs resolved by GrahpQL") as any;
 
-export function mapDbUserToGqlUser(user: DbUser): GqlUser {
+export function mapDbUserToGqlUser(db: DbUser): GqlUser {
   return {
-    id: user.id,
-    createdAt: user.createdAt,
-    profileUrl: user.profileUrl,
+    id: db.id,
+    createdAt: db.createdAt,
+    profileUrl: db.profileUrl,
     adminOfShows: unresolved,
-    username: user.username,
-    deletedAt: user.deletedAt,
+    username: db.username,
+    deletedAt: db.deletedAt,
   } satisfies TypeSafeGqlMapping<GqlUser>;
 }
 
@@ -49,6 +49,21 @@ export function mapDbUserRoleToGqlRole(db: DbUserRole): GqlRole {
       return "USER";
   }
   throw Error("Unknown DbUserRole: " + db);
+}
+
+export function mapDbUserToGqlAccount(db: DbUser): GqlAccount {
+  return {
+    id: db.id,
+    createdAt: db.createdAt,
+    deletedAt: db.deletedAt,
+    username: db.username,
+    email: db.email,
+    profileUrl: db.profileUrl,
+    adminOfShows: unresolved,
+    emailVerified: db.emailVerified,
+    role: mapDbUserRoleToGqlRole(db.role),
+    preferences: unresolved,
+  } satisfies TypeSafeGqlMapping<GqlAccount>;
 }
 
 export function mapGqlRoleToDbUserRole(gql: GqlRole): DbUserRole {

@@ -19,6 +19,7 @@ export async function createServerState() {
     logger,
     apiClient: null! as DbApiClient,
     requestId: null! as string,
+    ipAddress: null! as string,
   };
 }
 

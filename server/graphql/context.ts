@@ -14,10 +14,13 @@ export function createGqlContext(
     ...state,
     logger,
     request,
+    authUserId: undefined as string | undefined,
+    authRole: undefined as tables.DbUserRole | undefined,
 
     // deno-fmt-ignore
     dataloaders: {
       apiClients:     createDrizzleDataloader(state.db, tables.apiClients,     "id",  mappers.mapDbApiClientToGqlApiClient),
+      accounts:       createDrizzleDataloader(state.db, tables.users,          "id",  mappers.mapDbUserToGqlAccount),
       users:          createDrizzleDataloader(state.db, tables.users,          "id",  mappers.mapDbUserToGqlUser),
       userReports:    createDrizzleDataloader(state.db, tables.userReports,    "id",  mappers.mapDbUserReportToGqlUserReport),
       episodeUrls:    createDrizzleDataloader(state.db, tables.episodeUrls,    "url", mappers.mapDbEpisodeUrlToGqlEpisodeUrl),
@@ -27,8 +30,11 @@ export function createGqlContext(
       templates:      createDrizzleDataloader(state.db, tables.templates,      "id",  mappers.mapDbTemplateToGqlTemplate),
       timestampTypes: createDrizzleDataloader(state.db, tables.timestampTypes, "id",  mappers.mapDbTimestampTypeToGqlTimestampType),
       timestamps:     createDrizzleDataloader(state.db, tables.timestamps,     "id",  mappers.mapDbTimestampToGqlTimestamp),
-      preferences:    createDrizzleDataloader(state.db, tables.preferences,    "id",  mappers.mapDbPreferencesToGqlPreferences),
       externalLinks:  createDrizzleDataloader(state.db, tables.externalLinks,  "url", mappers.mapDbExternalLinkToGqlExternalLink),
+      preferences: {
+        byId:     createDrizzleDataloader(state.db, tables.preferences, "id",     mappers.mapDbPreferencesToGqlPreferences),
+        byUserId: createDrizzleDataloader(state.db, tables.preferences, "userId", mappers.mapDbPreferencesToGqlPreferences),
+      },
       templateTimestamps: {
         byTemplateIds:  createDrizzleDataloader(state.db, tables.templateTimestamps, "templateId", mappers.mapDbTemplateTimestampToGqlTemplateTimestamp),
         byTimestampIds: createDrizzleDataloader(state.db, tables.templateTimestamps, "timestampId", mappers.mapDbTemplateTimestampToGqlTemplateTimestamp),
