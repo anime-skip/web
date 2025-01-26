@@ -16,6 +16,9 @@
     --color-neutral: #282f37;
     --color-neutral-content: #ffffff;
 
+    --color-white: #ffffff;
+    --color-black: #000000;
+
     --font-sans: InterVariable, sans-serif;
     --font-overpass: "Overpass", ui-sans-serif, system-ui, sans-serif,
         "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
@@ -54,6 +57,7 @@
         font-weight: 500;
         transition: 250ms ease;
         padding: 0 calc(4 * var(--spacing));
+        cursor: pointer;
     }
     .btn-outline {
         background-color: transparent;
@@ -92,5 +96,41 @@
     .link {
         text-decoration: underline;
         color: var(--color-primary);
+    }
+
+    .footer {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        font-size: var(--text-sm);
+        gap: calc(8 * var(--spacing));
+        padding: calc(8 * var(--spacing));
+    }
+    @media (width >= 28rem) {
+        .footer {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    @media (width >= 48rem) {
+        .footer {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+    @media (width >= 64rem) {
+        .footer {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+    .footer ul {
+        display: flex;
+        flex-direction: column;
+        gap: calc(2 * var(--spacing));
+    }
+    .footer .footer-title {
+        opacity: 50%;
+        font-weight: 500;
+        font-family: var(--font-overpass);
+    }
+    .footer a:hover {
+        text-decoration: underline;
     }
 }
