@@ -5,13 +5,9 @@ import {
   type DbUser,
   DbUserRole,
   preferences,
-  showAdmins,
   users,
 } from "server/db/schema.ts";
-import {
-  mapDbShowAdminToGqlShowAdmin,
-  mapDbUserToGqlAccount,
-} from "server/graphql/mappers.ts";
+import { mapDbUserToGqlAccount } from "server/graphql/mappers.ts";
 import { auth } from "server/utils/auth.ts";
 import type { AnimeSkipDatabase } from "server/utils/db.ts";
 import { validateEmail, validateUsername } from "server/utils/validation.ts";
@@ -22,6 +18,8 @@ import {
   sendWelcomeEmail,
 } from "server/utils/emails.ts";
 import type { GqlContext } from "server/graphql/context.ts";
+import { getShowAdminsByUserId } from "server/graphql/resolvers/show-admin-resolvers.ts";
+import { getOptionalUserByUsername } from "server/graphql/resolvers/user-resolvers.ts";
 
 export const accountResolvers: GqlResolvers = {
   Mutation: {
@@ -38,9 +36,10 @@ export const accountResolvers: GqlResolvers = {
       await verifyRecaptcha(args.recaptchaResponse, ctx.ipAddress);
 
       ctx.logger.verbose("Checking for existing username");
-      const existingUserByUsername = await ctx.db.query.users.findFirst({
-        where: eq(users.username, username),
-      });
+      const existingUserByUsername = await getOptionalUserByUsername(
+        ctx,
+        username,
+      );
       if (existingUserByUsername) {
         throw Error(
           `Username '${username}' is already taken, use a different one`,
@@ -227,12 +226,7 @@ export const accountResolvers: GqlResolvers = {
     preferences: (parent, _args, ctx) =>
       ctx.dataloaders.preferences.byUserId.load(parent.id),
 
-    adminOfShows: async (parent, _args, ctx) => {
-      const rows = await ctx.db.query.showAdmins.findMany({
-        where: eq(showAdmins.userId, parent.id),
-      });
-      return rows.map(mapDbShowAdminToGqlShowAdmin);
-    },
+    adminOfShows: (parent, _args, ctx) => getShowAdminsByUserId(ctx, parent.id),
   },
 };
 

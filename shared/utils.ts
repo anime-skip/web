@@ -23,3 +23,26 @@ export function mergeAll<T extends Record<PropertyKey, unknown>>(
   }
   return objects.reduce((acc, obj) => merge(acc ?? {}, obj));
 }
+
+export function randomString(length: number): string {
+  const letters =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+  let result = "";
+  for (let i = 0; i < length; i++) {
+    result += letters.charAt(Math.floor(Math.random() * letters.length));
+  }
+  return result;
+}
+
+export function stripNullish<T extends Record<string, unknown>>(
+  obj: T,
+): StripNullish<T> {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([_, value]) => value !== undefined),
+  ) as StripNullish<T>;
+}
+
+export type StripNullish<T> = {
+  [K in keyof T]: Exclude<T[K], undefined | null>;
+};

@@ -1,5 +1,6 @@
 import type { GqlResolvers } from "server/graphql/resolver-types.gen.ts";
 import { todo } from "shared/utils.ts";
+import { mapDbTimestampTypeToGqlTimestampType } from "server/graphql/mappers.ts";
 
 export const timestampTypeResolvers: GqlResolvers = {
   Mutation: {
@@ -13,7 +14,10 @@ export const timestampTypeResolvers: GqlResolvers = {
     findTimestampType: (_parent, args, ctx) =>
       ctx.dataloaders.timestampTypes.load(args.timestampTypeId),
 
-    allTimestampTypes: (_parent, _args, _ctx) => todo(),
+    allTimestampTypes: async (_parent, _args, ctx) => {
+      const rows = await ctx.db.query.timestampTypes.findMany();
+      return rows.map(mapDbTimestampTypeToGqlTimestampType);
+    },
   },
   TimestampType: {
     createdBy: ({ createdByUserId: id }, _, ctx) =>
@@ -23,6 +27,6 @@ export const timestampTypeResolvers: GqlResolvers = {
       ctx.dataloaders.users.load(id),
 
     deletedBy: ({ deletedByUserId: id }, _, ctx) =>
-      id == null ? null : ctx.dataloaders.users.load(id),
+      id ? ctx.dataloaders.users.load(id) : null,
   },
 };

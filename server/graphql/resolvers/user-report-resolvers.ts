@@ -1,5 +1,9 @@
 import type { GqlResolvers } from "server/graphql/resolver-types.gen.ts";
 import { todo } from "shared/utils.ts";
+import { and, eq, isNull } from "drizzle-orm";
+import type { GqlContext } from "server/graphql/context.ts";
+import { userReports } from "server/db/schema.ts";
+import { mapDbUserReportToGqlUserReport } from "server/graphql/mappers.ts";
 
 export const userReportResolvers: GqlResolvers = {
   Mutation: {
@@ -21,7 +25,7 @@ export const userReportResolvers: GqlResolvers = {
       ctx.dataloaders.users.load(id),
 
     deletedBy: ({ deletedByUserId: id }, _, ctx) =>
-      id == null ? null : ctx.dataloaders.users.load(id),
+      id ? ctx.dataloaders.users.load(id) : null,
 
     timestamp: (parent, _args, ctx) =>
       parent.timestampId
@@ -40,3 +44,16 @@ export const userReportResolvers: GqlResolvers = {
       parent.showId ? ctx.dataloaders.shows.load(parent.showId) : null,
   },
 };
+
+export async function getUserReportsByEpisodeId(
+  ctx: GqlContext,
+  episodeId: string,
+): Promise<GqlUserReport[]> {
+  const rows = await ctx.db.query.userReports.findMany({
+    where: and(
+      eq(userReports.episodeId, episodeId),
+      isNull(userReports.deletedAt),
+    ),
+  });
+  return rows.map(mapDbUserReportToGqlUserReport);
+}

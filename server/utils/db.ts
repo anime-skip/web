@@ -4,7 +4,7 @@ import type {
   PgTableWithColumns,
   TableConfig,
 } from "drizzle-orm/pg-core";
-import { inArray } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
 import * as dbSchema from "server/db/schema.ts";
 import { logger } from "server/utils/logger.ts";
@@ -38,6 +38,10 @@ export async function openAnimeSkipDatabase(): Promise<AnimeSkipDatabase> {
 
 export type AnimeSkipDatabase = NodePgDatabase<typeof dbSchema>;
 
+///
+/// Dataloaders
+///
+
 export function createDrizzleDataloader<DbModel, GqlModel>(
   db: AnimeSkipDatabase,
   // deno-lint-ignore no-explicit-any
@@ -52,4 +56,26 @@ export function createDrizzleDataloader<DbModel, GqlModel>(
     );
     return rows.map(mapper);
   });
+}
+
+///
+/// Deletes
+///
+
+export async function softDeleteApiClient(
+  db: AnimeSkipDatabase,
+  id: string,
+  userId: string,
+  now: Date,
+): Promise<dbSchema.DbApiClient> {
+  const [deleted] = await db.update(dbSchema.apiClients)
+    .set({
+      updatedAt: now.toISOString(),
+      updatedByUserId: userId,
+      deletedAt: now.toISOString(),
+      deletedByUserId: userId,
+    })
+    .where(eq(dbSchema.apiClients.id, id))
+    .returning();
+  return deleted;
 }

@@ -1,5 +1,8 @@
 import type { GqlResolvers } from "server/graphql/resolver-types.gen.ts";
 import { todo } from "shared/utils.ts";
+import { getEpisodesByShowId } from "server/graphql/resolvers/episode-resolvers.ts";
+import { getShowAdminsByShowId } from "server/graphql/resolvers/show-admin-resolvers.ts";
+import { getTemplatesByShowId } from "server/graphql/resolvers/template-resolvers.ts";
 
 export const showResolvers: GqlResolvers = {
   Mutation: {
@@ -24,13 +27,13 @@ export const showResolvers: GqlResolvers = {
       ctx.dataloaders.users.load(id),
 
     deletedBy: ({ deletedByUserId: id }, _, ctx) =>
-      id == null ? null : ctx.dataloaders.users.load(id),
+      id ? ctx.dataloaders.users.load(id) : null,
 
-    admins: (_parent, _args, _ctx) => todo(),
+    admins: (parent, _args, ctx) => getShowAdminsByShowId(ctx, parent.id),
 
-    episodes: (_parent, _args, _ctx) => todo(),
+    episodes: (parent, _args, ctx) => getEpisodesByShowId(ctx, parent.id),
 
-    templates: (_parent, _args, _ctx) => todo(),
+    templates: (parent, _args, ctx) => getTemplatesByShowId(ctx, parent.id),
 
     externalLinks: (_parent, _args, _ctx) => todo(),
 

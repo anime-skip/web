@@ -1,6 +1,6 @@
 import type { AnimeSkipServerMiddleware } from "server/types.ts";
 import { apiClients } from "server/db/schema.ts";
-import { eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 import { errors } from "@oak/commons/http_errors";
 
 /** Using the header, grab a reference to the requestor's API client. */
@@ -14,7 +14,10 @@ export const resolveApiClientMiddleware: AnimeSkipServerMiddleware = async (
   }
 
   const apiClient = await ctx.state.db.query.apiClients.findFirst({
-    where: eq(apiClients.id, clientId),
+    where: and(
+      eq(apiClients.id, clientId),
+      isNull(apiClients.deletedAt),
+    ),
   });
   if (apiClient == null) {
     throw new errors.BadRequest("API Client not found with id=" + clientId);
