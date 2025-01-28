@@ -7,7 +7,7 @@
     "dev": "bun run --watch scripts/dev.ts",
     "build": "bun run scripts/build.ts",
     "docker:build": "docker build -t web:latest .",
-    "docker:preview": "docker run -p 3000:3000 -e NODE_ENV=production --env-file=.env web:latest",
+    "docker:preview": "docker run --init --rm -p 3000:3000 -e NODE_ENV=production --env-file=.env web:latest",
     "preview": "cd .output && bun run --env-file=../.env server/main.ts",
     "drizzle-kit": "cd server && drizzle-kit",
     "gen": "bun gen:db && bun gen:graphql",

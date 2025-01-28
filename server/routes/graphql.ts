@@ -1,4 +1,3 @@
-import { loadGraphqlSchema } from "server/assets/graphql/index";
 import type { AnimeSkipServerHandler } from "server/types";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { getDirectives, MapperKind, mapSchema } from "@graphql-tools/utils";
@@ -7,18 +6,15 @@ import { createGqlContext } from "server/graphql/context";
 import { defaultFieldResolver, graphql, type GraphQLSchema } from "graphql";
 import type { GqlDirectiveResolvers } from "server/graphql/resolver-types.gen";
 import { directiveResolvers } from "server/graphql/directives";
+import { typeDefs } from "server/graphql/type-defs";
 
-const schema = loadGraphqlSchema().then((typeDefs) => {
-  const schema: GraphQLSchema = makeExecutableSchema({
+const schema: GraphQLSchema = attachDirectiveResolvers(
+  makeExecutableSchema({
     resolvers: rootResolver,
-    typeDefs,
-  });
-  const schemaWithDirectives: GraphQLSchema = attachDirectiveResolvers(
-    schema,
-    directiveResolvers,
-  );
-  return schemaWithDirectives;
-});
+    typeDefs: typeDefs,
+  }),
+  directiveResolvers,
+);
 
 export const graphqlHandler: AnimeSkipServerHandler<"/graphql"> = async (
   ctx,
@@ -32,7 +28,7 @@ export const graphqlHandler: AnimeSkipServerHandler<"/graphql"> = async (
   ctx.state.logger.info("Evaluating GraphQL:", operationName);
 
   const response = await graphql({
-    schema: await schema,
+    schema,
     source: query,
     contextValue: createGqlContext(ctx),
     variableValues: variables,

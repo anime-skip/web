@@ -1,14 +1,11 @@
-import { loadGraphqlSchema } from "server/assets/graphql/index";
+import { typeDefs } from "server/graphql/type-defs";
 import { codegen } from "@graphql-codegen/core";
 import * as typescriptPlugin from "@graphql-codegen/typescript";
 import * as typescriptResolversPlugin from "@graphql-codegen/typescript-resolvers";
 import { logger } from "server/utils/logger";
 import { createTimer } from "shared/time";
 import type { CodegenPlugin } from "@graphql-codegen/plugin-helpers";
-import type { DocumentNode } from "graphql";
 import { Color } from "server/utils/logger";
-
-let schema: DocumentNode;
 
 const codegenLogger = logger.extend("graphql-codegen");
 
@@ -23,8 +20,6 @@ export async function generateGraphqlCode() {
     `  - Resolvers: ${Color.Cyan}./${resolversOutput}${Color.Reset}`,
   );
   const codegenTimer = createTimer();
-
-  schema = await loadGraphqlSchema();
 
   await generate<typescriptPlugin.TypeScriptPluginConfig>(
     typesOutput,
@@ -55,7 +50,7 @@ async function generate<T extends {}>(
   config: T,
 ): Promise<void> {
   const code = await codegen({
-    schema,
+    schema: typeDefs,
     config: {},
     documents: [],
     filename,
