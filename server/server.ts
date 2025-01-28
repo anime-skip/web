@@ -1,17 +1,17 @@
 import { Application } from "@oak/oak/application";
 import { Router } from "@oak/oak/router";
-import { errorHandlerMiddleware } from "server/middleware/error-handler.ts";
-import type { AnimeSkipServer } from "server/types.ts";
-import { Color, logger } from "server/utils/logger.ts";
-import { apiStatusHandler } from "server/routes/api/status.ts";
-import { graphqlHandler } from "server/routes/graphql.ts";
-import { playgroundHandler } from "server/routes/playground.ts";
-import { staticHandler } from "server/routes/static.ts";
-import { requestLoggerMiddleware } from "server/middleware/request-logger.ts";
-import { apiNotFoundHandler } from "server/routes/api/not-found.ts";
-import { createServerState, type ServerState } from "server/state.ts";
-import { resolveApiClientMiddleware } from "server/middleware/resolve-api-client.ts";
-import { rateLimiterMiddleware } from "server/middleware/rate-limiter.ts";
+import { errorHandlerMiddleware } from "server/middleware/error-handler";
+import type { AnimeSkipServer } from "server/types";
+import { Color, logger } from "server/utils/logger";
+import { apiStatusHandler } from "server/routes/api/status";
+import { graphqlHandler } from "server/routes/graphql";
+import { playgroundHandler } from "server/routes/playground";
+import { staticHandler } from "server/routes/static";
+import { requestLoggerMiddleware } from "server/middleware/request-logger";
+import { apiNotFoundHandler } from "server/routes/api/not-found";
+import { createServerState, type ServerState } from "server/state";
+import { resolveApiClientMiddleware } from "server/middleware/resolve-api-client";
+import { rateLimiterMiddleware } from "server/middleware/rate-limiter";
 
 export async function createServer(): Promise<AnimeSkipServer> {
   const state = await createServerState();
@@ -29,12 +29,11 @@ export async function createServer(): Promise<AnimeSkipServer> {
     rateLimiterMiddleware,
     apiNotFoundHandler,
   );
-  router.add(
-    ["GET", "POST"],
+  router.post(
     "/graphql",
     resolveApiClientMiddleware,
     rateLimiterMiddleware,
-    graphqlHandler(state),
+    graphqlHandler,
   );
   router.get("/playground", playgroundHandler);
   router.get("/(.*)", staticHandler);

@@ -1,14 +1,11 @@
-import type { GqlResolvers } from "server/graphql/resolver-types.gen.ts";
-import { mapDbTimestampTypeToGqlTimestampType } from "server/graphql/mappers.ts";
-import type { NoOptionals } from "shared/types.ts";
-import {
-  type DbTimestampTypeInsert,
-  timestampTypes,
-} from "server/db/schema.ts";
+import type { GqlResolvers } from "server/graphql/resolver-types.gen";
+import { mapDbTimestampTypeToGqlTimestampType } from "server/graphql/mappers";
+import type { NoOptionals } from "shared/types";
+import { type DbTimestampTypeInsert, timestampTypes } from "server/db/schema";
 import {
   prepareGqlInputForDb,
   softDeleteTimestampTypes,
-} from "server/utils/db.ts";
+} from "server/utils/db";
 import { eq } from "drizzle-orm";
 
 export const timestampTypeResolvers: GqlResolvers = {
@@ -26,7 +23,9 @@ export const timestampTypeResolvers: GqlResolvers = {
         description: args.timestampTypeInput.description,
         name: args.timestampTypeInput.name,
       };
-      const [row] = await ctx.db.insert(timestampTypes).values(value)
+      const [row] = await ctx.db
+        .insert(timestampTypes)
+        .values(value)
         .returning();
       return mapDbTimestampTypeToGqlTimestampType(row);
     },

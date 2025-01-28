@@ -1,11 +1,11 @@
-import type { GqlResolvers } from "server/graphql/resolver-types.gen.ts";
-import { randomString } from "shared/utils.ts";
+import type { GqlResolvers } from "server/graphql/resolver-types.gen";
+import { randomString } from "shared/utils";
 import { asc, desc, eq } from "drizzle-orm";
-import { apiClients, type DbApiClientInsert } from "server/db/schema.ts";
-import { mapDbApiClientToGqlApiClient } from "server/graphql/mappers.ts";
-import { prepareGqlInputForDb, softDeleteApiClients } from "server/utils/db.ts";
-import type { GqlContext } from "server/graphql/context.ts";
-import type { NoOptionals } from "shared/types.ts";
+import { apiClients, type DbApiClientInsert } from "server/db/schema";
+import { mapDbApiClientToGqlApiClient } from "server/graphql/mappers";
+import { prepareGqlInputForDb, softDeleteApiClients } from "server/utils/db";
+import type { GqlContext } from "server/graphql/context";
+import type { NoOptionals } from "shared/types";
 
 export const apiClientResolvers: GqlResolvers = {
   Mutation: {

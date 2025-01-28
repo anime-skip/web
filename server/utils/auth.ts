@@ -1,8 +1,7 @@
-import { DAY, MINUTE, toSeconds } from "shared/time.ts";
+import { DAY, MINUTE, toSeconds } from "shared/time";
 import { jwtVerify, SignJWT } from "jose";
-// @deno-types="@types/bcryptjs"
 import bcrypt from "bcryptjs";
-import { logger } from "server/utils/logger.ts";
+import { logger } from "server/utils/logger";
 
 type TokenKind =
   | "access"
@@ -29,7 +28,7 @@ const AUDIENCES: Record<TokenKind, string> = {
 
 const ISSUER = "anime-skip.com";
 
-const SECRET_STR = Deno.env.get("AS_JWT_SECRET");
+const SECRET_STR = import.meta.env.AS_JWT_SECRET;
 if (!SECRET_STR) throw Error("AS_JWT_SECRET environment variable not provided");
 
 const SECRET = new TextEncoder().encode(SECRET_STR);

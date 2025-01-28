@@ -1,7 +1,7 @@
-import type { GqlDirectiveResolvers } from "server/graphql/resolver-types.gen.ts";
-import { todo } from "shared/utils.ts";
-import { auth } from "server/utils/auth.ts";
-import { getAccessToken } from "server/utils/http.ts";
+import type { GqlDirectiveResolvers } from "server/graphql/resolver-types.gen";
+import { todo } from "shared/utils";
+import { auth } from "server/utils/auth";
+import { getAccessToken } from "server/utils/http";
 
 export const directiveResolvers: GqlDirectiveResolvers = {
   authenticated: async (next, _parent, _directiveArgs, ctx, _info) => {

@@ -1,7 +1,7 @@
 import type { Application } from "@oak/oak/application";
 import type { Middleware } from "@oak/oak/middleware";
 import type { RouteParams, RouterMiddleware } from "@oak/oak/router";
-import type { ServerState } from "server/state.ts";
+import type { ServerState } from "server/state";
 
 export type AnimeSkipServer = Application<ServerState>;
 export type AnimeSkipServerMiddleware = Middleware<ServerState>;

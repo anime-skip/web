@@ -1,20 +1,20 @@
-import type { DbUser } from "server/db/schema.ts";
-import { todo } from "shared/utils.ts";
+import type { DbUser } from "server/db/schema";
+import { todo } from "shared/utils";
 
 export async function sendPasswordResetEmail(
-  user: DbUser,
-  token: string,
+  _user: DbUser,
+  _token: string,
 ): Promise<void> {
   todo("sendPasswordResetEmail");
 }
 
 export async function sendAccountVerificationEmail(
-  user: DbUser,
-  token: string,
+  _user: DbUser,
+  _token: string,
 ): Promise<void> {
   todo("sendAccountVerificationEmail");
 }
 
-export async function sendWelcomeEmail(user: DbUser): Promise<void> {
+export async function sendWelcomeEmail(_user: DbUser): Promise<void> {
   todo();
 }

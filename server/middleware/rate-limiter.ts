@@ -1,6 +1,6 @@
 import { errors } from "@oak/commons/http_errors";
-import type { AnimeSkipServerMiddleware } from "server/types.ts";
-import { createRateLimiter } from "server/utils/rate-limiter.ts";
+import type { AnimeSkipServerMiddleware } from "server/types";
+import { createRateLimiter } from "server/utils/rate-limiter";
 
 const rateLimiter = createRateLimiter();
 

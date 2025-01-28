@@ -1,9 +1,9 @@
-import type { GqlResolvers } from "server/graphql/resolver-types.gen.ts";
-import { todo } from "shared/utils.ts";
-import type { NoOptionals } from "shared/types.ts";
-import { type DbExternalLinkInsert, externalLinks } from "server/db/schema.ts";
-import { mapDbExternalLinkToGqlExternalLink } from "server/graphql/mappers.ts";
-import { hardDeleteExternalLinks } from "server/utils/db.ts";
+import type { GqlResolvers } from "server/graphql/resolver-types.gen";
+import { todo } from "shared/utils";
+import type { NoOptionals } from "shared/types";
+import { type DbExternalLinkInsert, externalLinks } from "server/db/schema";
+import { mapDbExternalLinkToGqlExternalLink } from "server/graphql/mappers";
+import { hardDeleteExternalLinks } from "server/utils/db";
 
 export const externalLinkResolvers: GqlResolvers = {
   Mutation: {
@@ -12,7 +12,8 @@ export const externalLinkResolvers: GqlResolvers = {
         url: args.url,
         showId: args.showId,
       };
-      const [row] = await ctx.db.insert(externalLinks)
+      const [row] = await ctx.db
+        .insert(externalLinks)
         .values(value)
         .returning();
       return mapDbExternalLinkToGqlExternalLink(row);

@@ -1,7 +1,7 @@
-import { createServer } from "server/server.ts";
+import { createServer } from "server/server";
 import * as vite from "vite";
-import { generateGraphqlCode } from "./graphql-codegen.ts";
-import { Color, logger } from "server/utils/logger.ts";
+import { generateGraphqlCode } from "./graphql-codegen";
+import { Color, logger } from "server/utils/logger";
 
 await generateGraphqlCode();
 

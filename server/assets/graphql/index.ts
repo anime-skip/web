@@ -1,18 +1,20 @@
-import { walk } from "@std/fs";
+import { readdir } from "fs-extra";
 import gql from "graphql-tag";
 import type { DocumentNode } from "graphql";
+import { join } from "node:path";
 
 export async function loadGraphqlSchema(): Promise<DocumentNode> {
-  const files = await Array.fromAsync(walk("server/assets/graphql"));
+  const graphqlSchemaDir = "server/assets/graphql";
+  const files = await readdir("server/assets/graphql");
   const schemaContents = await Promise.all(
     files.map(async (file) => {
-      if (file.isFile && file.name.endsWith(".gql")) {
-        return await Deno.readTextFile(file.path);
+      if (file.endsWith(".gql")) {
+        return await Bun.file(join(graphqlSchemaDir, file)).text();
       }
       return "";
     }),
   );
 
-  // deno-lint-ignore no-explicit-any
+  // oxlint-lint-ignore no-explicit-any
   return (gql as any)(schemaContents.filter(Boolean).join("\n\n"));
 }

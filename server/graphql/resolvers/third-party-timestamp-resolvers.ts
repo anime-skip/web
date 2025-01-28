@@ -1,5 +1,5 @@
-import type { GqlResolvers } from "server/graphql/resolver-types.gen.ts";
-import { todo } from "shared/utils.ts";
+import type { GqlResolvers } from "server/graphql/resolver-types.gen";
+import { todo } from "shared/utils";
 
 export const thirdPartyTimestampResolvers: GqlResolvers = {
   ThirdPartyTimestamp: {

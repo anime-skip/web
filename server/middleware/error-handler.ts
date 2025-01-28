@@ -1,7 +1,7 @@
 import { STATUS_TEXT } from "@oak/commons/status";
 import { errors, isHttpError } from "@oak/commons/http_errors";
-import type { ErrorResponse } from "shared/types.ts";
-import type { AnimeSkipServerMiddleware } from "server/types.ts";
+import type { ErrorResponse } from "shared/types";
+import type { AnimeSkipServerMiddleware } from "server/types";
 
 export const errorHandlerMiddleware: AnimeSkipServerMiddleware = async (
   ctx,

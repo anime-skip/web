@@ -1,17 +1,13 @@
-import type { GqlResolvers } from "server/graphql/resolver-types.gen.ts";
-import { todo } from "shared/utils.ts";
-import type { GqlContext } from "server/graphql/context.ts";
+import type { GqlResolvers } from "server/graphql/resolver-types.gen";
+import type { GqlContext } from "server/graphql/context";
 import { eq } from "drizzle-orm";
-import { type DbEpisodeUrlInsert, episodeUrls } from "server/db/schema.ts";
+import { type DbEpisodeUrlInsert, episodeUrls } from "server/db/schema";
 import {
   mapDbEpisodeUrlToGqlEpisodeUrl,
   mapUrlToDbEpisodeSource,
-} from "server/graphql/mappers.ts";
-import type { NoOptionals } from "shared/types.ts";
-import {
-  hardDeleteEpisodeUrls,
-  prepareGqlInputForDb,
-} from "server/utils/db.ts";
+} from "server/graphql/mappers";
+import type { NoOptionals } from "shared/types";
+import { hardDeleteEpisodeUrls, prepareGqlInputForDb } from "server/utils/db";
 
 export const episodeUrlResolvers: GqlResolvers = {
   Mutation: {
@@ -24,14 +20,16 @@ export const episodeUrlResolvers: GqlResolvers = {
         createdByUserId: userId,
         updatedAt: now.toISOString(),
         updatedByUserId: userId,
-        duration: args.episodeUrlInput.duration == null
-          ? null
-          : String(args.episodeUrlInput.duration),
+        duration:
+          args.episodeUrlInput.duration == null
+            ? null
+            : String(args.episodeUrlInput.duration),
         episodeId: args.episodeId,
         source: mapUrlToDbEpisodeSource(args.episodeUrlInput.url),
-        timestampsOffset: args.episodeUrlInput.timestampsOffset == null
-          ? null
-          : String(args.episodeUrlInput.timestampsOffset),
+        timestampsOffset:
+          args.episodeUrlInput.timestampsOffset == null
+            ? null
+            : String(args.episodeUrlInput.timestampsOffset),
       };
       const [row] = await ctx.db.insert(episodeUrls).values(value).returning();
       return mapDbEpisodeUrlToGqlEpisodeUrl(row);
@@ -52,12 +50,14 @@ export const episodeUrlResolvers: GqlResolvers = {
         updatedAt: now.toISOString(),
         updatedByUserId: userId,
         ...prepareGqlInputForDb(args.newEpisodeUrl),
-        duration: args.newEpisodeUrl.duration != null
-          ? String(args.newEpisodeUrl.duration)
-          : args.newEpisodeUrl.duration,
-        timestampsOffset: args.newEpisodeUrl.timestampsOffset != null
-          ? String(args.newEpisodeUrl.timestampsOffset)
-          : args.newEpisodeUrl.timestampsOffset,
+        duration:
+          args.newEpisodeUrl.duration != null
+            ? String(args.newEpisodeUrl.duration)
+            : args.newEpisodeUrl.duration,
+        timestampsOffset:
+          args.newEpisodeUrl.timestampsOffset != null
+            ? String(args.newEpisodeUrl.timestampsOffset)
+            : args.newEpisodeUrl.timestampsOffset,
       };
       const [row] = await ctx.db
         .update(episodeUrls)

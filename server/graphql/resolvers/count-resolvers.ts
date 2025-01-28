@@ -1,4 +1,4 @@
-import type { GqlResolvers } from "server/graphql/resolver-types.gen.ts";
+import type { GqlResolvers } from "server/graphql/resolver-types.gen";
 import {
   episodes,
   episodeUrls,
@@ -7,7 +7,7 @@ import {
   timestamps,
   timestampTypes,
   users,
-} from "server/db/schema.ts";
+} from "server/db/schema";
 import { isNull } from "drizzle-orm";
 
 export const countResolvers: GqlResolvers = {

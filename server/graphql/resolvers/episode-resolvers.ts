@@ -1,15 +1,15 @@
-import type { GqlResolvers } from "server/graphql/resolver-types.gen.ts";
-import { todo } from "shared/utils.ts";
-import { getEpisodeUrlsByEpisodeId } from "server/graphql/resolvers/episode-url-resolvers.ts";
-import { getTemplateByEpisodeId } from "server/graphql/resolvers/template-resolvers.ts";
-import { getUserReportsByEpisodeId } from "server/graphql/resolvers/user-report-resolvers.ts";
-import { getTimestampsByEpisodeId } from "server/graphql/resolvers/timestamp-resolvers.ts";
-import type { GqlContext } from "server/graphql/context.ts";
-import { type DbEpisodeInsert, episodes } from "server/db/schema.ts";
+import type { GqlResolvers } from "server/graphql/resolver-types.gen";
+import { todo } from "shared/utils";
+import { getEpisodeUrlsByEpisodeId } from "server/graphql/resolvers/episode-url-resolvers";
+import { getTemplateByEpisodeId } from "server/graphql/resolvers/template-resolvers";
+import { getUserReportsByEpisodeId } from "server/graphql/resolvers/user-report-resolvers";
+import { getTimestampsByEpisodeId } from "server/graphql/resolvers/timestamp-resolvers";
+import type { GqlContext } from "server/graphql/context";
+import { type DbEpisodeInsert, episodes } from "server/db/schema";
 import { and, eq, isNull } from "drizzle-orm";
-import { mapDbEpisodeToGqlEpisode } from "server/graphql/mappers.ts";
-import type { NoOptionals } from "shared/types.ts";
-import { prepareGqlInputForDb, softDeleteEpisodes } from "server/utils/db.ts";
+import { mapDbEpisodeToGqlEpisode } from "server/graphql/mappers";
+import type { NoOptionals } from "shared/types";
+import { prepareGqlInputForDb, softDeleteEpisodes } from "server/utils/db";
 
 export const episodeResolvers: GqlResolvers = {
   Mutation: {
@@ -103,10 +103,7 @@ export async function getEpisodesByShowId(
   showId: string,
 ): Promise<GqlEpisode[]> {
   const rows = await ctx.db.query.episodes.findMany({
-    where: and(
-      eq(episodes.showId, showId),
-      isNull(episodes.deletedAt),
-    ),
+    where: and(eq(episodes.showId, showId), isNull(episodes.deletedAt)),
   });
   return rows.map(mapDbEpisodeToGqlEpisode);
 }

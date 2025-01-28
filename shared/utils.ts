@@ -1,4 +1,4 @@
-import { merge } from "@es-toolkit/es-toolkit";
+import { merge } from "es-toolkit";
 
 // @ts-types="@types/md5"
 export { default as md5 } from "md5";

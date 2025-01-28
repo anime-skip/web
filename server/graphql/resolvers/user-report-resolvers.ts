@@ -1,10 +1,10 @@
-import type { GqlResolvers } from "server/graphql/resolver-types.gen.ts";
-import { todo } from "shared/utils.ts";
+import type { GqlResolvers } from "server/graphql/resolver-types.gen";
+import { todo } from "shared/utils";
 import { and, eq, isNull } from "drizzle-orm";
-import type { GqlContext } from "server/graphql/context.ts";
-import { type DbUserReportInsert, userReports } from "server/db/schema.ts";
-import { mapDbUserReportToGqlUserReport } from "server/graphql/mappers.ts";
-import type { NoOptionals } from "shared/types.ts";
+import type { GqlContext } from "server/graphql/context";
+import { type DbUserReportInsert, userReports } from "server/db/schema";
+import { mapDbUserReportToGqlUserReport } from "server/graphql/mappers";
+import type { NoOptionals } from "shared/types";
 
 export const userReportResolvers: GqlResolvers = {
   Mutation: {

@@ -1,12 +1,12 @@
-import { loadGraphqlSchema } from "server/assets/graphql/index.ts";
+import { loadGraphqlSchema } from "server/assets/graphql/index";
 import { codegen } from "@graphql-codegen/core";
 import * as typescriptPlugin from "@graphql-codegen/typescript";
 import * as typescriptResolversPlugin from "@graphql-codegen/typescript-resolvers";
-import { logger } from "server/utils/logger.ts";
-import { createTimer } from "shared/time.ts";
+import { logger } from "server/utils/logger";
+import { createTimer } from "shared/time";
 import type { CodegenPlugin } from "@graphql-codegen/plugin-helpers";
 import type { DocumentNode } from "graphql";
-import { Color } from "server/utils/logger.ts";
+import { Color } from "server/utils/logger";
 
 let schema: DocumentNode;
 
@@ -48,7 +48,7 @@ export async function generateGraphqlCode() {
   codegenLogger.info("Generated in", codegenTimer.duration());
 }
 
-// deno-lint-ignore ban-types
+// oxlint-lint-ignore ban-types
 async function generate<T extends {}>(
   filename: string,
   plugin: CodegenPlugin,
@@ -69,7 +69,10 @@ async function generate<T extends {}>(
     },
   });
 
-  await Deno.writeTextFile(filename, `// deno-lint-ignore-file\n${code}`);
+  await Bun.write(
+    filename,
+    `// oxlint-lint-ignore-file\n// prettier-ignore\n${code}`,
+  );
 }
 
 if (import.meta.main) await generateGraphqlCode();

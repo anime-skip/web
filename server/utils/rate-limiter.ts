@@ -3,7 +3,7 @@ export function createRateLimiter() {
 
   return (key: string, rate: number, duration: number) => {
     const now = Date.now();
-    const start = now - now % duration;
+    const start = now - (now % duration);
     const end = start + duration;
 
     const recentRequests = (history[key] ?? []).concat(now);

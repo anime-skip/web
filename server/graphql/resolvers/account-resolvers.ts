@@ -1,25 +1,20 @@
-import type { GqlResolvers } from "server/graphql/resolver-types.gen.ts";
-import { md5, todo } from "shared/utils.ts";
+import type { GqlResolvers } from "server/graphql/resolver-types.gen";
+import { md5, todo } from "shared/utils";
 import { eq, or } from "drizzle-orm";
-import {
-  type DbUser,
-  DbUserRole,
-  preferences,
-  users,
-} from "server/db/schema.ts";
-import { mapDbUserToGqlAccount } from "server/graphql/mappers.ts";
-import { auth } from "server/utils/auth.ts";
-import type { AnimeSkipDatabase } from "server/utils/db.ts";
-import { validateEmail, validateUsername } from "server/utils/validation.ts";
-import { verifyRecaptcha } from "server/utils/recaptcha.ts";
+import { type DbUser, DbUserRole, preferences, users } from "server/db/schema";
+import { mapDbUserToGqlAccount } from "server/graphql/mappers";
+import { auth } from "server/utils/auth";
+import type { AnimeSkipDatabase } from "server/utils/db";
+import { validateEmail, validateUsername } from "server/utils/validation";
+import { verifyRecaptcha } from "server/utils/recaptcha";
 import {
   sendAccountVerificationEmail,
   sendPasswordResetEmail,
   sendWelcomeEmail,
-} from "server/utils/emails.ts";
-import type { GqlContext } from "server/graphql/context.ts";
-import { getShowAdminsByUserId } from "server/graphql/resolvers/show-admin-resolvers.ts";
-import { getOptionalUserByUsername } from "server/graphql/resolvers/user-resolvers.ts";
+} from "server/utils/emails";
+import type { GqlContext } from "server/graphql/context";
+import { getShowAdminsByUserId } from "server/graphql/resolvers/show-admin-resolvers";
+import { getOptionalUserByUsername } from "server/graphql/resolvers/user-resolvers";
 
 export const accountResolvers: GqlResolvers = {
   Mutation: {
@@ -71,12 +66,10 @@ export const accountResolvers: GqlResolvers = {
         })
         .returning();
       const userId = user.id;
-      await ctx.db
-        .insert(preferences)
-        .values({
-          userId,
-          updatedAt: new Date().toISOString(),
-        });
+      await ctx.db.insert(preferences).values({
+        userId,
+        updatedAt: new Date().toISOString(),
+      });
 
       ctx.logger.verbose("Sending welcome email");
       await sendWelcomeEmail(user);
@@ -125,9 +118,10 @@ export const accountResolvers: GqlResolvers = {
       );
       const user = await requireUser(ctx, userId);
 
-      await ctx.db.update(users).set({ emailVerified: true }).where(
-        eq(users.id, userId),
-      );
+      await ctx.db
+        .update(users)
+        .set({ emailVerified: true })
+        .where(eq(users.id, userId));
       user.emailVerified = true;
 
       return mapDbUserToGqlAccount(user);
@@ -230,10 +224,7 @@ export const accountResolvers: GqlResolvers = {
   },
 };
 
-async function requireUser(
-  ctx: GqlContext,
-  userId: string,
-): Promise<DbUser> {
+async function requireUser(ctx: GqlContext, userId: string): Promise<DbUser> {
   const user = await ctx.dataloaders.dbUsers.load(userId);
   if (user == null) {
     throw Error(`User not found with id: ${userId}`);
@@ -255,12 +246,11 @@ async function updatePassword(
     throw Error("New password is not valid, it cannot be empty");
   }
 
-  user.passwordHash = await auth.encryptPassword(
-    md5(newPassword),
-  );
-  await db.update(users).set({ passwordHash: user.passwordHash }).where(
-    eq(users.id, user.id),
-  );
+  user.passwordHash = await auth.encryptPassword(md5(newPassword));
+  await db
+    .update(users)
+    .set({ passwordHash: user.passwordHash })
+    .where(eq(users.id, user.id));
 
   return createLoginData(user);
 }

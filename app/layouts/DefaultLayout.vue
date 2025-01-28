@@ -4,9 +4,9 @@ import MainFooter from "../components/MainFooter.vue";
 </script>
 
 <template>
-    <MainNavigation class="border-b border-neutral" />
-    <main>
-        <RouterView />
-    </main>
-    <MainFooter />
+  <MainNavigation class="border-b border-neutral" />
+  <main>
+    <RouterView />
+  </main>
+  <MainFooter />
 </template>

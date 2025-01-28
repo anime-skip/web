@@ -1,11 +1,10 @@
-import type { GqlResolvers } from "server/graphql/resolver-types.gen.ts";
-import { todo } from "shared/utils.ts";
-import type { GqlContext } from "server/graphql/context.ts";
-import { type DbShowAdminInsert, showAdmins } from "server/db/schema.ts";
+import type { GqlResolvers } from "server/graphql/resolver-types.gen";
+import type { GqlContext } from "server/graphql/context";
+import { type DbShowAdminInsert, showAdmins } from "server/db/schema";
 import { and, eq, isNull } from "drizzle-orm";
-import { mapDbShowAdminToGqlShowAdmin } from "server/graphql/mappers.ts";
-import type { NoOptionals } from "shared/types.ts";
-import { softDeleteShowAdmins } from "server/utils/db.ts";
+import { mapDbShowAdminToGqlShowAdmin } from "server/graphql/mappers";
+import type { NoOptionals } from "shared/types";
+import { softDeleteShowAdmins } from "server/utils/db";
 
 export const showAdminResolvers: GqlResolvers = {
   Mutation: {
@@ -67,10 +66,7 @@ export async function getShowAdminsByUserId(
   userId: string,
 ): Promise<GqlShowAdmin[]> {
   const rows = await ctx.db.query.showAdmins.findMany({
-    where: and(
-      eq(showAdmins.userId, userId),
-      isNull(showAdmins.deletedAt),
-    ),
+    where: and(eq(showAdmins.userId, userId), isNull(showAdmins.deletedAt)),
   });
   return rows.map(mapDbShowAdminToGqlShowAdmin);
 }
@@ -80,10 +76,7 @@ export async function getShowAdminsByShowId(
   showId: string,
 ): Promise<GqlShowAdmin[]> {
   const rows = await ctx.db.query.showAdmins.findMany({
-    where: and(
-      eq(showAdmins.showId, showId),
-      isNull(showAdmins.deletedAt),
-    ),
+    where: and(eq(showAdmins.showId, showId), isNull(showAdmins.deletedAt)),
   });
   return rows.map(mapDbShowAdminToGqlShowAdmin);
 }

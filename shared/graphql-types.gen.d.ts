@@ -1,4 +1,5 @@
-// deno-lint-ignore-file
+// oxlint-lint-ignore-file
+// prettier-ignore
 type Maybe<T> = T | null;
 type InputMaybe<T> = Maybe<T>;
 type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -25,6 +26,20 @@ type Scalars = {
   Time: { input: any; output: any; }
   /** A positive integer, specifically Golang's [uint](https://pkg.go.dev/builtin#uint) */
   UInt: { input: any; output: any; }
+};
+
+type GqlInputExistingTimestamp = {
+  /** The id of the timestamp you want to modify */
+  id: Scalars['ID']['input'];
+  /** The new values for the timestamp */
+  timestamp: GqlInputTimestamp;
+};
+
+type GqlInputTimestampOn = {
+  /** The episode id the timestamp will be created on */
+  episodeId: Scalars['ID']['input'];
+  /** The new values for the timestamp */
+  timestamp: GqlInputTimestamp;
 };
 
 /**
@@ -79,671 +94,6 @@ type GqlColorTheme =
 /** Allowed services for show's external links */
 type GqlExternalService =
   | 'ANILIST';
-
-/** When logging in with a password or refresh token, you can get new tokens and account info */
-type GqlLoginData = {
-  __typename?: 'LoginData';
-  /** A JWT that should be used in the header of all requests: `Authorization: Bearer <authToken>` */
-  authToken: Scalars['String']['output'];
-  /** A JWT used for the `loginRefresh` query to get new `LoginData` */
-  refreshToken: Scalars['String']['output'];
-  /** The personal account information of the user that got authenticated */
-  account: GqlAccount;
-};
-
-type GqlUpdatedTimestamps = {
-  __typename?: 'UpdatedTimestamps';
-  created: Array<GqlTimestamp>;
-  updated: Array<GqlTimestamp>;
-  deleted: Array<GqlTimestamp>;
-};
-
-type GqlMutation = {
-  __typename?: 'Mutation';
-  /**
-   * Create a user account. 3rd party applications will not have access to this function because of
-   * `recaptchaResponse`. Redirect new users to create an account on <anime-skip.com>
-   */
-  createAccount: GqlLoginData;
-  /**
-   * Change a user's password by first confirming the old one. This is not a forgot password flow
-   *
-   * > Note the passwords aren't md5 hashes. The regular login will be moving to this as well eventually
-   */
-  changePassword: GqlLoginData;
-  /** Resend the verification email for the account of the authenticated user */
-  resendVerificationEmail?: Maybe<Scalars['Boolean']['output']>;
-  /**
-   * Callback to handle the verification token included in the email sent using
-   * `resendVerificationEmail`
-   */
-  verifyEmailAddress: GqlAccount;
-  /**
-   * The first step in the password reset process
-   *
-   * It sends an email containing a link to reset your password with. That link includes a token, the
-   * `passwordResetToken`, that can be passed into the `resetPassword` mutation.
-   *
-   * > Because the `recaptchaResponse` is required, this can not be performed by 3rd parties
-   */
-  requestPasswordReset: Scalars['Boolean']['output'];
-  /**
-   * The second step in the password reset process, coming after `requestPasswordReset`
-   *
-   * This step is pretty self explanatory, this is when the password is actually reset for a user
-   */
-  resetPassword: GqlLoginData;
-  /**
-   * Request your account be deleted. The user will receive an email with a link to confirm deleting
-   * their account
-   */
-  deleteAccountRequest: GqlAccount;
-  /** Handle a deleteToken from `deleteAccountRequest` and actually delete the user's account */
-  deleteAccount: GqlAccount;
-  /** Update user preferences */
-  savePreferences: GqlPreferences;
-  /** Create a show and optionally become an admin */
-  createShow: GqlShow;
-  /** Update show data */
-  updateShow: GqlShow;
-  /**
-   * Delete a show and all it's children (episodes, episode urls, timestamps, admins, etc)
-   *
-   * > `@hasRole(role: ADMIN)` - The user must have the `ADMIN` role to perform this action
-   */
-  deleteShow: GqlShow;
-  /**
-   * Give admin privilege to a user for a show.
-   *
-   * > `@isShowAdmin` - You need to be an admin of the show to do this action
-   */
-  createShowAdmin: GqlShowAdmin;
-  /**
-   * Remove admin privileges from a user for a show.
-   *
-   * > `@isShowAdmin` - You need to be an admin of the show to do this action
-   */
-  deleteShowAdmin: GqlShowAdmin;
-  /** Create an episode under a `Show` */
-  createEpisode: GqlEpisode;
-  /** Update episode info */
-  updateEpisode: GqlEpisode;
-  /**
-   * Delete an episode and all it's child data
-   *
-   * > `@isShowAdmin` - You need to be an admin of the show to do this action
-   */
-  deleteEpisode: GqlEpisode;
-  /** Link an `Episode` to a service URL */
-  createEpisodeUrl: GqlEpisodeUrl;
-  /**
-   * Unlink an `Episode` to from service URL
-   *
-   * > `@isShowAdmin` - You need to be an admin of the show to do this action
-   */
-  deleteEpisodeUrl: GqlEpisodeUrl;
-  /** Update episode url info */
-  updateEpisodeUrl: GqlEpisodeUrl;
-  /** Add a timestamp to an `Episode` */
-  createTimestamp: GqlTimestamp;
-  /** Update timestamp data */
-  updateTimestamp: GqlTimestamp;
-  /** Delete a timestamp */
-  deleteTimestamp: GqlTimestamp;
-  /** Will create, update, and delete timestamps as passed. Partial failures are completely rolled back */
-  updateTimestamps: GqlUpdatedTimestamps;
-  /**
-   * Create a timestamp type
-   *
-   * > `@hasRole(role: ADMIN)` - The user must have the `ADMIN` role to perform this action
-   */
-  createTimestampType: GqlTimestampType;
-  /**
-   * Update a timestamp type
-   *
-   * > `@hasRole(role: ADMIN)` - The user must have the `ADMIN` role to perform this action
-   */
-  updateTimestampType: GqlTimestampType;
-  /**
-   * Delete a timestamp type
-   *
-   * > `@hasRole(role: ADMIN)` - The user must have the `ADMIN` role to perform this action
-   */
-  deleteTimestampType: GqlTimestampType;
-  /** Make changes to an existing template */
-  createTemplate: GqlTemplate;
-  /** Make changes to an existing template */
-  updateTemplate: GqlTemplate;
-  /**
-   * Delete an existing template
-   *
-   * > `@isShowAdmin` - You need to be an admin of the show to do this action
-   */
-  deleteTemplate: GqlTemplate;
-  /** Add a timestamp to an existing template */
-  addTimestampToTemplate: GqlTemplateTimestamp;
-  /** Remove a timestamp from an existing template */
-  removeTimestampFromTemplate: GqlTemplateTimestamp;
-  /** Create a new API client for the authenticated user to use */
-  createApiClient: GqlApiClient;
-  /** Update one of the authenticated user's API clients */
-  updateApiClient: GqlApiClient;
-  /** Delete one of the authenticated user's API clients */
-  deleteApiClient: GqlApiClient;
-  addExternalLink: GqlExternalLink;
-  removeExternalLink: GqlExternalLink;
-  /** Report an issue with a single timestamp, episode, episode URL, or show. */
-  createUserReport: GqlUserReport;
-  /**
-   * Mark a report as fixed
-   *
-   * > `@hasRole(role: REVIEWER)` - The user must have the `REVIEWER` role to perform this operation.
-   */
-  resolveUserReport: GqlUserReport;
-};
-
-
-type GqlMutationCreateAccountArgs = {
-  username: Scalars['String']['input'];
-  email: Scalars['String']['input'];
-  passwordHash: Scalars['String']['input'];
-  recaptchaResponse: Scalars['String']['input'];
-};
-
-
-type GqlMutationChangePasswordArgs = {
-  oldPassword: Scalars['String']['input'];
-  newPassword: Scalars['String']['input'];
-  confirmNewPassword: Scalars['String']['input'];
-};
-
-
-type GqlMutationResendVerificationEmailArgs = {
-  recaptchaResponse: Scalars['String']['input'];
-};
-
-
-type GqlMutationVerifyEmailAddressArgs = {
-  validationToken: Scalars['String']['input'];
-};
-
-
-type GqlMutationRequestPasswordResetArgs = {
-  recaptchaResponse: Scalars['String']['input'];
-  email: Scalars['String']['input'];
-};
-
-
-type GqlMutationResetPasswordArgs = {
-  passwordResetToken: Scalars['String']['input'];
-  newPassword: Scalars['String']['input'];
-  confirmNewPassword: Scalars['String']['input'];
-};
-
-
-type GqlMutationDeleteAccountRequestArgs = {
-  passwordHash: Scalars['String']['input'];
-};
-
-
-type GqlMutationDeleteAccountArgs = {
-  deleteToken: Scalars['String']['input'];
-};
-
-
-type GqlMutationSavePreferencesArgs = {
-  preferences: GqlInputPreferences;
-};
-
-
-type GqlMutationCreateShowArgs = {
-  showInput: GqlInputShow;
-  becomeAdmin: Scalars['Boolean']['input'];
-};
-
-
-type GqlMutationUpdateShowArgs = {
-  showId: Scalars['ID']['input'];
-  newShow: GqlInputShow;
-};
-
-
-type GqlMutationDeleteShowArgs = {
-  showId: Scalars['ID']['input'];
-};
-
-
-type GqlMutationCreateShowAdminArgs = {
-  showAdminInput: GqlInputShowAdmin;
-};
-
-
-type GqlMutationDeleteShowAdminArgs = {
-  showAdminId: Scalars['ID']['input'];
-};
-
-
-type GqlMutationCreateEpisodeArgs = {
-  showId: Scalars['ID']['input'];
-  episodeInput: GqlInputEpisode;
-};
-
-
-type GqlMutationUpdateEpisodeArgs = {
-  episodeId: Scalars['ID']['input'];
-  newEpisode: GqlInputEpisode;
-};
-
-
-type GqlMutationDeleteEpisodeArgs = {
-  episodeId: Scalars['ID']['input'];
-};
-
-
-type GqlMutationCreateEpisodeUrlArgs = {
-  episodeId: Scalars['ID']['input'];
-  episodeUrlInput: GqlInputEpisodeUrl;
-};
-
-
-type GqlMutationDeleteEpisodeUrlArgs = {
-  episodeUrl: Scalars['String']['input'];
-};
-
-
-type GqlMutationUpdateEpisodeUrlArgs = {
-  episodeUrl: Scalars['String']['input'];
-  newEpisodeUrl: GqlInputEpisodeUrl;
-};
-
-
-type GqlMutationCreateTimestampArgs = {
-  episodeId: Scalars['ID']['input'];
-  timestampInput: GqlInputTimestamp;
-};
-
-
-type GqlMutationUpdateTimestampArgs = {
-  timestampId: Scalars['ID']['input'];
-  newTimestamp: GqlInputTimestamp;
-};
-
-
-type GqlMutationDeleteTimestampArgs = {
-  timestampId: Scalars['ID']['input'];
-};
-
-
-type GqlMutationUpdateTimestampsArgs = {
-  create: Array<GqlInputTimestampOn>;
-  update: Array<GqlInputExistingTimestamp>;
-  delete: Array<Scalars['ID']['input']>;
-};
-
-
-type GqlMutationCreateTimestampTypeArgs = {
-  timestampTypeInput: GqlInputTimestampType;
-};
-
-
-type GqlMutationUpdateTimestampTypeArgs = {
-  timestampTypeId: Scalars['ID']['input'];
-  newTimestampType: GqlInputTimestampType;
-};
-
-
-type GqlMutationDeleteTimestampTypeArgs = {
-  timestampTypeId: Scalars['ID']['input'];
-};
-
-
-type GqlMutationCreateTemplateArgs = {
-  newTemplate: GqlInputTemplate;
-};
-
-
-type GqlMutationUpdateTemplateArgs = {
-  templateId: Scalars['ID']['input'];
-  newTemplate: GqlInputTemplate;
-};
-
-
-type GqlMutationDeleteTemplateArgs = {
-  templateId: Scalars['ID']['input'];
-};
-
-
-type GqlMutationAddTimestampToTemplateArgs = {
-  templateTimestamp: GqlInputTemplateTimestamp;
-};
-
-
-type GqlMutationRemoveTimestampFromTemplateArgs = {
-  templateTimestamp: GqlInputTemplateTimestamp;
-};
-
-
-type GqlMutationCreateApiClientArgs = {
-  client: GqlCreateApiClient;
-};
-
-
-type GqlMutationUpdateApiClientArgs = {
-  id: Scalars['String']['input'];
-  changes: GqlApiClientChanges;
-};
-
-
-type GqlMutationDeleteApiClientArgs = {
-  id: Scalars['String']['input'];
-};
-
-
-type GqlMutationAddExternalLinkArgs = {
-  showId: Scalars['ID']['input'];
-  url: Scalars['String']['input'];
-};
-
-
-type GqlMutationRemoveExternalLinkArgs = {
-  showId: Scalars['ID']['input'];
-  url: Scalars['String']['input'];
-};
-
-
-type GqlMutationCreateUserReportArgs = {
-  report?: InputMaybe<GqlInputUserReport>;
-};
-
-
-type GqlMutationResolveUserReportArgs = {
-  id: Scalars['ID']['input'];
-  resolvedMessage?: InputMaybe<Scalars['String']['input']>;
-};
-
-type GqlQuery = {
-  __typename?: 'Query';
-  /** Get the logged in user's private account information */
-  account: GqlAccount;
-  /**
-   * Use either the username or email and an md5 hash of the user's password to get an access and
-   * refresh token
-   */
-  login: GqlLoginData;
-  /** Use a refresh token get a new access and refresh token */
-  loginRefresh: GqlLoginData;
-  /** Find user with a matching `User.id` */
-  findUser: GqlUser;
-  /** Find user with a matching `User.username` */
-  findUserByUsername: GqlUser;
-  /** Find show with a matching `Show.id` */
-  findShow: GqlShow;
-  findShowsByExternalId: Array<GqlShow>;
-  /**
-   * Search for shows that include the `search` in the `Show.name`. Results are sorted by `Show.name`
-   * as `ASC` or `DESC`
-   */
-  searchShows: Array<GqlShow>;
-  /** Find show admin with a matching `ShowAdmin.id` */
-  findShowAdmin: GqlShowAdmin;
-  /** Get a list of admins for a given `Show.id` */
-  findShowAdminsByShowId: Array<GqlShowAdmin>;
-  /** Get a list of show admins for a given `User.id` */
-  findShowAdminsByUserId: Array<GqlShowAdmin>;
-  /**
-   * Get a list of recently added episodes that have timestamps.
-   *
-   * > Since this is a rather intensive query, it is cached for 20 minutes before it will look for new
-   * > episodes again
-   */
-  recentlyAddedEpisodes: Array<GqlEpisode>;
-  /** Find episode with a matching `Episode.id` */
-  findEpisode: GqlEpisode;
-  /** Get a list of episodes for a given `Show.id` */
-  findEpisodesByShowId: Array<GqlEpisode>;
-  /**
-   * Search for episodes that include the `search` in the `Episode.name`. Results are sorted by
-   * `Show.name`as `ASC` or `DESC`
-   *
-   * Results can be limited to a single show by passing `showId`
-   */
-  searchEpisodes: Array<GqlEpisode>;
-  /**
-   * Get a list of third party episodes for a given `Episode.name`. Since this can return an array of
-   * multiple items, always use `findEpisodeUrl` first, then fallback to this query.
-   *
-   * Current 3rd party timestamp providers include:
-   * - [BetterVRV](http://tuckerchap.in/BetterVRV/)
-   *
-   * > See `ThirdPartyEpisode` for more information about how to create data based on this type
-   */
-  findEpisodeByName: Array<GqlThirdPartyEpisode>;
-  /**
-   * Find an episode based on a URL. This is the primary method used to lookup data for a known service
-   * URL. See `findEpisodeByName` for looking up fallback data.
-   */
-  findEpisodeUrl: GqlEpisodeUrl;
-  /** List all the `EpisodeUrl`s for a given `Episode.id` */
-  findEpisodeUrlsByEpisodeId: Array<GqlEpisodeUrl>;
-  /** Get timestamp info based on a `Timestamp.id` */
-  findTimestamp: GqlTimestamp;
-  /** Get all the timestamps for an episode */
-  findTimestampsByEpisodeId: Array<GqlTimestamp>;
-  /** Get timestamp type info based on a `TimestampType.id` */
-  findTimestampType: GqlTimestampType;
-  /** List all the `TimestampType`s. Items come back in a random order */
-  allTimestampTypes: Array<GqlTimestampType>;
-  /**
-   * Get template info based on a `Template.id`
-   *
-   * Only templates you've created are returned. If you don't include a token in the authorization
-   * header, you will get a not found error, same as if the template was not found.
-   */
-  findTemplate: GqlTemplate;
-  /**
-   * Get a list of templates based on the `Template.showId`
-   *
-   * Only templates you've created are returned. If you don't include a token in the authorization
-   * header, you will receive an empty list.
-   */
-  findTemplatesByShowId: Array<GqlTemplate>;
-  /**
-   * Find the most relevant template based on a few search criteria. If multiple templates are found,
-   * their priority is like so:
-   *
-   * 1. Matching `sourceEpisodeID`
-   * 2. Matching show name (case sensitive) and season (case sensitive)
-   * 3. Matching show name (case sensitive)
-   *
-   * Only templates you've created are returned. If you don't include a token in the authorization
-   * header, you will get a not found error, same as if the template was not found.
-   */
-  findTemplateByDetails: GqlTemplate;
-  /** List or search through the authenticated user's API clients */
-  myApiClients: Array<GqlApiClient>;
-  /** Find an API Client that you created based on it's ID. This will not return other users' clients */
-  findApiClient: GqlApiClient;
-  counts?: Maybe<GqlTotalCounts>;
-  /**
-   * List all user reports.
-   *
-   * > `@hasRole(role: REVIEWER)` - The user must have the `REVIEWER` role to perform this query.
-   */
-  findUserReports: Array<GqlUserReport>;
-  /**
-   * Get a single user report, even if it's been resolved/deleted.
-   *
-   * > `@hasRole(role: REVIEWER)` - The user must have the `REVIEWER` role to perform this query.
-   */
-  findUserReport: GqlUserReport;
-};
-
-
-type GqlQueryLoginArgs = {
-  usernameEmail: Scalars['String']['input'];
-  passwordHash: Scalars['String']['input'];
-};
-
-
-type GqlQueryLoginRefreshArgs = {
-  refreshToken: Scalars['String']['input'];
-};
-
-
-type GqlQueryFindUserArgs = {
-  userId: Scalars['ID']['input'];
-};
-
-
-type GqlQueryFindUserByUsernameArgs = {
-  username: Scalars['String']['input'];
-};
-
-
-type GqlQueryFindShowArgs = {
-  showId: Scalars['ID']['input'];
-};
-
-
-type GqlQueryFindShowsByExternalIdArgs = {
-  service: GqlExternalService;
-  serviceId: Scalars['String']['input'];
-};
-
-
-type GqlQuerySearchShowsArgs = {
-  search?: InputMaybe<Scalars['String']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-type GqlQueryFindShowAdminArgs = {
-  showAdminId: Scalars['ID']['input'];
-};
-
-
-type GqlQueryFindShowAdminsByShowIdArgs = {
-  showId: Scalars['ID']['input'];
-};
-
-
-type GqlQueryFindShowAdminsByUserIdArgs = {
-  userId: Scalars['ID']['input'];
-};
-
-
-type GqlQueryRecentlyAddedEpisodesArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-};
-
-
-type GqlQueryFindEpisodeArgs = {
-  episodeId: Scalars['ID']['input'];
-};
-
-
-type GqlQueryFindEpisodesByShowIdArgs = {
-  showId: Scalars['ID']['input'];
-};
-
-
-type GqlQuerySearchEpisodesArgs = {
-  search?: InputMaybe<Scalars['String']['input']>;
-  showId?: InputMaybe<Scalars['ID']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-type GqlQueryFindEpisodeByNameArgs = {
-  name: Scalars['String']['input'];
-};
-
-
-type GqlQueryFindEpisodeUrlArgs = {
-  episodeUrl: Scalars['String']['input'];
-};
-
-
-type GqlQueryFindEpisodeUrlsByEpisodeIdArgs = {
-  episodeId: Scalars['ID']['input'];
-};
-
-
-type GqlQueryFindTimestampArgs = {
-  timestampId: Scalars['ID']['input'];
-};
-
-
-type GqlQueryFindTimestampsByEpisodeIdArgs = {
-  episodeId: Scalars['ID']['input'];
-};
-
-
-type GqlQueryFindTimestampTypeArgs = {
-  timestampTypeId: Scalars['ID']['input'];
-};
-
-
-type GqlQueryFindTemplateArgs = {
-  templateId: Scalars['ID']['input'];
-};
-
-
-type GqlQueryFindTemplatesByShowIdArgs = {
-  showId: Scalars['ID']['input'];
-};
-
-
-type GqlQueryFindTemplateByDetailsArgs = {
-  episodeId?: InputMaybe<Scalars['ID']['input']>;
-  showName?: InputMaybe<Scalars['String']['input']>;
-  season?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-type GqlQueryMyApiClientsArgs = {
-  search?: InputMaybe<Scalars['String']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-type GqlQueryFindApiClientArgs = {
-  id: Scalars['String']['input'];
-};
-
-
-type GqlQueryFindUserReportsArgs = {
-  resolved?: InputMaybe<Scalars['Boolean']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  sort?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-type GqlQueryFindUserReportArgs = {
-  id: Scalars['ID']['input'];
-};
-
-type GqlInputExistingTimestamp = {
-  /** The id of the timestamp you want to modify */
-  id: Scalars['ID']['input'];
-  /** The new values for the timestamp */
-  timestamp: GqlInputTimestamp;
-};
-
-type GqlInputTimestampOn = {
-  /** The episode id the timestamp will be created on */
-  episodeId: Scalars['ID']['input'];
-  /** The new values for the timestamp */
-  timestamp: GqlInputTimestamp;
-};
 
 /**
  * The base model has all the fields you would expect a fully fleshed out item in the database would
@@ -1394,4 +744,655 @@ type GqlInputUserReport = {
   episodeUrl?: InputMaybe<Scalars['String']['input']>;
   /** The ID of an show if you're reporting an issue with a specific show. */
   showId?: InputMaybe<Scalars['ID']['input']>;
+};
+
+type GqlMutation = {
+  __typename?: 'Mutation';
+  /**
+   * Create a user account. 3rd party applications will not have access to this function because of
+   * `recaptchaResponse`. Redirect new users to create an account on <anime-skip.com>
+   */
+  createAccount: GqlLoginData;
+  /**
+   * Change a user's password by first confirming the old one. This is not a forgot password flow
+   *
+   * > Note the passwords aren't md5 hashes. The regular login will be moving to this as well eventually
+   */
+  changePassword: GqlLoginData;
+  /** Resend the verification email for the account of the authenticated user */
+  resendVerificationEmail?: Maybe<Scalars['Boolean']['output']>;
+  /**
+   * Callback to handle the verification token included in the email sent using
+   * `resendVerificationEmail`
+   */
+  verifyEmailAddress: GqlAccount;
+  /**
+   * The first step in the password reset process
+   *
+   * It sends an email containing a link to reset your password with. That link includes a token, the
+   * `passwordResetToken`, that can be passed into the `resetPassword` mutation.
+   *
+   * > Because the `recaptchaResponse` is required, this can not be performed by 3rd parties
+   */
+  requestPasswordReset: Scalars['Boolean']['output'];
+  /**
+   * The second step in the password reset process, coming after `requestPasswordReset`
+   *
+   * This step is pretty self explanatory, this is when the password is actually reset for a user
+   */
+  resetPassword: GqlLoginData;
+  /**
+   * Request your account be deleted. The user will receive an email with a link to confirm deleting
+   * their account
+   */
+  deleteAccountRequest: GqlAccount;
+  /** Handle a deleteToken from `deleteAccountRequest` and actually delete the user's account */
+  deleteAccount: GqlAccount;
+  /** Update user preferences */
+  savePreferences: GqlPreferences;
+  /** Create a show and optionally become an admin */
+  createShow: GqlShow;
+  /** Update show data */
+  updateShow: GqlShow;
+  /**
+   * Delete a show and all it's children (episodes, episode urls, timestamps, admins, etc)
+   *
+   * > `@hasRole(role: ADMIN)` - The user must have the `ADMIN` role to perform this action
+   */
+  deleteShow: GqlShow;
+  /**
+   * Give admin privilege to a user for a show.
+   *
+   * > `@isShowAdmin` - You need to be an admin of the show to do this action
+   */
+  createShowAdmin: GqlShowAdmin;
+  /**
+   * Remove admin privileges from a user for a show.
+   *
+   * > `@isShowAdmin` - You need to be an admin of the show to do this action
+   */
+  deleteShowAdmin: GqlShowAdmin;
+  /** Create an episode under a `Show` */
+  createEpisode: GqlEpisode;
+  /** Update episode info */
+  updateEpisode: GqlEpisode;
+  /**
+   * Delete an episode and all it's child data
+   *
+   * > `@isShowAdmin` - You need to be an admin of the show to do this action
+   */
+  deleteEpisode: GqlEpisode;
+  /** Link an `Episode` to a service URL */
+  createEpisodeUrl: GqlEpisodeUrl;
+  /**
+   * Unlink an `Episode` to from service URL
+   *
+   * > `@isShowAdmin` - You need to be an admin of the show to do this action
+   */
+  deleteEpisodeUrl: GqlEpisodeUrl;
+  /** Update episode url info */
+  updateEpisodeUrl: GqlEpisodeUrl;
+  /** Add a timestamp to an `Episode` */
+  createTimestamp: GqlTimestamp;
+  /** Update timestamp data */
+  updateTimestamp: GqlTimestamp;
+  /** Delete a timestamp */
+  deleteTimestamp: GqlTimestamp;
+  /** Will create, update, and delete timestamps as passed. Partial failures are completely rolled back */
+  updateTimestamps: GqlUpdatedTimestamps;
+  /**
+   * Create a timestamp type
+   *
+   * > `@hasRole(role: ADMIN)` - The user must have the `ADMIN` role to perform this action
+   */
+  createTimestampType: GqlTimestampType;
+  /**
+   * Update a timestamp type
+   *
+   * > `@hasRole(role: ADMIN)` - The user must have the `ADMIN` role to perform this action
+   */
+  updateTimestampType: GqlTimestampType;
+  /**
+   * Delete a timestamp type
+   *
+   * > `@hasRole(role: ADMIN)` - The user must have the `ADMIN` role to perform this action
+   */
+  deleteTimestampType: GqlTimestampType;
+  /** Make changes to an existing template */
+  createTemplate: GqlTemplate;
+  /** Make changes to an existing template */
+  updateTemplate: GqlTemplate;
+  /**
+   * Delete an existing template
+   *
+   * > `@isShowAdmin` - You need to be an admin of the show to do this action
+   */
+  deleteTemplate: GqlTemplate;
+  /** Add a timestamp to an existing template */
+  addTimestampToTemplate: GqlTemplateTimestamp;
+  /** Remove a timestamp from an existing template */
+  removeTimestampFromTemplate: GqlTemplateTimestamp;
+  /** Create a new API client for the authenticated user to use */
+  createApiClient: GqlApiClient;
+  /** Update one of the authenticated user's API clients */
+  updateApiClient: GqlApiClient;
+  /** Delete one of the authenticated user's API clients */
+  deleteApiClient: GqlApiClient;
+  addExternalLink: GqlExternalLink;
+  removeExternalLink: GqlExternalLink;
+  /** Report an issue with a single timestamp, episode, episode URL, or show. */
+  createUserReport: GqlUserReport;
+  /**
+   * Mark a report as fixed
+   *
+   * > `@hasRole(role: REVIEWER)` - The user must have the `REVIEWER` role to perform this operation.
+   */
+  resolveUserReport: GqlUserReport;
+};
+
+
+type GqlMutationCreateAccountArgs = {
+  username: Scalars['String']['input'];
+  email: Scalars['String']['input'];
+  passwordHash: Scalars['String']['input'];
+  recaptchaResponse: Scalars['String']['input'];
+};
+
+
+type GqlMutationChangePasswordArgs = {
+  oldPassword: Scalars['String']['input'];
+  newPassword: Scalars['String']['input'];
+  confirmNewPassword: Scalars['String']['input'];
+};
+
+
+type GqlMutationResendVerificationEmailArgs = {
+  recaptchaResponse: Scalars['String']['input'];
+};
+
+
+type GqlMutationVerifyEmailAddressArgs = {
+  validationToken: Scalars['String']['input'];
+};
+
+
+type GqlMutationRequestPasswordResetArgs = {
+  recaptchaResponse: Scalars['String']['input'];
+  email: Scalars['String']['input'];
+};
+
+
+type GqlMutationResetPasswordArgs = {
+  passwordResetToken: Scalars['String']['input'];
+  newPassword: Scalars['String']['input'];
+  confirmNewPassword: Scalars['String']['input'];
+};
+
+
+type GqlMutationDeleteAccountRequestArgs = {
+  passwordHash: Scalars['String']['input'];
+};
+
+
+type GqlMutationDeleteAccountArgs = {
+  deleteToken: Scalars['String']['input'];
+};
+
+
+type GqlMutationSavePreferencesArgs = {
+  preferences: GqlInputPreferences;
+};
+
+
+type GqlMutationCreateShowArgs = {
+  showInput: GqlInputShow;
+  becomeAdmin: Scalars['Boolean']['input'];
+};
+
+
+type GqlMutationUpdateShowArgs = {
+  showId: Scalars['ID']['input'];
+  newShow: GqlInputShow;
+};
+
+
+type GqlMutationDeleteShowArgs = {
+  showId: Scalars['ID']['input'];
+};
+
+
+type GqlMutationCreateShowAdminArgs = {
+  showAdminInput: GqlInputShowAdmin;
+};
+
+
+type GqlMutationDeleteShowAdminArgs = {
+  showAdminId: Scalars['ID']['input'];
+};
+
+
+type GqlMutationCreateEpisodeArgs = {
+  showId: Scalars['ID']['input'];
+  episodeInput: GqlInputEpisode;
+};
+
+
+type GqlMutationUpdateEpisodeArgs = {
+  episodeId: Scalars['ID']['input'];
+  newEpisode: GqlInputEpisode;
+};
+
+
+type GqlMutationDeleteEpisodeArgs = {
+  episodeId: Scalars['ID']['input'];
+};
+
+
+type GqlMutationCreateEpisodeUrlArgs = {
+  episodeId: Scalars['ID']['input'];
+  episodeUrlInput: GqlInputEpisodeUrl;
+};
+
+
+type GqlMutationDeleteEpisodeUrlArgs = {
+  episodeUrl: Scalars['String']['input'];
+};
+
+
+type GqlMutationUpdateEpisodeUrlArgs = {
+  episodeUrl: Scalars['String']['input'];
+  newEpisodeUrl: GqlInputEpisodeUrl;
+};
+
+
+type GqlMutationCreateTimestampArgs = {
+  episodeId: Scalars['ID']['input'];
+  timestampInput: GqlInputTimestamp;
+};
+
+
+type GqlMutationUpdateTimestampArgs = {
+  timestampId: Scalars['ID']['input'];
+  newTimestamp: GqlInputTimestamp;
+};
+
+
+type GqlMutationDeleteTimestampArgs = {
+  timestampId: Scalars['ID']['input'];
+};
+
+
+type GqlMutationUpdateTimestampsArgs = {
+  create: Array<GqlInputTimestampOn>;
+  update: Array<GqlInputExistingTimestamp>;
+  delete: Array<Scalars['ID']['input']>;
+};
+
+
+type GqlMutationCreateTimestampTypeArgs = {
+  timestampTypeInput: GqlInputTimestampType;
+};
+
+
+type GqlMutationUpdateTimestampTypeArgs = {
+  timestampTypeId: Scalars['ID']['input'];
+  newTimestampType: GqlInputTimestampType;
+};
+
+
+type GqlMutationDeleteTimestampTypeArgs = {
+  timestampTypeId: Scalars['ID']['input'];
+};
+
+
+type GqlMutationCreateTemplateArgs = {
+  newTemplate: GqlInputTemplate;
+};
+
+
+type GqlMutationUpdateTemplateArgs = {
+  templateId: Scalars['ID']['input'];
+  newTemplate: GqlInputTemplate;
+};
+
+
+type GqlMutationDeleteTemplateArgs = {
+  templateId: Scalars['ID']['input'];
+};
+
+
+type GqlMutationAddTimestampToTemplateArgs = {
+  templateTimestamp: GqlInputTemplateTimestamp;
+};
+
+
+type GqlMutationRemoveTimestampFromTemplateArgs = {
+  templateTimestamp: GqlInputTemplateTimestamp;
+};
+
+
+type GqlMutationCreateApiClientArgs = {
+  client: GqlCreateApiClient;
+};
+
+
+type GqlMutationUpdateApiClientArgs = {
+  id: Scalars['String']['input'];
+  changes: GqlApiClientChanges;
+};
+
+
+type GqlMutationDeleteApiClientArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+type GqlMutationAddExternalLinkArgs = {
+  showId: Scalars['ID']['input'];
+  url: Scalars['String']['input'];
+};
+
+
+type GqlMutationRemoveExternalLinkArgs = {
+  showId: Scalars['ID']['input'];
+  url: Scalars['String']['input'];
+};
+
+
+type GqlMutationCreateUserReportArgs = {
+  report?: InputMaybe<GqlInputUserReport>;
+};
+
+
+type GqlMutationResolveUserReportArgs = {
+  id: Scalars['ID']['input'];
+  resolvedMessage?: InputMaybe<Scalars['String']['input']>;
+};
+
+type GqlQuery = {
+  __typename?: 'Query';
+  /** Get the logged in user's private account information */
+  account: GqlAccount;
+  /**
+   * Use either the username or email and an md5 hash of the user's password to get an access and
+   * refresh token
+   */
+  login: GqlLoginData;
+  /** Use a refresh token get a new access and refresh token */
+  loginRefresh: GqlLoginData;
+  /** Find user with a matching `User.id` */
+  findUser: GqlUser;
+  /** Find user with a matching `User.username` */
+  findUserByUsername: GqlUser;
+  /** Find show with a matching `Show.id` */
+  findShow: GqlShow;
+  findShowsByExternalId: Array<GqlShow>;
+  /**
+   * Search for shows that include the `search` in the `Show.name`. Results are sorted by `Show.name`
+   * as `ASC` or `DESC`
+   */
+  searchShows: Array<GqlShow>;
+  /** Find show admin with a matching `ShowAdmin.id` */
+  findShowAdmin: GqlShowAdmin;
+  /** Get a list of admins for a given `Show.id` */
+  findShowAdminsByShowId: Array<GqlShowAdmin>;
+  /** Get a list of show admins for a given `User.id` */
+  findShowAdminsByUserId: Array<GqlShowAdmin>;
+  /**
+   * Get a list of recently added episodes that have timestamps.
+   *
+   * > Since this is a rather intensive query, it is cached for 20 minutes before it will look for new
+   * > episodes again
+   */
+  recentlyAddedEpisodes: Array<GqlEpisode>;
+  /** Find episode with a matching `Episode.id` */
+  findEpisode: GqlEpisode;
+  /** Get a list of episodes for a given `Show.id` */
+  findEpisodesByShowId: Array<GqlEpisode>;
+  /**
+   * Search for episodes that include the `search` in the `Episode.name`. Results are sorted by
+   * `Show.name`as `ASC` or `DESC`
+   *
+   * Results can be limited to a single show by passing `showId`
+   */
+  searchEpisodes: Array<GqlEpisode>;
+  /**
+   * Get a list of third party episodes for a given `Episode.name`. Since this can return an array of
+   * multiple items, always use `findEpisodeUrl` first, then fallback to this query.
+   *
+   * Current 3rd party timestamp providers include:
+   * - [BetterVRV](http://tuckerchap.in/BetterVRV/)
+   *
+   * > See `ThirdPartyEpisode` for more information about how to create data based on this type
+   */
+  findEpisodeByName: Array<GqlThirdPartyEpisode>;
+  /**
+   * Find an episode based on a URL. This is the primary method used to lookup data for a known service
+   * URL. See `findEpisodeByName` for looking up fallback data.
+   */
+  findEpisodeUrl: GqlEpisodeUrl;
+  /** List all the `EpisodeUrl`s for a given `Episode.id` */
+  findEpisodeUrlsByEpisodeId: Array<GqlEpisodeUrl>;
+  /** Get timestamp info based on a `Timestamp.id` */
+  findTimestamp: GqlTimestamp;
+  /** Get all the timestamps for an episode */
+  findTimestampsByEpisodeId: Array<GqlTimestamp>;
+  /** Get timestamp type info based on a `TimestampType.id` */
+  findTimestampType: GqlTimestampType;
+  /** List all the `TimestampType`s. Items come back in a random order */
+  allTimestampTypes: Array<GqlTimestampType>;
+  /**
+   * Get template info based on a `Template.id`
+   *
+   * Only templates you've created are returned. If you don't include a token in the authorization
+   * header, you will get a not found error, same as if the template was not found.
+   */
+  findTemplate: GqlTemplate;
+  /**
+   * Get a list of templates based on the `Template.showId`
+   *
+   * Only templates you've created are returned. If you don't include a token in the authorization
+   * header, you will receive an empty list.
+   */
+  findTemplatesByShowId: Array<GqlTemplate>;
+  /**
+   * Find the most relevant template based on a few search criteria. If multiple templates are found,
+   * their priority is like so:
+   *
+   * 1. Matching `sourceEpisodeID`
+   * 2. Matching show name (case sensitive) and season (case sensitive)
+   * 3. Matching show name (case sensitive)
+   *
+   * Only templates you've created are returned. If you don't include a token in the authorization
+   * header, you will get a not found error, same as if the template was not found.
+   */
+  findTemplateByDetails: GqlTemplate;
+  /** List or search through the authenticated user's API clients */
+  myApiClients: Array<GqlApiClient>;
+  /** Find an API Client that you created based on it's ID. This will not return other users' clients */
+  findApiClient: GqlApiClient;
+  counts?: Maybe<GqlTotalCounts>;
+  /**
+   * List all user reports.
+   *
+   * > `@hasRole(role: REVIEWER)` - The user must have the `REVIEWER` role to perform this query.
+   */
+  findUserReports: Array<GqlUserReport>;
+  /**
+   * Get a single user report, even if it's been resolved/deleted.
+   *
+   * > `@hasRole(role: REVIEWER)` - The user must have the `REVIEWER` role to perform this query.
+   */
+  findUserReport: GqlUserReport;
+};
+
+
+type GqlQueryLoginArgs = {
+  usernameEmail: Scalars['String']['input'];
+  passwordHash: Scalars['String']['input'];
+};
+
+
+type GqlQueryLoginRefreshArgs = {
+  refreshToken: Scalars['String']['input'];
+};
+
+
+type GqlQueryFindUserArgs = {
+  userId: Scalars['ID']['input'];
+};
+
+
+type GqlQueryFindUserByUsernameArgs = {
+  username: Scalars['String']['input'];
+};
+
+
+type GqlQueryFindShowArgs = {
+  showId: Scalars['ID']['input'];
+};
+
+
+type GqlQueryFindShowsByExternalIdArgs = {
+  service: GqlExternalService;
+  serviceId: Scalars['String']['input'];
+};
+
+
+type GqlQuerySearchShowsArgs = {
+  search?: InputMaybe<Scalars['String']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  sort?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+type GqlQueryFindShowAdminArgs = {
+  showAdminId: Scalars['ID']['input'];
+};
+
+
+type GqlQueryFindShowAdminsByShowIdArgs = {
+  showId: Scalars['ID']['input'];
+};
+
+
+type GqlQueryFindShowAdminsByUserIdArgs = {
+  userId: Scalars['ID']['input'];
+};
+
+
+type GqlQueryRecentlyAddedEpisodesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+type GqlQueryFindEpisodeArgs = {
+  episodeId: Scalars['ID']['input'];
+};
+
+
+type GqlQueryFindEpisodesByShowIdArgs = {
+  showId: Scalars['ID']['input'];
+};
+
+
+type GqlQuerySearchEpisodesArgs = {
+  search?: InputMaybe<Scalars['String']['input']>;
+  showId?: InputMaybe<Scalars['ID']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  sort?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+type GqlQueryFindEpisodeByNameArgs = {
+  name: Scalars['String']['input'];
+};
+
+
+type GqlQueryFindEpisodeUrlArgs = {
+  episodeUrl: Scalars['String']['input'];
+};
+
+
+type GqlQueryFindEpisodeUrlsByEpisodeIdArgs = {
+  episodeId: Scalars['ID']['input'];
+};
+
+
+type GqlQueryFindTimestampArgs = {
+  timestampId: Scalars['ID']['input'];
+};
+
+
+type GqlQueryFindTimestampsByEpisodeIdArgs = {
+  episodeId: Scalars['ID']['input'];
+};
+
+
+type GqlQueryFindTimestampTypeArgs = {
+  timestampTypeId: Scalars['ID']['input'];
+};
+
+
+type GqlQueryFindTemplateArgs = {
+  templateId: Scalars['ID']['input'];
+};
+
+
+type GqlQueryFindTemplatesByShowIdArgs = {
+  showId: Scalars['ID']['input'];
+};
+
+
+type GqlQueryFindTemplateByDetailsArgs = {
+  episodeId?: InputMaybe<Scalars['ID']['input']>;
+  showName?: InputMaybe<Scalars['String']['input']>;
+  season?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+type GqlQueryMyApiClientsArgs = {
+  search?: InputMaybe<Scalars['String']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  sort?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+type GqlQueryFindApiClientArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+type GqlQueryFindUserReportsArgs = {
+  resolved?: InputMaybe<Scalars['Boolean']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  sort?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+type GqlQueryFindUserReportArgs = {
+  id: Scalars['ID']['input'];
+};
+
+/** When logging in with a password or refresh token, you can get new tokens and account info */
+type GqlLoginData = {
+  __typename?: 'LoginData';
+  /** A JWT that should be used in the header of all requests: `Authorization: Bearer <authToken>` */
+  authToken: Scalars['String']['output'];
+  /** A JWT used for the `loginRefresh` query to get new `LoginData` */
+  refreshToken: Scalars['String']['output'];
+  /** The personal account information of the user that got authenticated */
+  account: GqlAccount;
+};
+
+type GqlUpdatedTimestamps = {
+  __typename?: 'UpdatedTimestamps';
+  created: Array<GqlTimestamp>;
+  updated: Array<GqlTimestamp>;
+  deleted: Array<GqlTimestamp>;
 };

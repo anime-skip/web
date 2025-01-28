@@ -1166,10 +1166,7 @@
       "compositePrimaryKeys": {
         "external_links_pkey": {
           "name": "external_links_pkey",
-          "columns": [
-            "url",
-            "show_id"
-          ]
+          "columns": ["url", "show_id"]
         }
       },
       "uniqueConstraints": {},
@@ -1199,17 +1196,12 @@
       "compositePrimaryKeys": {
         "template_timestamps_pkey": {
           "name": "template_timestamps_pkey",
-          "columns": [
-            "template_id",
-            "timestamp_id"
-          ]
+          "columns": ["template_id", "timestamp_id"]
         }
       },
       "uniqueConstraints": {
         "template_timestamps_timestamp_id_key": {
-          "columns": [
-            "timestamp_id"
-          ],
+          "columns": ["timestamp_id"],
           "nullsNotDistinct": false,
           "name": "template_timestamps_timestamp_id_key"
         }

@@ -1,11 +1,11 @@
-import type { GqlResolvers } from "server/graphql/resolver-types.gen.ts";
+import type { GqlResolvers } from "server/graphql/resolver-types.gen";
 import {
   mapDbPreferencesToGqlPreferences,
   mapGqlColorThemeToDbColorTheme,
-} from "server/graphql/mappers.ts";
+} from "server/graphql/mappers";
 import { eq } from "drizzle-orm";
-import { type DbPreferencesInsert, preferences } from "server/db/schema.ts";
-import { prepareGqlInputForDb } from "server/utils/db.ts";
+import { type DbPreferencesInsert, preferences } from "server/db/schema";
+import { prepareGqlInputForDb } from "server/utils/db";
 
 export const preferencesResolvers: GqlResolvers = {
   Mutation: {
@@ -15,9 +15,10 @@ export const preferencesResolvers: GqlResolvers = {
       const updates: Partial<DbPreferencesInsert> = {
         updatedAt: now.toISOString(),
         ...prepareGqlInputForDb(args.preferences),
-        colorTheme: args.preferences.colorTheme == null
-          ? undefined
-          : mapGqlColorThemeToDbColorTheme(args.preferences.colorTheme),
+        colorTheme:
+          args.preferences.colorTheme == null
+            ? undefined
+            : mapGqlColorThemeToDbColorTheme(args.preferences.colorTheme),
       };
       const [row] = await ctx.db
         .update(preferences)

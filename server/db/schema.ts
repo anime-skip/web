@@ -14,9 +14,9 @@ import {
 } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 
-const createdAt = timestamp({ withTimezone: true, mode: "string" }).default(
-  sql`CURRENT_TIMESTAMP`,
-).notNull();
+const createdAt = timestamp({ withTimezone: true, mode: "string" })
+  .default(sql`CURRENT_TIMESTAMP`)
+  .notNull();
 const createdByUserId = uuid().notNull();
 const updatedAt = timestamp({ withTimezone: true, mode: "string" }).notNull();
 const updatedByUserId = uuid().notNull();
@@ -40,22 +40,29 @@ export const apiClients = pgTable("api_clients", {
 export type DbApiClient = typeof apiClients.$inferSelect;
 export type DbApiClientInsert = typeof apiClients.$inferInsert;
 
-export const users = pgTable("users", {
-  id: uuid().default(sql`uuid_generate_v4()`).primaryKey().notNull(),
-  createdAt,
-  deletedAt,
-  username: text().notNull(),
-  email: text().notNull(),
-  passwordHash: text().notNull(),
-  profileUrl: text().notNull(),
-  emailVerified: boolean().notNull(),
-  role: integer().notNull(),
-}, (table) => [
-  uniqueIndex("user_username").using(
-    "btree",
-    table.username.asc().nullsLast().op("text_ops"),
-  ),
-]);
+export const users = pgTable(
+  "users",
+  {
+    id: uuid()
+      .default(sql`uuid_generate_v4()`)
+      .primaryKey()
+      .notNull(),
+    createdAt,
+    deletedAt,
+    username: text().notNull(),
+    email: text().notNull(),
+    passwordHash: text().notNull(),
+    profileUrl: text().notNull(),
+    emailVerified: boolean().notNull(),
+    role: integer().notNull(),
+  },
+  (table) => [
+    uniqueIndex("user_username").using(
+      "btree",
+      table.username.asc().nullsLast().op("text_ops"),
+    ),
+  ],
+);
 export type DbUser = typeof users.$inferSelect;
 export type DbUserInsert = typeof users.$inferInsert;
 
@@ -66,48 +73,52 @@ export enum DbUserRole {
   Reviewer = 3,
 }
 
-export const userReports = pgTable("user_reports", {
-  id: uuid().primaryKey().notNull(),
-  createdAt,
-  createdByUserId,
-  updatedAt,
-  updatedByUserId,
-  deletedAt,
-  deletedByUserId,
-  message: varchar({ length: 500 }).notNull(),
-  reportedFromUrl: text().notNull(),
-  resolved: boolean().default(false).notNull(),
-  timestampId: uuid(),
-  episodeId: uuid(),
-  episodeUrl: text(),
-  showId: uuid(),
-  resolvedMessage: varchar({ length: 500 }),
-}, (table) => [
-  index("idx_user_created_at").using(
-    "btree",
-    table.createdAt.asc().nullsLast().op("timestamptz_ops"),
-  ),
-  index("idx_user_report_episode_id").using(
-    "btree",
-    table.episodeId.asc().nullsLast().op("uuid_ops"),
-  ),
-  index("idx_user_report_episode_url").using(
-    "btree",
-    table.episodeUrl.asc().nullsLast().op("text_ops"),
-  ),
-  index("idx_user_report_show_id").using(
-    "btree",
-    table.showId.asc().nullsLast().op("uuid_ops"),
-  ),
-  index("idx_user_report_timestamp_id").using(
-    "btree",
-    table.timestampId.asc().nullsLast().op("uuid_ops"),
-  ),
-  index("idx_user_resolved").using(
-    "btree",
-    table.resolved.asc().nullsLast().op("bool_ops"),
-  ),
-]);
+export const userReports = pgTable(
+  "user_reports",
+  {
+    id: uuid().primaryKey().notNull(),
+    createdAt,
+    createdByUserId,
+    updatedAt,
+    updatedByUserId,
+    deletedAt,
+    deletedByUserId,
+    message: varchar({ length: 500 }).notNull(),
+    reportedFromUrl: text().notNull(),
+    resolved: boolean().default(false).notNull(),
+    timestampId: uuid(),
+    episodeId: uuid(),
+    episodeUrl: text(),
+    showId: uuid(),
+    resolvedMessage: varchar({ length: 500 }),
+  },
+  (table) => [
+    index("idx_user_created_at").using(
+      "btree",
+      table.createdAt.asc().nullsLast().op("timestamptz_ops"),
+    ),
+    index("idx_user_report_episode_id").using(
+      "btree",
+      table.episodeId.asc().nullsLast().op("uuid_ops"),
+    ),
+    index("idx_user_report_episode_url").using(
+      "btree",
+      table.episodeUrl.asc().nullsLast().op("text_ops"),
+    ),
+    index("idx_user_report_show_id").using(
+      "btree",
+      table.showId.asc().nullsLast().op("uuid_ops"),
+    ),
+    index("idx_user_report_timestamp_id").using(
+      "btree",
+      table.timestampId.asc().nullsLast().op("uuid_ops"),
+    ),
+    index("idx_user_resolved").using(
+      "btree",
+      table.resolved.asc().nullsLast().op("bool_ops"),
+    ),
+  ],
+);
 export type DbUserReport = typeof userReports.$inferSelect;
 export type DbUserReportInsert = typeof userReports.$inferInsert;
 
@@ -133,7 +144,10 @@ export enum DbEpisodeSource {
 }
 
 export const episodes = pgTable("episodes", {
-  id: uuid().default(sql`uuid_generate_v4()`).primaryKey().notNull(),
+  id: uuid()
+    .default(sql`uuid_generate_v4()`)
+    .primaryKey()
+    .notNull(),
   createdAt,
   createdByUserId,
   updatedAt,
@@ -155,7 +169,10 @@ export const migrations = pgTable("migrations", {
 });
 
 export const showAdmins = pgTable("show_admins", {
-  id: uuid().default(sql`uuid_generate_v4()`).primaryKey().notNull(),
+  id: uuid()
+    .default(sql`uuid_generate_v4()`)
+    .primaryKey()
+    .notNull(),
   createdAt,
   createdByUserId,
   updatedAt,
@@ -169,7 +186,10 @@ export type DbShowAdmin = typeof showAdmins.$inferSelect;
 export type DbShowAdminInsert = typeof showAdmins.$inferInsert;
 
 export const shows = pgTable("shows", {
-  id: uuid().default(sql`uuid_generate_v4()`).primaryKey().notNull(),
+  id: uuid()
+    .default(sql`uuid_generate_v4()`)
+    .primaryKey()
+    .notNull(),
   createdAt,
   createdByUserId,
   updatedAt,
@@ -184,28 +204,35 @@ export const shows = pgTable("shows", {
 export type DbShow = typeof shows.$inferSelect;
 export type DbShowInsert = typeof shows.$inferInsert;
 
-export const templates = pgTable("templates", {
-  id: uuid().default(sql`uuid_generate_v4()`).primaryKey().notNull(),
-  createdAt,
-  createdByUserId,
-  updatedAt,
-  updatedByUserId,
-  deletedAt,
-  deletedByUserId,
-  showId: uuid().notNull(),
-  type: integer().notNull(),
-  seasons: text().array(),
-  sourceEpisodeId: uuid().notNull(),
-}, (table) => [
-  index("idx_template_show_id").using(
-    "btree",
-    table.showId.asc().nullsLast().op("uuid_ops"),
-  ),
-  index("idx_template_source_episode_id").using(
-    "btree",
-    table.sourceEpisodeId.asc().nullsLast().op("uuid_ops"),
-  ),
-]);
+export const templates = pgTable(
+  "templates",
+  {
+    id: uuid()
+      .default(sql`uuid_generate_v4()`)
+      .primaryKey()
+      .notNull(),
+    createdAt,
+    createdByUserId,
+    updatedAt,
+    updatedByUserId,
+    deletedAt,
+    deletedByUserId,
+    showId: uuid().notNull(),
+    type: integer().notNull(),
+    seasons: text().array(),
+    sourceEpisodeId: uuid().notNull(),
+  },
+  (table) => [
+    index("idx_template_show_id").using(
+      "btree",
+      table.showId.asc().nullsLast().op("uuid_ops"),
+    ),
+    index("idx_template_source_episode_id").using(
+      "btree",
+      table.sourceEpisodeId.asc().nullsLast().op("uuid_ops"),
+    ),
+  ],
+);
 export type DbTemplate = typeof templates.$inferSelect;
 export type DbTemplateInsert = typeof templates.$inferInsert;
 
@@ -215,7 +242,10 @@ export enum DbTemplateType {
 }
 
 export const timestampTypes = pgTable("timestamp_types", {
-  id: uuid().default(sql`uuid_generate_v4()`).primaryKey().notNull(),
+  id: uuid()
+    .default(sql`uuid_generate_v4()`)
+    .primaryKey()
+    .notNull(),
   createdAt,
   createdByUserId,
   updatedAt,
@@ -229,7 +259,10 @@ export type DbTimestampType = typeof timestampTypes.$inferSelect;
 export type DbTimestampTypeInsert = typeof timestampTypes.$inferInsert;
 
 export const timestamps = pgTable("timestamps", {
-  id: uuid().default(sql`uuid_generate_v4()`).primaryKey().notNull(),
+  id: uuid()
+    .default(sql`uuid_generate_v4()`)
+    .primaryKey()
+    .notNull(),
   createdAt,
   createdByUserId,
   updatedAt,
@@ -250,7 +283,10 @@ export enum DbTimestampSource {
 }
 
 export const preferences = pgTable("preferences", {
-  id: uuid().default(sql`uuid_generate_v4()`).primaryKey().notNull(),
+  id: uuid()
+    .default(sql`uuid_generate_v4()`)
+    .primaryKey()
+    .notNull(),
   createdAt,
   updatedAt,
   deletedAt,
@@ -270,12 +306,8 @@ export const preferences = pgTable("preferences", {
   skipMixedCredits: boolean().default(true).notNull(),
   skipPreview: boolean().default(true).notNull(),
   skipTitleCard: boolean().default(true).notNull(),
-  minimizeToolbarWhenEditing: boolean().default(
-    false,
-  ).notNull(),
-  hideTimelineWhenMinimized: boolean().default(
-    false,
-  ).notNull(),
+  minimizeToolbarWhenEditing: boolean().default(false).notNull(),
+  hideTimelineWhenMinimized: boolean().default(false).notNull(),
   colorTheme: integer().default(1).notNull(),
 });
 export type DbPreferences = typeof preferences.$inferSelect;
@@ -289,27 +321,35 @@ export enum DbColorTheme {
   CrunchyrollOrange = 4,
 }
 
-export const externalLinks = pgTable("external_links", {
-  url: text().notNull(),
-  showId: uuid().notNull(),
-}, (table) => [
-  primaryKey({
-    columns: [table.url, table.showId],
-    name: "external_links_pkey",
-  }),
-]);
+export const externalLinks = pgTable(
+  "external_links",
+  {
+    url: text().notNull(),
+    showId: uuid().notNull(),
+  },
+  (table) => [
+    primaryKey({
+      columns: [table.url, table.showId],
+      name: "external_links_pkey",
+    }),
+  ],
+);
 export type DbExternalLink = typeof externalLinks.$inferSelect;
 export type DbExternalLinkInsert = typeof externalLinks.$inferInsert;
 
-export const templateTimestamps = pgTable("template_timestamps", {
-  templateId: uuid().notNull(),
-  timestampId: uuid().notNull(),
-}, (table) => [
-  primaryKey({
-    columns: [table.templateId, table.timestampId],
-    name: "template_timestamps_pkey",
-  }),
-  unique("template_timestamps_timestamp_id_key").on(table.timestampId),
-]);
+export const templateTimestamps = pgTable(
+  "template_timestamps",
+  {
+    templateId: uuid().notNull(),
+    timestampId: uuid().notNull(),
+  },
+  (table) => [
+    primaryKey({
+      columns: [table.templateId, table.timestampId],
+      name: "template_timestamps_pkey",
+    }),
+    unique("template_timestamps_timestamp_id_key").on(table.timestampId),
+  ],
+);
 export type DbTemplateTimestamp = typeof templateTimestamps.$inferSelect;
 export type DbTemplateTimestampInsert = typeof templateTimestamps.$inferInsert;

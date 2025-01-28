@@ -1,4 +1,4 @@
-import type { GqlResolvers } from "server/graphql/resolver-types.gen.ts";
+import type { GqlResolvers } from "server/graphql/resolver-types.gen";
 import { GraphQLScalarType } from "graphql";
 
 export const scalarResolvers: GqlResolvers = {

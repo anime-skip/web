@@ -1,12 +1,12 @@
-import type { GqlResolvers } from "server/graphql/resolver-types.gen.ts";
-import { todo } from "shared/utils.ts";
-import { getEpisodesByShowId } from "server/graphql/resolvers/episode-resolvers.ts";
-import { getShowAdminsByShowId } from "server/graphql/resolvers/show-admin-resolvers.ts";
-import { getTemplatesByShowId } from "server/graphql/resolvers/template-resolvers.ts";
-import type { NoOptionals } from "shared/types.ts";
-import { mapDbShowToGqlShow } from "server/graphql/mappers.ts";
-import { type DbShowInsert, shows } from "server/db/schema.ts";
-import { prepareGqlInputForDb, softDeleteShows } from "server/utils/db.ts";
+import type { GqlResolvers } from "server/graphql/resolver-types.gen";
+import { todo } from "shared/utils";
+import { getEpisodesByShowId } from "server/graphql/resolvers/episode-resolvers";
+import { getShowAdminsByShowId } from "server/graphql/resolvers/show-admin-resolvers";
+import { getTemplatesByShowId } from "server/graphql/resolvers/template-resolvers";
+import type { NoOptionals } from "shared/types";
+import { mapDbShowToGqlShow } from "server/graphql/mappers";
+import { type DbShowInsert, shows } from "server/db/schema";
+import { prepareGqlInputForDb, softDeleteShows } from "server/utils/db";
 import { eq } from "drizzle-orm";
 
 export const showResolvers: GqlResolvers = {

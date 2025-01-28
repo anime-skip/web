@@ -1,15 +1,15 @@
-import type { GqlResolvers } from "server/graphql/resolver-types.gen.ts";
-import { todo } from "shared/utils.ts";
-import type { GqlContext } from "server/graphql/context.ts";
+import type { GqlResolvers } from "server/graphql/resolver-types.gen";
+import { todo } from "shared/utils";
+import type { GqlContext } from "server/graphql/context";
 import { and, desc, eq, isNull } from "drizzle-orm";
-import { type DbTemplateInsert, templates } from "server/db/schema.ts";
+import { type DbTemplateInsert, templates } from "server/db/schema";
 import {
   mapDbTemplateToGqlTemplate,
   mapGqlTemplateTypeToDbTemplateType,
-} from "server/graphql/mappers.ts";
-import { getTemplateTimestampsByTemplateId } from "server/graphql/resolvers/template-timestamp-resolvers.ts";
-import type { NoOptionals } from "shared/types.ts";
-import { prepareGqlInputForDb, softDeleteTemplates } from "server/utils/db.ts";
+} from "server/graphql/mappers";
+import { getTemplateTimestampsByTemplateId } from "server/graphql/resolvers/template-timestamp-resolvers";
+import type { NoOptionals } from "shared/types";
+import { prepareGqlInputForDb, softDeleteTemplates } from "server/utils/db";
 
 export const templateResolvers: GqlResolvers = {
   Mutation: {
@@ -39,9 +39,10 @@ export const templateResolvers: GqlResolvers = {
         updatedAt: now.toISOString(),
         updatedByUserId: userId,
         ...prepareGqlInputForDb(args.newTemplate),
-        type: args.newTemplate.type == null
-          ? undefined
-          : mapGqlTemplateTypeToDbTemplateType(args.newTemplate.type),
+        type:
+          args.newTemplate.type == null
+            ? undefined
+            : mapGqlTemplateTypeToDbTemplateType(args.newTemplate.type),
       };
       const [row] = await ctx.db
         .update(templates)

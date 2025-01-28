@@ -1,9 +1,9 @@
-const SECRET = Deno.env.get("AS_RECAPTCHA_SECRET");
+const SECRET = import.meta.env.AS_RECAPTCHA_SECRET;
 if (!SECRET) {
   throw Error("AS_RECAPTCH_SECRET environment variable is missing");
 }
 
-const ALLOWLIST_STR = Deno.env.get("AS_RECAPTCHA_RESPONSE_ALLOWLIST");
+const ALLOWLIST_STR = import.meta.env.AS_RECAPTCHA_RESPONSE_ALLOWLIST;
 const ALLOWLIST = new Set(ALLOWLIST_STR ? ALLOWLIST_STR.split(",") : []);
 
 export async function verifyRecaptcha(

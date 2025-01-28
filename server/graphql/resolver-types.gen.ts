@@ -1,4 +1,5 @@
-// deno-lint-ignore-file
+// oxlint-lint-ignore-file
+// prettier-ignore
 import type { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 import type { GqlContext } from 'server/graphql/context.ts';
 export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
@@ -77,27 +78,20 @@ export type GqlResolversInterfaceTypes<_RefType extends Record<string, unknown>>
 
 /** Mapping between all available schema types and the resolvers types */
 export type GqlResolversTypes = {
+  InputExistingTimestamp: GqlInputExistingTimestamp;
+  ID: ResolverTypeWrapper<Scalars['ID']['output']>;
+  InputTimestampOn: GqlInputTimestampOn;
   Role: GqlRole;
   EpisodeSource: GqlEpisodeSource;
   TimestampSource: GqlTimestampSource;
   TemplateType: GqlTemplateType;
   ColorTheme: GqlColorTheme;
   ExternalService: GqlExternalService;
-  Time: ResolverTypeWrapper<Scalars['Time']['output']>;
-  UInt: ResolverTypeWrapper<Scalars['UInt']['output']>;
-  LoginData: ResolverTypeWrapper<GqlLoginData>;
-  String: ResolverTypeWrapper<Scalars['String']['output']>;
-  UpdatedTimestamps: ResolverTypeWrapper<GqlUpdatedTimestamps>;
-  Mutation: ResolverTypeWrapper<{}>;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
-  ID: ResolverTypeWrapper<Scalars['ID']['output']>;
-  Query: ResolverTypeWrapper<{}>;
-  Int: ResolverTypeWrapper<Scalars['Int']['output']>;
-  InputExistingTimestamp: GqlInputExistingTimestamp;
-  InputTimestampOn: GqlInputTimestampOn;
   BaseModel: ResolverTypeWrapper<GqlResolversInterfaceTypes<GqlResolversTypes>['BaseModel']>;
   Episode: ResolverTypeWrapper<GqlEpisode>;
+  String: ResolverTypeWrapper<Scalars['String']['output']>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   ThirdPartyEpisode: ResolverTypeWrapper<GqlThirdPartyEpisode>;
   InputEpisode: GqlInputEpisode;
   EpisodeUrl: ResolverTypeWrapper<GqlEpisodeUrl>;
@@ -106,6 +100,7 @@ export type GqlResolversTypes = {
   Preferences: ResolverTypeWrapper<GqlPreferences>;
   InputPreferences: GqlInputPreferences;
   Show: ResolverTypeWrapper<GqlShow>;
+  Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   ThirdPartyShow: ResolverTypeWrapper<GqlThirdPartyShow>;
   InputShow: GqlInputShow;
   ShowAdmin: ResolverTypeWrapper<GqlShowAdmin>;
@@ -127,25 +122,24 @@ export type GqlResolversTypes = {
   TotalCounts: ResolverTypeWrapper<GqlTotalCounts>;
   UserReport: ResolverTypeWrapper<GqlUserReport>;
   InputUserReport: GqlInputUserReport;
+  Mutation: ResolverTypeWrapper<{}>;
+  Query: ResolverTypeWrapper<{}>;
+  LoginData: ResolverTypeWrapper<GqlLoginData>;
+  UpdatedTimestamps: ResolverTypeWrapper<GqlUpdatedTimestamps>;
+  Time: ResolverTypeWrapper<Scalars['Time']['output']>;
+  UInt: ResolverTypeWrapper<Scalars['UInt']['output']>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type GqlResolversParentTypes = {
-  Time: Scalars['Time']['output'];
-  UInt: Scalars['UInt']['output'];
-  LoginData: GqlLoginData;
-  String: Scalars['String']['output'];
-  UpdatedTimestamps: GqlUpdatedTimestamps;
-  Mutation: {};
-  Boolean: Scalars['Boolean']['output'];
-  ID: Scalars['ID']['output'];
-  Query: {};
-  Int: Scalars['Int']['output'];
   InputExistingTimestamp: GqlInputExistingTimestamp;
+  ID: Scalars['ID']['output'];
   InputTimestampOn: GqlInputTimestampOn;
   BaseModel: GqlResolversInterfaceTypes<GqlResolversParentTypes>['BaseModel'];
   Episode: GqlEpisode;
+  String: Scalars['String']['output'];
   Float: Scalars['Float']['output'];
+  Boolean: Scalars['Boolean']['output'];
   ThirdPartyEpisode: GqlThirdPartyEpisode;
   InputEpisode: GqlInputEpisode;
   EpisodeUrl: GqlEpisodeUrl;
@@ -154,6 +148,7 @@ export type GqlResolversParentTypes = {
   Preferences: GqlPreferences;
   InputPreferences: GqlInputPreferences;
   Show: GqlShow;
+  Int: Scalars['Int']['output'];
   ThirdPartyShow: GqlThirdPartyShow;
   InputShow: GqlInputShow;
   ShowAdmin: GqlShowAdmin;
@@ -175,6 +170,12 @@ export type GqlResolversParentTypes = {
   TotalCounts: GqlTotalCounts;
   UserReport: GqlUserReport;
   InputUserReport: GqlInputUserReport;
+  Mutation: {};
+  Query: {};
+  LoginData: GqlLoginData;
+  UpdatedTimestamps: GqlUpdatedTimestamps;
+  Time: Scalars['Time']['output'];
+  UInt: Scalars['UInt']['output'];
 };
 
 export type GqlAuthenticatedDirectiveArgs = { };
@@ -194,103 +195,6 @@ export type GqlHasRoleDirectiveResolver<Result, Parent, ContextType = GqlContext
 export type GqlIsShowAdminDirectiveArgs = { };
 
 export type GqlIsShowAdminDirectiveResolver<Result, Parent, ContextType = GqlContext, Args = GqlIsShowAdminDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
-export interface GqlTimeScalarConfig extends GraphQLScalarTypeConfig<GqlResolversTypes['Time'], any> {
-  name: 'Time';
-}
-
-export interface GqlUIntScalarConfig extends GraphQLScalarTypeConfig<GqlResolversTypes['UInt'], any> {
-  name: 'UInt';
-}
-
-export type GqlLoginDataResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['LoginData'] = GqlResolversParentTypes['LoginData']> = {
-  authToken?: Resolver<GqlResolversTypes['String'], ParentType, ContextType>;
-  refreshToken?: Resolver<GqlResolversTypes['String'], ParentType, ContextType>;
-  account?: Resolver<GqlResolversTypes['Account'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type GqlUpdatedTimestampsResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['UpdatedTimestamps'] = GqlResolversParentTypes['UpdatedTimestamps']> = {
-  created?: Resolver<Array<GqlResolversTypes['Timestamp']>, ParentType, ContextType>;
-  updated?: Resolver<Array<GqlResolversTypes['Timestamp']>, ParentType, ContextType>;
-  deleted?: Resolver<Array<GqlResolversTypes['Timestamp']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type GqlMutationResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['Mutation'] = GqlResolversParentTypes['Mutation']> = {
-  createAccount?: Resolver<GqlResolversTypes['LoginData'], ParentType, ContextType, RequireFields<GqlMutationCreateAccountArgs, 'username' | 'email' | 'passwordHash' | 'recaptchaResponse'>>;
-  changePassword?: Resolver<GqlResolversTypes['LoginData'], ParentType, ContextType, RequireFields<GqlMutationChangePasswordArgs, 'oldPassword' | 'newPassword' | 'confirmNewPassword'>>;
-  resendVerificationEmail?: Resolver<Maybe<GqlResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<GqlMutationResendVerificationEmailArgs, 'recaptchaResponse'>>;
-  verifyEmailAddress?: Resolver<GqlResolversTypes['Account'], ParentType, ContextType, RequireFields<GqlMutationVerifyEmailAddressArgs, 'validationToken'>>;
-  requestPasswordReset?: Resolver<GqlResolversTypes['Boolean'], ParentType, ContextType, RequireFields<GqlMutationRequestPasswordResetArgs, 'recaptchaResponse' | 'email'>>;
-  resetPassword?: Resolver<GqlResolversTypes['LoginData'], ParentType, ContextType, RequireFields<GqlMutationResetPasswordArgs, 'passwordResetToken' | 'newPassword' | 'confirmNewPassword'>>;
-  deleteAccountRequest?: Resolver<GqlResolversTypes['Account'], ParentType, ContextType, RequireFields<GqlMutationDeleteAccountRequestArgs, 'passwordHash'>>;
-  deleteAccount?: Resolver<GqlResolversTypes['Account'], ParentType, ContextType, RequireFields<GqlMutationDeleteAccountArgs, 'deleteToken'>>;
-  savePreferences?: Resolver<GqlResolversTypes['Preferences'], ParentType, ContextType, RequireFields<GqlMutationSavePreferencesArgs, 'preferences'>>;
-  createShow?: Resolver<GqlResolversTypes['Show'], ParentType, ContextType, RequireFields<GqlMutationCreateShowArgs, 'showInput' | 'becomeAdmin'>>;
-  updateShow?: Resolver<GqlResolversTypes['Show'], ParentType, ContextType, RequireFields<GqlMutationUpdateShowArgs, 'showId' | 'newShow'>>;
-  deleteShow?: Resolver<GqlResolversTypes['Show'], ParentType, ContextType, RequireFields<GqlMutationDeleteShowArgs, 'showId'>>;
-  createShowAdmin?: Resolver<GqlResolversTypes['ShowAdmin'], ParentType, ContextType, RequireFields<GqlMutationCreateShowAdminArgs, 'showAdminInput'>>;
-  deleteShowAdmin?: Resolver<GqlResolversTypes['ShowAdmin'], ParentType, ContextType, RequireFields<GqlMutationDeleteShowAdminArgs, 'showAdminId'>>;
-  createEpisode?: Resolver<GqlResolversTypes['Episode'], ParentType, ContextType, RequireFields<GqlMutationCreateEpisodeArgs, 'showId' | 'episodeInput'>>;
-  updateEpisode?: Resolver<GqlResolversTypes['Episode'], ParentType, ContextType, RequireFields<GqlMutationUpdateEpisodeArgs, 'episodeId' | 'newEpisode'>>;
-  deleteEpisode?: Resolver<GqlResolversTypes['Episode'], ParentType, ContextType, RequireFields<GqlMutationDeleteEpisodeArgs, 'episodeId'>>;
-  createEpisodeUrl?: Resolver<GqlResolversTypes['EpisodeUrl'], ParentType, ContextType, RequireFields<GqlMutationCreateEpisodeUrlArgs, 'episodeId' | 'episodeUrlInput'>>;
-  deleteEpisodeUrl?: Resolver<GqlResolversTypes['EpisodeUrl'], ParentType, ContextType, RequireFields<GqlMutationDeleteEpisodeUrlArgs, 'episodeUrl'>>;
-  updateEpisodeUrl?: Resolver<GqlResolversTypes['EpisodeUrl'], ParentType, ContextType, RequireFields<GqlMutationUpdateEpisodeUrlArgs, 'episodeUrl' | 'newEpisodeUrl'>>;
-  createTimestamp?: Resolver<GqlResolversTypes['Timestamp'], ParentType, ContextType, RequireFields<GqlMutationCreateTimestampArgs, 'episodeId' | 'timestampInput'>>;
-  updateTimestamp?: Resolver<GqlResolversTypes['Timestamp'], ParentType, ContextType, RequireFields<GqlMutationUpdateTimestampArgs, 'timestampId' | 'newTimestamp'>>;
-  deleteTimestamp?: Resolver<GqlResolversTypes['Timestamp'], ParentType, ContextType, RequireFields<GqlMutationDeleteTimestampArgs, 'timestampId'>>;
-  updateTimestamps?: Resolver<GqlResolversTypes['UpdatedTimestamps'], ParentType, ContextType, RequireFields<GqlMutationUpdateTimestampsArgs, 'create' | 'update' | 'delete'>>;
-  createTimestampType?: Resolver<GqlResolversTypes['TimestampType'], ParentType, ContextType, RequireFields<GqlMutationCreateTimestampTypeArgs, 'timestampTypeInput'>>;
-  updateTimestampType?: Resolver<GqlResolversTypes['TimestampType'], ParentType, ContextType, RequireFields<GqlMutationUpdateTimestampTypeArgs, 'timestampTypeId' | 'newTimestampType'>>;
-  deleteTimestampType?: Resolver<GqlResolversTypes['TimestampType'], ParentType, ContextType, RequireFields<GqlMutationDeleteTimestampTypeArgs, 'timestampTypeId'>>;
-  createTemplate?: Resolver<GqlResolversTypes['Template'], ParentType, ContextType, RequireFields<GqlMutationCreateTemplateArgs, 'newTemplate'>>;
-  updateTemplate?: Resolver<GqlResolversTypes['Template'], ParentType, ContextType, RequireFields<GqlMutationUpdateTemplateArgs, 'templateId' | 'newTemplate'>>;
-  deleteTemplate?: Resolver<GqlResolversTypes['Template'], ParentType, ContextType, RequireFields<GqlMutationDeleteTemplateArgs, 'templateId'>>;
-  addTimestampToTemplate?: Resolver<GqlResolversTypes['TemplateTimestamp'], ParentType, ContextType, RequireFields<GqlMutationAddTimestampToTemplateArgs, 'templateTimestamp'>>;
-  removeTimestampFromTemplate?: Resolver<GqlResolversTypes['TemplateTimestamp'], ParentType, ContextType, RequireFields<GqlMutationRemoveTimestampFromTemplateArgs, 'templateTimestamp'>>;
-  createApiClient?: Resolver<GqlResolversTypes['ApiClient'], ParentType, ContextType, RequireFields<GqlMutationCreateApiClientArgs, 'client'>>;
-  updateApiClient?: Resolver<GqlResolversTypes['ApiClient'], ParentType, ContextType, RequireFields<GqlMutationUpdateApiClientArgs, 'id' | 'changes'>>;
-  deleteApiClient?: Resolver<GqlResolversTypes['ApiClient'], ParentType, ContextType, RequireFields<GqlMutationDeleteApiClientArgs, 'id'>>;
-  addExternalLink?: Resolver<GqlResolversTypes['ExternalLink'], ParentType, ContextType, RequireFields<GqlMutationAddExternalLinkArgs, 'showId' | 'url'>>;
-  removeExternalLink?: Resolver<GqlResolversTypes['ExternalLink'], ParentType, ContextType, RequireFields<GqlMutationRemoveExternalLinkArgs, 'showId' | 'url'>>;
-  createUserReport?: Resolver<GqlResolversTypes['UserReport'], ParentType, ContextType, Partial<GqlMutationCreateUserReportArgs>>;
-  resolveUserReport?: Resolver<GqlResolversTypes['UserReport'], ParentType, ContextType, RequireFields<GqlMutationResolveUserReportArgs, 'id'>>;
-};
-
-export type GqlQueryResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['Query'] = GqlResolversParentTypes['Query']> = {
-  account?: Resolver<GqlResolversTypes['Account'], ParentType, ContextType>;
-  login?: Resolver<GqlResolversTypes['LoginData'], ParentType, ContextType, RequireFields<GqlQueryLoginArgs, 'usernameEmail' | 'passwordHash'>>;
-  loginRefresh?: Resolver<GqlResolversTypes['LoginData'], ParentType, ContextType, RequireFields<GqlQueryLoginRefreshArgs, 'refreshToken'>>;
-  findUser?: Resolver<GqlResolversTypes['User'], ParentType, ContextType, RequireFields<GqlQueryFindUserArgs, 'userId'>>;
-  findUserByUsername?: Resolver<GqlResolversTypes['User'], ParentType, ContextType, RequireFields<GqlQueryFindUserByUsernameArgs, 'username'>>;
-  findShow?: Resolver<GqlResolversTypes['Show'], ParentType, ContextType, RequireFields<GqlQueryFindShowArgs, 'showId'>>;
-  findShowsByExternalId?: Resolver<Array<GqlResolversTypes['Show']>, ParentType, ContextType, RequireFields<GqlQueryFindShowsByExternalIdArgs, 'service' | 'serviceId'>>;
-  searchShows?: Resolver<Array<GqlResolversTypes['Show']>, ParentType, ContextType, RequireFields<GqlQuerySearchShowsArgs, 'search' | 'offset' | 'limit' | 'sort'>>;
-  findShowAdmin?: Resolver<GqlResolversTypes['ShowAdmin'], ParentType, ContextType, RequireFields<GqlQueryFindShowAdminArgs, 'showAdminId'>>;
-  findShowAdminsByShowId?: Resolver<Array<GqlResolversTypes['ShowAdmin']>, ParentType, ContextType, RequireFields<GqlQueryFindShowAdminsByShowIdArgs, 'showId'>>;
-  findShowAdminsByUserId?: Resolver<Array<GqlResolversTypes['ShowAdmin']>, ParentType, ContextType, RequireFields<GqlQueryFindShowAdminsByUserIdArgs, 'userId'>>;
-  recentlyAddedEpisodes?: Resolver<Array<GqlResolversTypes['Episode']>, ParentType, ContextType, RequireFields<GqlQueryRecentlyAddedEpisodesArgs, 'limit' | 'offset'>>;
-  findEpisode?: Resolver<GqlResolversTypes['Episode'], ParentType, ContextType, RequireFields<GqlQueryFindEpisodeArgs, 'episodeId'>>;
-  findEpisodesByShowId?: Resolver<Array<GqlResolversTypes['Episode']>, ParentType, ContextType, RequireFields<GqlQueryFindEpisodesByShowIdArgs, 'showId'>>;
-  searchEpisodes?: Resolver<Array<GqlResolversTypes['Episode']>, ParentType, ContextType, RequireFields<GqlQuerySearchEpisodesArgs, 'search' | 'offset' | 'limit' | 'sort'>>;
-  findEpisodeByName?: Resolver<Array<GqlResolversTypes['ThirdPartyEpisode']>, ParentType, ContextType, RequireFields<GqlQueryFindEpisodeByNameArgs, 'name'>>;
-  findEpisodeUrl?: Resolver<GqlResolversTypes['EpisodeUrl'], ParentType, ContextType, RequireFields<GqlQueryFindEpisodeUrlArgs, 'episodeUrl'>>;
-  findEpisodeUrlsByEpisodeId?: Resolver<Array<GqlResolversTypes['EpisodeUrl']>, ParentType, ContextType, RequireFields<GqlQueryFindEpisodeUrlsByEpisodeIdArgs, 'episodeId'>>;
-  findTimestamp?: Resolver<GqlResolversTypes['Timestamp'], ParentType, ContextType, RequireFields<GqlQueryFindTimestampArgs, 'timestampId'>>;
-  findTimestampsByEpisodeId?: Resolver<Array<GqlResolversTypes['Timestamp']>, ParentType, ContextType, RequireFields<GqlQueryFindTimestampsByEpisodeIdArgs, 'episodeId'>>;
-  findTimestampType?: Resolver<GqlResolversTypes['TimestampType'], ParentType, ContextType, RequireFields<GqlQueryFindTimestampTypeArgs, 'timestampTypeId'>>;
-  allTimestampTypes?: Resolver<Array<GqlResolversTypes['TimestampType']>, ParentType, ContextType>;
-  findTemplate?: Resolver<GqlResolversTypes['Template'], ParentType, ContextType, RequireFields<GqlQueryFindTemplateArgs, 'templateId'>>;
-  findTemplatesByShowId?: Resolver<Array<GqlResolversTypes['Template']>, ParentType, ContextType, RequireFields<GqlQueryFindTemplatesByShowIdArgs, 'showId'>>;
-  findTemplateByDetails?: Resolver<GqlResolversTypes['Template'], ParentType, ContextType, Partial<GqlQueryFindTemplateByDetailsArgs>>;
-  myApiClients?: Resolver<Array<GqlResolversTypes['ApiClient']>, ParentType, ContextType, RequireFields<GqlQueryMyApiClientsArgs, 'offset' | 'limit' | 'sort'>>;
-  findApiClient?: Resolver<GqlResolversTypes['ApiClient'], ParentType, ContextType, RequireFields<GqlQueryFindApiClientArgs, 'id'>>;
-  counts?: Resolver<Maybe<GqlResolversTypes['TotalCounts']>, ParentType, ContextType>;
-  findUserReports?: Resolver<Array<GqlResolversTypes['UserReport']>, ParentType, ContextType, RequireFields<GqlQueryFindUserReportsArgs, 'offset' | 'limit' | 'sort'>>;
-  findUserReport?: Resolver<GqlResolversTypes['UserReport'], ParentType, ContextType, RequireFields<GqlQueryFindUserReportArgs, 'id'>>;
-};
 
 export type GqlBaseModelResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['BaseModel'] = GqlResolversParentTypes['BaseModel']> = {
   __resolveType: TypeResolveFn<'Episode' | 'Show' | 'ShowAdmin' | 'Timestamp' | 'TimestampType' | 'Template' | 'UserReport', ParentType, ContextType>;
@@ -601,13 +505,104 @@ export type GqlUserReportResolvers<ContextType = GqlContext, ParentType extends 
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type GqlMutationResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['Mutation'] = GqlResolversParentTypes['Mutation']> = {
+  createAccount?: Resolver<GqlResolversTypes['LoginData'], ParentType, ContextType, RequireFields<GqlMutationCreateAccountArgs, 'username' | 'email' | 'passwordHash' | 'recaptchaResponse'>>;
+  changePassword?: Resolver<GqlResolversTypes['LoginData'], ParentType, ContextType, RequireFields<GqlMutationChangePasswordArgs, 'oldPassword' | 'newPassword' | 'confirmNewPassword'>>;
+  resendVerificationEmail?: Resolver<Maybe<GqlResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<GqlMutationResendVerificationEmailArgs, 'recaptchaResponse'>>;
+  verifyEmailAddress?: Resolver<GqlResolversTypes['Account'], ParentType, ContextType, RequireFields<GqlMutationVerifyEmailAddressArgs, 'validationToken'>>;
+  requestPasswordReset?: Resolver<GqlResolversTypes['Boolean'], ParentType, ContextType, RequireFields<GqlMutationRequestPasswordResetArgs, 'recaptchaResponse' | 'email'>>;
+  resetPassword?: Resolver<GqlResolversTypes['LoginData'], ParentType, ContextType, RequireFields<GqlMutationResetPasswordArgs, 'passwordResetToken' | 'newPassword' | 'confirmNewPassword'>>;
+  deleteAccountRequest?: Resolver<GqlResolversTypes['Account'], ParentType, ContextType, RequireFields<GqlMutationDeleteAccountRequestArgs, 'passwordHash'>>;
+  deleteAccount?: Resolver<GqlResolversTypes['Account'], ParentType, ContextType, RequireFields<GqlMutationDeleteAccountArgs, 'deleteToken'>>;
+  savePreferences?: Resolver<GqlResolversTypes['Preferences'], ParentType, ContextType, RequireFields<GqlMutationSavePreferencesArgs, 'preferences'>>;
+  createShow?: Resolver<GqlResolversTypes['Show'], ParentType, ContextType, RequireFields<GqlMutationCreateShowArgs, 'showInput' | 'becomeAdmin'>>;
+  updateShow?: Resolver<GqlResolversTypes['Show'], ParentType, ContextType, RequireFields<GqlMutationUpdateShowArgs, 'showId' | 'newShow'>>;
+  deleteShow?: Resolver<GqlResolversTypes['Show'], ParentType, ContextType, RequireFields<GqlMutationDeleteShowArgs, 'showId'>>;
+  createShowAdmin?: Resolver<GqlResolversTypes['ShowAdmin'], ParentType, ContextType, RequireFields<GqlMutationCreateShowAdminArgs, 'showAdminInput'>>;
+  deleteShowAdmin?: Resolver<GqlResolversTypes['ShowAdmin'], ParentType, ContextType, RequireFields<GqlMutationDeleteShowAdminArgs, 'showAdminId'>>;
+  createEpisode?: Resolver<GqlResolversTypes['Episode'], ParentType, ContextType, RequireFields<GqlMutationCreateEpisodeArgs, 'showId' | 'episodeInput'>>;
+  updateEpisode?: Resolver<GqlResolversTypes['Episode'], ParentType, ContextType, RequireFields<GqlMutationUpdateEpisodeArgs, 'episodeId' | 'newEpisode'>>;
+  deleteEpisode?: Resolver<GqlResolversTypes['Episode'], ParentType, ContextType, RequireFields<GqlMutationDeleteEpisodeArgs, 'episodeId'>>;
+  createEpisodeUrl?: Resolver<GqlResolversTypes['EpisodeUrl'], ParentType, ContextType, RequireFields<GqlMutationCreateEpisodeUrlArgs, 'episodeId' | 'episodeUrlInput'>>;
+  deleteEpisodeUrl?: Resolver<GqlResolversTypes['EpisodeUrl'], ParentType, ContextType, RequireFields<GqlMutationDeleteEpisodeUrlArgs, 'episodeUrl'>>;
+  updateEpisodeUrl?: Resolver<GqlResolversTypes['EpisodeUrl'], ParentType, ContextType, RequireFields<GqlMutationUpdateEpisodeUrlArgs, 'episodeUrl' | 'newEpisodeUrl'>>;
+  createTimestamp?: Resolver<GqlResolversTypes['Timestamp'], ParentType, ContextType, RequireFields<GqlMutationCreateTimestampArgs, 'episodeId' | 'timestampInput'>>;
+  updateTimestamp?: Resolver<GqlResolversTypes['Timestamp'], ParentType, ContextType, RequireFields<GqlMutationUpdateTimestampArgs, 'timestampId' | 'newTimestamp'>>;
+  deleteTimestamp?: Resolver<GqlResolversTypes['Timestamp'], ParentType, ContextType, RequireFields<GqlMutationDeleteTimestampArgs, 'timestampId'>>;
+  updateTimestamps?: Resolver<GqlResolversTypes['UpdatedTimestamps'], ParentType, ContextType, RequireFields<GqlMutationUpdateTimestampsArgs, 'create' | 'update' | 'delete'>>;
+  createTimestampType?: Resolver<GqlResolversTypes['TimestampType'], ParentType, ContextType, RequireFields<GqlMutationCreateTimestampTypeArgs, 'timestampTypeInput'>>;
+  updateTimestampType?: Resolver<GqlResolversTypes['TimestampType'], ParentType, ContextType, RequireFields<GqlMutationUpdateTimestampTypeArgs, 'timestampTypeId' | 'newTimestampType'>>;
+  deleteTimestampType?: Resolver<GqlResolversTypes['TimestampType'], ParentType, ContextType, RequireFields<GqlMutationDeleteTimestampTypeArgs, 'timestampTypeId'>>;
+  createTemplate?: Resolver<GqlResolversTypes['Template'], ParentType, ContextType, RequireFields<GqlMutationCreateTemplateArgs, 'newTemplate'>>;
+  updateTemplate?: Resolver<GqlResolversTypes['Template'], ParentType, ContextType, RequireFields<GqlMutationUpdateTemplateArgs, 'templateId' | 'newTemplate'>>;
+  deleteTemplate?: Resolver<GqlResolversTypes['Template'], ParentType, ContextType, RequireFields<GqlMutationDeleteTemplateArgs, 'templateId'>>;
+  addTimestampToTemplate?: Resolver<GqlResolversTypes['TemplateTimestamp'], ParentType, ContextType, RequireFields<GqlMutationAddTimestampToTemplateArgs, 'templateTimestamp'>>;
+  removeTimestampFromTemplate?: Resolver<GqlResolversTypes['TemplateTimestamp'], ParentType, ContextType, RequireFields<GqlMutationRemoveTimestampFromTemplateArgs, 'templateTimestamp'>>;
+  createApiClient?: Resolver<GqlResolversTypes['ApiClient'], ParentType, ContextType, RequireFields<GqlMutationCreateApiClientArgs, 'client'>>;
+  updateApiClient?: Resolver<GqlResolversTypes['ApiClient'], ParentType, ContextType, RequireFields<GqlMutationUpdateApiClientArgs, 'id' | 'changes'>>;
+  deleteApiClient?: Resolver<GqlResolversTypes['ApiClient'], ParentType, ContextType, RequireFields<GqlMutationDeleteApiClientArgs, 'id'>>;
+  addExternalLink?: Resolver<GqlResolversTypes['ExternalLink'], ParentType, ContextType, RequireFields<GqlMutationAddExternalLinkArgs, 'showId' | 'url'>>;
+  removeExternalLink?: Resolver<GqlResolversTypes['ExternalLink'], ParentType, ContextType, RequireFields<GqlMutationRemoveExternalLinkArgs, 'showId' | 'url'>>;
+  createUserReport?: Resolver<GqlResolversTypes['UserReport'], ParentType, ContextType, Partial<GqlMutationCreateUserReportArgs>>;
+  resolveUserReport?: Resolver<GqlResolversTypes['UserReport'], ParentType, ContextType, RequireFields<GqlMutationResolveUserReportArgs, 'id'>>;
+};
+
+export type GqlQueryResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['Query'] = GqlResolversParentTypes['Query']> = {
+  account?: Resolver<GqlResolversTypes['Account'], ParentType, ContextType>;
+  login?: Resolver<GqlResolversTypes['LoginData'], ParentType, ContextType, RequireFields<GqlQueryLoginArgs, 'usernameEmail' | 'passwordHash'>>;
+  loginRefresh?: Resolver<GqlResolversTypes['LoginData'], ParentType, ContextType, RequireFields<GqlQueryLoginRefreshArgs, 'refreshToken'>>;
+  findUser?: Resolver<GqlResolversTypes['User'], ParentType, ContextType, RequireFields<GqlQueryFindUserArgs, 'userId'>>;
+  findUserByUsername?: Resolver<GqlResolversTypes['User'], ParentType, ContextType, RequireFields<GqlQueryFindUserByUsernameArgs, 'username'>>;
+  findShow?: Resolver<GqlResolversTypes['Show'], ParentType, ContextType, RequireFields<GqlQueryFindShowArgs, 'showId'>>;
+  findShowsByExternalId?: Resolver<Array<GqlResolversTypes['Show']>, ParentType, ContextType, RequireFields<GqlQueryFindShowsByExternalIdArgs, 'service' | 'serviceId'>>;
+  searchShows?: Resolver<Array<GqlResolversTypes['Show']>, ParentType, ContextType, RequireFields<GqlQuerySearchShowsArgs, 'search' | 'offset' | 'limit' | 'sort'>>;
+  findShowAdmin?: Resolver<GqlResolversTypes['ShowAdmin'], ParentType, ContextType, RequireFields<GqlQueryFindShowAdminArgs, 'showAdminId'>>;
+  findShowAdminsByShowId?: Resolver<Array<GqlResolversTypes['ShowAdmin']>, ParentType, ContextType, RequireFields<GqlQueryFindShowAdminsByShowIdArgs, 'showId'>>;
+  findShowAdminsByUserId?: Resolver<Array<GqlResolversTypes['ShowAdmin']>, ParentType, ContextType, RequireFields<GqlQueryFindShowAdminsByUserIdArgs, 'userId'>>;
+  recentlyAddedEpisodes?: Resolver<Array<GqlResolversTypes['Episode']>, ParentType, ContextType, RequireFields<GqlQueryRecentlyAddedEpisodesArgs, 'limit' | 'offset'>>;
+  findEpisode?: Resolver<GqlResolversTypes['Episode'], ParentType, ContextType, RequireFields<GqlQueryFindEpisodeArgs, 'episodeId'>>;
+  findEpisodesByShowId?: Resolver<Array<GqlResolversTypes['Episode']>, ParentType, ContextType, RequireFields<GqlQueryFindEpisodesByShowIdArgs, 'showId'>>;
+  searchEpisodes?: Resolver<Array<GqlResolversTypes['Episode']>, ParentType, ContextType, RequireFields<GqlQuerySearchEpisodesArgs, 'search' | 'offset' | 'limit' | 'sort'>>;
+  findEpisodeByName?: Resolver<Array<GqlResolversTypes['ThirdPartyEpisode']>, ParentType, ContextType, RequireFields<GqlQueryFindEpisodeByNameArgs, 'name'>>;
+  findEpisodeUrl?: Resolver<GqlResolversTypes['EpisodeUrl'], ParentType, ContextType, RequireFields<GqlQueryFindEpisodeUrlArgs, 'episodeUrl'>>;
+  findEpisodeUrlsByEpisodeId?: Resolver<Array<GqlResolversTypes['EpisodeUrl']>, ParentType, ContextType, RequireFields<GqlQueryFindEpisodeUrlsByEpisodeIdArgs, 'episodeId'>>;
+  findTimestamp?: Resolver<GqlResolversTypes['Timestamp'], ParentType, ContextType, RequireFields<GqlQueryFindTimestampArgs, 'timestampId'>>;
+  findTimestampsByEpisodeId?: Resolver<Array<GqlResolversTypes['Timestamp']>, ParentType, ContextType, RequireFields<GqlQueryFindTimestampsByEpisodeIdArgs, 'episodeId'>>;
+  findTimestampType?: Resolver<GqlResolversTypes['TimestampType'], ParentType, ContextType, RequireFields<GqlQueryFindTimestampTypeArgs, 'timestampTypeId'>>;
+  allTimestampTypes?: Resolver<Array<GqlResolversTypes['TimestampType']>, ParentType, ContextType>;
+  findTemplate?: Resolver<GqlResolversTypes['Template'], ParentType, ContextType, RequireFields<GqlQueryFindTemplateArgs, 'templateId'>>;
+  findTemplatesByShowId?: Resolver<Array<GqlResolversTypes['Template']>, ParentType, ContextType, RequireFields<GqlQueryFindTemplatesByShowIdArgs, 'showId'>>;
+  findTemplateByDetails?: Resolver<GqlResolversTypes['Template'], ParentType, ContextType, Partial<GqlQueryFindTemplateByDetailsArgs>>;
+  myApiClients?: Resolver<Array<GqlResolversTypes['ApiClient']>, ParentType, ContextType, RequireFields<GqlQueryMyApiClientsArgs, 'offset' | 'limit' | 'sort'>>;
+  findApiClient?: Resolver<GqlResolversTypes['ApiClient'], ParentType, ContextType, RequireFields<GqlQueryFindApiClientArgs, 'id'>>;
+  counts?: Resolver<Maybe<GqlResolversTypes['TotalCounts']>, ParentType, ContextType>;
+  findUserReports?: Resolver<Array<GqlResolversTypes['UserReport']>, ParentType, ContextType, RequireFields<GqlQueryFindUserReportsArgs, 'offset' | 'limit' | 'sort'>>;
+  findUserReport?: Resolver<GqlResolversTypes['UserReport'], ParentType, ContextType, RequireFields<GqlQueryFindUserReportArgs, 'id'>>;
+};
+
+export type GqlLoginDataResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['LoginData'] = GqlResolversParentTypes['LoginData']> = {
+  authToken?: Resolver<GqlResolversTypes['String'], ParentType, ContextType>;
+  refreshToken?: Resolver<GqlResolversTypes['String'], ParentType, ContextType>;
+  account?: Resolver<GqlResolversTypes['Account'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type GqlUpdatedTimestampsResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['UpdatedTimestamps'] = GqlResolversParentTypes['UpdatedTimestamps']> = {
+  created?: Resolver<Array<GqlResolversTypes['Timestamp']>, ParentType, ContextType>;
+  updated?: Resolver<Array<GqlResolversTypes['Timestamp']>, ParentType, ContextType>;
+  deleted?: Resolver<Array<GqlResolversTypes['Timestamp']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export interface GqlTimeScalarConfig extends GraphQLScalarTypeConfig<GqlResolversTypes['Time'], any> {
+  name: 'Time';
+}
+
+export interface GqlUIntScalarConfig extends GraphQLScalarTypeConfig<GqlResolversTypes['UInt'], any> {
+  name: 'UInt';
+}
+
 export type GqlResolvers<ContextType = GqlContext> = {
-  Time?: GraphQLScalarType;
-  UInt?: GraphQLScalarType;
-  LoginData?: GqlLoginDataResolvers<ContextType>;
-  UpdatedTimestamps?: GqlUpdatedTimestampsResolvers<ContextType>;
-  Mutation?: GqlMutationResolvers<ContextType>;
-  Query?: GqlQueryResolvers<ContextType>;
   BaseModel?: GqlBaseModelResolvers<ContextType>;
   Episode?: GqlEpisodeResolvers<ContextType>;
   ThirdPartyEpisode?: GqlThirdPartyEpisodeResolvers<ContextType>;
@@ -627,6 +622,12 @@ export type GqlResolvers<ContextType = GqlContext> = {
   ExternalLink?: GqlExternalLinkResolvers<ContextType>;
   TotalCounts?: GqlTotalCountsResolvers<ContextType>;
   UserReport?: GqlUserReportResolvers<ContextType>;
+  Mutation?: GqlMutationResolvers<ContextType>;
+  Query?: GqlQueryResolvers<ContextType>;
+  LoginData?: GqlLoginDataResolvers<ContextType>;
+  UpdatedTimestamps?: GqlUpdatedTimestampsResolvers<ContextType>;
+  Time?: GraphQLScalarType;
+  UInt?: GraphQLScalarType;
 };
 
 export type GqlDirectiveResolvers<ContextType = GqlContext> = {

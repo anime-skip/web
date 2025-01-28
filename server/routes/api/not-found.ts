@@ -1,5 +1,5 @@
 import { errors } from "@oak/commons/http_errors";
-import type { AnimeSkipServerHandler } from "server/types.ts";
+import type { AnimeSkipServerHandler } from "server/types";
 
 export const apiNotFoundHandler: AnimeSkipServerHandler<string> = (ctx) => {
   throw new errors.NotFound(

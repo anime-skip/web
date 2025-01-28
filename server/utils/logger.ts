@@ -1,4 +1,4 @@
-// deno-lint-ignore-file no-explicit-any
+// oxlint-lint-ignore-file no-explicit-any
 
 export interface Logger {
   debug(...args: any[]): void;
@@ -40,9 +40,8 @@ export const Color = {
   Cyan: "\x1b[36m",
 };
 
-const levelName = Deno.env.get("AS_LOG_LEVEL") as LogLevelName;
-const level = LOG_LEVEL_MAP[levelName] ??
-  LogLevel.Info;
+const levelName = import.meta.env.AS_LOG_LEVEL as LogLevelName;
+const level = LOG_LEVEL_MAP[levelName] ?? LogLevel.Info;
 
 function createLogger(namespace?: string): Logger {
   const log = (levelName: LogLevelName, color: string, args: any[]) => {

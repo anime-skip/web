@@ -5,7 +5,7 @@ import HomeSectionApi from "../components/HomeSectionApi.vue";
 </script>
 
 <template>
-    <HomeSectionHero class="pt-main-navigation" />
-    <HomeSectionFeatures class="bg-primary/10" />
-    <HomeSectionApi />
+  <HomeSectionHero class="pt-main-navigation" />
+  <HomeSectionFeatures class="bg-primary/10" />
+  <HomeSectionApi />
 </template>

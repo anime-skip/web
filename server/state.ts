@@ -1,13 +1,12 @@
-import { openAnimeSkipDatabase } from "server/utils/db.ts";
-import { logger } from "server/utils/logger.ts";
-import type { DbApiClient } from "server/db/schema.ts";
+import { openAnimeSkipDatabase } from "server/utils/db";
+import { logger } from "server/utils/logger";
+import type { DbApiClient } from "server/db/schema";
 
 export async function createServerState() {
-  const port = Number(Deno.env.get("AS_PORT")) || 3000;
-  const domain = Deno.env.get("AS_DOMAIN") ?? "localhost";
-  const origin = domain === "localhost"
-    ? `http://${domain}:${port}`
-    : `https://${domain}`;
+  const port = Number(import.meta.env.AS_PORT) || 3000;
+  const domain = import.meta.env.AS_DOMAIN ?? "localhost";
+  const origin =
+    domain === "localhost" ? `http://${domain}:${port}` : `https://${domain}`;
 
   const db = await openAnimeSkipDatabase();
 

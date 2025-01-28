@@ -1,9 +1,9 @@
-import type { GqlResolvers } from "server/graphql/resolver-types.gen.ts";
-import type { GqlContext } from "server/graphql/context.ts";
-import { users } from "server/db/schema.ts";
+import type { GqlResolvers } from "server/graphql/resolver-types.gen";
+import type { GqlContext } from "server/graphql/context";
+import { users } from "server/db/schema";
 import { eq } from "drizzle-orm";
-import { mapDbUserToGqlUser } from "server/graphql/mappers.ts";
-import { getShowAdminsByUserId } from "server/graphql/resolvers/show-admin-resolvers.ts";
+import { mapDbUserToGqlUser } from "server/graphql/mappers";
+import { getShowAdminsByUserId } from "server/graphql/resolvers/show-admin-resolvers";
 
 export const userResolvers: GqlResolvers = {
   Query: {

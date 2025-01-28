@@ -1,14 +1,14 @@
-import type { GqlResolvers } from "server/graphql/resolver-types.gen.ts";
-import { todo } from "shared/utils.ts";
-import type { GqlContext } from "server/graphql/context.ts";
+import type { GqlResolvers } from "server/graphql/resolver-types.gen";
+import { todo } from "shared/utils";
+import type { GqlContext } from "server/graphql/context";
 import { and, eq, isNull } from "drizzle-orm";
-import { type DbTimestampInsert, timestamps } from "server/db/schema.ts";
+import { type DbTimestampInsert, timestamps } from "server/db/schema";
 import {
   mapDbTimestampToGqlTimestamp,
   mapGqlTimestampSourceToDbTimestampSource,
-} from "server/graphql/mappers.ts";
-import type { NoOptionals } from "shared/types.ts";
-import { prepareGqlInputForDb, softDeleteTimestamps } from "server/utils/db.ts";
+} from "server/graphql/mappers";
+import type { NoOptionals } from "shared/types";
+import { prepareGqlInputForDb, softDeleteTimestamps } from "server/utils/db";
 
 export const timestampResolvers: GqlResolvers = {
   Mutation: {
@@ -40,12 +40,16 @@ export const timestampResolvers: GqlResolvers = {
         updatedAt: now.toISOString(),
         updatedByUserId: userId,
         ...prepareGqlInputForDb(args.newTimestamp),
-        source: args.newTimestamp.source == null
-          ? undefined
-          : mapGqlTimestampSourceToDbTimestampSource(args.newTimestamp.source),
-        at: args.newTimestamp.at == null
-          ? undefined
-          : String(args.newTimestamp.at),
+        source:
+          args.newTimestamp.source == null
+            ? undefined
+            : mapGqlTimestampSourceToDbTimestampSource(
+                args.newTimestamp.source,
+              ),
+        at:
+          args.newTimestamp.at == null
+            ? undefined
+            : String(args.newTimestamp.at),
       };
       const [row] = await ctx.db
         .update(timestamps)

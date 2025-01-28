@@ -1,23 +1,23 @@
 import { drizzle, NodePgDatabase } from "drizzle-orm/node-postgres";
 import type {
-  PgColumn,
+  // PgColumn,
   PgTableWithColumns,
-  TableConfig,
+  // TableConfig,
 } from "drizzle-orm/pg-core";
-import { eq, inArray } from "drizzle-orm";
-import { migrate } from "drizzle-orm/node-postgres/migrator";
-import * as dbSchema from "server/db/schema.ts";
-import { logger } from "server/utils/logger.ts";
+import { inArray } from "drizzle-orm";
+// import { migrate } from "drizzle-orm/node-postgres/migrator";
+import * as dbSchema from "server/db/schema";
+import { logger } from "server/utils/logger";
 import Dataloader from "dataloader";
-import { todo } from "shared/utils.ts";
+import { todo } from "shared/utils";
 
 const dbLogger = logger.extend("db");
 
 export async function openAnimeSkipDatabase(): Promise<AnimeSkipDatabase> {
-  const url = Deno.env.get("AS_DATABASE_URL");
+  const url = import.meta.env.AS_DATABASE_URL;
   if (!url) {
     logger.error("AS_DATABASE_URL environment variable not set");
-    Deno.exit(1);
+    process.exit(1);
   }
   dbLogger.info("Opening database...");
   const db = drizzle(url, {
@@ -65,16 +65,17 @@ export type StripNullish<T> = {
 
 export function createDrizzleDataloader<DbModel, GqlModel>(
   db: AnimeSkipDatabase,
-  // deno-lint-ignore no-explicit-any
+  // oxlint-lint-ignore no-explicit-any
   table: PgTableWithColumns<any>,
   idKey: keyof DbModel,
   mapper: (db: DbModel) => GqlModel,
 ) {
   return new Dataloader(async (ids) => {
     // @ts-expect-error: We don't type the table, so there's a type error here
-    const rows: DbModel[] = await db.select().from(table).where(
-      inArray(table[idKey], [...ids]),
-    );
+    const rows: DbModel[] = await db
+      .select()
+      .from(table)
+      .where(inArray(table[idKey], [...ids]));
     return rows.map(mapper);
   });
 }
@@ -89,7 +90,8 @@ export async function softDeleteApiClients(
   userId: string,
   now: Date,
 ): Promise<dbSchema.DbApiClient> {
-  const [deleted] = await db.update(dbSchema.apiClients)
+  const [deleted] = await db
+    .update(dbSchema.apiClients)
     .set({
       updatedAt: now.toISOString(),
       updatedByUserId: userId,
@@ -102,103 +104,103 @@ export async function softDeleteApiClients(
 }
 
 export async function softDeleteEpisodes(
-  db: AnimeSkipDatabase,
-  ids: string[],
-  userId: string,
-  now: Date,
+  _db: AnimeSkipDatabase,
+  _ids: string[],
+  _userId: string,
+  _now: Date,
 ): Promise<dbSchema.DbEpisode> {
   todo();
 }
 
 export async function hardDeleteEpisodeUrls(
-  db: AnimeSkipDatabase,
-  urls: string[],
+  _db: AnimeSkipDatabase,
+  _urls: string[],
 ): Promise<dbSchema.DbEpisodeUrl> {
   todo();
 }
 
 export async function hardDeleteExternalLinks(
-  db: AnimeSkipDatabase,
-  compoundIds: Array<{ url: string; showId: string }>,
+  _db: AnimeSkipDatabase,
+  _compoundIds: Array<{ url: string; showId: string }>,
 ): Promise<dbSchema.DbExternalLink> {
   todo();
 }
 
 export async function softDeletePreferences(
-  db: AnimeSkipDatabase,
-  ids: string[],
-  userId: string,
-  now: Date,
+  _db: AnimeSkipDatabase,
+  _ids: string[],
+  _userId: string,
+  _now: Date,
 ): Promise<dbSchema.DbPreferences> {
   todo();
 }
 
 export async function softDeleteShowAdmins(
-  db: AnimeSkipDatabase,
-  ids: string[],
-  userId: string,
-  now: Date,
+  _db: AnimeSkipDatabase,
+  _ids: string[],
+  _userId: string,
+  _now: Date,
 ): Promise<dbSchema.DbShowAdmin> {
   todo();
 }
 
 export async function softDeleteShows(
-  db: AnimeSkipDatabase,
-  ids: string[],
-  userId: string,
-  now: Date,
+  _db: AnimeSkipDatabase,
+  _ids: string[],
+  _userId: string,
+  _now: Date,
 ): Promise<dbSchema.DbShow> {
   todo();
 }
 
 export async function softDeleteTemplates(
-  db: AnimeSkipDatabase,
-  ids: string[],
-  userId: string,
-  now: Date,
+  _db: AnimeSkipDatabase,
+  _ids: string[],
+  _userId: string,
+  _now: Date,
 ): Promise<dbSchema.DbTemplate> {
   todo();
 }
 
 export async function hardDeleteTemplateTimestamps(
-  db: AnimeSkipDatabase,
-  compoundIds: Array<{ templateId: string; timestampId: string }>,
+  _db: AnimeSkipDatabase,
+  _compoundIds: Array<{ templateId: string; timestampId: string }>,
 ): Promise<dbSchema.DbTemplateTimestamp> {
   todo();
 }
 
 export async function softDeleteTimestamps(
-  db: AnimeSkipDatabase,
-  ids: string[],
-  userId: string,
-  now: Date,
+  _db: AnimeSkipDatabase,
+  _ids: string[],
+  _userId: string,
+  _now: Date,
 ): Promise<dbSchema.DbTimestamp> {
   todo();
 }
 
 export async function softDeleteTimestampTypes(
-  db: AnimeSkipDatabase,
-  ids: string[],
-  userId: string,
-  now: Date,
+  _db: AnimeSkipDatabase,
+  _ids: string[],
+  _userId: string,
+  _now: Date,
 ): Promise<dbSchema.DbTimestampType> {
   todo();
 }
 
 export async function softDeleteUserReports(
-  db: AnimeSkipDatabase,
-  ids: string[],
-  userId: string,
-  now: Date,
+  _db: AnimeSkipDatabase,
+  _ids: string[],
+  _userId: string,
+  _now: Date,
 ): Promise<dbSchema.DbUserReport> {
   todo();
 }
 
 export async function softDeleteUsers(
-  db: AnimeSkipDatabase,
-  ids: string[],
-  userId: string,
-  now: Date,
+  _db: AnimeSkipDatabase,
+  _ids: string[],
+  _userId: string,
+  _now: Date,
 ): Promise<dbSchema.DbUser> {
   todo();
 }

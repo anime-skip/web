@@ -12,19 +12,19 @@ import {
   type DbTimestampType,
   type DbUser,
   DbUserRole,
-} from "server/db/schema.ts";
-import type { DbTimestamp } from "server/db/schema.ts";
-import type { DbTemplateTimestamp } from "server/db/schema.ts";
-import type { DbExternalLink } from "server/db/schema.ts";
-import type { DbTemplate } from "server/db/schema.ts";
-import type { DbUserReport } from "server/db/schema.ts";
-import type { NoOptionals } from "shared/types.ts";
-import { todo } from "shared/utils.ts";
+} from "server/db/schema";
+import type { DbTimestamp } from "server/db/schema";
+import type { DbTemplateTimestamp } from "server/db/schema";
+import type { DbExternalLink } from "server/db/schema";
+import type { DbTemplate } from "server/db/schema";
+import type { DbUserReport } from "server/db/schema";
+import type { NoOptionals } from "shared/types";
+import { todo } from "shared/utils";
 
 type TypeSafeGqlMapping<T> = NoOptionals<Omit<T, "__typename">>;
-type TypeSafeDbMapping<T> = NoOptionals<T>;
+// type TypeSafeDbMapping<T> = NoOptionals<T>;
 
-// deno-lint-ignore no-explicit-any
+// oxlint-lint-ignore no-explicit-any
 const unresolved = Symbol("Needs resolved by GrahpQL") as any;
 
 export function mapDbUserToGqlUser(db: DbUser): GqlUser {
@@ -216,13 +216,11 @@ export function mapDbEpisodeUrlToGqlEpisodeUrl(
   } satisfies TypeSafeGqlMapping<GqlEpisodeUrl>;
 }
 
-export function mapUrlToDbEpisodeSource(url: string): DbEpisodeSource {
+export function mapUrlToDbEpisodeSource(_url: string): DbEpisodeSource {
   todo();
 }
 
-export function mapDbEpisodeToGqlEpisode(
-  db: DbEpisode,
-): GqlEpisode {
+export function mapDbEpisodeToGqlEpisode(db: DbEpisode): GqlEpisode {
   return {
     id: db.id,
     createdAt: db.createdAt,
@@ -280,9 +278,7 @@ export function mapGqlEpisodeSourceToDbEpisodeSource(
   throw Error("Unknown GqlEpisodeSource: " + gql);
 }
 
-export function mapDbShowAdminToGqlShowAdmin(
-  db: DbShowAdmin,
-): GqlShowAdmin {
+export function mapDbShowAdminToGqlShowAdmin(db: DbShowAdmin): GqlShowAdmin {
   return {
     id: db.id,
     createdAt: db.createdAt,
@@ -301,9 +297,7 @@ export function mapDbShowAdminToGqlShowAdmin(
   } satisfies TypeSafeGqlMapping<GqlShowAdmin>;
 }
 
-export function mapDbShowToGqlShow(
-  db: DbShow,
-): GqlShow {
+export function mapDbShowToGqlShow(db: DbShow): GqlShow {
   // TODO: Add migration to fix this at the DB layer
   if (db.name == null) {
     throw Error("DbShow.name is required, but got: " + db.name);
@@ -333,9 +327,7 @@ export function mapDbShowToGqlShow(
   } satisfies TypeSafeGqlMapping<GqlShow>;
 }
 
-export function mapDbTemplateToGqlTemplate(
-  db: DbTemplate,
-): GqlTemplate {
+export function mapDbTemplateToGqlTemplate(db: DbTemplate): GqlTemplate {
   return {
     id: db.id,
     createdAt: db.createdAt,
@@ -401,9 +393,7 @@ export function mapDbTimestampTypeToGqlTimestampType(
   } satisfies TypeSafeGqlMapping<GqlTimestampType>;
 }
 
-export function mapDbTimestampToGqlTimestamp(
-  db: DbTimestamp,
-): GqlTimestamp {
+export function mapDbTimestampToGqlTimestamp(db: DbTimestamp): GqlTimestamp {
   return {
     id: db.id,
     createdAt: db.createdAt,
