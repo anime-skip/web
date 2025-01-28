@@ -14,8 +14,13 @@ export const directiveResolvers: GqlDirectiveResolvers = {
     ctx.authUserId = userId;
     return await next();
   },
-  optionalAuthenticated: (_next, _parent, _directiveArgs, _ctx, _info) => {
-    todo("optionalAuthenticated directive");
+  optionalAuthenticated: async (next, _parent, _directiveArgs, ctx, _info) => {
+    const token = getAccessToken(ctx.request);
+    if (token != null) {
+      const { userId } = await auth.validateToken("access", token);
+      ctx.authUserId = userId;
+    }
+    return await next();
   },
   hasRole: (_next, _parent, _directiveArgs, _ctx, _info) => {
     todo("hasRole directive");
