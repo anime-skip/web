@@ -1,3 +1,3 @@
-import packageJson from "../package.json" with { type: "json" };
+import versionJson from "../version.json" with { type: "json" };
 
-export const version = packageJson.version;
+export const version = versionJson.version;

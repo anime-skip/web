@@ -1,13 +1,13 @@
 {
   "name": "web",
-  "version": "2.0.0-alpha.1",
   "packageManager": "bun@1.2.1",
   "type": "module",
   "scripts": {
     "check": "check",
     "dev": "bun run --watch scripts/dev.ts",
     "build": "bun run scripts/build.ts",
-    "build:app": "vite build app",
+    "docker:build": "docker build -t web:latest .",
+    "docker:preview": "docker run -p 3000:3000 -e NODE_ENV=production --env-file=.env web:latest",
     "preview": "cd .output && bun run --env-file=../.env.prod server/main.ts",
     "drizzle-kit": "cd server && drizzle-kit",
     "gen": "bun gen:db && bun gen:graphql",

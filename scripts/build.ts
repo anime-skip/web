@@ -14,10 +14,12 @@ await copySrc("server");
 await copySrc("shared");
 await copySrc("package.json");
 await copySrc("bun.lock");
+await copySrc("tsconfig.json");
+await copySrc("version.json");
 
 console.log();
 console.log("Building app...");
-execSync("bun build:app", { stdio: "inherit" });
+execSync("vite build app", { stdio: "inherit" });
 
 console.log();
 console.log("Done!");
