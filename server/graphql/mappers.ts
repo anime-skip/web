@@ -19,6 +19,7 @@ import type { DbExternalLink } from "server/db/schema.ts";
 import type { DbTemplate } from "server/db/schema.ts";
 import type { DbUserReport } from "server/db/schema.ts";
 import type { NoOptionals } from "shared/types.ts";
+import { todo } from "shared/utils.ts";
 
 type TypeSafeGqlMapping<T> = NoOptionals<Omit<T, "__typename">>;
 type TypeSafeDbMapping<T> = NoOptionals<T>;
@@ -213,6 +214,10 @@ export function mapDbEpisodeUrlToGqlEpisodeUrl(
     episode: unresolved,
     source: mapDbEpisodeSourceToGqlEpisodeSource(db.source),
   } satisfies TypeSafeGqlMapping<GqlEpisodeUrl>;
+}
+
+export function mapUrlToDbEpisodeSource(url: string): DbEpisodeSource {
+  todo();
 }
 
 export function mapDbEpisodeToGqlEpisode(

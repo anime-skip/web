@@ -2,14 +2,54 @@ import type { GqlResolvers } from "server/graphql/resolver-types.gen.ts";
 import { todo } from "shared/utils.ts";
 import { and, eq, isNull } from "drizzle-orm";
 import type { GqlContext } from "server/graphql/context.ts";
-import { userReports } from "server/db/schema.ts";
+import { type DbUserReportInsert, userReports } from "server/db/schema.ts";
 import { mapDbUserReportToGqlUserReport } from "server/graphql/mappers.ts";
+import type { NoOptionals } from "shared/types.ts";
 
 export const userReportResolvers: GqlResolvers = {
   Mutation: {
-    createUserReport: (_parent, _args, _ctx) => todo(),
+    createUserReport: async (_parent, args, ctx) => {
+      if (args.report == null) throw Error("report arg is required");
 
-    resolveUserReport: (_parent, _args, _ctx) => todo(),
+      const userId = ctx.authUserId!;
+      const now = new Date();
+      const value: NoOptionals<DbUserReportInsert> = {
+        id: crypto.randomUUID(), // TODO: Add default uuid generation so this doesn't need to be passed here'
+        createdAt: now.toISOString(),
+        createdByUserId: userId,
+        updatedAt: now.toISOString(),
+        updatedByUserId: userId,
+        deletedAt: null,
+        deletedByUserId: null,
+        episodeId: args.report.episodeId ?? null,
+        episodeUrl: args.report.episodeUrl ?? null,
+        message: args.report.message,
+        reportedFromUrl: args.report.reportedFromUrl,
+        resolved: false,
+        resolvedMessage: null,
+        showId: args.report.showId ?? null,
+        timestampId: args.report.timestampId ?? null,
+      };
+      const [row] = await ctx.db.insert(userReports).values(value).returning();
+      return mapDbUserReportToGqlUserReport(row);
+    },
+
+    resolveUserReport: async (_parent, args, ctx) => {
+      const userId = ctx.authUserId!;
+      const now = new Date();
+      const updates: Partial<DbUserReportInsert> = {
+        updatedAt: now.toISOString(),
+        updatedByUserId: userId,
+        resolved: true,
+        resolvedMessage: args.resolvedMessage,
+      };
+      const [row] = await ctx.db
+        .update(userReports)
+        .set(updates)
+        .where(eq(userReports.id, args.id))
+        .returning();
+      return mapDbUserReportToGqlUserReport(row);
+    },
   },
   Query: {
     findUserReport: (_parent, args, ctx) =>

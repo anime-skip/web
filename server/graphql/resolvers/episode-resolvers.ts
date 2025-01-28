@@ -5,17 +5,61 @@ import { getTemplateByEpisodeId } from "server/graphql/resolvers/template-resolv
 import { getUserReportsByEpisodeId } from "server/graphql/resolvers/user-report-resolvers.ts";
 import { getTimestampsByEpisodeId } from "server/graphql/resolvers/timestamp-resolvers.ts";
 import type { GqlContext } from "server/graphql/context.ts";
-import { episodes } from "server/db/schema.ts";
+import { type DbEpisodeInsert, episodes } from "server/db/schema.ts";
 import { and, eq, isNull } from "drizzle-orm";
 import { mapDbEpisodeToGqlEpisode } from "server/graphql/mappers.ts";
+import type { NoOptionals } from "shared/types.ts";
+import { prepareGqlInputForDb, softDeleteEpisodes } from "server/utils/db.ts";
 
 export const episodeResolvers: GqlResolvers = {
   Mutation: {
-    createEpisode: (_parent, _args, _ctx) => todo(),
+    createEpisode: async (_parent, args, ctx) => {
+      const userId = ctx.authUserId!;
+      const now = new Date();
+      const value: NoOptionals<Omit<DbEpisodeInsert, "id">> = {
+        createdByUserId: userId,
+        createdAt: now.toISOString(),
+        updatedByUserId: userId,
+        updatedAt: now.toISOString(),
+        showId: args.showId,
+        absoluteNumber: args.episodeInput.absoluteNumber ?? null,
+        name: args.episodeInput.name ?? null,
+        number: args.episodeInput.number ?? null,
+        season: args.episodeInput.season ?? null,
+        baseDuration: String(args.episodeInput.baseDuration),
+        deletedAt: null,
+        deletedByUserId: null,
+      };
+      const [row] = await ctx.db.insert(episodes).values(value).returning();
+      return mapDbEpisodeToGqlEpisode(row);
+    },
 
-    updateEpisode: (_parent, _args, _ctx) => todo(),
+    updateEpisode: async (_parent, args, ctx) => {
+      const userId = ctx.authUserId!;
+      const now = new Date();
+      const updates: Partial<DbEpisodeInsert> = {
+        updatedAt: now.toISOString(),
+        updatedByUserId: userId,
+        ...prepareGqlInputForDb(args.newEpisode),
+        baseDuration: String(args.newEpisode.baseDuration),
+      };
+      const [row] = await ctx.db
+        .update(episodes)
+        .set(updates)
+        .where(eq(episodes.id, args.episodeId))
+        .returning();
+      return mapDbEpisodeToGqlEpisode(row);
+    },
 
-    deleteEpisode: (_parent, _args, _ctx) => todo(),
+    deleteEpisode: async (_parent, args, ctx) => {
+      const userId = ctx.authUserId!;
+      const now = new Date();
+      const deleted = await ctx.db.transaction(
+        (tx) => softDeleteEpisodes(tx, [args.episodeId], userId, now),
+        { accessMode: "read write" },
+      );
+      return mapDbEpisodeToGqlEpisode(deleted);
+    },
   },
   Query: {
     recentlyAddedEpisodes: (_parent, _args, _ctx) => todo(),

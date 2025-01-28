@@ -1,14 +1,62 @@
 import type { GqlResolvers } from "server/graphql/resolver-types.gen.ts";
-import { todo } from "shared/utils.ts";
 import { mapDbTimestampTypeToGqlTimestampType } from "server/graphql/mappers.ts";
+import type { NoOptionals } from "shared/types.ts";
+import {
+  type DbTimestampTypeInsert,
+  timestampTypes,
+} from "server/db/schema.ts";
+import {
+  prepareGqlInputForDb,
+  softDeleteTimestampTypes,
+} from "server/utils/db.ts";
+import { eq } from "drizzle-orm";
 
 export const timestampTypeResolvers: GqlResolvers = {
   Mutation: {
-    createTimestampType: (_parent, _args, _ctx) => todo(),
+    createTimestampType: async (_parent, args, ctx) => {
+      const userId = ctx.authUserId!;
+      const now = new Date();
+      const value: NoOptionals<Omit<DbTimestampTypeInsert, "id">> = {
+        createdAt: now.toISOString(),
+        createdByUserId: userId,
+        updatedAt: now.toISOString(),
+        updatedByUserId: userId,
+        deletedAt: null,
+        deletedByUserId: null,
+        description: args.timestampTypeInput.description,
+        name: args.timestampTypeInput.name,
+      };
+      const [row] = await ctx.db.insert(timestampTypes).values(value)
+        .returning();
+      return mapDbTimestampTypeToGqlTimestampType(row);
+    },
 
-    updateTimestampType: (_parent, _args, _ctx) => todo(),
+    updateTimestampType: async (_parent, args, ctx) => {
+      const userId = ctx.authUserId!;
+      const now = new Date();
+      const updates: Partial<DbTimestampTypeInsert> = {
+        updatedAt: now.toISOString(),
+        updatedByUserId: userId,
+        ...prepareGqlInputForDb(args.newTimestampType),
+      };
+      const [row] = await ctx.db
+        .update(timestampTypes)
+        .set(updates)
+        .where(eq(timestampTypes.id, args.timestampTypeId))
+        .returning();
+      return mapDbTimestampTypeToGqlTimestampType(row);
+    },
 
-    deleteTimestampType: (_parent, _args, _ctx) => todo(),
+    deleteTimestampType: async (_parent, args, ctx) => {
+      const userId = ctx.authUserId!;
+      const now = new Date();
+      const deleted = await ctx.db.transaction(
+        (tx) =>
+          softDeleteTimestampTypes(tx, [args.timestampTypeId], userId, now),
+        { accessMode: "read write" },
+      );
+      return mapDbTimestampTypeToGqlTimestampType(deleted);
+    },
   },
   Query: {
     findTimestampType: (_parent, args, ctx) =>

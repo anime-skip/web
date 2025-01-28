@@ -2,17 +2,64 @@ import type { GqlResolvers } from "server/graphql/resolver-types.gen.ts";
 import { todo } from "shared/utils.ts";
 import type { GqlContext } from "server/graphql/context.ts";
 import { and, desc, eq, isNull } from "drizzle-orm";
-import { templates } from "server/db/schema.ts";
-import { mapDbTemplateToGqlTemplate } from "server/graphql/mappers.ts";
+import { type DbTemplateInsert, templates } from "server/db/schema.ts";
+import {
+  mapDbTemplateToGqlTemplate,
+  mapGqlTemplateTypeToDbTemplateType,
+} from "server/graphql/mappers.ts";
 import { getTemplateTimestampsByTemplateId } from "server/graphql/resolvers/template-timestamp-resolvers.ts";
+import type { NoOptionals } from "shared/types.ts";
+import { prepareGqlInputForDb, softDeleteTemplates } from "server/utils/db.ts";
 
 export const templateResolvers: GqlResolvers = {
   Mutation: {
-    createTemplate: (_parent, _args, _ctx) => todo(),
+    createTemplate: async (_parent, args, ctx) => {
+      const userId = ctx.authUserId!;
+      const now = new Date();
+      const value: NoOptionals<Omit<DbTemplateInsert, "id">> = {
+        createdAt: now.toISOString(),
+        createdByUserId: userId,
+        updatedAt: now.toISOString(),
+        updatedByUserId: userId,
+        deletedAt: null,
+        deletedByUserId: null,
+        seasons: args.newTemplate.seasons ?? null,
+        showId: args.newTemplate.showId,
+        sourceEpisodeId: args.newTemplate.sourceEpisodeId,
+        type: mapGqlTemplateTypeToDbTemplateType(args.newTemplate.type),
+      };
+      const [row] = await ctx.db.insert(templates).values(value).returning();
+      return mapDbTemplateToGqlTemplate(row);
+    },
 
-    updateTemplate: (_parent, _args, _ctx) => todo(),
+    updateTemplate: async (_parent, args, ctx) => {
+      const userId = ctx.authUserId!;
+      const now = new Date();
+      const updates: Partial<DbTemplateInsert> = {
+        updatedAt: now.toISOString(),
+        updatedByUserId: userId,
+        ...prepareGqlInputForDb(args.newTemplate),
+        type: args.newTemplate.type == null
+          ? undefined
+          : mapGqlTemplateTypeToDbTemplateType(args.newTemplate.type),
+      };
+      const [row] = await ctx.db
+        .update(templates)
+        .set(updates)
+        .where(eq(templates.id, args.templateId))
+        .returning();
+      return mapDbTemplateToGqlTemplate(row);
+    },
 
-    deleteTemplate: (_parent, _args, _ctx) => todo(),
+    deleteTemplate: async (_parent, args, ctx) => {
+      const userId = ctx.authUserId!;
+      const now = new Date();
+      const deleted = await ctx.db.transaction(
+        (tx) => softDeleteTemplates(tx, [args.templateId], userId, now),
+        { accessMode: "read write" },
+      );
+      return mapDbTemplateToGqlTemplate(deleted);
+    },
   },
   Query: {
     findTemplate: (_parent, args, ctx) =>

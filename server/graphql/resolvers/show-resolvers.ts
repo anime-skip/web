@@ -3,14 +3,61 @@ import { todo } from "shared/utils.ts";
 import { getEpisodesByShowId } from "server/graphql/resolvers/episode-resolvers.ts";
 import { getShowAdminsByShowId } from "server/graphql/resolvers/show-admin-resolvers.ts";
 import { getTemplatesByShowId } from "server/graphql/resolvers/template-resolvers.ts";
+import type { NoOptionals } from "shared/types.ts";
+import { mapDbShowToGqlShow } from "server/graphql/mappers.ts";
+import { type DbShowInsert, shows } from "server/db/schema.ts";
+import { prepareGqlInputForDb, softDeleteShows } from "server/utils/db.ts";
+import { eq } from "drizzle-orm";
 
 export const showResolvers: GqlResolvers = {
   Mutation: {
-    createShow: (_parent, _args, _ctx) => todo(),
+    createShow: async (_parent, args, ctx) => {
+      const userId = ctx.authUserId!;
+      const now = new Date();
+      const value: NoOptionals<Omit<DbShowInsert, "id">> = {
+        createdAt: now.toISOString(),
+        createdByUserId: userId,
+        updatedAt: now.toISOString(),
+        updatedByUserId: userId,
+        deletedAt: null,
+        deletedByUserId: null,
+        image: args.showInput.image ?? null,
+        name: args.showInput.name,
+        originalName: args.showInput.originalName ?? null,
+        website: args.showInput.website ?? null,
+      };
+      const [row] = await ctx.db.insert(shows).values(value).returning();
 
-    updateShow: (_parent, _args, _ctx) => todo(),
+      if (args.becomeAdmin) todo("createShow > args.becomeAdmin");
 
-    deleteShow: (_parent, _args, _ctx) => todo(),
+      return mapDbShowToGqlShow(row);
+    },
+
+    updateShow: async (_parent, args, ctx) => {
+      const userId = ctx.authUserId!;
+      const now = new Date();
+      const updates: Partial<DbShowInsert> = {
+        updatedAt: now.toISOString(),
+        updatedByUserId: userId,
+        ...prepareGqlInputForDb(args.newShow),
+      };
+      const [row] = await ctx.db
+        .update(shows)
+        .set(updates)
+        .where(eq(shows.id, args.showId))
+        .returning();
+      return mapDbShowToGqlShow(row);
+    },
+
+    deleteShow: async (_parent, args, ctx) => {
+      const userId = ctx.authUserId!;
+      const now = new Date();
+      const deleted = await ctx.db.transaction(
+        (tx) => softDeleteShows(tx, [args.showId], userId, now),
+        { accessMode: "read write" },
+      );
+      return mapDbShowToGqlShow(deleted);
+    },
   },
   Query: {
     findShow: (_parent, args, ctx) => ctx.dataloaders.shows.load(args.showId),

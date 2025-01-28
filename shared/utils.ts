@@ -34,15 +34,3 @@ export function randomString(length: number): string {
   }
   return result;
 }
-
-export function stripNullish<T extends Record<string, unknown>>(
-  obj: T,
-): StripNullish<T> {
-  return Object.fromEntries(
-    Object.entries(obj).filter(([_, value]) => value !== undefined),
-  ) as StripNullish<T>;
-}
-
-export type StripNullish<T> = {
-  [K in keyof T]: Exclude<T[K], undefined | null>;
-};

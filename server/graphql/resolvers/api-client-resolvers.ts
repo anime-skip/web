@@ -1,43 +1,46 @@
 import type { GqlResolvers } from "server/graphql/resolver-types.gen.ts";
-import { randomString, stripNullish, todo } from "shared/utils.ts";
+import { randomString } from "shared/utils.ts";
 import { asc, desc, eq } from "drizzle-orm";
-import { apiClients } from "server/db/schema.ts";
+import { apiClients, type DbApiClientInsert } from "server/db/schema.ts";
 import { mapDbApiClientToGqlApiClient } from "server/graphql/mappers.ts";
-import { softDeleteApiClient } from "server/utils/db.ts";
+import { prepareGqlInputForDb, softDeleteApiClients } from "server/utils/db.ts";
 import type { GqlContext } from "server/graphql/context.ts";
+import type { NoOptionals } from "shared/types.ts";
 
 export const apiClientResolvers: GqlResolvers = {
   Mutation: {
     createApiClient: async (_parent, args, ctx) => {
       const userId = ctx.authUserId!;
       const now = new Date();
-      const [row] = await ctx.db
-        .insert(apiClients)
-        .values({
-          id: randomString(32),
-          appName: args.client.appName,
-          createdAt: now.toISOString(),
-          createdByUserId: userId,
-          description: args.client.description,
-          rateLimitRpm: 60,
-          updatedAt: now.toISOString(),
-          updatedByUserId: userId,
-          userId,
-        })
-        .returning();
+      const value: NoOptionals<DbApiClientInsert> = {
+        id: randomString(32),
+        userId,
+        appName: args.client.appName,
+        createdAt: now.toISOString(),
+        createdByUserId: userId,
+        description: args.client.description,
+        rateLimitRpm: 60,
+        updatedAt: now.toISOString(),
+        updatedByUserId: userId,
+        allowedOrigins: null,
+        deletedAt: null,
+        deletedByUserId: null,
+      };
+      const [row] = await ctx.db.insert(apiClients).values(value).returning();
       return mapDbApiClientToGqlApiClient(row);
     },
 
     updateApiClient: async (_parent, args, ctx) => {
       const userId = ctx.authUserId!;
       const now = new Date();
+      const updates: Partial<DbApiClientInsert> = {
+        updatedAt: now.toISOString(),
+        updatedByUserId: userId,
+        ...prepareGqlInputForDb(args.changes),
+      };
       const [row] = await ctx.db
         .update(apiClients)
-        .set({
-          updatedAt: now.toISOString(),
-          updatedByUserId: userId,
-          ...stripNullish(args.changes),
-        })
+        .set(updates)
         .where(eq(apiClients.id, args.id))
         .returning();
       return mapDbApiClientToGqlApiClient(row);
@@ -47,7 +50,7 @@ export const apiClientResolvers: GqlResolvers = {
       const userId = ctx.authUserId!;
       const now = new Date();
       const deleted = await ctx.db.transaction(
-        (tx) => softDeleteApiClient(tx, args.id, userId, now),
+        (tx) => softDeleteApiClients(tx, [args.id], userId, now),
         { accessMode: "read write" },
       );
       return mapDbApiClientToGqlApiClient(deleted);

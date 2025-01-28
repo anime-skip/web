@@ -39,6 +39,27 @@ export async function openAnimeSkipDatabase(): Promise<AnimeSkipDatabase> {
 export type AnimeSkipDatabase = NodePgDatabase<typeof dbSchema>;
 
 ///
+/// Utils
+///
+
+/**
+ * Convert Gql inputs to a object that can be set when inserting or updating
+ * data. It removes any `undefined` fields so they're not set, and keeps any
+ * null values so null can be saved in the DB.
+ */
+export function prepareGqlInputForDb<T extends Record<string, unknown>>(
+  obj: T,
+): StripNullish<T> {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([_, value]) => value !== undefined),
+  ) as StripNullish<T>;
+}
+
+export type StripNullish<T> = {
+  [K in keyof T]: Exclude<T[K], undefined | null>;
+};
+
+///
 /// Dataloaders
 ///
 
@@ -62,9 +83,9 @@ export function createDrizzleDataloader<DbModel, GqlModel>(
 /// Deletes
 ///
 
-export async function softDeleteApiClient(
+export async function softDeleteApiClients(
   db: AnimeSkipDatabase,
-  id: string,
+  ids: string[],
   userId: string,
   now: Date,
 ): Promise<dbSchema.DbApiClient> {
@@ -75,7 +96,109 @@ export async function softDeleteApiClient(
       deletedAt: now.toISOString(),
       deletedByUserId: userId,
     })
-    .where(eq(dbSchema.apiClients.id, id))
+    .where(inArray(dbSchema.apiClients.id, ids))
     .returning();
   return deleted;
+}
+
+export async function softDeleteEpisodes(
+  db: AnimeSkipDatabase,
+  ids: string[],
+  userId: string,
+  now: Date,
+): Promise<dbSchema.DbEpisode> {
+  todo();
+}
+
+export async function hardDeleteEpisodeUrls(
+  db: AnimeSkipDatabase,
+  urls: string[],
+): Promise<dbSchema.DbEpisodeUrl> {
+  todo();
+}
+
+export async function hardDeleteExternalLinks(
+  db: AnimeSkipDatabase,
+  compoundIds: Array<{ url: string; showId: string }>,
+): Promise<dbSchema.DbExternalLink> {
+  todo();
+}
+
+export async function softDeletePreferences(
+  db: AnimeSkipDatabase,
+  ids: string[],
+  userId: string,
+  now: Date,
+): Promise<dbSchema.DbPreferences> {
+  todo();
+}
+
+export async function softDeleteShowAdmins(
+  db: AnimeSkipDatabase,
+  ids: string[],
+  userId: string,
+  now: Date,
+): Promise<dbSchema.DbShowAdmin> {
+  todo();
+}
+
+export async function softDeleteShows(
+  db: AnimeSkipDatabase,
+  ids: string[],
+  userId: string,
+  now: Date,
+): Promise<dbSchema.DbShow> {
+  todo();
+}
+
+export async function softDeleteTemplates(
+  db: AnimeSkipDatabase,
+  ids: string[],
+  userId: string,
+  now: Date,
+): Promise<dbSchema.DbTemplate> {
+  todo();
+}
+
+export async function hardDeleteTemplateTimestamps(
+  db: AnimeSkipDatabase,
+  compoundIds: Array<{ templateId: string; timestampId: string }>,
+): Promise<dbSchema.DbTemplateTimestamp> {
+  todo();
+}
+
+export async function softDeleteTimestamps(
+  db: AnimeSkipDatabase,
+  ids: string[],
+  userId: string,
+  now: Date,
+): Promise<dbSchema.DbTimestamp> {
+  todo();
+}
+
+export async function softDeleteTimestampTypes(
+  db: AnimeSkipDatabase,
+  ids: string[],
+  userId: string,
+  now: Date,
+): Promise<dbSchema.DbTimestampType> {
+  todo();
+}
+
+export async function softDeleteUserReports(
+  db: AnimeSkipDatabase,
+  ids: string[],
+  userId: string,
+  now: Date,
+): Promise<dbSchema.DbUserReport> {
+  todo();
+}
+
+export async function softDeleteUsers(
+  db: AnimeSkipDatabase,
+  ids: string[],
+  userId: string,
+  now: Date,
+): Promise<dbSchema.DbUser> {
+  todo();
 }

@@ -1,15 +1,40 @@
 import type { GqlResolvers } from "server/graphql/resolver-types.gen.ts";
 import { todo } from "shared/utils.ts";
 import type { GqlContext } from "server/graphql/context.ts";
-import { showAdmins } from "server/db/schema.ts";
+import { type DbShowAdminInsert, showAdmins } from "server/db/schema.ts";
 import { and, eq, isNull } from "drizzle-orm";
 import { mapDbShowAdminToGqlShowAdmin } from "server/graphql/mappers.ts";
+import type { NoOptionals } from "shared/types.ts";
+import { softDeleteShowAdmins } from "server/utils/db.ts";
 
 export const showAdminResolvers: GqlResolvers = {
   Mutation: {
-    createShowAdmin: (_parent, _args, _ctx) => todo(),
+    createShowAdmin: async (_parent, args, ctx) => {
+      const userId = ctx.authUserId!;
+      const now = new Date();
+      const value: NoOptionals<Omit<DbShowAdminInsert, "id">> = {
+        createdAt: now.toISOString(),
+        createdByUserId: userId,
+        updatedAt: now.toISOString(),
+        updatedByUserId: userId,
+        showId: args.showAdminInput.showId,
+        userId: args.showAdminInput.userId,
+        deletedAt: null,
+        deletedByUserId: null,
+      };
+      const [row] = await ctx.db.insert(showAdmins).values(value).returning();
+      return mapDbShowAdminToGqlShowAdmin(row);
+    },
 
-    deleteShowAdmin: (_parent, _args, _ctx) => todo(),
+    deleteShowAdmin: async (_parent, args, ctx) => {
+      const userId = ctx.authUserId!;
+      const now = new Date();
+      const deleted = await ctx.db.transaction(
+        (tx) => softDeleteShowAdmins(tx, [args.showAdminId], userId, now),
+        { accessMode: "read write" },
+      );
+      return mapDbShowAdminToGqlShowAdmin(deleted);
+    },
   },
   Query: {
     findShowAdmin: (_parent, args, ctx) =>

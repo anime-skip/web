@@ -2,16 +2,68 @@ import type { GqlResolvers } from "server/graphql/resolver-types.gen.ts";
 import { todo } from "shared/utils.ts";
 import type { GqlContext } from "server/graphql/context.ts";
 import { and, eq, isNull } from "drizzle-orm";
-import { timestamps } from "server/db/schema.ts";
-import { mapDbTimestampToGqlTimestamp } from "server/graphql/mappers.ts";
+import { type DbTimestampInsert, timestamps } from "server/db/schema.ts";
+import {
+  mapDbTimestampToGqlTimestamp,
+  mapGqlTimestampSourceToDbTimestampSource,
+} from "server/graphql/mappers.ts";
+import type { NoOptionals } from "shared/types.ts";
+import { prepareGqlInputForDb, softDeleteTimestamps } from "server/utils/db.ts";
 
 export const timestampResolvers: GqlResolvers = {
   Mutation: {
-    createTimestamp: (_parent, _args, _ctx) => todo(),
+    createTimestamp: async (_parent, args, ctx) => {
+      const userId = ctx.authUserId!;
+      const now = new Date();
+      const value: NoOptionals<Omit<DbTimestampInsert, "id">> = {
+        createdAt: now.toISOString(),
+        createdByUserId: userId,
+        updatedAt: now.toISOString(),
+        updatedByUserId: userId,
+        deletedAt: null,
+        deletedByUserId: null,
+        at: String(args.timestampInput.at),
+        episodeId: args.episodeId,
+        source: mapGqlTimestampSourceToDbTimestampSource(
+          args.timestampInput.source ?? "ANIME_SKIP",
+        ),
+        typeId: args.timestampInput.typeId,
+      };
+      const [row] = await ctx.db.insert(timestamps).values(value).returning();
+      return mapDbTimestampToGqlTimestamp(row);
+    },
 
-    updateTimestamp: (_parent, _args, _ctx) => todo(),
+    updateTimestamp: async (_parent, args, ctx) => {
+      const userId = ctx.authUserId!;
+      const now = new Date();
+      const updates: Partial<DbTimestampInsert> = {
+        updatedAt: now.toISOString(),
+        updatedByUserId: userId,
+        ...prepareGqlInputForDb(args.newTimestamp),
+        source: args.newTimestamp.source == null
+          ? undefined
+          : mapGqlTimestampSourceToDbTimestampSource(args.newTimestamp.source),
+        at: args.newTimestamp.at == null
+          ? undefined
+          : String(args.newTimestamp.at),
+      };
+      const [row] = await ctx.db
+        .update(timestamps)
+        .set(updates)
+        .where(eq(timestamps.id, args.timestampId))
+        .returning();
+      return mapDbTimestampToGqlTimestamp(row);
+    },
 
-    deleteTimestamp: (_parent, _args, _ctx) => todo(),
+    deleteTimestamp: async (_parent, args, ctx) => {
+      const userId = ctx.authUserId!;
+      const now = new Date();
+      const deleted = await ctx.db.transaction(
+        (tx) => softDeleteTimestamps(tx, [args.timestampId], userId, now),
+        { accessMode: "read write" },
+      );
+      return mapDbTimestampToGqlTimestamp(deleted);
+    },
 
     updateTimestamps: (_parent, _args, _ctx) => todo(),
   },
