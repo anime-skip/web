@@ -1,0 +1,22 @@
+name: Deploy
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Choose the version type"
+        required: true
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+jobs:
+  validate:
+    uses: ./.github/workflows/validate.yml
+
+  deploy:
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
