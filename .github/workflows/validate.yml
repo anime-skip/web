@@ -3,7 +3,7 @@ on:
   pull_request:
   push:
     branches:
-      - main
+      - v2
   workflow_call:
 
 permissions:
