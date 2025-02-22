@@ -5,8 +5,24 @@ import { getTemplateByEpisodeId } from "server/graphql/resolvers/template-resolv
 import { getUserReportsByEpisodeId } from "server/graphql/resolvers/user-report-resolvers";
 import { getTimestampsByEpisodeId } from "server/graphql/resolvers/timestamp-resolvers";
 import type { GqlContext } from "server/graphql/context";
-import { type DbEpisodeInsert, episodes } from "server/db/schema";
-import { and, eq, isNull } from "drizzle-orm";
+import {
+  type DbEpisode,
+  type DbEpisodeInsert,
+  episodes,
+  timestamps,
+} from "server/db/schema";
+import {
+  and,
+  asc,
+  desc,
+  eq,
+  getTableColumns,
+  ilike,
+  inArray,
+  isNull,
+  sql,
+  type SQLWrapper,
+} from "drizzle-orm";
 import { mapDbEpisodeToGqlEpisode } from "server/graphql/mappers";
 import type { NoOptionals } from "shared/types";
 import { prepareGqlInputForDb, softDeleteEpisodes } from "server/utils/db";
@@ -62,7 +78,35 @@ export const episodeResolvers: GqlResolvers = {
     },
   },
   Query: {
-    recentlyAddedEpisodes: (_parent, _args, _ctx) => todo(),
+    recentlyAddedEpisodes: async (_parent, args, ctx) => {
+      // What is this query?
+      // 1. Grab timestamps with distinct episode ids
+      // 2. Grab just the episode_id the timestamp belongs to and sort them by newest first (this is
+      //    where we apply pagination)
+      // 3. Select all the episodes with those ids, making sure to sort them again since the
+      //    timestamps' created_at can be in a different order than the episodes' created_at
+      //
+      // This isn't perfect (episode could be missing or slightly out of order), but it beats what the
+      // the old query - 13ms vs 10s
+      // https://github.com/anime-skip/backend/blob/33fd2b842bc847bed67c9b1f9283e78b710cd1f5/internal/database/repos/episodes.go#L137-L153
+      const res = await ctx.db
+        .select()
+        .from(episodes)
+        .where(
+          inArray(
+            episodes.id,
+            sql`(
+         			SELECT episode_id
+         			FROM (SELECT DISTINCT ON (episode_id) * FROM timestamps) as episode_ids
+         			ORDER BY created_at DESC NULLS LAST
+         			LIMIT ${args.limit}
+         			OFFSET ${args.offset}
+            )`,
+          ),
+        )
+        .orderBy(sql`created_at DESC NULLS LAST`);
+      return res.map(mapDbEpisodeToGqlEpisode);
+    },
 
     findEpisode: (_parent, args, ctx) =>
       ctx.dataloaders.episodes.load(args.episodeId),
@@ -70,9 +114,22 @@ export const episodeResolvers: GqlResolvers = {
     findEpisodesByShowId: (_parent, args, ctx) =>
       getEpisodesByShowId(ctx, args.showId),
 
-    searchEpisodes: (_parent, _args, _ctx) => todo(),
+    searchEpisodes: async (_parent, args, ctx) => {
+      const where: SQLWrapper[] = [];
+      if (args.search) where.push(ilike(episodes.name, `%${args.search}%`));
+      if (args.showId) where.push(eq(episodes.showId, args.showId));
 
-    findEpisodeByName: (_parent, _args, _ctx) => todo(),
+      const res = await ctx.db.query.episodes.findMany({
+        where: and(...where),
+        limit: args.limit,
+        offset: args.offset,
+        orderBy: args.sort === "ASC" ? asc(episodes.name) : desc(episodes.name),
+      });
+      return res.map(mapDbEpisodeToGqlEpisode);
+    },
+
+    findEpisodeByName: async (_parent, args, ctx) =>
+      ctx.thirdPartyEpisodeService.findByName(args.name),
   },
   Episode: {
     createdBy: ({ createdByUserId: id }, _, ctx) =>
