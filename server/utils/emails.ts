@@ -1,7 +1,7 @@
 import type { DbUser } from "server/db/schema";
-import resetPasswordHtmlTemplate from "server/assets/email-templates/reset-password.html";
-import welcomeHtmlTemplate from "server/assets/email-templates/welcome.html";
-import verificationHtmlTemplate from "server/assets/email-templates/verification.html";
+import resetPasswordHtmlTemplate from "server/assets/email-templates/reset-password.html" with { type: "text" };
+import welcomeHtmlTemplate from "server/assets/email-templates/welcome.html" with { type: "text" };
+import verificationHtmlTemplate from "server/assets/email-templates/verification.html" with { type: "text" };
 import SMTPConnection from "nodemailer/lib/smtp-connection";
 import { promisify } from "node:util";
 import { logger } from "./logger";

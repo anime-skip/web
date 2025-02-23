@@ -1,22 +1,15 @@
 import type { GqlResolvers } from "server/graphql/resolver-types.gen";
-import { todo } from "shared/utils";
 import { getEpisodeUrlsByEpisodeId } from "server/graphql/resolvers/episode-url-resolvers";
 import { getTemplateByEpisodeId } from "server/graphql/resolvers/template-resolvers";
 import { getUserReportsByEpisodeId } from "server/graphql/resolvers/user-report-resolvers";
 import { getTimestampsByEpisodeId } from "server/graphql/resolvers/timestamp-resolvers";
 import type { GqlContext } from "server/graphql/context";
-import {
-  type DbEpisode,
-  type DbEpisodeInsert,
-  episodes,
-  timestamps,
-} from "server/db/schema";
+import { type DbEpisodeInsert, episodes } from "server/db/schema";
 import {
   and,
   asc,
   desc,
   eq,
-  getTableColumns,
   ilike,
   inArray,
   isNull,
@@ -129,7 +122,7 @@ export const episodeResolvers: GqlResolvers = {
     },
 
     findEpisodeByName: async (_parent, args, ctx) =>
-      ctx.thirdPartyEpisodeService.findByName(args.name),
+      ctx.thirdPartyService.findEpisodeByName(args.name),
   },
   Episode: {
     createdBy: ({ createdByUserId: id }, _, ctx) =>

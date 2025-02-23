@@ -1,20 +1,22 @@
 {
   "name": "web",
-  "packageManager": "bun@1.2.1",
+  "packageManager": "bun@1.2.3",
   "type": "module",
   "scripts": {
     "check": "check",
-    "dev": "bun run --watch scripts/dev.ts",
-    "build": "bun run scripts/build.ts",
+    "aframe": "bun run node_modules/@aklinker1/aframe/bin/aframe",
+    "dev": "bun run aframe",
+    "build": "bun run aframe build",
+    "preview": "bun --cwd .output --env-file ../.env server-entry.js",
     "docker:build": "docker build -t web:latest .",
     "docker:preview": "docker run --init --rm -p 3000:3000 -e NODE_ENV=production --env-file=.env web:latest",
-    "preview": "cd .output && bun run --env-file=../.env server/main.ts",
     "drizzle-kit": "cd server && drizzle-kit",
     "gen": "bun gen:db && bun gen:graphql",
     "gen:db": "bun run drizzle-kit generate",
     "gen:graphql": "bun scripts/graphql-codegen.ts"
   },
   "dependencies": {
+    "@aklinker1/aframe": "^0.1.0",
     "@graphql-tools/schema": "^10.0.16",
     "@graphql-tools/utils": "^10.7.2",
     "@iconify-json/heroicons": "^1.2.2",
@@ -48,6 +50,8 @@
     "@graphql-codegen/typescript": "^4.1.2",
     "@graphql-codegen/typescript-operations": "^4.4.0",
     "@graphql-codegen/typescript-resolvers": "^4.4.1",
+    "@prerenderer/prerenderer": "^1.2.5",
+    "@prerenderer/renderer-puppeteer": "^1.2.4",
     "@tailwindcss/vite": "^4.0.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/bun": "latest",
@@ -59,6 +63,7 @@
     "drizzle-kit": "^0.30.2",
     "oxlint": "^0.15.8",
     "prettier": "^3.4.2",
+    "puppeteer": "^24.2.1",
     "typescript": "^5.0.0",
     "vite": "^6.0.11",
     "vue-tsc": "^2.2.0"

@@ -1,13 +1,13 @@
 import type { DocumentNode } from "graphql";
 import gql from "graphql-tag";
-import arguments_ from "server/assets/graphql/arguments.gql";
-import directives from "server/assets/graphql/directives.gql";
-import enums from "server/assets/graphql/enums.gql";
-import models from "server/assets/graphql/models.gql";
-import mutations from "server/assets/graphql/mutations.gql";
-import queries from "server/assets/graphql/queries.gql";
-import returnTypes from "server/assets/graphql/return-types.gql";
-import scalars from "server/assets/graphql/scalars.gql";
+import arguments_ from "./schema/arguments.gql" with { type: "text" };
+import directives from "./schema/directives.gql" with { type: "text" };
+import enums from "./schema/enums.gql" with { type: "text" };
+import models from "./schema/models.gql" with { type: "text" };
+import mutations from "./schema/mutations.gql" with { type: "text" };
+import queries from "./schema/queries.gql" with { type: "text" };
+import returnTypes from "./schema/return-types.gql" with { type: "text" };
+import scalars from "./schema/scalars.gql" with { type: "text" };
 
 export const typeDefs: DocumentNode = gql(
   [

@@ -1,9 +1,9 @@
 import { todo } from "shared/utils";
 import type { AnimeSkipDatabase } from "./db";
 
-export function createThirdPartyService(db: AnimeSkipDatabase) {
+export function createThirdPartyService(_db: AnimeSkipDatabase) {
   return {
-    findByName(name: string) {
+    findEpisodeByName(_name: string) {
       throw todo();
     },
   };
