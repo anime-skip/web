@@ -4,19 +4,19 @@
   "type": "module",
   "scripts": {
     "check": "check",
-    "aframe": "bun run node_modules/@aklinker1/aframe/bin/aframe",
-    "dev": "bun run aframe",
-    "build": "bun run aframe build",
+    "dev": "bun --silent aframe",
+    "build": "bun --silent aframe build",
     "preview": "bun --cwd .output --env-file ../.env server-entry.js",
     "docker:build": "docker build -t web:latest .",
     "docker:preview": "docker run --init --rm -p 3000:3000 -e NODE_ENV=production --env-file=.env web:latest",
     "drizzle-kit": "cd server && drizzle-kit",
     "gen": "bun gen:db && bun gen:graphql",
     "gen:db": "bun run drizzle-kit generate",
-    "gen:graphql": "bun scripts/graphql-codegen.ts"
+    "gen:graphql": "bun scripts/graphql-codegen.ts",
+    "aframe": "bun run node_modules/@aklinker1/aframe/bin/aframe"
   },
   "dependencies": {
-    "@aklinker1/aframe": "^0.1.0",
+    "@aklinker1/aframe": "^0.2.0",
     "@graphql-tools/schema": "^10.0.16",
     "@graphql-tools/utils": "^10.7.2",
     "@iconify-json/heroicons": "^1.2.2",
