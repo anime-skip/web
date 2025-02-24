@@ -1,5 +1,3 @@
-import { Request } from "@oak/oak/request";
-
 const AUTH_HEADER_REGEX = /Bearer (.*?\..*?\..*)/;
 
 export function getAccessToken(req: Request): string | undefined {
