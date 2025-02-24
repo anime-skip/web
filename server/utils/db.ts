@@ -22,9 +22,10 @@ export async function openAnimeSkipDatabase(): Promise<AnimeSkipDatabase> {
   dbLogger.info("Opening database...");
   const db = drizzle(url, {
     casing: "snake_case",
-    logger: {
-      logQuery: dbLogger.debug,
-    },
+    // Uncomment to load SQL queries
+    // logger: {
+    //   logQuery: dbLogger.debug,
+    // },
     schema: dbSchema,
   });
 

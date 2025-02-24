@@ -28,7 +28,7 @@ export const accountResolvers: GqlResolvers = {
       validateEmail(email);
 
       ctx.logger.verbose("Verify recaptcha");
-      await verifyRecaptcha(args.recaptchaResponse, ctx.ipAddress);
+      await verifyRecaptcha(args.recaptchaResponse, ctx.ip);
 
       ctx.logger.verbose("Checking for existing username");
       const existingUserByUsername = await getOptionalUserByUsername(
@@ -103,7 +103,7 @@ export const accountResolvers: GqlResolvers = {
     resendVerificationEmail: async (_parent, args, ctx) => {
       const userId = ctx.authUserId!;
 
-      await verifyRecaptcha(args.recaptchaResponse, ctx.ipAddress);
+      await verifyRecaptcha(args.recaptchaResponse, ctx.ip);
       const user = await requireUser(ctx, userId);
       const token = await auth.createToken("verify-email", { userId });
       await sendAccountVerificationEmail(user, token);
@@ -130,7 +130,7 @@ export const accountResolvers: GqlResolvers = {
     requestPasswordReset: async (_parent, args, ctx) => {
       validateEmail(args.email);
 
-      await verifyRecaptcha(args.recaptchaResponse, ctx.ipAddress);
+      await verifyRecaptcha(args.recaptchaResponse, ctx.ip);
       const user = await ctx.db.query.users.findFirst({
         where: eq(users.email, args.email),
       });
