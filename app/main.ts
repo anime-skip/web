@@ -24,3 +24,5 @@ const router = createRouter({
 const app = createApp(RouterView);
 app.use(router);
 app.mount(document.body);
+
+console.log("Hydrated in", performance.now(), "ms");

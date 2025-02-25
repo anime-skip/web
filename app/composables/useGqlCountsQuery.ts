@@ -8,7 +8,7 @@ export type CountsQueryResponse = Pick<
 export default function () {
   return useAsyncState<CountsQueryResponse>(
     async () => {
-      const res = await fetch("/graphql", {
+      const res = await fetch("/api/graphql", {
         headers: {
           "content-type": "application/json",
           "X-Client-ID": "ZGfO0sMF3eCwLYf8yMSCJjlynwNGRXWE",

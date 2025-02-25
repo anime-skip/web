@@ -5,7 +5,7 @@ import MainFooter from "../components/MainFooter.vue";
 
 <template>
   <MainNavigation class="border-b border-neutral" />
-  <main>
+  <main id="prerenderer-target">
     <RouterView />
   </main>
   <MainFooter />

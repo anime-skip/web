@@ -3,6 +3,8 @@ import { RouterLink, useRouter } from "vue-router";
 import useGqlCountsQuery from "../composables/useGqlCountsQuery";
 import HomeCounts from "./HomeCounts.vue";
 import { computed } from "vue";
+import ClientOnly from "./ClientOnly.vue";
+import { isPrerendering } from "@aklinker1/aframe/app";
 
 const { state: counts } = useGqlCountsQuery();
 const formatter = Intl.NumberFormat(undefined, {
@@ -23,6 +25,8 @@ function scrollToFeatures() {
   });
   router.replace("#features");
 }
+
+console.log(isPrerendering());
 </script>
 
 <template>
@@ -37,10 +41,12 @@ function scrollToFeatures() {
           The best video player for watching anime.
         </h2>
         <h3 class="text-base-content font-stretch-expanded font-light mt-2">
-          Powered by the largest timestamp database, Anime Skip automatically
-          skips the parts of episodes you don't want to watch.
+          Powered by the largest community timestamp database, Anime Skip
+          automatically skips the parts of episodes you don't want to watch.
         </h3>
-        <HomeCounts />
+        <ClientOnly>
+          <HomeCounts />
+        </ClientOnly>
         <div
           class="flex items-center justify-center lg:justify-start gap-4 mt-8 lg:mb-16"
         >
@@ -57,6 +63,7 @@ function scrollToFeatures() {
         class="-mx-8 -mb-8 pb-4 lg:m-0 lg:pb-0 lg:flex-1 lg:h-full lg:translate-y-8"
       >
         <img
+          alt="Video player preview"
           src="app/assets/hero-monitor-title.svg"
           class="w-full h-30vh block max-w-none min-w-none lg:w-auto lg:h-full lg:min-w-full"
         />
