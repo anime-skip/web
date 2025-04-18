@@ -5,6 +5,7 @@
       "name": "web",
       "dependencies": {
         "@aklinker1/aframe": "^0.2.5",
+        "@aklinker1/zero-ioc": "^1.3.1",
         "@elysiajs/swagger": "^1.2.2",
         "@graphql-tools/schema": "^10.0.16",
         "@graphql-tools/utils": "^10.7.2",
@@ -64,6 +65,8 @@
     "@aklinker1/aframe": ["@aklinker1/aframe@0.2.5", "", { "peerDependencies": { "@prerenderer/prerenderer": "*", "@prerenderer/renderer-jsdom": "*", "@prerenderer/renderer-puppeteer": "*", "vite": "*" }, "optionalPeers": ["@prerenderer/renderer-puppeteer"], "bin": { "aframe": "bin/aframe.ts" } }, "sha512-s3iFf0CzHxb7lD96RiB+PLeDrsnlh5S9BBpxxIjoRKslY54xr8X4F32R2rOrqJ4sPWCn2v8o9FUCLhC2KwM/zA=="],
 
     "@aklinker1/check": ["@aklinker1/check@1.4.5", "", { "dependencies": { "@antfu/utils": "^0.7.7", "ci-info": "^4.0.0", "citty": "^0.1.6" }, "peerDependencies": { "typescript": "^5.0.0" }, "bin": { "check": "bin/check.mjs" } }, "sha512-whVpnpSK4qa4/83q22JAmxwRAEj35qYs8eIH/tX1C6rKbiwx7EL6kQVmSAhCe1NYqzoIWyOgsISdDPyHjC+h2A=="],
+
+    "@aklinker1/zero-ioc": ["@aklinker1/zero-ioc@1.3.1", "", {}, "sha512-gTfwTBaPvoM2AOnnNfqTXaGlzip6odhKS5tExTK3TrtO0Y7hnzmMVFMOn4uXGa/UZA/35BIuFlNE98bNu5Aw9w=="],
 
     "@ampproject/remapping": ["@ampproject/remapping@2.3.0", "", { "dependencies": { "@jridgewell/gen-mapping": "^0.3.5", "@jridgewell/trace-mapping": "^0.3.24" } }, "sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw=="],
 

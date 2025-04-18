@@ -9,7 +9,6 @@
     "preview": "bun --cwd .output --env-file ../.env server-entry.js",
     "docker:build": "docker build -t web:latest .",
     "docker:preview": "docker run --init --rm -p 3000:3000 -e NODE_ENV=production --env-file=.env web:latest",
-    "drizzle-kit": "cd server && drizzle-kit",
     "gen": "bun gen:db && bun gen:graphql",
     "gen:db": "bun run drizzle-kit generate",
     "gen:graphql": "bun scripts/graphql-codegen.ts",
@@ -17,6 +16,7 @@
   },
   "dependencies": {
     "@aklinker1/aframe": "^0.2.5",
+    "@aklinker1/zero-ioc": "^1.3.1",
     "@elysiajs/swagger": "^1.2.2",
     "@graphql-tools/schema": "^10.0.16",
     "@graphql-tools/utils": "^10.7.2",
