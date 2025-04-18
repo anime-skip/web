@@ -1,6 +1,6 @@
 const SECRET = import.meta.env.AS_RECAPTCHA_SECRET;
 if (!SECRET) {
-  throw Error("AS_RECAPTCH_SECRET environment variable is missing");
+  throw Error("AS_RECAPTCHA_SECRET environment variable is missing");
 }
 
 const ALLOWLIST_STR = import.meta.env.AS_RECAPTCHA_RESPONSE_ALLOWLIST;
