@@ -47,7 +47,7 @@ function createLogger(namespace?: string): Logger {
   const log = (levelName: LogLevelName, color: string, args: any[]) => {
     if (LOG_LEVEL_MAP[levelName] < level) return;
 
-    const label = levelName.padStart(7, " ");
+    const label = levelName.padStart(7, "-");
     if (namespace) {
       console.log(
         `${color}${label}${Color.Reset}`,
