@@ -10,7 +10,9 @@ const accountDropdownOpen = ref(false);
 
 <template>
   <div class="flex fixed top-0 inset-x-0 z-10 bg-base border-b border-neutral">
-    <div class="container flex items-center h-main-navigation">
+    <div
+      class="w-full max-w-256 flex items-center h-main-navigation mx-auto px-4"
+    >
       <!-- Home -->
       <RouterLink to="/" class="btn btn-ghost hover:transform-none shrink-0">
         <img alt="Logo" src="app/assets/logo-nav.svg" class="w-10" />

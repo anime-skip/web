@@ -5,7 +5,7 @@ import DefaultLayout from "./DefaultLayout.vue";
 <template>
   <DefaultLayout>
     <div class="flex flex-col items-center">
-      <div class="container flex flex-col">
+      <div class="w-full max-w-256 flex flex-col">
         <slot />
       </div>
     </div>
