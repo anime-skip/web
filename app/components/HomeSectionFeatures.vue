@@ -6,7 +6,7 @@ const githubLink = "https://github.com/anime-skip";
 
 <template>
   <section id="features" class="py-8 md:py-16">
-    <div class="container mx-auto space-y-8">
+    <div class="w-full max-w-312 px-8 mx-auto space-y-8">
       <h3 class="text-3xl font-overpass tracking-tighter font-black">
         Player Features
       </h3>

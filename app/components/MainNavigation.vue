@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { useEventListener } from "@vueuse/core";
 import useSession from "app/composables/useSession";
 import { ref } from "vue";
+
+defineProps<{
+  wide?: boolean;
+}>();
 
 const { session, logOut } = useSession();
 
@@ -11,7 +14,11 @@ const accountDropdownOpen = ref(false);
 <template>
   <div class="flex fixed top-0 inset-x-0 z-10 bg-base border-b border-neutral">
     <div
-      class="w-full max-w-256 flex items-center h-main-navigation mx-auto px-4"
+      class="w-full flex items-center h-main-navigation mx-auto px-4"
+      :class="{
+        'max-w-256': !wide,
+        'max-w-312': wide,
+      }"
     >
       <!-- Home -->
       <RouterLink to="/" class="btn btn-ghost hover:transform-none shrink-0">
