@@ -4,27 +4,26 @@ import DefaultLayout from "app/layouts/DefaultLayout.vue";
 import useGqlLoginQuery from "app/composables/useGqlLoginQuery";
 import { ref } from "vue";
 import { whenever } from "@vueuse/core";
-import { useRoute, useRouter } from "vue-router";
 import { useHead } from "@unhead/vue";
+import useSession from "app/composables/useSession";
 
 useHead({
   title: "Sign In – Anime Skip",
 });
 
-const { state: tokens, execute: _login, error, isLoading } = useGqlLoginQuery();
+const {
+  state: loginData,
+  execute: _login,
+  error,
+  isLoading,
+} = useGqlLoginQuery();
 
 const username = ref("");
 const password = ref("");
 const login = () => _login(0, username.value, password.value);
 
-const route = useRoute();
-const router = useRouter();
-whenever(tokens, (tokens) => {
-  localStorage.setItem("@anime-skip/authToken", tokens.authToken);
-  localStorage.setItem("@anime-skip/refreshToken", tokens.refreshToken);
-  localStorage.setItem("@anime-skip/session", JSON.stringify(tokens.account));
-  router.push((route.query.redirect as string | undefined) ?? "/account");
-});
+const { logIn } = useSession();
+whenever(loginData, (loginData) => logIn(loginData));
 </script>
 
 <template>

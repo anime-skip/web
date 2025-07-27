@@ -7,18 +7,20 @@ import { whenever } from "@vueuse/core";
 import { useRoute, useRouter } from "vue-router";
 import md5 from "md5";
 import { useHead } from "@unhead/vue";
+import useSession from "app/composables/useSession";
 
 useHead({
   title: "Reset Password – Anime Skip",
 });
 
 const {
-  data: tokens,
+  data: loginData,
   mutate: _resetPassword,
   error,
   isPending,
 } = useGqlResetPasswordMutation();
 
+const route = useRoute();
 const password = ref("");
 const confirmPassword = ref("");
 
@@ -29,14 +31,8 @@ const resetPassword = () =>
     passwordResetToken: (route.query.token as string | undefined) ?? "",
   });
 
-const route = useRoute();
-const router = useRouter();
-whenever(tokens, (tokens) => {
-  localStorage.setItem("@anime-skip/authToken", tokens.authToken);
-  localStorage.setItem("@anime-skip/refreshToken", tokens.refreshToken);
-  localStorage.setItem("@anime-skip/session", JSON.stringify(tokens.account));
-  router.push((route.query.redirect as string | undefined) ?? "/account");
-});
+const { logIn } = useSession();
+whenever(loginData, (loginData) => logIn(loginData));
 </script>
 
 <template>

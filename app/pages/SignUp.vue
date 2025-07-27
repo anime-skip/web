@@ -4,10 +4,10 @@ import DefaultLayout from "app/layouts/DefaultLayout.vue";
 import useGqlCreateAccountMutation from "app/composables/useGqlCreateAccountMutation";
 import { ref } from "vue";
 import { whenever } from "@vueuse/core";
-import { useRoute, useRouter } from "vue-router";
 import md5 from "md5";
 import { useHead } from "@unhead/vue";
 import { RECAPTCHA_SCRIPT } from "app/utils/recaptcha-utils";
+import useSession from "app/composables/useSession";
 
 useHead({
   title: "Sign Up – Anime Skip",
@@ -15,7 +15,7 @@ useHead({
 });
 
 const {
-  data: tokens,
+  data: loginData,
   mutate: _createAccount,
   error,
   isPending,
@@ -33,14 +33,8 @@ const createAccount = () =>
     passwordHash: md5(password.value),
   });
 
-const route = useRoute();
-const router = useRouter();
-whenever(tokens, (tokens) => {
-  localStorage.setItem("@anime-skip/authToken", tokens.authToken);
-  localStorage.setItem("@anime-skip/refreshToken", tokens.refreshToken);
-  localStorage.setItem("@anime-skip/session", JSON.stringify(tokens.account));
-  router.push((route.query.redirect as string | undefined) ?? "/account");
-});
+const { logIn } = useSession();
+whenever(loginData, (loginData) => logIn(loginData));
 </script>
 
 <template>

@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/vue-query";
 import { queryGraphql } from "app/utils/graphql-utils";
-import { LoginDataFragment } from "./useGqlLoginQuery";
+import { LoginDataFragment, type LoginData } from "./useGqlLoginQuery";
 
 const OPERATION_NAME = "ResetPassword";
 
@@ -25,7 +25,12 @@ ${LoginDataFragment}
 export default function () {
   return useMutation({
     mutationFn: async (input: GqlMutationResetPasswordArgs) => {
-      await queryGraphql(OPERATION_NAME, QUERY, input);
+      const data = await queryGraphql<{ resetPassword: LoginData }>(
+        OPERATION_NAME,
+        QUERY,
+        input,
+      );
+      return data.resetPassword;
     },
   });
 }
