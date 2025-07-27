@@ -22,4 +22,4 @@ export const applyRateLimit = new Elysia({
       }
     }
   })
-  .as("plugin");
+  .as("global");

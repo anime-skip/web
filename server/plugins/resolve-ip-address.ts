@@ -6,4 +6,4 @@ export const resolveIpAddress = new Elysia({ name: "resolve-ip-address" })
       ip: headers["x-forwarded-for"] ?? headers["x-real-ip"],
     };
   })
-  .as("plugin");
+  .as("global");

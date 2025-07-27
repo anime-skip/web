@@ -20,4 +20,4 @@ export const decorateContext = new Elysia({ name: "decorate-context" })
     version,
   })
   .decorate(container.resolveAll())
-  .as("plugin");
+  .as("global");

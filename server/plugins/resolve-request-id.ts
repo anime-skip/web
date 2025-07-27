@@ -14,4 +14,4 @@ export const resolveRequestId = new Elysia({ name: "resolve-request-id" })
       logger,
     };
   })
-  .as("plugin");
+  .as("global");

@@ -1,5 +1,5 @@
 import Elysia from "elysia";
-import playgroundHtmlTemplate from "server/assets/playground.html" with { type: "text" };
+import playgroundHtmlTemplate from "server/assets/playground.html.tpl" with { type: "text" };
 import { decorateContext } from "server/plugins/decorate-context";
 import { SHARED_CLIENT_ID } from "shared/constants";
 

@@ -72,7 +72,6 @@ export function createDrizzleDataloader<DbModel, GqlModel>(
   mapper: (db: DbModel) => GqlModel,
 ) {
   return new Dataloader(async (ids) => {
-    // @ts-expect-error: We don't type the table, so there's a type error here
     const rows: DbModel[] = await db
       .select()
       .from(table)

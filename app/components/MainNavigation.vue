@@ -3,7 +3,7 @@ import { useEventListener } from "@vueuse/core";
 import useSession from "app/composables/useSession";
 import { ref } from "vue";
 
-const { session, logout } = useSession();
+const { session, logOut } = useSession();
 
 const accountDropdownOpen = ref(false);
 </script>
@@ -63,7 +63,7 @@ const accountDropdownOpen = ref(false);
             </li>
             <li class="menu-divider" />
             <li>
-              <button class="menu-item" @click="logout">Logout</button>
+              <button class="menu-item" @click="logOut">Logout</button>
             </li>
           </ul>
         </div>

@@ -5,7 +5,7 @@ export const RECAPTCHA_SCRIPT = {
 };
 
 declare const grecaptcha: {
-  ready(cb: () => void);
+  ready(cb: () => void): void;
   execute(siteKey: string, options: { action: string }): Promise<string>;
 };
 

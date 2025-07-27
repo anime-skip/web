@@ -25,4 +25,4 @@ export const resolveApiClient = new Elysia({ name: "resolve-api-client" })
       apiClient,
     };
   })
-  .as("plugin");
+  .as("global");

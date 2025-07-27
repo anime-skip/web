@@ -13,4 +13,4 @@ export const models = new Elysia({ name: "models" })
     GraphqlRequestBody,
     GraphqlResponse,
   })
-  .as("plugin");
+  .as("global");
