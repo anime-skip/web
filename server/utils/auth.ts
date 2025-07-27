@@ -72,10 +72,7 @@ export const auth = {
     checkPassword: string,
     againstHash: string,
   ): Promise<boolean> => {
-    return await bcrypt.compare(checkPassword, againstHash).then(
-      () => true,
-      () => false,
-    );
+    return await bcrypt.compare(checkPassword, againstHash);
   },
 
   /** Hash and encrypt a password. */

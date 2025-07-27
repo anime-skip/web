@@ -96,6 +96,7 @@ async function send(data: {
   emailsLogger.info(`Sending ${data.templateName} email to:`, data.to);
   if (!SEND_EMAILS) {
     emailsLogger.warn("Skipped sending email, AS_SEND_EMAILS != true");
+    return;
   }
 
   const headers = [

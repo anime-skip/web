@@ -1,6 +1,6 @@
 import type { GqlResolvers } from "server/graphql/resolver-types.gen";
 import { randomString } from "shared/utils";
-import { asc, desc, eq } from "drizzle-orm";
+import { and, asc, desc, eq, isNull } from "drizzle-orm";
 import { apiClients, type DbApiClientInsert } from "server/db/schema";
 import { mapDbApiClientToGqlApiClient } from "server/graphql/mappers";
 import { prepareGqlInputForDb, softDeleteApiClients } from "server/utils/db";
@@ -85,7 +85,7 @@ export async function getApiClientsByUserId(
   },
 ): Promise<GqlApiClient[]> {
   const rows = await ctx.db.query.apiClients.findMany({
-    where: eq(apiClients.userId, userId),
+    where: and(eq(apiClients.userId, userId), isNull(apiClients.deletedAt)),
     offset: options.offset,
     limit: options.limit,
     orderBy: (options.sort === "ASC" ? asc : desc)(apiClients.createdAt),

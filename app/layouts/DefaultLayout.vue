@@ -4,9 +4,14 @@ import MainFooter from "../components/MainFooter.vue";
 </script>
 
 <template>
-  <MainNavigation class="border-b border-neutral" />
-  <main id="prerenderer-target">
-    <RouterView />
-  </main>
-  <MainFooter />
+  <div class="min-h-screen flex flex-col">
+    <MainNavigation />
+    <main
+      id="prerenderer-target"
+      class="mt-main-navigation flex-grow-1 flex flex-col"
+    >
+      <slot />
+    </main>
+    <MainFooter />
+  </div>
 </template>

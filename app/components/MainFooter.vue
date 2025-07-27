@@ -67,9 +67,9 @@
           </a>
         </li>
         <li>
-          <RouterLink to="/docs/api">
+          <a to="/api/scalar" target="_blank">
             <span>API Documentation</span>
-          </RouterLink>
+          </a>
         </li>
         <li>
           <a href="/playground" target="_blank">

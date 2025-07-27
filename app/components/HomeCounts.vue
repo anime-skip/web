@@ -1,18 +1,8 @@
 <script lang="ts" setup>
 import useGqlCountsQuery from "../composables/useGqlCountsQuery";
-import { computed } from "vue";
+import AnimatedNumber from "./AnimatedNumber.vue";
 
 const { state: counts } = useGqlCountsQuery();
-const formatter = Intl.NumberFormat(undefined, {
-  // Uncomment to enable X.XK format
-  // notation: "compact",
-  // maximumFractionDigits: 1,
-});
-const showCount = computed(() => formatter.format(counts.value.shows));
-const episodeCount = computed(() => formatter.format(counts.value.episodes));
-const timestampCount = computed(() =>
-  formatter.format(counts.value.timestamps),
-);
 </script>
 
 <template>
@@ -25,7 +15,7 @@ const timestampCount = computed(() =>
     >
       <p class="text-xs text-secondary font-bold">Shows</p>
       <p class="font-overpass font-black text-2xl">
-        {{ showCount }}
+        <AnimatedNumber :number="counts.shows" :duration="500" />
       </p>
     </div>
     <div
@@ -34,7 +24,7 @@ const timestampCount = computed(() =>
     >
       <p class="text-xs text-secondary font-bold">Episodes</p>
       <p class="font-overpass font-black text-2xl">
-        {{ episodeCount }}
+        <AnimatedNumber :number="counts.episodes" :duration="1000" />
       </p>
     </div>
     <div
@@ -43,7 +33,7 @@ const timestampCount = computed(() =>
     >
       <p class="text-xs text-secondary font-bold">Timestamps</p>
       <p class="font-overpass font-black text-2xl">
-        {{ timestampCount }}
+        <AnimatedNumber :number="counts.timestamps" :duration="1500" />
       </p>
     </div>
   </div>

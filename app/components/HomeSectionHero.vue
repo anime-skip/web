@@ -4,7 +4,6 @@ import useGqlCountsQuery from "../composables/useGqlCountsQuery";
 import HomeCounts from "./HomeCounts.vue";
 import { computed } from "vue";
 import ClientOnly from "./ClientOnly.vue";
-import { isPrerendering } from "@aklinker1/aframe/app";
 
 const { state: counts } = useGqlCountsQuery();
 const formatter = Intl.NumberFormat(undefined, {
@@ -25,8 +24,6 @@ function scrollToFeatures() {
   });
   router.replace("#features");
 }
-
-console.log(isPrerendering());
 </script>
 
 <template>
@@ -38,23 +35,21 @@ console.log(isPrerendering());
         <h2
           class="text-base-content text-3xl lg:text-4xl font-bold font-overpass leading-relaxed"
         >
-          The best video player for watching anime.
+          The best way to watch anime.
         </h2>
         <h3 class="text-base-content font-stretch-expanded font-light mt-2">
           Powered by the largest community timestamp database, Anime Skip
           automatically skips the parts of episodes you don't want to watch.
         </h3>
-        <ClientOnly>
-          <HomeCounts />
-        </ClientOnly>
+        <HomeCounts />
         <div
           class="flex items-center justify-center lg:justify-start gap-4 mt-8 lg:mb-16"
         >
-          <RouterLink to="/get-started" class="btn btn-shadow">
+          <RouterLink to="/get-started" class="btn btn-lg btn-shadow">
             <span>Get Started</span>
             <span class="i-heroicons-arrow-right size-5" />
           </RouterLink>
-          <button class="btn btn-ghost" @click="scrollToFeatures">
+          <button class="btn btn-lg btn-ghost" @click="scrollToFeatures">
             See all features
           </button>
         </div>

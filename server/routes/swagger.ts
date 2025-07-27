@@ -6,7 +6,6 @@ import { version } from "shared/app";
 
 export const swaggerRoute = new Elysia().use(
   swagger({
-    path: "/api/swagger",
     scalarConfig: {
       hideDownloadButton: true,
       defaultOpenAllTags: true,

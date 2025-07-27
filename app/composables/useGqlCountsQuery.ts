@@ -1,27 +1,17 @@
+import { isPrerendering } from "@aklinker1/aframe/app";
 import { useAsyncState } from "@vueuse/core";
-
-export type CountsQueryResponse = Pick<
-  GqlTotalCounts,
-  "shows" | "episodes" | "timestamps"
->;
+import { queryGraphql } from "app/utils/graphql-utils";
 
 export default function () {
   return useAsyncState<CountsQueryResponse>(
     async () => {
-      const res = await fetch("/api/graphql", {
-        headers: {
-          "content-type": "application/json",
-          "X-Client-ID": "ZGfO0sMF3eCwLYf8yMSCJjlynwNGRXWE",
-        },
-        body: JSON.stringify({
-          operationName: "HomepageCounts",
-          query:
-            "query HomepageCounts {\n  counts {\n    episodes\n    shows\n    timestamps\n  }\n}",
-        }),
-        method: "POST",
-      });
-      const json = await res.json();
-      return json.data.counts;
+      if (isPrerendering()) return { episodes: 0, shows: 0, timestamps: 0 };
+
+      const data = await queryGraphql<{ counts: CountsQueryResponse }>(
+        "HomepageCounts",
+        QUERY,
+      );
+      return data.counts;
     },
     {
       shows: 0,
@@ -30,3 +20,18 @@ export default function () {
     },
   );
 }
+
+export type CountsQueryResponse = Pick<
+  GqlTotalCounts,
+  "shows" | "episodes" | "timestamps"
+>;
+
+const QUERY = `
+  query HomepageCounts {
+    counts {
+      episodes
+      shows
+      timestamps
+    }
+  }
+`;

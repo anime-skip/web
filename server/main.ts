@@ -23,8 +23,8 @@ const apiRoute = new Elysia({ prefix: "/api" })
   .use(resolveIpAddress)
   .use(resolveRequestId)
   // Routes
-  .use(securedApi)
   .use(playgroundRoute)
+  .use(securedApi)
   // Error
   .use(errorHandler);
 
@@ -32,6 +32,6 @@ const app = new Elysia()
   // Routes
   .use(swaggerRoute)
   .use(apiRoute)
-  .mount(fetchStatic);
+  .mount(fetchStatic());
 
 export default app;
