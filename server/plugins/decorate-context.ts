@@ -1,4 +1,4 @@
-import Elysia from "elysia";
+import { createApp } from "@aklinker1/zeta";
 import { openAnimeSkipDatabase } from "server/utils/db";
 import { logger } from "server/utils/logger";
 import { createThirdPartyService } from "server/utils/third-party-service";
@@ -14,10 +14,10 @@ const container = createIocContainer()
     thirdPartyService: createThirdPartyService,
   });
 
-export const decorateContext = new Elysia({ name: "decorate-context" })
+export const decorateContext = createApp()
   .decorate({
     logger,
     version,
   })
   .decorate(container.resolveAll())
-  .as("global");
+  .export();

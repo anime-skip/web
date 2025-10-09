@@ -1,9 +1,9 @@
-import Elysia from "elysia";
+import { createApp } from "@aklinker1/zeta";
 
-export const resolveIpAddress = new Elysia({ name: "resolve-ip-address" })
-  .resolve(({ headers }) => {
+export const resolveIpAddress = createApp()
+  .onTransform(({ headers }) => {
     return {
-      ip: headers["x-forwarded-for"] ?? headers["x-real-ip"],
+      ip: headers?.["x-forwarded-for"] ?? headers?.["x-real-ip"] ?? "",
     };
   })
-  .as("global");
+  .export();

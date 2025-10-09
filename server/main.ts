@@ -1,37 +1,48 @@
 import { fetchStatic } from "@aklinker1/aframe/server";
-import { Elysia } from "elysia";
+import { createApp } from "@aklinker1/zeta";
+import { zodSchemaAdapter } from "@aklinker1/zeta/adapters/zod-schema-adapter";
 import { applyRateLimit } from "./plugins/apply-rate-limit";
-import { errorHandler } from "./plugins/error-handler";
-import { resolveApiClient } from "./plugins/resolve-api-client";
-import { resolveIpAddress } from "./plugins/resolve-ip-address";
-import { resolveRequestId } from "./plugins/resolve-request-id";
-import { graphqlRoute } from "./routes/graphql";
-import { playgroundRoute } from "./routes/playground";
-import { statusRoute } from "./routes/status";
-import { swaggerRoute } from "./routes/swagger";
+import { requireApiClient } from "./plugins/require-api-client";
+import { graphqlApp } from "./api/graphql";
+import { httpApp } from "./api/http";
+import { playgroundApp } from "./api/playground";
+import { SHARED_CLIENT_ID } from "shared/constants";
+import { openApi } from "./openapi";
+import { logger as _logger } from "./utils/logger";
 
-const securedApi = new Elysia({ detail: { security: [{ "X-Client-ID": [] }] } })
+const logger = _logger.extend("main");
+
+const securedApiApp = createApp()
   // Plugins
-  .use(resolveApiClient)
+  .use(requireApiClient)
   .use(applyRateLimit)
   // Routes
-  .use(graphqlRoute)
-  .use(statusRoute);
+  .use(graphqlApp)
+  .use(httpApp);
 
-const apiRoute = new Elysia({ prefix: "/api" })
-  // Plugins
-  .use(resolveIpAddress)
-  .use(resolveRequestId)
-  // Routes
-  .use(playgroundRoute)
-  .use(securedApi)
-  // Error
-  .use(errorHandler);
+const apiApp = createApp({ prefix: "/api" })
+  // Insecure routes
+  .use(playgroundApp)
+  // Secure routes
+  .use(securedApiApp);
 
-const app = new Elysia()
-  // Routes
-  .use(swaggerRoute)
-  .use(apiRoute)
+const app = createApp({
+  schemaAdapter: zodSchemaAdapter,
+  openApi,
+  scalar: {
+    // Hide default download button and provide our own
+    hideDownloadButton: true,
+    // Apply shared client ID by default
+    authentication: {
+      apiKey: {
+        token: SHARED_CLIENT_ID,
+      },
+    },
+  },
+})
+  .use(apiApp)
   .mount(fetchStatic());
+
+logger.info("App created");
 
 export default app;
