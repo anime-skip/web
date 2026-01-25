@@ -1,6 +1,5 @@
 import type { GqlResolvers } from "server/graphql/resolver-types.gen";
-import { todo } from "shared/utils";
-import { and, eq, isNull } from "drizzle-orm";
+import { and, asc, desc, eq, isNull } from "drizzle-orm";
 import type { GqlContext } from "server/graphql/context";
 import { type DbUserReportInsert, userReports } from "server/db/schema";
 import { mapDbUserReportToGqlUserReport } from "server/graphql/mappers";
@@ -55,7 +54,24 @@ export const userReportResolvers: GqlResolvers = {
     findUserReport: (_parent, args, ctx) =>
       ctx.dataloaders.userReports.load(args.id),
 
-    findUserReports: (_parent, _args, _ctx) => todo(),
+    findUserReports: async (_parent, args, ctx) => {
+      const rows = await ctx.db.query.userReports.findMany({
+        where: and(
+          isNull(userReports.deletedAt),
+          args.resolved != null
+            ? eq(userReports.resolved, args.resolved)
+            : undefined,
+        ),
+        limit: args.limit,
+        offset: args.offset,
+        orderBy:
+          args.sort === "ASC"
+            ? asc(userReports.createdAt)
+            : desc(userReports.createdAt),
+      });
+
+      return rows.map(mapDbUserReportToGqlUserReport);
+    },
   },
   UserReport: {
     createdBy: ({ createdByUserId: id }, _, ctx) =>
