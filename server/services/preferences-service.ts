@@ -1,14 +1,13 @@
-import type { DbPreferences } from "server/db/schema";
+import { preferences, type DbPreferences } from "server/db/schema";
 import type { AnimeSkipDatabase } from "./db";
-import { todo } from "shared/utils";
+import { eq } from "drizzle-orm";
 
 export interface PreferencesService {
-  softDeleteMany(
+  softDeleteByUserId(
     tx: AnimeSkipDatabase,
-    ids: string[],
-    deletedByUserId: string,
+    userId: string,
     deletedAt: Date,
-  ): Promise<DbPreferences>;
+  ): Promise<DbPreferences | null>;
 }
 
 export function createPreferencesService({
@@ -16,16 +15,23 @@ export function createPreferencesService({
 }: {
   db: AnimeSkipDatabase;
 }): PreferencesService {
-  const softDeleteMany: PreferencesService["softDeleteMany"] = async (
-    _tx,
-    _ids,
-    _deletedByUserId,
-    _deletedAt,
+  const softDeleteByUserId: PreferencesService["softDeleteByUserId"] = async (
+    tx,
+    userId,
+    deletedAt,
   ) => {
-    todo();
+    const [deleted] = await tx
+      .update(preferences)
+      .set({
+        updatedAt: deletedAt.toISOString(),
+        deletedAt: deletedAt.toISOString(),
+      })
+      .where(eq(preferences.userId, userId))
+      .returning();
+    return deleted ?? null;
   };
 
   return {
-    softDeleteMany,
+    softDeleteByUserId,
   };
 }
