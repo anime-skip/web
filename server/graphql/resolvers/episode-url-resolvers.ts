@@ -7,7 +7,7 @@ import {
   mapUrlToDbEpisodeSource,
 } from "server/graphql/mappers";
 import type { NoOptionals } from "shared/types";
-import { hardDeleteEpisodeUrls, prepareGqlInputForDb } from "server/utils/db";
+import { prepareGqlInputForDb } from "server/utils/drizzle-utils";
 
 export const episodeUrlResolvers: GqlResolvers = {
   Mutation: {
@@ -37,7 +37,7 @@ export const episodeUrlResolvers: GqlResolvers = {
 
     deleteEpisodeUrl: async (_parent, args, ctx) => {
       const deleted = await ctx.db.transaction(
-        (tx) => hardDeleteEpisodeUrls(tx, [args.episodeUrl]),
+        (tx) => ctx.episodeUrlService.deleteMany(tx, [args.episodeUrl]),
         { accessMode: "read write" },
       );
       return mapDbEpisodeUrlToGqlEpisodeUrl(deleted);

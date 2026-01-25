@@ -6,7 +6,7 @@ import { getTemplatesByShowId } from "server/graphql/resolvers/template-resolver
 import type { NoOptionals } from "shared/types";
 import { mapDbShowToGqlShow } from "server/graphql/mappers";
 import { type DbShowInsert, shows } from "server/db/schema";
-import { prepareGqlInputForDb, softDeleteShows } from "server/utils/db";
+import { prepareGqlInputForDb } from "server/utils/drizzle-utils";
 import { eq } from "drizzle-orm";
 
 export const showResolvers: GqlResolvers = {
@@ -53,7 +53,7 @@ export const showResolvers: GqlResolvers = {
       const userId = ctx.authUserId!;
       const now = new Date();
       const deleted = await ctx.db.transaction(
-        (tx) => softDeleteShows(tx, [args.showId], userId, now),
+        (tx) => ctx.showService.softDeleteMany(tx, [args.showId], userId, now),
         { accessMode: "read write" },
       );
       return mapDbShowToGqlShow(deleted);

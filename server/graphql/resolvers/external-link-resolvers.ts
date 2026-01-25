@@ -3,7 +3,6 @@ import { todo } from "shared/utils";
 import type { NoOptionals } from "shared/types";
 import { type DbExternalLinkInsert, externalLinks } from "server/db/schema";
 import { mapDbExternalLinkToGqlExternalLink } from "server/graphql/mappers";
-import { hardDeleteExternalLinks } from "server/utils/db";
 
 export const externalLinkResolvers: GqlResolvers = {
   Mutation: {
@@ -21,7 +20,7 @@ export const externalLinkResolvers: GqlResolvers = {
 
     removeExternalLink: async (_parent, args, ctx) => {
       const deleted = await ctx.db.transaction(
-        (tx) => hardDeleteExternalLinks(tx, [args]),
+        (tx) => ctx.externalLinkService.deleteMany(tx, [args]),
         { accessMode: "read write" },
       );
       return mapDbExternalLinkToGqlExternalLink(deleted);

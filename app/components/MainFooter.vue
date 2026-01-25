@@ -67,7 +67,7 @@
           </a>
         </li>
         <li>
-          <a to="/api/scalar" target="_blank">
+          <a to="/scalar" target="_blank">
             <span>API Documentation</span>
           </a>
         </li>

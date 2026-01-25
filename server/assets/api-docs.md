@@ -1,4 +1,4 @@
-[GraphQL Playground](/api/playground) &bull; [Download OpenAPI Spec](/api/openapi.json)
+[GraphQL Playground](/playground) &bull; [Download OpenAPI Spec](/api/openapi.json)
 
 &nbsp;
 

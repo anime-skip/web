@@ -1,23 +1,6 @@
 import { createApp } from "@aklinker1/zeta";
-import { openAnimeSkipDatabase } from "server/utils/db";
-import { logger } from "server/utils/logger";
-import { createThirdPartyService } from "server/utils/third-party-service";
-import { version } from "shared/app";
-import { createIocContainer } from "@aklinker1/zero-ioc";
-
-const db = await openAnimeSkipDatabase();
-const container = createIocContainer()
-  .register({
-    db: () => db,
-  })
-  .register({
-    thirdPartyService: createThirdPartyService,
-  });
+import { container } from "server/dependencies";
 
 export const decorateContext = createApp()
-  .decorate({
-    logger,
-    version,
-  })
   .decorate(container.resolveAll())
   .export();

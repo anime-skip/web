@@ -9,7 +9,7 @@ import {
 } from "server/graphql/mappers";
 import { getTemplateTimestampsByTemplateId } from "server/graphql/resolvers/template-timestamp-resolvers";
 import type { NoOptionals } from "shared/types";
-import { prepareGqlInputForDb, softDeleteTemplates } from "server/utils/db";
+import { prepareGqlInputForDb } from "server/utils/drizzle-utils";
 
 export const templateResolvers: GqlResolvers = {
   Mutation: {
@@ -56,7 +56,13 @@ export const templateResolvers: GqlResolvers = {
       const userId = ctx.authUserId!;
       const now = new Date();
       const deleted = await ctx.db.transaction(
-        (tx) => softDeleteTemplates(tx, [args.templateId], userId, now),
+        (tx) =>
+          ctx.templateService.softDeleteMany(
+            tx,
+            [args.templateId],
+            userId,
+            now,
+          ),
         { accessMode: "read write" },
       );
       return mapDbTemplateToGqlTemplate(deleted);

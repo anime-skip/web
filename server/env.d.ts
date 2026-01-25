@@ -1,3 +1,5 @@
+/// <reference types="@aklinker1/aframe/env" />
+
 declare module "*.gql" {
   const text: string;
   export default text;

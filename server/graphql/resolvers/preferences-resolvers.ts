@@ -5,7 +5,7 @@ import {
 } from "server/graphql/mappers";
 import { eq } from "drizzle-orm";
 import { type DbPreferencesInsert, preferences } from "server/db/schema";
-import { prepareGqlInputForDb } from "server/utils/db";
+import { prepareGqlInputForDb } from "server/utils/drizzle-utils";
 
 export const preferencesResolvers: GqlResolvers = {
   Mutation: {

@@ -3,7 +3,7 @@ import { randomString } from "shared/utils";
 import { and, asc, desc, eq, isNull } from "drizzle-orm";
 import { apiClients, type DbApiClientInsert } from "server/db/schema";
 import { mapDbApiClientToGqlApiClient } from "server/graphql/mappers";
-import { prepareGqlInputForDb, softDeleteApiClients } from "server/utils/db";
+import { prepareGqlInputForDb } from "server/utils/drizzle-utils";
 import type { GqlContext } from "server/graphql/context";
 import type { NoOptionals } from "shared/types";
 
@@ -50,7 +50,7 @@ export const apiClientResolvers: GqlResolvers = {
       const userId = ctx.authUserId!;
       const now = new Date();
       const deleted = await ctx.db.transaction(
-        (tx) => softDeleteApiClients(tx, [args.id], userId, now),
+        (tx) => ctx.apiClientService.softDeleteMany(tx, [args.id], userId, now),
         { accessMode: "read write" },
       );
       return mapDbApiClientToGqlApiClient(deleted);

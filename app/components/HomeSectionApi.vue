@@ -14,9 +14,9 @@
         - it's free!
       </p>
       <p class="text-sm">
-        <a href="/api/scalar" class="link" target="_blank">API Documentation</a>
+        <a href="/scalar" class="link" target="_blank">API Documentation</a>
         <span class="opacity-50 select-none">&ensp;&bull;&ensp;</span>
-        <a href="/api/playground" class="link" target="_blank">
+        <a href="/playground" class="link" target="_blank">
           <span>GraphQL Playground</span>
         </a>
       </p>

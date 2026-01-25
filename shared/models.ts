@@ -1,7 +1,8 @@
 import { z } from "zod";
 import dedent from "dedent";
+import { version } from "./version";
 
-export const GetStatusOutput = z
+export const HealthCheckOutput = z
   .object({
     status: z
       .literal("UP")
@@ -12,11 +13,11 @@ export const GetStatusOutput = z
     version: z
       .string()
       .describe("The version of the API that is running.")
-      .meta({ example: "2.0.1" }),
+      .meta({ example: version }),
   })
   .describe("Server status")
-  .meta({ ref: "GetStatusOutput" });
-export type GetStatusOutput = z.infer<typeof GetStatusOutput>;
+  .meta({ ref: "HealthCheckOutput" });
+export type HealthCheckOutput = z.infer<typeof HealthCheckOutput>;
 
 export const GraphqlInput = z
   .object({

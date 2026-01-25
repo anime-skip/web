@@ -2,10 +2,7 @@ import type { GqlResolvers } from "server/graphql/resolver-types.gen";
 import { mapDbTimestampTypeToGqlTimestampType } from "server/graphql/mappers";
 import type { NoOptionals } from "shared/types";
 import { type DbTimestampTypeInsert, timestampTypes } from "server/db/schema";
-import {
-  prepareGqlInputForDb,
-  softDeleteTimestampTypes,
-} from "server/utils/db";
+import { prepareGqlInputForDb } from "server/utils/drizzle-utils";
 import { eq } from "drizzle-orm";
 
 export const timestampTypeResolvers: GqlResolvers = {
@@ -51,7 +48,12 @@ export const timestampTypeResolvers: GqlResolvers = {
       const now = new Date();
       const deleted = await ctx.db.transaction(
         (tx) =>
-          softDeleteTimestampTypes(tx, [args.timestampTypeId], userId, now),
+          ctx.timestampTypeService.softDeleteMany(
+            tx,
+            [args.timestampTypeId],
+            userId,
+            now,
+          ),
         { accessMode: "read write" },
       );
       return mapDbTimestampTypeToGqlTimestampType(deleted);

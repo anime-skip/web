@@ -1,19 +1,14 @@
-import {
-  createDrizzleDataloader,
-  type AnimeSkipDatabase,
-} from "server/utils/db";
+import { createDrizzleDataloader } from "server/utils/drizzle-utils";
 import * as tables from "server/db/schema";
 import * as mappers from "server/graphql/mappers";
-import type { Logger } from "server/utils/logger";
-import type { ThirdPartyService } from "server/utils/third-party-service";
+import type { Dependencies } from "server/dependencies";
 
-export function createGqlContext(ctx: {
-  logger: Logger;
-  request: Request;
-  db: AnimeSkipDatabase;
-  ip: string;
-  thirdPartyService: ThirdPartyService;
-}) {
+export function createGqlContext(
+  ctx: Dependencies & {
+    request: Request;
+    ip: string;
+  },
+) {
   const dbUsersDataloader = createDrizzleDataloader(
     ctx.db,
     tables.users,

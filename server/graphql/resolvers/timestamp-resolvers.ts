@@ -8,7 +8,7 @@ import {
   mapGqlTimestampSourceToDbTimestampSource,
 } from "server/graphql/mappers";
 import type { NoOptionals } from "shared/types";
-import { prepareGqlInputForDb, softDeleteTimestamps } from "server/utils/db";
+import { prepareGqlInputForDb } from "server/utils/drizzle-utils";
 
 export const timestampResolvers: GqlResolvers = {
   Mutation: {
@@ -63,7 +63,13 @@ export const timestampResolvers: GqlResolvers = {
       const userId = ctx.authUserId!;
       const now = new Date();
       const deleted = await ctx.db.transaction(
-        (tx) => softDeleteTimestamps(tx, [args.timestampId], userId, now),
+        (tx) =>
+          ctx.timestampService.softDeleteMany(
+            tx,
+            [args.timestampId],
+            userId,
+            now,
+          ),
         { accessMode: "read write" },
       );
       return mapDbTimestampToGqlTimestamp(deleted);

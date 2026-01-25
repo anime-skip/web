@@ -3,7 +3,6 @@ import { eq } from "drizzle-orm";
 import type { GqlContext } from "server/graphql/context";
 import { templateTimestamps } from "server/db/schema";
 import { mapDbTemplateTimestampToGqlTemplateTimestamp } from "server/graphql/mappers";
-import { hardDeleteTemplateTimestamps } from "server/utils/db";
 
 export const templateTimestampResolvers: GqlResolvers = {
   Mutation: {
@@ -17,7 +16,8 @@ export const templateTimestampResolvers: GqlResolvers = {
 
     removeTimestampFromTemplate: async (_parent, args, ctx) => {
       const deleted = await ctx.db.transaction(
-        (tx) => hardDeleteTemplateTimestamps(tx, [args.templateTimestamp]),
+        (tx) =>
+          ctx.templateTimestampService.deleteMany(tx, [args.templateTimestamp]),
         { accessMode: "read write" },
       );
       return mapDbTemplateTimestampToGqlTemplateTimestamp(deleted);

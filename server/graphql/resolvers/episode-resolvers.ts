@@ -18,7 +18,7 @@ import {
 } from "drizzle-orm";
 import { mapDbEpisodeToGqlEpisode } from "server/graphql/mappers";
 import type { NoOptionals } from "shared/types";
-import { prepareGqlInputForDb, softDeleteEpisodes } from "server/utils/db";
+import { prepareGqlInputForDb } from "server/utils/drizzle-utils";
 
 export const episodeResolvers: GqlResolvers = {
   Mutation: {
@@ -64,7 +64,8 @@ export const episodeResolvers: GqlResolvers = {
       const userId = ctx.authUserId!;
       const now = new Date();
       const deleted = await ctx.db.transaction(
-        (tx) => softDeleteEpisodes(tx, [args.episodeId], userId, now),
+        (tx) =>
+          ctx.episodeService.softDeleteMany(tx, [args.episodeId], userId, now),
         { accessMode: "read write" },
       );
       return mapDbEpisodeToGqlEpisode(deleted);

@@ -25,7 +25,7 @@ const createClient = () =>
   <h1 class="font-overpass font-bold text-2xl">API Clients</h1>
   <p>
     API clients are used to access Anime Skip's API. Read the
-    <a class="link" href="/api/scalar" target="_blank">API docs</a> for more
+    <a class="link" href="/scalar" target="_blank">API docs</a> for more
     information.
   </p>
 

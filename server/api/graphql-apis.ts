@@ -1,7 +1,8 @@
 import { createApp } from "@aklinker1/zeta";
 import dedent from "dedent";
 import { decorateContext } from "server/plugins/decorate-context";
-import { OpenApiSecurity, OpenApiTag } from "server/openapi";
+import { OpenApiTag } from "server/enums";
+import { OpenApiSecurity } from "server/utils/openapi";
 import { GraphqlInput, GraphqlOutput } from "shared/models";
 import { graphql, GraphQLSchema } from "graphql";
 import { makeExecutableSchema } from "@graphql-tools/schema";
@@ -20,7 +21,7 @@ const schema: GraphQLSchema = attachDirectiveResolvers(
   directiveResolvers,
 );
 
-export const graphqlApp = createApp()
+export const graphqlApis = createApp()
   .use(resolveIpAddress)
   .use(decorateContext)
   .post(

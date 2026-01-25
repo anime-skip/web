@@ -4,7 +4,6 @@ import { type DbShowAdminInsert, showAdmins } from "server/db/schema";
 import { and, eq, isNull } from "drizzle-orm";
 import { mapDbShowAdminToGqlShowAdmin } from "server/graphql/mappers";
 import type { NoOptionals } from "shared/types";
-import { softDeleteShowAdmins } from "server/utils/db";
 
 export const showAdminResolvers: GqlResolvers = {
   Mutation: {
@@ -29,7 +28,13 @@ export const showAdminResolvers: GqlResolvers = {
       const userId = ctx.authUserId!;
       const now = new Date();
       const deleted = await ctx.db.transaction(
-        (tx) => softDeleteShowAdmins(tx, [args.showAdminId], userId, now),
+        (tx) =>
+          ctx.showAdminService.softDeleteMany(
+            tx,
+            [args.showAdminId],
+            userId,
+            now,
+          ),
         { accessMode: "read write" },
       );
       return mapDbShowAdminToGqlShowAdmin(deleted);

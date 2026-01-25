@@ -4,7 +4,7 @@ import { eq, or } from "drizzle-orm";
 import { type DbUser, DbUserRole, preferences, users } from "server/db/schema";
 import { mapDbUserToGqlAccount } from "server/graphql/mappers";
 import { auth } from "server/utils/auth";
-import type { AnimeSkipDatabase } from "server/utils/db";
+import type { AnimeSkipDatabase } from "server/services/db";
 import { validateEmail, validateUsername } from "server/utils/validation";
 import { verifyRecaptcha } from "server/utils/recaptcha";
 import {
