@@ -9,6 +9,12 @@ export interface UserReportService {
     deletedByUserId: string,
     deletedAt: Date,
   ): Promise<DbUserReport[]>;
+  softDeleteCascade(
+    tx: AnimeSkipDatabase,
+    ids: string[],
+    deletedByUserId: string,
+    deletedAt: Date,
+  ): Promise<DbUserReport[]>;
 }
 
 export function createUserReportService({
@@ -35,7 +41,18 @@ export function createUserReportService({
     return deleted;
   };
 
+  const softDeleteCascade: UserReportService["softDeleteCascade"] = async (
+    tx,
+    ids,
+    deletedByUserId,
+    deletedAt,
+  ) => {
+    // No-op cascade - user reports have nothing to cascade
+    return softDeleteMany(tx, ids, deletedByUserId, deletedAt);
+  };
+
   return {
     softDeleteMany,
+    softDeleteCascade,
   };
 }

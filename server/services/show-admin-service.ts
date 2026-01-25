@@ -9,6 +9,12 @@ export interface ShowAdminService {
     deletedByUserId: string,
     deletedAt: Date,
   ): Promise<DbShowAdmin[]>;
+  softDeleteCascade(
+    tx: AnimeSkipDatabase,
+    ids: string[],
+    deletedByUserId: string,
+    deletedAt: Date,
+  ): Promise<DbShowAdmin[]>;
 }
 
 export function createShowAdminService({
@@ -35,7 +41,18 @@ export function createShowAdminService({
     return deleted;
   };
 
+  const softDeleteCascade: ShowAdminService["softDeleteCascade"] = async (
+    tx,
+    ids,
+    deletedByUserId,
+    deletedAt,
+  ) => {
+    // No-op cascade - show admins have no dependent entities
+    return softDeleteMany(tx, ids, deletedByUserId, deletedAt);
+  };
+
   return {
     softDeleteMany,
+    softDeleteCascade,
   };
 }

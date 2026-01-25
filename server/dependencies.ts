@@ -22,18 +22,18 @@ export const container = createIocContainer()
   .register({ db: () => db })
   .register({ logger: () => logger })
   .register({ apiClientService: createApiClientService })
-  .register({ episodeService: createEpisodeService })
   .register({ episodeUrlService: createEpisodeUrlService })
   .register({ externalLinkService: createExternalLinkService })
   .register({ preferencesService: createPreferencesService })
   .register({ showAdminService: createShowAdminService })
-  .register({ showService: createShowService })
-  .register({ templateService: createTemplateService })
   .register({ templateTimestampService: createTemplateTimestampService })
-  .register({ timestampService: createTimestampService })
   .register({ timestampTypeService: createTimestampTypeService })
   .register({ userReportService: createUserReportService })
   .register({ userService: createUserService })
-  .register({ thirdPartyService: createThirdPartyService });
+  .register({ thirdPartyService: createThirdPartyService })
+  .register({ templateService: createTemplateService })
+  .register({ timestampService: createTimestampService })
+  .register({ episodeService: createEpisodeService })
+  .register({ showService: createShowService });
 
 export type Dependencies = ReturnType<typeof container.resolveAll>;

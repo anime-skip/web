@@ -9,6 +9,12 @@ export interface TimestampTypeService {
     deletedByUserId: string,
     deletedAt: Date,
   ): Promise<DbTimestampType[]>;
+  softDeleteCascade(
+    tx: AnimeSkipDatabase,
+    ids: string[],
+    deletedByUserId: string,
+    deletedAt: Date,
+  ): Promise<DbTimestampType[]>;
 }
 
 export function createTimestampTypeService({
@@ -35,7 +41,20 @@ export function createTimestampTypeService({
     return deleted;
   };
 
+  const softDeleteCascade: TimestampTypeService["softDeleteCascade"] = async (
+    tx,
+    ids,
+    deletedByUserId,
+    deletedAt,
+  ) => {
+    // Since timestamp types are soft deleted, we don't need to update existing timestamps to a
+    // different type. They'll stay the same type, that type just won't be returned by
+    // allTimestampTypes anymore.
+    return softDeleteMany(tx, ids, deletedByUserId, deletedAt);
+  };
+
   return {
     softDeleteMany,
+    softDeleteCascade,
   };
 }

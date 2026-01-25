@@ -7,6 +7,10 @@ export interface ExternalLinkService {
     tx: AnimeSkipDatabase,
     keys: Array<{ url: string; showId: string }>,
   ): Promise<DbExternalLink[]>;
+  deleteCascade(
+    tx: AnimeSkipDatabase,
+    keys: Array<{ url: string; showId: string }>,
+  ): Promise<DbExternalLink[]>;
 }
 
 export function createExternalLinkService({
@@ -30,7 +34,16 @@ export function createExternalLinkService({
     return deleted;
   };
 
+  const deleteCascade: ExternalLinkService["deleteCascade"] = async (
+    tx,
+    keys,
+  ) => {
+    // Nothing to cascade - external links have no child entities
+    return deleteMany(tx, keys);
+  };
+
   return {
     deleteMany,
+    deleteCascade,
   };
 }

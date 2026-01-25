@@ -7,6 +7,10 @@ export interface TemplateTimestampService {
     tx: AnimeSkipDatabase,
     keys: Array<{ templateId: string; timestampId: string }>,
   ): Promise<DbTemplateTimestamp[]>;
+  deleteCascade(
+    tx: AnimeSkipDatabase,
+    keys: Array<{ templateId: string; timestampId: string }>,
+  ): Promise<DbTemplateTimestamp[]>;
 }
 
 export function createTemplateTimestampService({
@@ -36,7 +40,16 @@ export function createTemplateTimestampService({
     return deleted;
   };
 
+  const deleteCascade: TemplateTimestampService["deleteCascade"] = async (
+    tx,
+    keys,
+  ) => {
+    // Nothing to cascade - just delete the template timestamps
+    return deleteMany(tx, keys);
+  };
+
   return {
     deleteMany,
+    deleteCascade,
   };
 }
