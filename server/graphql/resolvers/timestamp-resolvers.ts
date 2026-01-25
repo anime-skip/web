@@ -62,7 +62,7 @@ export const timestampResolvers: GqlResolvers = {
     deleteTimestamp: async (_parent, args, ctx) => {
       const userId = ctx.authUserId!;
       const now = new Date();
-      const deleted = await ctx.db.transaction(
+      const [deleted] = await ctx.db.transaction(
         (tx) =>
           ctx.timestampService.softDeleteMany(
             tx,
@@ -72,6 +72,9 @@ export const timestampResolvers: GqlResolvers = {
           ),
         { accessMode: "read write" },
       );
+      if (!deleted) {
+        throw new Error(`Timestamp not found: ${args.timestampId}`);
+      }
       return mapDbTimestampToGqlTimestamp(deleted);
     },
 

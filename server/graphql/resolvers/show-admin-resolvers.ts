@@ -27,7 +27,7 @@ export const showAdminResolvers: GqlResolvers = {
     deleteShowAdmin: async (_parent, args, ctx) => {
       const userId = ctx.authUserId!;
       const now = new Date();
-      const deleted = await ctx.db.transaction(
+      const [deleted] = await ctx.db.transaction(
         (tx) =>
           ctx.showAdminService.softDeleteMany(
             tx,
@@ -37,6 +37,9 @@ export const showAdminResolvers: GqlResolvers = {
           ),
         { accessMode: "read write" },
       );
+      if (!deleted) {
+        throw new Error(`Show admin not found: ${args.showAdminId}`);
+      }
       return mapDbShowAdminToGqlShowAdmin(deleted);
     },
   },

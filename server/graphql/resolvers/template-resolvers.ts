@@ -55,7 +55,7 @@ export const templateResolvers: GqlResolvers = {
     deleteTemplate: async (_parent, args, ctx) => {
       const userId = ctx.authUserId!;
       const now = new Date();
-      const deleted = await ctx.db.transaction(
+      const [deleted] = await ctx.db.transaction(
         (tx) =>
           ctx.templateService.softDeleteMany(
             tx,
@@ -65,6 +65,9 @@ export const templateResolvers: GqlResolvers = {
           ),
         { accessMode: "read write" },
       );
+      if (!deleted) {
+        throw new Error(`Template not found: ${args.templateId}`);
+      }
       return mapDbTemplateToGqlTemplate(deleted);
     },
   },

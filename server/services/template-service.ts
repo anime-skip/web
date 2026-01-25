@@ -46,7 +46,7 @@ export function createTemplateService({
         deletedAt: deletedAt.toISOString(),
         deletedByUserId,
       })
-      .where(inArray(templates.id, ids))
+      .where(and(inArray(templates.id, ids), isNull(templates.deletedAt)))
       .returning();
     return deleted;
   };

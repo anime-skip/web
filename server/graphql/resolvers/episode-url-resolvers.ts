@@ -36,10 +36,13 @@ export const episodeUrlResolvers: GqlResolvers = {
     },
 
     deleteEpisodeUrl: async (_parent, args, ctx) => {
-      const deleted = await ctx.db.transaction(
+      const [deleted] = await ctx.db.transaction(
         (tx) => ctx.episodeUrlService.deleteMany(tx, [args.episodeUrl]),
         { accessMode: "read write" },
       );
+      if (!deleted) {
+        throw new Error(`Episode URL not found: ${args.episodeUrl}`);
+      }
       return mapDbEpisodeUrlToGqlEpisodeUrl(deleted);
     },
 

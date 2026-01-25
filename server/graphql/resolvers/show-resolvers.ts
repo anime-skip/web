@@ -52,10 +52,13 @@ export const showResolvers: GqlResolvers = {
     deleteShow: async (_parent, args, ctx) => {
       const userId = ctx.authUserId!;
       const now = new Date();
-      const deleted = await ctx.db.transaction(
+      const [deleted] = await ctx.db.transaction(
         (tx) => ctx.showService.softDeleteMany(tx, [args.showId], userId, now),
         { accessMode: "read write" },
       );
+      if (!deleted) {
+        throw new Error(`Show not found: ${args.showId}`);
+      }
       return mapDbShowToGqlShow(deleted);
     },
   },

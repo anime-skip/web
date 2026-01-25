@@ -46,7 +46,7 @@ export function createTimestampService({
         deletedAt: deletedAt.toISOString(),
         deletedByUserId,
       })
-      .where(inArray(timestamps.id, ids))
+      .where(and(inArray(timestamps.id, ids), isNull(timestamps.deletedAt)))
       .returning();
     return deleted;
   };

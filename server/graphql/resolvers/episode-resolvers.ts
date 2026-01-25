@@ -63,11 +63,14 @@ export const episodeResolvers: GqlResolvers = {
     deleteEpisode: async (_parent, args, ctx) => {
       const userId = ctx.authUserId!;
       const now = new Date();
-      const deleted = await ctx.db.transaction(
+      const [deleted] = await ctx.db.transaction(
         (tx) =>
           ctx.episodeService.softDeleteMany(tx, [args.episodeId], userId, now),
         { accessMode: "read write" },
       );
+      if (!deleted) {
+        throw new Error(`Episode not found: ${args.episodeId}`);
+      }
       return mapDbEpisodeToGqlEpisode(deleted);
     },
   },

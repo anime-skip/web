@@ -15,11 +15,14 @@ export const templateTimestampResolvers: GqlResolvers = {
     },
 
     removeTimestampFromTemplate: async (_parent, args, ctx) => {
-      const deleted = await ctx.db.transaction(
+      const [deleted] = await ctx.db.transaction(
         (tx) =>
           ctx.templateTimestampService.deleteMany(tx, [args.templateTimestamp]),
         { accessMode: "read write" },
       );
+      if (!deleted) {
+        throw new Error(`Template timestamp not found`);
+      }
       return mapDbTemplateTimestampToGqlTemplateTimestamp(deleted);
     },
   },

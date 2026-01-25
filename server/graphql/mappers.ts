@@ -19,7 +19,6 @@ import type { DbExternalLink } from "server/db/schema";
 import type { DbTemplate } from "server/db/schema";
 import type { DbUserReport } from "server/db/schema";
 import type { NoOptionals } from "shared/types";
-import { todo } from "shared/utils";
 
 type TypeSafeGqlMapping<T> = NoOptionals<Omit<T, "__typename">>;
 // type TypeSafeDbMapping<T> = NoOptionals<T>;
