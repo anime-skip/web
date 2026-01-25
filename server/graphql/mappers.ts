@@ -9,19 +9,15 @@ import {
   type DbShowAdmin,
   DbTemplateType,
   DbTimestampSource,
+  type DbTimestamp,
   type DbTimestampType,
   type DbUser,
   DbUserRole,
 } from "server/db/schema";
-import type { DbTimestamp } from "server/db/schema";
 import type { DbTemplateTimestamp } from "server/db/schema";
 import type { DbExternalLink } from "server/db/schema";
 import type { DbTemplate } from "server/db/schema";
 import type { DbUserReport } from "server/db/schema";
-import type { NoOptionals } from "shared/types";
-
-type TypeSafeGqlMapping<T> = NoOptionals<Omit<T, "__typename">>;
-// type TypeSafeDbMapping<T> = NoOptionals<T>;
 
 // oxlint-lint-ignore no-explicit-any
 const unresolved = Symbol("Needs resolved by GrahpQL") as any;
@@ -34,7 +30,7 @@ export function mapDbUserToGqlUser(db: DbUser): GqlUser {
     adminOfShows: unresolved,
     username: db.username,
     deletedAt: db.deletedAt,
-  } satisfies TypeSafeGqlMapping<GqlUser>;
+  };
 }
 
 export function mapDbUserRoleToGqlRole(db: DbUserRole): GqlRole {
@@ -63,7 +59,7 @@ export function mapDbUserToGqlAccount(db: DbUser): GqlAccount {
     emailVerified: db.emailVerified,
     role: mapDbUserRoleToGqlRole(db.role),
     preferences: unresolved,
-  } satisfies TypeSafeGqlMapping<GqlAccount>;
+  };
 }
 
 export function mapGqlRoleToDbUserRole(gql: GqlRole): DbUserRole {
@@ -108,7 +104,7 @@ export function mapDbPreferencesToGqlPreferences(
     skipMixedCredits: db.skipMixedCredits,
     skipPreview: db.skipPreview,
     skipTitleCard: db.skipTitleCard,
-  } satisfies TypeSafeGqlMapping<GqlPreferences>;
+  };
 }
 
 export function mapDbColorThemeToGqlColorTheme(
@@ -164,7 +160,7 @@ export function mapDbApiClientToGqlApiClient(db: DbApiClient): GqlApiClient {
     appName: db.appName,
     description: db.description,
     rateLimitRpm: db.rateLimitRpm,
-  } satisfies TypeSafeGqlMapping<GqlApiClient>;
+  };
 }
 
 export function mapDbUserReportToGqlUserReport(
@@ -193,7 +189,7 @@ export function mapDbUserReportToGqlUserReport(
     episodeUrl: unresolved,
     showId: db.showId,
     show: unresolved,
-  } satisfies TypeSafeGqlMapping<GqlUserReport>;
+  };
 }
 
 export function mapDbEpisodeUrlToGqlEpisodeUrl(
@@ -212,7 +208,7 @@ export function mapDbEpisodeUrlToGqlEpisodeUrl(
     episodeId: db.episodeId,
     episode: unresolved,
     source: mapDbEpisodeSourceToGqlEpisodeSource(db.source),
-  } satisfies TypeSafeGqlMapping<GqlEpisodeUrl>;
+  };
 }
 
 export function mapUrlToDbEpisodeSource(url: string): DbEpisodeSource {
@@ -251,7 +247,7 @@ export function mapDbEpisodeToGqlEpisode(db: DbEpisode): GqlEpisode {
     urls: unresolved,
     template: unresolved,
     userReports: unresolved,
-  } satisfies TypeSafeGqlMapping<GqlEpisode>;
+  };
 }
 
 export function mapDbEpisodeSourceToGqlEpisodeSource(
@@ -302,7 +298,7 @@ export function mapDbShowAdminToGqlShowAdmin(db: DbShowAdmin): GqlShowAdmin {
     show: unresolved,
     userId: db.userId,
     user: unresolved,
-  } satisfies TypeSafeGqlMapping<GqlShowAdmin>;
+  };
 }
 
 export function mapDbShowToGqlShow(db: DbShow): GqlShow {
@@ -332,7 +328,7 @@ export function mapDbShowToGqlShow(db: DbShow): GqlShow {
     externalLinks: unresolved,
     seasonCount: unresolved,
     episodeCount: unresolved,
-  } satisfies TypeSafeGqlMapping<GqlShow>;
+  };
 }
 
 export function mapDbTemplateToGqlTemplate(db: DbTemplate): GqlTemplate {
@@ -355,7 +351,7 @@ export function mapDbTemplateToGqlTemplate(db: DbTemplate): GqlTemplate {
     sourceEpisode: unresolved,
     timestamps: unresolved,
     timestampIds: unresolved,
-  } satisfies TypeSafeGqlMapping<GqlTemplate>;
+  };
 }
 
 export function mapDbTemplateTypeToGqlTemplateType(
@@ -398,7 +394,7 @@ export function mapDbTimestampTypeToGqlTimestampType(
     deletedBy: unresolved,
     name: db.name,
     description: db.description,
-  } satisfies TypeSafeGqlMapping<GqlTimestampType>;
+  };
 }
 
 export function mapDbTimestampToGqlTimestamp(db: DbTimestamp): GqlTimestamp {
@@ -419,7 +415,7 @@ export function mapDbTimestampToGqlTimestamp(db: DbTimestamp): GqlTimestamp {
     type: unresolved,
     episodeId: db.episodeId,
     episode: unresolved,
-  } satisfies TypeSafeGqlMapping<GqlTimestamp>;
+  };
 }
 
 export function mapDbTimestampSourceToGqlTimestampSource(
@@ -455,7 +451,7 @@ export function mapDbExternalLinkToGqlExternalLink(
     show: unresolved,
     service: unresolved,
     serviceId: unresolved,
-  } satisfies TypeSafeGqlMapping<GqlExternalLink>;
+  };
 }
 
 export function mapDbTemplateTimestampToGqlTemplateTimestamp(
@@ -466,5 +462,5 @@ export function mapDbTemplateTimestampToGqlTemplateTimestamp(
     template: unresolved,
     timestampId: db.timestampId,
     timestamp: unresolved,
-  } satisfies TypeSafeGqlMapping<GqlTemplateTimestamp>;
+  };
 }
