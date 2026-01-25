@@ -1,8 +1,12 @@
 import type { GqlResolvers } from "server/graphql/resolver-types.gen";
-import { todo } from "shared/utils";
 import type { GqlContext } from "server/graphql/context";
-import { and, desc, eq, isNull } from "drizzle-orm";
-import { type DbTemplateInsert, templates } from "server/db/schema";
+import { and, desc, eq, isNull, arrayContains } from "drizzle-orm";
+import {
+  type DbTemplateInsert,
+  templates,
+  shows,
+  DbTemplateType,
+} from "server/db/schema";
 import {
   mapDbTemplateToGqlTemplate,
   mapGqlTemplateTypeToDbTemplateType,
@@ -78,7 +82,72 @@ export const templateResolvers: GqlResolvers = {
     findTemplatesByShowId: (_parent, args, ctx) =>
       getTemplatesByShowId(ctx, args.showId),
 
-    findTemplateByDetails: (_parent, _args, _ctx) => todo(),
+    findTemplateByDetails: async (_parent, args, ctx) => {
+      const userId = ctx.authUserId;
+      if (!userId) {
+        throw new Error(
+          "Template not found: FindTemplateByDetails requires authentication",
+        );
+      }
+
+      // 1. Try matching by source episodeId
+      if (args.episodeId) {
+        const row = await ctx.db.query.templates.findFirst({
+          where: and(
+            eq(templates.sourceEpisodeId, args.episodeId),
+            eq(templates.createdByUserId, userId),
+            isNull(templates.deletedAt),
+          ),
+          orderBy: desc(templates.createdAt),
+        });
+        if (row) {
+          return mapDbTemplateToGqlTemplate(row);
+        }
+      }
+
+      // 2 & 3. Try matching by show name (and optionally season)
+      if (args.showName) {
+        const show = await ctx.db.query.shows.findFirst({
+          where: eq(shows.name, args.showName),
+        });
+        if (!show) {
+          throw new Error(`Template not found: FindTemplateByDetails`);
+        }
+
+        // 2. Try matching show name + season
+        if (args.season) {
+          const row = await ctx.db.query.templates.findFirst({
+            where: and(
+              eq(templates.showId, show.id),
+              eq(templates.type, DbTemplateType.Seasons),
+              arrayContains(templates.seasons, [args.season]),
+              eq(templates.createdByUserId, userId),
+              isNull(templates.deletedAt),
+            ),
+            orderBy: desc(templates.createdAt),
+          });
+          if (row) {
+            return mapDbTemplateToGqlTemplate(row);
+          }
+        }
+
+        // 3. Try matching just show name (show-wide template)
+        const row = await ctx.db.query.templates.findFirst({
+          where: and(
+            eq(templates.showId, show.id),
+            eq(templates.type, DbTemplateType.Show),
+            eq(templates.createdByUserId, userId),
+            isNull(templates.deletedAt),
+          ),
+          orderBy: desc(templates.createdAt),
+        });
+        if (row) {
+          return mapDbTemplateToGqlTemplate(row);
+        }
+      }
+
+      throw new Error(`Template not found: FindTemplateByDetails`);
+    },
   },
   Template: {
     createdBy: ({ createdByUserId: id }, _, ctx) =>
