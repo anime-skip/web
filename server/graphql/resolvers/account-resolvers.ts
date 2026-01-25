@@ -1,5 +1,5 @@
 import type { GqlResolvers } from "server/graphql/resolver-types.gen";
-import { md5, todo } from "shared/utils";
+import { md5 } from "shared/utils";
 import { eq, or } from "drizzle-orm";
 import { type DbUser, DbUserRole, preferences, users } from "server/db/schema";
 import { mapDbUserToGqlAccount } from "server/graphql/mappers";
@@ -155,29 +155,14 @@ export const accountResolvers: GqlResolvers = {
       return await updatePassword(ctx.db, user, args);
     },
 
-    deleteAccountRequest: async (_parent, { passwordHash }, ctx) => {
+    deleteMyAccount: async (_parent, _args, ctx) => {
       const userId = ctx.authUserId!;
-      const user = await requireUser(ctx, userId);
 
-      const isMatch = await auth.comparePasswords(
-        passwordHash,
-        user.passwordHash,
-      );
-      if (!isMatch) {
-        throw Error("Passwords do not match");
-      }
+      const anonymized = await ctx.db.transaction(async (tx) => {
+        return ctx.userService.anonymize(tx, userId, new Date());
+      });
 
-      todo();
-    },
-
-    deleteAccount: async (_parent, { deleteToken }, ctx) => {
-      const { userId } = await auth.validateToken(
-        "delete-account",
-        deleteToken,
-      );
-      const _user = await requireUser(ctx, userId);
-
-      todo();
+      return mapDbUserToGqlAccount(anonymized);
     },
   },
   Query: {

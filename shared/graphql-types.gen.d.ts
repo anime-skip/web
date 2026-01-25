@@ -781,13 +781,8 @@ type GqlMutation = {
    * This step is pretty self explanatory, this is when the password is actually reset for a user
    */
   resetPassword: GqlLoginData;
-  /**
-   * Request your account be deleted. The user will receive an email with a link to confirm deleting
-   * their account
-   */
-  deleteAccountRequest: GqlAccount;
-  /** Handle a deleteToken from `deleteAccountRequest` and actually delete the user's account */
-  deleteAccount: GqlAccount;
+  /** Delete the authenticated user's account */
+  deleteMyAccount: GqlAccount;
   /** Update user preferences */
   savePreferences: GqlPreferences;
   /** Create a show and optionally become an admin */
@@ -926,16 +921,6 @@ type GqlMutationResetPasswordArgs = {
   passwordResetToken: Scalars['String']['input'];
   newPassword: Scalars['String']['input'];
   confirmNewPassword: Scalars['String']['input'];
-};
-
-
-type GqlMutationDeleteAccountRequestArgs = {
-  passwordHash: Scalars['String']['input'];
-};
-
-
-type GqlMutationDeleteAccountArgs = {
-  deleteToken: Scalars['String']['input'];
 };
 
 

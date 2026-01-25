@@ -46,13 +46,8 @@ type Mutation {
     newPassword: String!
     confirmNewPassword: String!
   ): LoginData!
-  """
-  Request your account be deleted. The user will receive an email with a link to confirm deleting
-  their account
-  """
-  deleteAccountRequest(passwordHash: String!): Account! @authenticated
-  "Handle a deleteToken from `deleteAccountRequest` and actually delete the user's account"
-  deleteAccount(deleteToken: String!): Account!
+  "Delete the authenticated user's account"
+  deleteMyAccount: Account! @authenticated
 
   # Preferences
   "Update user preferences"

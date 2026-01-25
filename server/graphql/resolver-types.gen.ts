@@ -512,8 +512,7 @@ export type GqlMutationResolvers<ContextType = GqlContext, ParentType extends Gq
   verifyEmailAddress?: Resolver<GqlResolversTypes['Account'], ParentType, ContextType, RequireFields<GqlMutationVerifyEmailAddressArgs, 'validationToken'>>;
   requestPasswordReset?: Resolver<GqlResolversTypes['Boolean'], ParentType, ContextType, RequireFields<GqlMutationRequestPasswordResetArgs, 'recaptchaResponse' | 'email'>>;
   resetPassword?: Resolver<GqlResolversTypes['LoginData'], ParentType, ContextType, RequireFields<GqlMutationResetPasswordArgs, 'passwordResetToken' | 'newPassword' | 'confirmNewPassword'>>;
-  deleteAccountRequest?: Resolver<GqlResolversTypes['Account'], ParentType, ContextType, RequireFields<GqlMutationDeleteAccountRequestArgs, 'passwordHash'>>;
-  deleteAccount?: Resolver<GqlResolversTypes['Account'], ParentType, ContextType, RequireFields<GqlMutationDeleteAccountArgs, 'deleteToken'>>;
+  deleteMyAccount?: Resolver<GqlResolversTypes['Account'], ParentType, ContextType>;
   savePreferences?: Resolver<GqlResolversTypes['Preferences'], ParentType, ContextType, RequireFields<GqlMutationSavePreferencesArgs, 'preferences'>>;
   createShow?: Resolver<GqlResolversTypes['Show'], ParentType, ContextType, RequireFields<GqlMutationCreateShowArgs, 'showInput' | 'becomeAdmin'>>;
   updateShow?: Resolver<GqlResolversTypes['Show'], ParentType, ContextType, RequireFields<GqlMutationUpdateShowArgs, 'showId' | 'newShow'>>;
