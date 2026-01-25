@@ -1,5 +1,5 @@
 import type { GqlResolvers } from "server/graphql/resolver-types.gen";
-import { todo } from "shared/utils";
+import { notImplemented, todo } from "shared/utils";
 import { getEpisodesByShowId } from "server/graphql/resolvers/episode-resolvers";
 import { getShowAdminsByShowId } from "server/graphql/resolvers/show-admin-resolvers";
 import { getTemplatesByShowId } from "server/graphql/resolvers/template-resolvers";
@@ -29,7 +29,7 @@ export const showResolvers: GqlResolvers = {
       };
       const [row] = await ctx.db.insert(shows).values(value).returning();
 
-      if (args.becomeAdmin) todo("createShow > args.becomeAdmin");
+      if (args.becomeAdmin) notImplemented("createShow > args.becomeAdmin");
 
       return mapDbShowToGqlShow(row);
     },

@@ -1,5 +1,5 @@
 import type { GqlDirectiveResolvers } from "server/graphql/resolver-types.gen";
-import { todo } from "shared/utils";
+import { notImplemented, todo } from "shared/utils";
 import { auth } from "server/utils/auth";
 import { getAccessToken } from "server/utils/http";
 
@@ -26,6 +26,6 @@ export const directiveResolvers: GqlDirectiveResolvers = {
     todo("hasRole directive");
   },
   isShowAdmin: (_next, _parent, _directiveArgs, _ctx, _info) => {
-    todo("isShowAdmin directive");
+    notImplemented("isShowAdmin directive");
   },
 };
