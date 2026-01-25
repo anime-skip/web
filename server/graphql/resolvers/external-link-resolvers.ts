@@ -1,14 +1,18 @@
 import type { GqlResolvers } from "server/graphql/resolver-types.gen";
-import { todo } from "shared/utils";
 import type { NoOptionals } from "shared/types";
 import { type DbExternalLinkInsert, externalLinks } from "server/db/schema";
 import { mapDbExternalLinkToGqlExternalLink } from "server/graphql/mappers";
+import type { GqlContext } from "server/graphql/context";
+import { eq } from "drizzle-orm";
+import { extractServiceId } from "server/utils/external-service-utils";
 
 export const externalLinkResolvers: GqlResolvers = {
   Mutation: {
     addExternalLink: async (_parent, args, ctx) => {
+      const cleanUrl = ctx.externalLinkService.sanitizeUrl(args.url);
+
       const value: NoOptionals<DbExternalLinkInsert> = {
-        url: args.url,
+        url: cleanUrl,
         showId: args.showId,
       };
       const [row] = await ctx.db
@@ -30,12 +34,29 @@ export const externalLinkResolvers: GqlResolvers = {
     },
   },
   ExternalLink: {
-    url: (_parent, _args, _ctx) => todo(),
+    url: (parent, _args, ctx) => {
+      return ctx.externalLinkService.sanitizeUrl(parent.url);
+    },
 
-    show: (_parent, _args, _ctx) => todo(),
+    show: (parent, _args, ctx) => ctx.dataloaders.shows.load(parent.showId),
 
-    service: (_parent, _args, _ctx) => todo(),
+    service: (parent) => {
+      const parsed = new URL(parent.url);
+      return parsed.hostname;
+    },
 
-    serviceId: (_parent, _args, _ctx) => todo(),
+    serviceId: (parent) => {
+      return extractServiceId(parent.url);
+    },
   },
 };
+
+export async function getExternalLinksByShowId(
+  ctx: GqlContext,
+  showId: string,
+): Promise<GqlExternalLink[]> {
+  const rows = await ctx.db.query.externalLinks.findMany({
+    where: eq(externalLinks.showId, showId),
+  });
+  return rows.map(mapDbExternalLinkToGqlExternalLink);
+}

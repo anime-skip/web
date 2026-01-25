@@ -3,6 +3,7 @@ import { todo } from "shared/utils";
 import { getEpisodesByShowId } from "server/graphql/resolvers/episode-resolvers";
 import { getShowAdminsByShowId } from "server/graphql/resolvers/show-admin-resolvers";
 import { getTemplatesByShowId } from "server/graphql/resolvers/template-resolvers";
+import { getExternalLinksByShowId } from "server/graphql/resolvers/external-link-resolvers";
 import type { NoOptionals } from "shared/types";
 import { mapDbShowToGqlShow } from "server/graphql/mappers";
 import { type DbShowInsert, shows } from "server/db/schema";
@@ -85,7 +86,8 @@ export const showResolvers: GqlResolvers = {
 
     templates: (parent, _args, ctx) => getTemplatesByShowId(ctx, parent.id),
 
-    externalLinks: (_parent, _args, _ctx) => todo(),
+    externalLinks: (parent, _args, ctx) =>
+      getExternalLinksByShowId(ctx, parent.id),
 
     seasonCount: (_parent, _args, _ctx) => todo(),
 
