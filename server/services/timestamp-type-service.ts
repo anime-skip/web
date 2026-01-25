@@ -1,6 +1,6 @@
-import type { DbTimestampType } from "server/db/schema";
+import { timestampTypes, type DbTimestampType } from "server/db/schema";
 import type { AnimeSkipDatabase } from "./db";
-import { todo } from "shared/utils";
+import { inArray } from "drizzle-orm";
 
 export interface TimestampTypeService {
   softDeleteMany(
@@ -8,7 +8,7 @@ export interface TimestampTypeService {
     ids: string[],
     deletedByUserId: string,
     deletedAt: Date,
-  ): Promise<DbTimestampType>;
+  ): Promise<DbTimestampType[]>;
 }
 
 export function createTimestampTypeService({
@@ -17,12 +17,22 @@ export function createTimestampTypeService({
   db: AnimeSkipDatabase;
 }): TimestampTypeService {
   const softDeleteMany: TimestampTypeService["softDeleteMany"] = async (
-    _tx,
-    _ids,
-    _deletedByUserId,
-    _deletedAt,
+    tx,
+    ids,
+    deletedByUserId,
+    deletedAt,
   ) => {
-    todo();
+    const deleted = await tx
+      .update(timestampTypes)
+      .set({
+        updatedAt: deletedAt.toISOString(),
+        updatedByUserId: deletedByUserId,
+        deletedAt: deletedAt.toISOString(),
+        deletedByUserId,
+      })
+      .where(inArray(timestampTypes.id, ids))
+      .returning();
+    return deleted;
   };
 
   return {

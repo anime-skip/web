@@ -1,6 +1,6 @@
-import type { DbUserReport } from "server/db/schema";
+import { userReports, type DbUserReport } from "server/db/schema";
 import type { AnimeSkipDatabase } from "./db";
-import { todo } from "shared/utils";
+import { inArray } from "drizzle-orm";
 
 export interface UserReportService {
   softDeleteMany(
@@ -8,7 +8,7 @@ export interface UserReportService {
     ids: string[],
     deletedByUserId: string,
     deletedAt: Date,
-  ): Promise<DbUserReport>;
+  ): Promise<DbUserReport[]>;
 }
 
 export function createUserReportService({
@@ -17,12 +17,22 @@ export function createUserReportService({
   db: AnimeSkipDatabase;
 }): UserReportService {
   const softDeleteMany: UserReportService["softDeleteMany"] = async (
-    _tx,
-    _ids,
-    _deletedByUserId,
-    _deletedAt,
+    tx,
+    ids,
+    deletedByUserId,
+    deletedAt,
   ) => {
-    todo();
+    const deleted = await tx
+      .update(userReports)
+      .set({
+        updatedAt: deletedAt.toISOString(),
+        updatedByUserId: deletedByUserId,
+        deletedAt: deletedAt.toISOString(),
+        deletedByUserId,
+      })
+      .where(inArray(userReports.id, ids))
+      .returning();
+    return deleted;
   };
 
   return {

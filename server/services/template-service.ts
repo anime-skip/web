@@ -1,6 +1,6 @@
-import type { DbTemplate } from "server/db/schema";
+import { templates, type DbTemplate } from "server/db/schema";
 import type { AnimeSkipDatabase } from "./db";
-import { todo } from "shared/utils";
+import { inArray } from "drizzle-orm";
 
 export interface TemplateService {
   softDeleteMany(
@@ -8,7 +8,7 @@ export interface TemplateService {
     ids: string[],
     deletedByUserId: string,
     deletedAt: Date,
-  ): Promise<DbTemplate>;
+  ): Promise<DbTemplate[]>;
 }
 
 export function createTemplateService({
@@ -17,12 +17,22 @@ export function createTemplateService({
   db: AnimeSkipDatabase;
 }): TemplateService {
   const softDeleteMany: TemplateService["softDeleteMany"] = async (
-    _tx,
-    _ids,
-    _deletedByUserId,
-    _deletedAt,
+    tx,
+    ids,
+    deletedByUserId,
+    deletedAt,
   ) => {
-    todo();
+    const deleted = await tx
+      .update(templates)
+      .set({
+        updatedAt: deletedAt.toISOString(),
+        updatedByUserId: deletedByUserId,
+        deletedAt: deletedAt.toISOString(),
+        deletedByUserId,
+      })
+      .where(inArray(templates.id, ids))
+      .returning();
+    return deleted;
   };
 
   return {

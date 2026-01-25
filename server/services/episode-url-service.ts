@@ -1,9 +1,9 @@
-import type { DbEpisodeUrl } from "server/db/schema";
+import { episodeUrls, type DbEpisodeUrl } from "server/db/schema";
 import type { AnimeSkipDatabase } from "./db";
-import { todo } from "shared/utils";
+import { inArray } from "drizzle-orm";
 
 export interface EpisodeUrlService {
-  deleteMany(tx: AnimeSkipDatabase, urls: string[]): Promise<DbEpisodeUrl>;
+  deleteMany(tx: AnimeSkipDatabase, urls: string[]): Promise<DbEpisodeUrl[]>;
 }
 
 export function createEpisodeUrlService({
@@ -11,8 +11,12 @@ export function createEpisodeUrlService({
 }: {
   db: AnimeSkipDatabase;
 }): EpisodeUrlService {
-  const deleteMany: EpisodeUrlService["deleteMany"] = async (_tx, _urls) => {
-    todo();
+  const deleteMany: EpisodeUrlService["deleteMany"] = async (tx, urls) => {
+    const deleted = await tx
+      .delete(episodeUrls)
+      .where(inArray(episodeUrls.url, urls))
+      .returning();
+    return deleted;
   };
 
   return {

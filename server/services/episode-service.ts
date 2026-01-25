@@ -1,6 +1,6 @@
-import type { DbEpisode } from "server/db/schema";
+import { episodes, type DbEpisode } from "server/db/schema";
 import type { AnimeSkipDatabase } from "./db";
-import { todo } from "shared/utils";
+import { inArray } from "drizzle-orm";
 
 export interface EpisodeService {
   softDeleteMany(
@@ -8,7 +8,7 @@ export interface EpisodeService {
     ids: string[],
     deletedByUserId: string,
     deletedAt: Date,
-  ): Promise<DbEpisode>;
+  ): Promise<DbEpisode[]>;
 }
 
 export function createEpisodeService({
@@ -17,12 +17,22 @@ export function createEpisodeService({
   db: AnimeSkipDatabase;
 }): EpisodeService {
   const softDeleteMany: EpisodeService["softDeleteMany"] = async (
-    _tx,
-    _ids,
-    _deletedByUserId,
-    _deletedAt,
+    tx,
+    ids,
+    deletedByUserId,
+    deletedAt,
   ) => {
-    todo();
+    const deleted = await tx
+      .update(episodes)
+      .set({
+        updatedAt: deletedAt.toISOString(),
+        updatedByUserId: deletedByUserId,
+        deletedAt: deletedAt.toISOString(),
+        deletedByUserId,
+      })
+      .where(inArray(episodes.id, ids))
+      .returning();
+    return deleted;
   };
 
   return {
