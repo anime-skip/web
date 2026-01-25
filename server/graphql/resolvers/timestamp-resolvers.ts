@@ -1,5 +1,4 @@
 import type { GqlResolvers } from "server/graphql/resolver-types.gen";
-import { todo } from "shared/utils";
 import type { GqlContext } from "server/graphql/context";
 import { and, eq, isNull } from "drizzle-orm";
 import { type DbTimestampInsert, timestamps } from "server/db/schema";
@@ -10,25 +9,39 @@ import {
 import type { NoOptionals } from "shared/types";
 import { prepareGqlInputForDb } from "server/utils/drizzle-utils";
 
+function prepareTimestampInsert(
+  episodeId: string,
+  timestampInput: GqlInputTimestamp,
+  userId: string,
+  now: Date,
+): NoOptionals<Omit<DbTimestampInsert, "id">> {
+  return {
+    createdAt: now.toISOString(),
+    createdByUserId: userId,
+    updatedAt: now.toISOString(),
+    updatedByUserId: userId,
+    deletedAt: null,
+    deletedByUserId: null,
+    at: String(timestampInput.at),
+    episodeId,
+    source: mapGqlTimestampSourceToDbTimestampSource(
+      timestampInput.source ?? "ANIME_SKIP",
+    ),
+    typeId: timestampInput.typeId,
+  };
+}
+
 export const timestampResolvers: GqlResolvers = {
   Mutation: {
     createTimestamp: async (_parent, args, ctx) => {
       const userId = ctx.authUserId!;
       const now = new Date();
-      const value: NoOptionals<Omit<DbTimestampInsert, "id">> = {
-        createdAt: now.toISOString(),
-        createdByUserId: userId,
-        updatedAt: now.toISOString(),
-        updatedByUserId: userId,
-        deletedAt: null,
-        deletedByUserId: null,
-        at: String(args.timestampInput.at),
-        episodeId: args.episodeId,
-        source: mapGqlTimestampSourceToDbTimestampSource(
-          args.timestampInput.source ?? "ANIME_SKIP",
-        ),
-        typeId: args.timestampInput.typeId,
-      };
+      const value = prepareTimestampInsert(
+        args.episodeId,
+        args.timestampInput,
+        userId,
+        now,
+      );
       const [row] = await ctx.db.insert(timestamps).values(value).returning();
       return mapDbTimestampToGqlTimestamp(row);
     },
@@ -78,7 +91,69 @@ export const timestampResolvers: GqlResolvers = {
       return mapDbTimestampToGqlTimestamp(deleted);
     },
 
-    updateTimestamps: (_parent, _args, _ctx) => todo(),
+    updateTimestamps: async (_parent, args, ctx) => {
+      const userId = ctx.authUserId!;
+      const now = new Date();
+
+      // Prepare create list
+      const createList = args.create.map((c) =>
+        prepareTimestampInsert(c.episodeId, c.timestamp, userId, now),
+      );
+
+      // Prepare update list - fetch existing timestamps first to merge updates
+      const updateList: Array<{
+        id: string;
+        updates: Partial<DbTimestampInsert>;
+      }> = [];
+      for (const u of args.update) {
+        const existing = await ctx.dataloaders.timestamps.load(u.id); // TODO: Optimize with loadMany
+        if (!existing) {
+          throw new Error(`Timestamp not found: ${u.id}`);
+        }
+        const updates: Partial<DbTimestampInsert> = {
+          ...prepareGqlInputForDb(u.timestamp),
+          at:
+            u.timestamp.at != null
+              ? String(u.timestamp.at)
+              : String(existing.at),
+          source:
+            u.timestamp.source != null
+              ? mapGqlTimestampSourceToDbTimestampSource(u.timestamp.source)
+              : undefined,
+        };
+        updateList.push({ id: u.id, updates });
+      }
+
+      // Prepare delete list - validate they exist
+      const deleteIds: string[] = [];
+      for (const id of args.delete) {
+        const existing = await ctx.dataloaders.timestamps.load(id); // TODO: Optimize with loadMany
+        if (!existing) {
+          throw new Error(`Timestamp not found: ${id}`);
+        }
+        deleteIds.push(id);
+      }
+
+      // Execute all operations in a transaction
+      const result = await ctx.db.transaction(
+        (tx) =>
+          ctx.timestampService.updateAll(
+            tx,
+            createList,
+            updateList,
+            deleteIds,
+            userId,
+            now,
+          ),
+        { accessMode: "read write" },
+      );
+
+      return {
+        created: result.created.map(mapDbTimestampToGqlTimestamp),
+        updated: result.updated.map(mapDbTimestampToGqlTimestamp),
+        deleted: result.deleted.map(mapDbTimestampToGqlTimestamp),
+      };
+    },
   },
   Query: {
     findTimestamp: (_parent, args, ctx) =>
