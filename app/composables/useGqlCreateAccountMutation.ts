@@ -2,6 +2,7 @@ import { useMutation } from "@tanstack/vue-query";
 import { queryGraphql } from "app/utils/graphql-utils";
 import { executeRecaptcha, RecaptchaAction } from "app/utils/recaptcha-utils";
 import { LoginDataFragment, type LoginData } from "./useGqlLoginQuery";
+import { env } from "app/env";
 
 export default function () {
   return useMutation({
@@ -9,7 +10,7 @@ export default function () {
       input: Omit<GqlMutationCreateAccountArgs, "recaptchaResponse">,
     ) => {
       const recaptchaResponse =
-        import.meta.env.APP_RECAPTCHA_RESPONSE ??
+        env.APP_RECAPTCHA_RESPONSE ??
         (await executeRecaptcha(RecaptchaAction.SignUp));
       const data = await queryGraphql<{
         createAccount: LoginData;

@@ -2,6 +2,7 @@ import { DAY, MINUTE, toSeconds } from "shared/time";
 import { jwtVerify, SignJWT } from "jose";
 import bcrypt from "bcryptjs";
 import { logger } from "server/utils/logger";
+import { env } from "server/env";
 
 type TokenKind =
   | "access"
@@ -28,10 +29,7 @@ const AUDIENCES: Record<TokenKind, string> = {
 
 const ISSUER = "anime-skip.com";
 
-const SECRET_STR = import.meta.env.AS_JWT_SECRET;
-if (!SECRET_STR) throw Error("AS_JWT_SECRET environment variable not provided");
-
-const SECRET = new TextEncoder().encode(SECRET_STR);
+const SECRET = new TextEncoder().encode(env.JWT_SECRET);
 
 export type TokenInfo = {
   userId: string;

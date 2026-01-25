@@ -5,26 +5,12 @@ import verificationHtmlTemplate from "server/assets/email-templates/verification
 import SMTPConnection from "nodemailer/lib/smtp-connection";
 import { promisify } from "node:util";
 import { logger } from "./logger";
+import { env } from "server/env";
 
 const emailsLogger = logger.extend("emails");
 
 const STMP_HOSTNAME = "email-smtp.us-east-2.amazonaws.com";
 const STMP_PORT = 587;
-
-const SEND_EMAILS = import.meta.env.AS_SEND_EMAILS === "true";
-const USERNAME = import.meta.env.AS_EMAIL_STMP_USERNAME;
-const PASSWORD = import.meta.env.AS_EMAIL_STMP_PASSWORD;
-
-if (SEND_EMAILS && !USERNAME) {
-  throw Error(
-    "AS_EMAIL_STMP_USERNAME environment variable is required when AS_SEND_EMAILS=true",
-  );
-}
-if (SEND_EMAILS && !PASSWORD) {
-  throw Error(
-    "AS_EMAIL_STMP_PASSWORD environment variable is required when AS_SEND_EMAILS=true",
-  );
-}
 
 const TEMPLATES = {
   "reset-password": resetPasswordHtmlTemplate,
@@ -94,8 +80,8 @@ async function send(data: {
   templateData: Record<string, string>;
 }): Promise<void> {
   emailsLogger.info(`Sending ${data.templateName} email to:`, data.to);
-  if (!SEND_EMAILS) {
-    emailsLogger.warn("Skipped sending email, AS_SEND_EMAILS != true");
+  if (!env.SEND_EMAILS) {
+    emailsLogger.warn("Skipped sending email, env.SEND_EMAILS != true");
     return;
   }
 
@@ -118,8 +104,8 @@ async function send(data: {
 
   const auth = {
     type: "login" as const,
-    user: USERNAME!,
-    pass: PASSWORD!,
+    user: env.EMAIL_STMP_USERNAME,
+    pass: env.EMAIL_STMP_PASSWORD,
   };
   const connection = new SMTPConnection({
     auth,

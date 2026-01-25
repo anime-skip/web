@@ -1,5 +1,8 @@
 // oxlint-lint-ignore-file no-explicit-any
 
+import { LogLevel } from "server/enums";
+import { env } from "server/env";
+
 export interface Logger {
   debug(...args: any[]): void;
   verbose(...args: any[]): void;
@@ -9,24 +12,6 @@ export interface Logger {
   error(...args: any[]): void;
   extend(namespace: string): Logger;
 }
-
-export enum LogLevel {
-  Debug,
-  Verbose,
-  Info,
-  Http,
-  Warn,
-  Error,
-}
-const LOG_LEVEL_MAP = {
-  debug: LogLevel.Debug,
-  verbose: LogLevel.Verbose,
-  info: LogLevel.Info,
-  http: LogLevel.Http,
-  warn: LogLevel.Warn,
-  error: LogLevel.Error,
-};
-type LogLevelName = keyof typeof LOG_LEVEL_MAP;
 
 export const Color = {
   Reset: "\x1b[0m",
@@ -40,14 +25,13 @@ export const Color = {
   Cyan: "\x1b[36m",
 };
 
-const levelName = import.meta.env.AS_LOG_LEVEL as LogLevelName;
-const level = LOG_LEVEL_MAP[levelName] ?? LogLevel.Info;
+const level = env.LOG_LEVEL;
 
 function createLogger(namespace?: string): Logger {
-  const log = (levelName: LogLevelName, color: string, args: any[]) => {
-    if (LOG_LEVEL_MAP[levelName] < level) return;
+  const log = (logLevel: LogLevel, color: string, args: any[]) => {
+    if (logLevel < level) return;
 
-    const label = levelName.padEnd(7, " ");
+    const label = LogLevel[logLevel].padEnd(7, " ");
     if (namespace) {
       console.log(
         `${color}${label}${Color.Reset}`,
@@ -59,12 +43,12 @@ function createLogger(namespace?: string): Logger {
     }
   };
   return {
-    debug: (...args) => log("debug", Color.Dim, args),
-    verbose: (...args) => log("verbose", Color.Cyan, args),
-    info: (...args) => log("info", Color.Blue, args),
-    http: (...args) => log("http", Color.Purple, args),
-    warn: (...args) => log("warn", Color.Yellow, args),
-    error: (...args) => log("error", Color.Red, args),
+    debug: (...args) => log(LogLevel.Debug, Color.Dim, args),
+    verbose: (...args) => log(LogLevel.Verbose, Color.Cyan, args),
+    info: (...args) => log(LogLevel.Info, Color.Blue, args),
+    http: (...args) => log(LogLevel.Http, Color.Purple, args),
+    warn: (...args) => log(LogLevel.Warn, Color.Yellow, args),
+    error: (...args) => log(LogLevel.Error, Color.Red, args),
     extend: (label) =>
       createLogger(namespace ? `${namespace}:${label}` : label),
   };

@@ -1,18 +1,14 @@
 import { drizzle, NodePgDatabase } from "drizzle-orm/node-postgres";
 // import { migrate } from "drizzle-orm/node-postgres/migrator";
 import * as dbSchema from "server/db/schema";
+import { env } from "server/env";
 import { logger } from "server/utils/logger";
 
 const dbLogger = logger.extend("db");
 
 export async function openAnimeSkipDatabase(): Promise<AnimeSkipDatabase> {
-  const url = import.meta.env.AS_DATABASE_URL;
-  if (!url) {
-    logger.error("AS_DATABASE_URL environment variable not set");
-    process.exit(1);
-  }
   dbLogger.info("Opening database...");
-  const db = drizzle(url, {
+  const db = drizzle(env.DATABASE_URL, {
     casing: "snake_case",
     // Uncomment to load SQL queries
     // logger: {

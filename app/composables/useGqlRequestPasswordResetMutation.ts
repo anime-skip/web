@@ -1,4 +1,5 @@
 import { useMutation } from "@tanstack/vue-query";
+import { env } from "app/env";
 import { queryGraphql } from "app/utils/graphql-utils";
 import { executeRecaptcha, RecaptchaAction } from "app/utils/recaptcha-utils";
 
@@ -8,7 +9,7 @@ export default function () {
       input: Omit<GqlMutationRequestPasswordResetArgs, "recaptchaResponse">,
     ) => {
       const recaptchaResponse =
-        import.meta.env.APP_RECAPTCHA_RESPONSE ??
+        env.APP_RECAPTCHA_RESPONSE ??
         (await executeRecaptcha(RecaptchaAction.RequestPasswordReset));
       await queryGraphql<{
         requestPasswordReset: unknown;

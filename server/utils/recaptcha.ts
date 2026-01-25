@@ -1,20 +1,14 @@
-const SECRET = import.meta.env.AS_RECAPTCHA_SECRET;
-if (!SECRET) {
-  throw Error("AS_RECAPTCHA_SECRET environment variable is missing");
-}
-
-const ALLOWLIST_STR = import.meta.env.AS_RECAPTCHA_RESPONSE_ALLOWLIST;
-const ALLOWLIST = new Set(ALLOWLIST_STR ? ALLOWLIST_STR.split(",") : []);
+import { env } from "server/env";
 
 export async function verifyRecaptcha(
   response: string,
   ipAddress: string,
 ): Promise<void> {
-  if (ALLOWLIST.has(response)) return;
+  if (env.RECAPTCHA_RESPONSE_ALLOWLIST.includes(response)) return;
 
   const url = new URL("https://www.google.com/recaptcha/api/siteverify");
   url.searchParams.set("response", response);
-  url.searchParams.set("secret", SECRET!);
+  url.searchParams.set("secret", env.RECAPTCHA_SECRET);
   url.searchParams.set("remoteip", ipAddress);
   const res = await fetch(url.href, {
     method: "POST",
