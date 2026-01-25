@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import useGqlAccountQuery from "app/composables/useGqlAccountQuery";
+import useGqlDeleteMyAccountMutation from "app/composables/useGqlDeleteMyAccountMutation";
 import { useHead } from "@unhead/vue";
 
 useHead({
@@ -7,6 +8,17 @@ useHead({
 });
 
 const { data: account, isLoading } = useGqlAccountQuery();
+const { mutate: deleteMyAccount, isPending: isDeleting } =
+  useGqlDeleteMyAccountMutation();
+
+function onDeleteClick() {
+  const confirmed = window.confirm(
+    "Are you sure you want to delete your account? This action cannot be undone.",
+  );
+  if (confirmed) {
+    deleteMyAccount();
+  }
+}
 </script>
 
 <template>
@@ -15,8 +27,8 @@ const { data: account, isLoading } = useGqlAccountQuery();
   <div class="alert">
     <i class="i-heroicons-information-circle size-5" />
     <p>
-      Coming soon. For now, you can send an email to support to update or delete
-      your profile.
+      Coming soon. For now, you can send an email to support to update your
+      profile.
     </p>
   </div>
 
@@ -67,8 +79,13 @@ const { data: account, isLoading } = useGqlAccountQuery();
     </div>
   </div>
 
-  <button class="btn btn-outline btn-error" disabled>
-    <i class="i-heroicons-trash size-5" />
+  <button
+    class="btn btn-outline btn-error"
+    :disabled="isDeleting"
+    @click="onDeleteClick"
+  >
+    <span v-if="isDeleting" class="loading loading-spinner loading-sm" />
+    <i v-else class="i-heroicons-trash size-5" />
     <span>Delete Account</span>
   </button>
 </template>
