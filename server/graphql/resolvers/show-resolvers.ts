@@ -8,8 +8,9 @@ import type { NoOptionals } from "shared/types";
 import { mapDbShowToGqlShow } from "server/graphql/mappers";
 import {
   type DbShowInsert,
+  type DbExternalLinkInsert,
   episodes,
-  externalLinks,
+  externalLinks as externalLinksTable,
   shows,
 } from "server/db/schema";
 import { prepareGqlInputForDb } from "server/utils/drizzle-utils";
@@ -41,7 +42,32 @@ export const showResolvers: GqlResolvers = {
         originalName: args.showInput.originalName ?? null,
         website: args.showInput.website ?? null,
       };
-      const [row] = await ctx.db.insert(shows).values(value).returning();
+
+      const externalLinks = await ctx.externalLinkLookupService.findLinks(
+        args.showInput.name,
+      );
+
+      const [row] = await ctx.db.transaction(
+        async (tx) => {
+          const [createdShow] = await tx
+            .insert(shows)
+            .values(value)
+            .returning();
+
+          if (externalLinks.length > 0) {
+            const linkValues = externalLinks.map<DbExternalLinkInsert>(
+              (link) => ({
+                url: ctx.externalLinkService.sanitizeUrl(link),
+                showId: createdShow.id,
+              }),
+            );
+            await tx.insert(externalLinksTable).values(linkValues);
+          }
+
+          return [createdShow];
+        },
+        { accessMode: "read write" },
+      );
 
       if (args.becomeAdmin) notImplemented("createShow > args.becomeAdmin");
 
@@ -84,7 +110,7 @@ export const showResolvers: GqlResolvers = {
       const urlPattern = getServiceUrlPattern(args.service, args.serviceId);
 
       const links = await ctx.db.query.externalLinks.findMany({
-        where: ilike(externalLinks.url, urlPattern),
+        where: ilike(externalLinksTable.url, urlPattern),
       });
       if (links.length === 0) return [];
 

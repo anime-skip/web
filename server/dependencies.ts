@@ -16,6 +16,8 @@ import { createUserReportService } from "./services/user-report-service";
 import { createEpisodeService } from "./services/episode-service";
 import { createAggregateThirdPartyService } from "./services/aggregate-third-party-service";
 import { createDbThirdPartyService } from "./services/db-third-party-service";
+import { createAnilistExternalLinkService } from "./services/anilist-external-link-service";
+import { createAggregateExternalLinkService } from "./services/aggregate-external-link-service";
 
 const db = await openAnimeSkipDatabase();
 
@@ -41,6 +43,15 @@ export const container = createIocContainer()
         ...deps,
         services: {
           Db: createDbThirdPartyService(deps),
+        },
+      }),
+  })
+  .register({
+    externalLinkLookupService: (deps) =>
+      createAggregateExternalLinkService({
+        ...deps,
+        services: {
+          Anilist: createAnilistExternalLinkService(deps),
         },
       }),
   });
