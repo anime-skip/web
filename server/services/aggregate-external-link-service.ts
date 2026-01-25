@@ -1,4 +1,4 @@
-import type { Logger } from "server/utils/logger";
+import { logger } from "server/utils/logger";
 import type { ExternalLinkLookupService } from "./external-link-lookup-service";
 
 /**
@@ -6,10 +6,8 @@ import type { ExternalLinkLookupService } from "./external-link-lookup-service";
  * Collects links from all services and returns them combined.
  */
 export function createAggregateExternalLinkService({
-  logger,
   services,
 }: {
-  logger: Logger;
   services: Record<string, ExternalLinkLookupService>;
 }): ExternalLinkLookupService {
   const serviceLogger = logger.extend("aggregate-external-link-service");
