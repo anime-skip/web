@@ -216,8 +216,17 @@ export function mapDbEpisodeUrlToGqlEpisodeUrl(
   } satisfies TypeSafeGqlMapping<GqlEpisodeUrl>;
 }
 
-export function mapUrlToDbEpisodeSource(_url: string): DbEpisodeSource {
-  todo();
+export function mapUrlToDbEpisodeSource(url: string): DbEpisodeSource {
+  if (url.includes("vrv")) {
+    return DbEpisodeSource.Vrv;
+  }
+  if (url.includes("funimation")) {
+    return DbEpisodeSource.Funimation;
+  }
+  if (url.includes("crunchyroll")) {
+    return DbEpisodeSource.Crunchyroll;
+  }
+  return DbEpisodeSource.Unknown;
 }
 
 export function mapDbEpisodeToGqlEpisode(db: DbEpisode): GqlEpisode {
