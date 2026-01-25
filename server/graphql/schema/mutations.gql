@@ -48,6 +48,12 @@ type Mutation {
   ): LoginData!
   "Delete the authenticated user's account"
   deleteMyAccount: Account! @authenticated
+  """
+  Delete a user's account (admin only)
+
+  > `@hasRole(role: ADMIN)` - The user must have the `ADMIN` role to perform this action
+  """
+  deleteAccount(userId: ID!): Account! @hasRole(role: ADMIN)
 
   # Preferences
   "Update user preferences"

@@ -783,6 +783,12 @@ type GqlMutation = {
   resetPassword: GqlLoginData;
   /** Delete the authenticated user's account */
   deleteMyAccount: GqlAccount;
+  /**
+   * Delete a user's account (admin only)
+   *
+   * > `@hasRole(role: ADMIN)` - The user must have the `ADMIN` role to perform this action
+   */
+  deleteAccount: GqlAccount;
   /** Update user preferences */
   savePreferences: GqlPreferences;
   /** Create a show and optionally become an admin */
@@ -921,6 +927,11 @@ type GqlMutationResetPasswordArgs = {
   passwordResetToken: Scalars['String']['input'];
   newPassword: Scalars['String']['input'];
   confirmNewPassword: Scalars['String']['input'];
+};
+
+
+type GqlMutationDeleteAccountArgs = {
+  userId: Scalars['ID']['input'];
 };
 
 

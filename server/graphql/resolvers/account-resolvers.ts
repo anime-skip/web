@@ -164,6 +164,14 @@ export const accountResolvers: GqlResolvers = {
 
       return mapDbUserToGqlAccount(anonymized);
     },
+
+    deleteAccount: async (_parent, { userId }, ctx) => {
+      const anonymized = await ctx.db.transaction(async (tx) => {
+        return ctx.userService.anonymize(tx, userId, new Date());
+      });
+
+      return mapDbUserToGqlAccount(anonymized);
+    },
   },
   Query: {
     login: async (_parent, args, ctx) => {

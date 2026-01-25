@@ -513,6 +513,7 @@ export type GqlMutationResolvers<ContextType = GqlContext, ParentType extends Gq
   requestPasswordReset?: Resolver<GqlResolversTypes['Boolean'], ParentType, ContextType, RequireFields<GqlMutationRequestPasswordResetArgs, 'recaptchaResponse' | 'email'>>;
   resetPassword?: Resolver<GqlResolversTypes['LoginData'], ParentType, ContextType, RequireFields<GqlMutationResetPasswordArgs, 'passwordResetToken' | 'newPassword' | 'confirmNewPassword'>>;
   deleteMyAccount?: Resolver<GqlResolversTypes['Account'], ParentType, ContextType>;
+  deleteAccount?: Resolver<GqlResolversTypes['Account'], ParentType, ContextType, RequireFields<GqlMutationDeleteAccountArgs, 'userId'>>;
   savePreferences?: Resolver<GqlResolversTypes['Preferences'], ParentType, ContextType, RequireFields<GqlMutationSavePreferencesArgs, 'preferences'>>;
   createShow?: Resolver<GqlResolversTypes['Show'], ParentType, ContextType, RequireFields<GqlMutationCreateShowArgs, 'showInput' | 'becomeAdmin'>>;
   updateShow?: Resolver<GqlResolversTypes['Show'], ParentType, ContextType, RequireFields<GqlMutationUpdateShowArgs, 'showId' | 'newShow'>>;
