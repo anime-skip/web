@@ -12,8 +12,6 @@ import { OpenApiSecurityScheme, OpenApiTag } from "./enums";
 import apiDocs from "server/assets/api-docs.md" with { type: "text" };
 import { version } from "shared/version";
 
-const logger = _logger.extend("main");
-
 const apiApp = createApp({ prefix: "/api" })
   // Don't require API Clients
   .use(systemApis)
