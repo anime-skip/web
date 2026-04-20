@@ -33,7 +33,7 @@ const toggleExpanded = () => {
     </div>
 
     <!-- Right Side -->
-    <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-4 pb-8">
       <p
         class="font-bold text-xl font-overpass h-12 flex items-center"
         :class="{
