@@ -2,7 +2,6 @@ import { describe, it, expect } from "bun:test";
 import {
   validateEpisodeTimestamps,
   TIMESTAMP_TYPE_IDS,
-  type ValidationEpisode,
   type ValidationTimestamp,
 } from "./timestamp-validation";
 
@@ -169,13 +168,10 @@ describe("Episode Timestamps Validation", () => {
     });
 
     it("should use the episode duration as the next timestamp if there isn't one", () => {
-      const result = validateEpisodeTimestamps(
-        { baseDuration: 10.0 + 170.0 },
-        [
-          { typeId: canon, at: 0 },
-          { typeId: newIntro, at: 10 },
-        ],
-      );
+      const result = validateEpisodeTimestamps({ baseDuration: 10.0 + 170.0 }, [
+        { typeId: canon, at: 0 },
+        { typeId: newIntro, at: 10 },
+      ]);
 
       expect(result.isValid).toBe(false);
       expect(result.errors).toEqual([

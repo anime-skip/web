@@ -93,11 +93,11 @@ export const episodeResolvers: GqlResolvers = {
           inArray(
             episodes.id,
             sql`(
-         			SELECT episode_id
-         			FROM (SELECT DISTINCT ON (episode_id) * FROM timestamps) as episode_ids
-         			ORDER BY created_at DESC NULLS LAST
-         			LIMIT ${args.limit}
-         			OFFSET ${args.offset}
+              SELECT episode_id
+              FROM (SELECT DISTINCT ON (episode_id) * FROM timestamps) as episode_ids
+              ORDER BY created_at DESC NULLS LAST
+              LIMIT ${args.limit}
+              OFFSET ${args.offset}
             )`,
           ),
         )

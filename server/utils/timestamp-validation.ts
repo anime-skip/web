@@ -127,7 +127,12 @@ const rules: ValidationRule[] = [
       for (let i = 0; i < timestamps.length; i++) {
         const ts = timestamps[i];
         const prev = result[result.length - 1];
-        if (i === 0 || !prev || prev.at !== ts.at || prev.typeId !== ts.typeId) {
+        if (
+          i === 0 ||
+          !prev ||
+          prev.at !== ts.at ||
+          prev.typeId !== ts.typeId
+        ) {
           result.push(ts);
         }
       }
@@ -195,7 +200,11 @@ const rules: ValidationRule[] = [
   ),
 
   // Max title card count rule
-  createMaxTimestampTypeCountRule("title card", isTitleCard, TITLE_CARD_COUNT_MAX),
+  createMaxTimestampTypeCountRule(
+    "title card",
+    isTitleCard,
+    TITLE_CARD_COUNT_MAX,
+  ),
 
   // Max preview count rule
   createMaxTimestampTypeCountRule("preview", isPreview, PREVIEW_COUNT_MAX),
