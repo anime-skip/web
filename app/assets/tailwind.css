@@ -137,16 +137,10 @@
   }
   .btn-ghost:hover {
     --btn-bg-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
-    border: 1px solid inset
-      color-mix(in srgb, var(--color-primary) 20%, transparent);
-    opacity: 100%;
   }
   .btn-shadow {
     box-shadow: 0 0px 50px -12px
       color-mix(in srgb, var(--btn-bg-color) 70%, transparent);
-  }
-  .btn:hover {
-    transform: scale(95%);
   }
   .btn:hover:active {
     opacity: 75%;

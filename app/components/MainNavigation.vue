@@ -14,14 +14,17 @@ const accountDropdownOpen = ref(false);
 <template>
   <div class="flex fixed top-0 inset-x-0 z-10 bg-base border-b border-neutral">
     <div
-      class="w-full flex items-center h-main-navigation mx-auto px-4"
+      class="w-full flex items-stretch h-main-navigation mx-auto px-4 py-2"
       :class="{
         'max-w-256': !wide,
         'max-w-312': wide,
       }"
     >
       <!-- Home -->
-      <RouterLink to="/" class="btn btn-ghost hover:transform-none shrink-0">
+      <RouterLink
+        to="/"
+        class="btn btn-ghost hover:transform-none shrink-0 h-full"
+      >
         <img alt="Logo" src="app/assets/logo-nav.svg" class="w-10" />
         <span
           class="hidden sm:block font-black font-overpass text-primary tracking-tighter text-2xl pt-1"
@@ -33,16 +36,16 @@ const accountDropdownOpen = ref(false);
       <!-- Get Started -->
       <RouterLink
         to="/get-started"
-        class="btn btn-ghost shrink-0 hover:transform-none text-base-content font-medium text-lg"
+        class="btn btn-ghost shrink-0 hover:transform-none text-base-content font-medium text-lg h-full"
       >
         <span class="">Get Started</span>
       </RouterLink>
       <div class="flex-1" />
 
       <!-- Account dropdown -->
-      <div v-if="session" class="relative">
+      <div v-if="session" class="relative h-full">
         <button
-          class="btn btn-ghost pl-1.5 pr-0.5 gap-1"
+          class="btn btn-ghost pl-2.5 pr-1.5 gap-1 h-full"
           @click="accountDropdownOpen = !accountDropdownOpen"
         >
           <img :src="session.profileUrl" class="size-7 rounded-full" />
