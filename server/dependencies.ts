@@ -6,6 +6,7 @@ import { createAggregateThirdPartyService } from "./services/aggregate-third-par
 import { createAnilistExternalLinkService } from "./services/anilist-external-link-service";
 import { createApiClientService } from "./services/api-client-service";
 import { createDbThirdPartyService } from "./services/db-third-party-service";
+import { createDiscordAlerter } from "./services/discord-alerter";
 import { createEpisodeService } from "./services/episode-service";
 import { createEpisodeUrlService } from "./services/episode-url-service";
 import { createExternalLinkService } from "./services/external-link-service";
@@ -23,6 +24,7 @@ const db = await openAnimeSkipDatabase();
 
 export const container = createIocContainer()
   .register({ db: () => db })
+  .register({ alerter: createDiscordAlerter })
   .register({ apiClientService: createApiClientService })
   .register({ episodeUrlService: createEpisodeUrlService })
   .register({ externalLinkService: createExternalLinkService })
@@ -45,12 +47,13 @@ export const container = createIocContainer()
         },
       }),
   })
+  .register({ anilistExternalLinkService: createAnilistExternalLinkService })
   .register({
     externalLinkLookupService: (deps) =>
       createAggregateExternalLinkService({
         ...deps,
         services: {
-          Anilist: createAnilistExternalLinkService(),
+          Anilist: deps.anilistExternalLinkService,
         },
       }),
   });

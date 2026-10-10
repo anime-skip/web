@@ -21,57 +21,60 @@ export function createAnilistExternalLinkService(): ExternalLinkLookupService {
 
     const variables = { search: showName };
 
-    try {
-      const response = await fetch("https://graphql.anilist.co", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ query, variables }),
-      });
+    // Failures throw so callers can tell "no match" apart from "Anilist is unavailable"
+    const response = await fetch("https://graphql.anilist.co", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ query, variables }),
+    });
 
-      if (!response.ok) {
-        logger.error("Failed to fetch anilist show", {
-          status: response.status,
-          statusText: response.statusText,
-          showName,
-        });
-        return [];
-      }
+    if (!response.ok) {
+      throw new AnilistRequestError(
+        `Anilist request failed: ${response.status} ${response.statusText}`,
+        response.status,
+      );
+    }
 
-      const data = (await response.json()) as AnilistResponse;
+    const data = (await response.json()) as AnilistResponse;
 
-      if (data.errors) {
-        logger.error(`Anilist API returned errors`, {
-          showName,
-          errors: data.errors,
-        });
-        return [];
-      }
+    if (data.errors) {
+      throw new AnilistRequestError(
+        `Anilist API returned errors: ${JSON.stringify(data.errors)}`,
+        response.status,
+      );
+    }
 
-      const results = data.data?.anime?.results;
-      if (!results || results.length === 0) {
-        logger.debug(`No Anilist results found`, { showName });
-        return [];
-      }
-
-      const siteUrl = results[0]?.siteUrl;
-      if (!siteUrl) {
-        logger.debug(`Anilist has no siteUrl`, { showName });
-        return [];
-      }
-
-      logger.debug(`Found Anilist link`, { showName, siteUrl });
-      return [siteUrl];
-    } catch (error) {
-      logger.error(`Failed to fetch Anilist links`, { showName, error });
+    const results = data.data?.anime?.results;
+    if (!results || results.length === 0) {
+      logger.debug(`No Anilist results found`, { showName });
       return [];
     }
+
+    const siteUrl = results[0]?.siteUrl;
+    if (!siteUrl) {
+      logger.debug(`Anilist has no siteUrl`, { showName });
+      return [];
+    }
+
+    logger.debug(`Found Anilist link`, { showName, siteUrl });
+    return [siteUrl];
   };
 
   return {
     findLinks,
   };
+}
+
+export class AnilistRequestError extends Error {
+  constructor(
+    message: string,
+    readonly status: number,
+  ) {
+    super(message);
+    this.name = "AnilistRequestError";
+  }
 }
 
 interface AnilistResponse {

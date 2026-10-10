@@ -32,7 +32,8 @@ export async function openAnimeSkipDatabase(): Promise<AnimeSkipDatabase> {
   });
   logger.info("Migrations complete", { durationMs: Date.now() - migrateStart });
 
-  if (DATABASE_ENABLE_SEEDING) await seedDatabase(db);
+  // The jobs worker opens its own connection, only seed once
+  if (DATABASE_ENABLE_SEEDING && Bun.isMainThread) await seedDatabase(db);
 
   return db;
 }
