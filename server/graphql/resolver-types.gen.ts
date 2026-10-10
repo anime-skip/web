@@ -78,7 +78,6 @@ export type GqlResolversInterfaceTypes<_RefType extends Record<string, unknown>>
   BaseModel:
     | ( GqlEpisode )
     | ( GqlShow )
-    | ( GqlShowAdmin )
     | ( GqlTimestamp )
     | ( GqlTimestampType )
     | ( GqlTemplate )
@@ -113,8 +112,6 @@ export type GqlResolversTypes = {
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   ThirdPartyShow: ResolverTypeWrapper<GqlThirdPartyShow>;
   InputShow: GqlInputShow;
-  ShowAdmin: ResolverTypeWrapper<GqlShowAdmin>;
-  InputShowAdmin: GqlInputShowAdmin;
   Timestamp: ResolverTypeWrapper<GqlTimestamp>;
   ThirdPartyTimestamp: ResolverTypeWrapper<GqlThirdPartyTimestamp>;
   InputTimestamp: GqlInputTimestamp;
@@ -161,8 +158,6 @@ export type GqlResolversParentTypes = {
   Int: Scalars['Int']['output'];
   ThirdPartyShow: GqlThirdPartyShow;
   InputShow: GqlInputShow;
-  ShowAdmin: GqlShowAdmin;
-  InputShowAdmin: GqlInputShowAdmin;
   Timestamp: GqlTimestamp;
   ThirdPartyTimestamp: GqlThirdPartyTimestamp;
   InputTimestamp: GqlInputTimestamp;
@@ -202,12 +197,8 @@ export type GqlHasRoleDirectiveArgs = {
 
 export type GqlHasRoleDirectiveResolver<Result, Parent, ContextType = GqlContext, Args = GqlHasRoleDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type GqlIsShowAdminDirectiveArgs = { };
-
-export type GqlIsShowAdminDirectiveResolver<Result, Parent, ContextType = GqlContext, Args = GqlIsShowAdminDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
 export type GqlBaseModelResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['BaseModel'] = GqlResolversParentTypes['BaseModel']> = {
-  __resolveType: TypeResolveFn<'Episode' | 'Show' | 'ShowAdmin' | 'Timestamp' | 'TimestampType' | 'Template' | 'UserReport', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'Episode' | 'Show' | 'Timestamp' | 'TimestampType' | 'Template' | 'UserReport', ParentType, ContextType>;
 };
 
 export type GqlEpisodeResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['Episode'] = GqlResolversParentTypes['Episode']> = {
@@ -270,7 +261,6 @@ export type GqlAccountResolvers<ContextType = GqlContext, ParentType extends Gql
   username?: Resolver<GqlResolversTypes['String'], ParentType, ContextType>;
   email?: Resolver<GqlResolversTypes['String'], ParentType, ContextType>;
   profileUrl?: Resolver<GqlResolversTypes['String'], ParentType, ContextType>;
-  adminOfShows?: Resolver<Array<GqlResolversTypes['ShowAdmin']>, ParentType, ContextType>;
   emailVerified?: Resolver<GqlResolversTypes['Boolean'], ParentType, ContextType>;
   role?: Resolver<GqlResolversTypes['Role'], ParentType, ContextType>;
   preferences?: Resolver<GqlResolversTypes['Preferences'], ParentType, ContextType>;
@@ -318,7 +308,6 @@ export type GqlShowResolvers<ContextType = GqlContext, ParentType extends GqlRes
   originalName?: Resolver<Maybe<GqlResolversTypes['String']>, ParentType, ContextType>;
   website?: Resolver<Maybe<GqlResolversTypes['String']>, ParentType, ContextType>;
   image?: Resolver<Maybe<GqlResolversTypes['String']>, ParentType, ContextType>;
-  admins?: Resolver<Array<GqlResolversTypes['ShowAdmin']>, ParentType, ContextType>;
   episodes?: Resolver<Array<GqlResolversTypes['Episode']>, ParentType, ContextType>;
   templates?: Resolver<Array<GqlResolversTypes['Template']>, ParentType, ContextType>;
   externalLinks?: Resolver<Array<GqlResolversTypes['ExternalLink']>, ParentType, ContextType>;
@@ -331,24 +320,6 @@ export type GqlThirdPartyShowResolvers<ContextType = GqlContext, ParentType exte
   name?: Resolver<GqlResolversTypes['String'], ParentType, ContextType>;
   createdAt?: Resolver<Maybe<GqlResolversTypes['Time']>, ParentType, ContextType>;
   updatedAt?: Resolver<Maybe<GqlResolversTypes['Time']>, ParentType, ContextType>;
-};
-
-export type GqlShowAdminResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['ShowAdmin'] = GqlResolversParentTypes['ShowAdmin']> = {
-  id?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
-  createdAt?: Resolver<GqlResolversTypes['Time'], ParentType, ContextType>;
-  createdByUserId?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
-  createdBy?: Resolver<GqlResolversTypes['User'], ParentType, ContextType>;
-  updatedAt?: Resolver<GqlResolversTypes['Time'], ParentType, ContextType>;
-  updatedByUserId?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
-  updatedBy?: Resolver<GqlResolversTypes['User'], ParentType, ContextType>;
-  deletedAt?: Resolver<Maybe<GqlResolversTypes['Time']>, ParentType, ContextType>;
-  deletedByUserId?: Resolver<Maybe<GqlResolversTypes['ID']>, ParentType, ContextType>;
-  deletedBy?: Resolver<Maybe<GqlResolversTypes['User']>, ParentType, ContextType>;
-  showId?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
-  show?: Resolver<GqlResolversTypes['Show'], ParentType, ContextType>;
-  userId?: Resolver<GqlResolversTypes['ID'], ParentType, ContextType>;
-  user?: Resolver<GqlResolversTypes['User'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type GqlTimestampResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['Timestamp'] = GqlResolversParentTypes['Timestamp']> = {
@@ -400,7 +371,6 @@ export type GqlUserResolvers<ContextType = GqlContext, ParentType extends GqlRes
   deletedAt?: Resolver<Maybe<GqlResolversTypes['Time']>, ParentType, ContextType>;
   username?: Resolver<GqlResolversTypes['String'], ParentType, ContextType>;
   profileUrl?: Resolver<GqlResolversTypes['String'], ParentType, ContextType>;
-  adminOfShows?: Resolver<Array<GqlResolversTypes['ShowAdmin']>, ParentType, ContextType>;
 };
 
 export type GqlTemplateResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['Template'] = GqlResolversParentTypes['Template']> = {
@@ -507,8 +477,6 @@ export type GqlMutationResolvers<ContextType = GqlContext, ParentType extends Gq
   createShow?: Resolver<GqlResolversTypes['Show'], ParentType, ContextType, RequireFields<GqlMutationCreateShowArgs, 'showInput'>>;
   updateShow?: Resolver<GqlResolversTypes['Show'], ParentType, ContextType, RequireFields<GqlMutationUpdateShowArgs, 'showId' | 'newShow'>>;
   deleteShow?: Resolver<GqlResolversTypes['Show'], ParentType, ContextType, RequireFields<GqlMutationDeleteShowArgs, 'showId'>>;
-  createShowAdmin?: Resolver<GqlResolversTypes['ShowAdmin'], ParentType, ContextType, RequireFields<GqlMutationCreateShowAdminArgs, 'showAdminInput'>>;
-  deleteShowAdmin?: Resolver<GqlResolversTypes['ShowAdmin'], ParentType, ContextType, RequireFields<GqlMutationDeleteShowAdminArgs, 'showAdminId'>>;
   createEpisode?: Resolver<GqlResolversTypes['Episode'], ParentType, ContextType, RequireFields<GqlMutationCreateEpisodeArgs, 'showId' | 'episodeInput'>>;
   updateEpisode?: Resolver<GqlResolversTypes['Episode'], ParentType, ContextType, RequireFields<GqlMutationUpdateEpisodeArgs, 'episodeId' | 'newEpisode'>>;
   deleteEpisode?: Resolver<GqlResolversTypes['Episode'], ParentType, ContextType, RequireFields<GqlMutationDeleteEpisodeArgs, 'episodeId'>>;
@@ -545,9 +513,6 @@ export type GqlQueryResolvers<ContextType = GqlContext, ParentType extends GqlRe
   findShow?: Resolver<GqlResolversTypes['Show'], ParentType, ContextType, RequireFields<GqlQueryFindShowArgs, 'showId'>>;
   findShowsByExternalId?: Resolver<Array<GqlResolversTypes['Show']>, ParentType, ContextType, RequireFields<GqlQueryFindShowsByExternalIdArgs, 'service' | 'serviceId'>>;
   searchShows?: Resolver<Array<GqlResolversTypes['Show']>, ParentType, ContextType, RequireFields<GqlQuerySearchShowsArgs, 'search' | 'offset' | 'limit' | 'sort'>>;
-  findShowAdmin?: Resolver<GqlResolversTypes['ShowAdmin'], ParentType, ContextType, RequireFields<GqlQueryFindShowAdminArgs, 'showAdminId'>>;
-  findShowAdminsByShowId?: Resolver<Array<GqlResolversTypes['ShowAdmin']>, ParentType, ContextType, RequireFields<GqlQueryFindShowAdminsByShowIdArgs, 'showId'>>;
-  findShowAdminsByUserId?: Resolver<Array<GqlResolversTypes['ShowAdmin']>, ParentType, ContextType, RequireFields<GqlQueryFindShowAdminsByUserIdArgs, 'userId'>>;
   recentlyAddedEpisodes?: Resolver<Array<GqlResolversTypes['Episode']>, ParentType, ContextType, RequireFields<GqlQueryRecentlyAddedEpisodesArgs, 'limit' | 'offset'>>;
   findEpisode?: Resolver<GqlResolversTypes['Episode'], ParentType, ContextType, RequireFields<GqlQueryFindEpisodeArgs, 'episodeId'>>;
   findEpisodesByShowId?: Resolver<Array<GqlResolversTypes['Episode']>, ParentType, ContextType, RequireFields<GqlQueryFindEpisodesByShowIdArgs, 'showId'>>;
@@ -598,7 +563,6 @@ export type GqlResolvers<ContextType = GqlContext> = {
   Preferences?: GqlPreferencesResolvers<ContextType>;
   Show?: GqlShowResolvers<ContextType>;
   ThirdPartyShow?: GqlThirdPartyShowResolvers<ContextType>;
-  ShowAdmin?: GqlShowAdminResolvers<ContextType>;
   Timestamp?: GqlTimestampResolvers<ContextType>;
   ThirdPartyTimestamp?: GqlThirdPartyTimestampResolvers<ContextType>;
   TimestampType?: GqlTimestampTypeResolvers<ContextType>;
@@ -621,5 +585,4 @@ export type GqlDirectiveResolvers<ContextType = GqlContext> = {
   authenticated?: GqlAuthenticatedDirectiveResolver<any, any, ContextType>;
   optionalAuthenticated?: GqlOptionalAuthenticatedDirectiveResolver<any, any, ContextType>;
   hasRole?: GqlHasRoleDirectiveResolver<any, any, ContextType>;
-  isShowAdmin?: GqlIsShowAdminDirectiveResolver<any, any, ContextType>;
 };

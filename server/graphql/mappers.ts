@@ -6,7 +6,6 @@ import {
   type DbEpisodeUrl,
   type DbPreferences,
   type DbShow,
-  type DbShowAdmin,
   DbTemplateType,
   DbTimestampSource,
   type DbTimestamp,
@@ -27,7 +26,6 @@ export function mapDbUserToGqlUser(db: DbUser): GqlUser {
     id: db.id,
     createdAt: db.createdAt,
     profileUrl: db.profileUrl,
-    adminOfShows: unresolved,
     username: db.username,
     deletedAt: db.deletedAt,
   };
@@ -55,7 +53,6 @@ export function mapDbUserToGqlAccount(db: DbUser): GqlAccount {
     username: db.username,
     email: db.email,
     profileUrl: db.profileUrl,
-    adminOfShows: unresolved,
     emailVerified: db.emailVerified,
     role: mapDbUserRoleToGqlRole(db.role),
     preferences: unresolved,
@@ -268,25 +265,6 @@ export function mapGqlEpisodeSourceToDbEpisodeSource(gql: GqlEpisodeSource): DbE
   throw Error("Unknown GqlEpisodeSource: " + gql);
 }
 
-export function mapDbShowAdminToGqlShowAdmin(db: DbShowAdmin): GqlShowAdmin {
-  return {
-    id: db.id,
-    createdAt: db.createdAt,
-    createdByUserId: db.createdByUserId,
-    createdBy: unresolved,
-    updatedAt: db.updatedAt,
-    updatedByUserId: db.updatedByUserId,
-    updatedBy: unresolved,
-    deletedAt: db.deletedAt,
-    deletedByUserId: db.deletedByUserId,
-    deletedBy: unresolved,
-    showId: db.showId,
-    show: unresolved,
-    userId: db.userId,
-    user: unresolved,
-  };
-}
-
 export function mapDbShowToGqlShow(db: DbShow): GqlShow {
   // TODO: Add migration to fix this at the DB layer
   if (db.name == null) {
@@ -308,7 +286,7 @@ export function mapDbShowToGqlShow(db: DbShow): GqlShow {
     originalName: db.originalName,
     website: db.website,
     image: db.image,
-    admins: unresolved,
+
     episodes: unresolved,
     templates: unresolved,
     externalLinks: unresolved,

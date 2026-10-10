@@ -26,14 +26,6 @@ type Query {
   """
   searchShows(search: String = "", offset: Int = 0, limit: Int = 25, sort: String = "ASC"): [Show!]!
 
-  # Show Admins
-  "Find show admin with a matching `ShowAdmin.id`"
-  findShowAdmin(showAdminId: ID!): ShowAdmin!
-  "Get a list of admins for a given `Show.id`"
-  findShowAdminsByShowId(showId: ID!): [ShowAdmin!]!
-  "Get a list of show admins for a given `User.id`"
-  findShowAdminsByUserId(userId: ID!): [ShowAdmin!]!
-
   # Episodes
   """
   Get a list of recently added episodes that have timestamps.

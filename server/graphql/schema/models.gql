@@ -195,12 +195,6 @@ type Account {
   email: String!
   "Url to an image that is the user's profile picture"
   profileUrl: String!
-  """
-  The linking object that associates a user to the shows they are admins of.
-
-  > This data is also accessible on the `User` model. It has been added here for convenience
-  """
-  adminOfShows: [ShowAdmin!]!
 
   "If the user's email is verified. Emails must be verified before the user can call a mutation"
   emailVerified: Boolean!
@@ -329,8 +323,7 @@ type Show implements BaseModel {
   website: String
   "A link to a show poster"
   image: String
-  "The list of admins for the show"
-  admins: [ShowAdmin!]!
+
   "All the episodes that belong to the show"
   episodes: [Episode!]!
   "All the templates that belong to this show"
@@ -356,44 +349,6 @@ input InputShow {
   originalName: String
   website: String
   image: String
-}
-
-"""
-A list of users that have elevated permissions when making changes to a show, it's episodes, and
-timestamps. Show admins are responsible for approving any changes that users might submit.
-
-If a user has the `ADMIN` or `DEV` roles, they do not need to be show admins to approve changes or
-make changes directly. Likewise, if a show doesn't have an admin, the user that create the
-show/episode will have temporary access to editing the data until someone becomes that shows admin.
-
-Admins can be created using the API and will soon come to the Anime Skip player/website.
-"""
-type ShowAdmin implements BaseModel {
-  id: ID!
-  createdAt: Time!
-  createdByUserId: ID!
-  createdBy: User!
-  updatedAt: Time!
-  updatedByUserId: ID!
-  updatedBy: User!
-  deletedAt: Time
-  deletedByUserId: ID
-  deletedBy: User
-
-  "The `Show.id` that the admin has elevated privileges for"
-  showId: ID!
-  "The `Show` that the admin has elevated privileges for"
-  show: Show!
-  "The `User.id` that the admin privileges belong to"
-  userId: ID!
-  "The `User` that the admin privileges belong to"
-  user: User!
-}
-
-"Data required to create a new `ShowAdmin`. See `ShowAdmin` for a description of each field"
-input InputShowAdmin {
-  showId: ID!
-  userId: ID!
 }
 
 type Timestamp implements BaseModel {
@@ -479,7 +434,6 @@ type User {
 
   username: String!
   profileUrl: String!
-  adminOfShows: [ShowAdmin!]!
 }
 
 """

@@ -4,7 +4,6 @@ import { type DbUser, DbUserRole, preferences, users } from "server/db/schema";
 import type { GqlContext } from "server/graphql/context";
 import { mapDbUserToGqlAccount } from "server/graphql/mappers";
 import type { GqlResolvers } from "server/graphql/resolver-types.gen";
-import { getShowAdminsByUserId } from "server/graphql/resolvers/show-admin-resolvers";
 import { getOptionalUserByUsername } from "server/graphql/resolvers/user-resolvers";
 import type { Database } from "server/services/db";
 import { auth } from "server/utils/auth";
@@ -188,8 +187,6 @@ export const accountResolvers: GqlResolvers = {
   },
   Account: {
     preferences: (parent, _args, ctx) => ctx.dataloaders.preferences.byUserId.load(parent.id),
-
-    adminOfShows: (parent, _args, ctx) => getShowAdminsByUserId(ctx, parent.id),
   },
 };
 

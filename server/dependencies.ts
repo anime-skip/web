@@ -11,7 +11,6 @@ import { createEpisodeService } from "./services/episode-service";
 import { createEpisodeUrlService } from "./services/episode-url-service";
 import { createExternalLinkService } from "./services/external-link-service";
 import { createPreferencesService } from "./services/preferences-service";
-import { createShowAdminService } from "./services/show-admin-service";
 import { createShowService } from "./services/show-service";
 import { createTemplateService } from "./services/template-service";
 import { createTemplateTimestampService } from "./services/template-timestamp-service";
@@ -29,7 +28,7 @@ export const container = createIocContainer()
   .register({ episodeUrlService: createEpisodeUrlService })
   .register({ externalLinkService: createExternalLinkService })
   .register({ preferencesService: createPreferencesService })
-  .register({ showAdminService: createShowAdminService })
+
   .register({ templateTimestampService: createTemplateTimestampService })
   .register({ timestampTypeService: createTimestampTypeService })
   .register({ userReportService: createUserReportService })

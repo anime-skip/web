@@ -53,12 +53,7 @@ export function createGqlContext(ctx: { deps: Dependencies; request: Request; ip
         "id",
         mappers.mapDbEpisodeToGqlEpisode,
       ),
-      showAdmins: createDrizzleDataloader(
-        ctx.deps.db,
-        tables.showAdmins,
-        "id",
-        mappers.mapDbShowAdminToGqlShowAdmin,
-      ),
+
       shows: createDrizzleDataloader(
         ctx.deps.db,
         tables.shows,

@@ -10,7 +10,6 @@ import { mapDbShowToGqlShow } from "server/graphql/mappers";
 import type { GqlResolvers } from "server/graphql/resolver-types.gen";
 import { getEpisodesByShowId } from "server/graphql/resolvers/episode-resolvers";
 import { getExternalLinksByShowId } from "server/graphql/resolvers/external-link-resolvers";
-import { getShowAdminsByShowId } from "server/graphql/resolvers/show-admin-resolvers";
 import { getTemplatesByShowId } from "server/graphql/resolvers/template-resolvers";
 import { prepareGqlInputForDb } from "server/utils/drizzle-utils";
 import type { NoOptionals } from "shared/types";
@@ -122,8 +121,6 @@ export const showResolvers: GqlResolvers = {
     updatedBy: ({ updatedByUserId: id }, _, ctx) => ctx.dataloaders.users.load(id),
 
     deletedBy: ({ deletedByUserId: id }, _, ctx) => (id ? ctx.dataloaders.users.load(id) : null),
-
-    admins: (parent, _args, ctx) => getShowAdminsByShowId(ctx, parent.id),
 
     episodes: (parent, _args, ctx) => getEpisodesByShowId(ctx, parent.id),
 

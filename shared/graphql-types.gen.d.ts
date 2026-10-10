@@ -297,12 +297,6 @@ type GqlAccount = {
   email: Scalars['String']['output'];
   /** Url to an image that is the user's profile picture */
   profileUrl: Scalars['String']['output'];
-  /**
-   * The linking object that associates a user to the shows they are admins of.
-   *
-   * > This data is also accessible on the `User` model. It has been added here for convenience
-   */
-  adminOfShows: Array<GqlShowAdmin>;
   /** If the user's email is verified. Emails must be verified before the user can call a mutation */
   emailVerified: Scalars['Boolean']['output'];
   /** The user's administrative role. Most users are `Role.USER` */
@@ -428,8 +422,6 @@ type GqlShow = GqlBaseModel & {
   website?: Maybe<Scalars['String']['output']>;
   /** A link to a show poster */
   image?: Maybe<Scalars['String']['output']>;
-  /** The list of admins for the show */
-  admins: Array<GqlShowAdmin>;
   /** All the episodes that belong to the show */
   episodes: Array<GqlEpisode>;
   /** All the templates that belong to this show */
@@ -455,44 +447,6 @@ type GqlInputShow = {
   originalName?: InputMaybe<Scalars['String']['input']>;
   website?: InputMaybe<Scalars['String']['input']>;
   image?: InputMaybe<Scalars['String']['input']>;
-};
-
-/**
- * A list of users that have elevated permissions when making changes to a show, it's episodes, and
- * timestamps. Show admins are responsible for approving any changes that users might submit.
- *
- * If a user has the `ADMIN` or `DEV` roles, they do not need to be show admins to approve changes or
- * make changes directly. Likewise, if a show doesn't have an admin, the user that create the
- * show/episode will have temporary access to editing the data until someone becomes that shows admin.
- *
- * Admins can be created using the API and will soon come to the Anime Skip player/website.
- */
-type GqlShowAdmin = GqlBaseModel & {
-  __typename?: 'ShowAdmin';
-  id: Scalars['ID']['output'];
-  createdAt: Scalars['Time']['output'];
-  createdByUserId: Scalars['ID']['output'];
-  createdBy: GqlUser;
-  updatedAt: Scalars['Time']['output'];
-  updatedByUserId: Scalars['ID']['output'];
-  updatedBy: GqlUser;
-  deletedAt?: Maybe<Scalars['Time']['output']>;
-  deletedByUserId?: Maybe<Scalars['ID']['output']>;
-  deletedBy?: Maybe<GqlUser>;
-  /** The `Show.id` that the admin has elevated privileges for */
-  showId: Scalars['ID']['output'];
-  /** The `Show` that the admin has elevated privileges for */
-  show: GqlShow;
-  /** The `User.id` that the admin privileges belong to */
-  userId: Scalars['ID']['output'];
-  /** The `User` that the admin privileges belong to */
-  user: GqlUser;
-};
-
-/** Data required to create a new `ShowAdmin`. See `ShowAdmin` for a description of each field */
-type GqlInputShowAdmin = {
-  showId: Scalars['ID']['input'];
-  userId: Scalars['ID']['input'];
 };
 
 type GqlTimestamp = GqlBaseModel & {
@@ -579,7 +533,6 @@ type GqlUser = {
   deletedAt?: Maybe<Scalars['Time']['output']>;
   username: Scalars['String']['output'];
   profileUrl: Scalars['String']['output'];
-  adminOfShows: Array<GqlShowAdmin>;
 };
 
 /** When no timestamps exist for a specific episode, templates are setup to provide fallback timestamps */
@@ -791,40 +744,20 @@ type GqlMutation = {
   /** Update show data */
   updateShow: GqlShow;
   /**
-   * Delete a show and all it's children (episodes, episode urls, timestamps, admins, etc)
+   * Delete a show and all it's children (episodes, episode urls, timestamps, etc)
    *
    * > `@hasRole(role: ADMIN)` - The user must have the `ADMIN` role to perform this action
    */
   deleteShow: GqlShow;
-  /**
-   * Give admin privilege to a user for a show.
-   *
-   * > `@isShowAdmin` - You need to be an admin of the show to do this action
-   */
-  createShowAdmin: GqlShowAdmin;
-  /**
-   * Remove admin privileges from a user for a show.
-   *
-   * > `@isShowAdmin` - You need to be an admin of the show to do this action
-   */
-  deleteShowAdmin: GqlShowAdmin;
   /** Create an episode under a `Show` */
   createEpisode: GqlEpisode;
   /** Update episode info */
   updateEpisode: GqlEpisode;
-  /**
-   * Delete an episode and all it's child data
-   *
-   * > `@isShowAdmin` - You need to be an admin of the show to do this action
-   */
+  /** Delete an episode and all it's child data */
   deleteEpisode: GqlEpisode;
   /** Link an `Episode` to a service URL */
   createEpisodeUrl: GqlEpisodeUrl;
-  /**
-   * Unlink an `Episode` to from service URL
-   *
-   * > `@isShowAdmin` - You need to be an admin of the show to do this action
-   */
+  /** Unlink an `Episode` to from service URL */
   deleteEpisodeUrl: GqlEpisodeUrl;
   /** Update episode url info */
   updateEpisodeUrl: GqlEpisodeUrl;
@@ -858,11 +791,7 @@ type GqlMutation = {
   createTemplate: GqlTemplate;
   /** Make changes to an existing template */
   updateTemplate: GqlTemplate;
-  /**
-   * Delete an existing template
-   *
-   * > `@isShowAdmin` - You need to be an admin of the show to do this action
-   */
+  /** Delete an existing template */
   deleteTemplate: GqlTemplate;
   /** Add a timestamp to an existing template */
   addTimestampToTemplate: GqlTemplateTimestamp;
@@ -949,16 +878,6 @@ type GqlMutationUpdateShowArgs = {
 
 type GqlMutationDeleteShowArgs = {
   showId: Scalars['ID']['input'];
-};
-
-
-type GqlMutationCreateShowAdminArgs = {
-  showAdminInput: GqlInputShowAdmin;
-};
-
-
-type GqlMutationDeleteShowAdminArgs = {
-  showAdminId: Scalars['ID']['input'];
 };
 
 
@@ -1123,12 +1042,6 @@ type GqlQuery = {
    * as `ASC` or `DESC`
    */
   searchShows: Array<GqlShow>;
-  /** Find show admin with a matching `ShowAdmin.id` */
-  findShowAdmin: GqlShowAdmin;
-  /** Get a list of admins for a given `Show.id` */
-  findShowAdminsByShowId: Array<GqlShowAdmin>;
-  /** Get a list of show admins for a given `User.id` */
-  findShowAdminsByUserId: Array<GqlShowAdmin>;
   /**
    * Get a list of recently added episodes that have timestamps.
    *
@@ -1255,21 +1168,6 @@ type GqlQuerySearchShowsArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Scalars['String']['input']>;
-};
-
-
-type GqlQueryFindShowAdminArgs = {
-  showAdminId: Scalars['ID']['input'];
-};
-
-
-type GqlQueryFindShowAdminsByShowIdArgs = {
-  showId: Scalars['ID']['input'];
-};
-
-
-type GqlQueryFindShowAdminsByUserIdArgs = {
-  userId: Scalars['ID']['input'];
 };
 
 

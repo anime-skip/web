@@ -6,7 +6,6 @@ import { episodeResolvers } from "server/graphql/resolvers/episode-resolvers";
 import { episodeUrlResolvers } from "server/graphql/resolvers/episode-url-resolvers";
 import { externalLinkResolvers } from "server/graphql/resolvers/external-link-resolvers";
 import { preferencesResolvers } from "server/graphql/resolvers/preferences-resolvers";
-import { showAdminResolvers } from "server/graphql/resolvers/show-admin-resolvers";
 import { showResolvers } from "server/graphql/resolvers/show-resolvers";
 import { templateResolvers } from "server/graphql/resolvers/template-resolvers";
 import { templateTimestampResolvers } from "server/graphql/resolvers/template-timestamp-resolvers";
@@ -26,7 +25,7 @@ export const rootResolver: GqlResolvers = mergeAll(
   externalLinkResolvers,
   preferencesResolvers,
   showResolvers,
-  showAdminResolvers,
+
   templateResolvers,
   templateTimestampResolvers,
   thirdPartyTimestampResolvers,

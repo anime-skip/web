@@ -1,17 +1,9 @@
 import { inArray, isNull, and } from "drizzle-orm";
-import {
-  shows,
-  showAdmins,
-  templates,
-  episodes,
-  externalLinks,
-  type DbShow,
-} from "server/db/schema";
+import { shows, templates, episodes, externalLinks, type DbShow } from "server/db/schema";
 
 import type { Database } from "./db";
 import type { EpisodeService } from "./episode-service";
 import type { ExternalLinkService } from "./external-link-service";
-import type { ShowAdminService } from "./show-admin-service";
 import type { TemplateService } from "./template-service";
 
 export interface ShowService {
@@ -31,13 +23,12 @@ export interface ShowService {
 
 export function createShowService({
   db: _db,
-  showAdminService,
   templateService,
   episodeService,
   externalLinkService,
 }: {
   db: Database;
-  showAdminService: ShowAdminService;
+
   templateService: TemplateService;
   episodeService: EpisodeService;
   externalLinkService: ExternalLinkService;
@@ -77,20 +68,7 @@ export function createShowService({
     // 1. Soft delete the shows
     const deleted = await softDeleteMany(tx, ids, deletedByUserId, deletedAt);
 
-    // 2. Find and cascade delete related show admins
-    const relatedShowAdmins = await tx.query.showAdmins.findMany({
-      where: and(inArray(showAdmins.showId, ids), isNull(showAdmins.deletedAt)),
-    });
-    if (relatedShowAdmins.length > 0) {
-      await showAdminService.softDeleteCascade(
-        tx,
-        relatedShowAdmins.map((sa) => sa.id),
-        deletedByUserId,
-        deletedAt,
-      );
-    }
-
-    // 3. Find and cascade delete related templates
+    // 2. Find and cascade delete related templates
     const relatedTemplates = await tx.query.templates.findMany({
       where: and(inArray(templates.showId, ids), isNull(templates.deletedAt)),
     });

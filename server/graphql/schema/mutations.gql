@@ -71,25 +71,11 @@ type Mutation {
   """
   updateShow(showId: ID!, newShow: InputShow!): Show! @authenticated
   """
-  Delete a show and all it's children (episodes, episode urls, timestamps, admins, etc)
+  Delete a show and all it's children (episodes, episode urls, timestamps, etc)
 
   > `@hasRole(role: ADMIN)` - The user must have the `ADMIN` role to perform this action
   """
   deleteShow(showId: ID!): Show! @hasRole(role: ADMIN)
-
-  # Show Admins
-  """
-  Give admin privilege to a user for a show.
-
-  > `@isShowAdmin` - You need to be an admin of the show to do this action
-  """
-  createShowAdmin(showAdminInput: InputShowAdmin! @isShowAdmin): ShowAdmin!
-  """
-  Remove admin privileges from a user for a show.
-
-  > `@isShowAdmin` - You need to be an admin of the show to do this action
-  """
-  deleteShowAdmin(showAdminId: ID! @isShowAdmin): ShowAdmin!
 
   # Episodes
   """
@@ -102,10 +88,8 @@ type Mutation {
   updateEpisode(episodeId: ID!, newEpisode: InputEpisode!): Episode! @authenticated
   """
   Delete an episode and all it's child data
-
-  > `@isShowAdmin` - You need to be an admin of the show to do this action
   """
-  deleteEpisode(episodeId: ID! @isShowAdmin): Episode! @authenticated
+  deleteEpisode(episodeId: ID!): Episode! @authenticated
 
   # Episode Urls
   """
@@ -114,10 +98,8 @@ type Mutation {
   createEpisodeUrl(episodeId: ID!, episodeUrlInput: InputEpisodeUrl!): EpisodeUrl! @authenticated
   """
   Unlink an `Episode` to from service URL
-
-  > `@isShowAdmin` - You need to be an admin of the show to do this action
   """
-  deleteEpisodeUrl(episodeUrl: String! @isShowAdmin): EpisodeUrl! @authenticated
+  deleteEpisodeUrl(episodeUrl: String!): EpisodeUrl! @authenticated
   """
   Update episode url info
   """
@@ -174,10 +156,8 @@ type Mutation {
   updateTemplate(templateId: ID!, newTemplate: InputTemplate!): Template! @authenticated
   """
   Delete an existing template
-
-  > `@isShowAdmin` - You need to be an admin of the show to do this action
   """
-  deleteTemplate(templateId: ID! @isShowAdmin): Template! @authenticated
+  deleteTemplate(templateId: ID!): Template! @authenticated
   "Add a timestamp to an existing template"
   addTimestampToTemplate(templateTimestamp: InputTemplateTimestamp!): TemplateTimestamp!
     @authenticated
