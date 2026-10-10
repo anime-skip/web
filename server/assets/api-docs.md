@@ -73,7 +73,7 @@ mutation {
     username: "{{change-me}}"
     email: "{{change-me}}"
     passwordHash: "{{md5-hash-of-password}}"
-    recaptchaResponse: "password1" # Yes, use this string exactly
+    recaptchaResponse: "test-recaptcha-bypass"
   ) {
     authToken
     refreshToken

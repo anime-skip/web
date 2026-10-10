@@ -10,9 +10,6 @@ import { env } from "server/env";
 
 const logger = createLogger("emails");
 
-const STMP_HOSTNAME = "email-smtp.us-east-2.amazonaws.com";
-const STMP_PORT = 587;
-
 const TEMPLATES = {
   "reset-password": resetPasswordHtmlTemplate,
   welcome: welcomeHtmlTemplate,
@@ -83,7 +80,7 @@ async function send(data: {
     return;
   }
 
-  const { EMAIL_STMP_USERNAME, EMAIL_STMP_PASSWORD } = env;
+  const { EMAIL_STMP_USERNAME, EMAIL_STMP_PASSWORD, EMAIL_STMP_HOSTNAME, EMAIL_STMP_PORT } = env;
   if (!EMAIL_STMP_USERNAME || !EMAIL_STMP_PASSWORD) {
     throw Error("env.EMAIL_STMP_USERNAME or env.EMAIL_STMP_PASSWORD are required to send an email");
   }
@@ -111,8 +108,8 @@ async function send(data: {
     pass: EMAIL_STMP_PASSWORD,
   };
   const connection = new SMTPConnection({
-    host: STMP_HOSTNAME,
-    port: STMP_PORT,
+    host: EMAIL_STMP_HOSTNAME,
+    port: EMAIL_STMP_PORT,
     logger: {
       ...logger,
       level: () => {},

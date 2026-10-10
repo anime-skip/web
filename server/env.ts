@@ -22,6 +22,16 @@ export const Env = z.object({
     .stringbool()
     .default(false)
     .describe("Whether or not to send emails (like when creating accounts)"),
+  EMAIL_STMP_HOSTNAME: z
+    .string()
+    .optional()
+    .describe("SMTP server hostname used when sending emails"),
+  EMAIL_STMP_PORT: z.coerce
+    .number()
+    .int()
+    .nonnegative()
+    .optional()
+    .describe("SMTP server port used when sending emails"),
   EMAIL_STMP_USERNAME: z
     .string()
     .optional()
@@ -47,6 +57,10 @@ export const Env = z.object({
     ),
   DISCORD_ALERTS_CHANNEL_ID: z.string().optional().describe("Discord channel ID to post alerts to"),
   DISCORD_BOT_TOKEN: z.string().optional().describe("Token used to authenticate with Discord API"),
+  STAGE: z
+    .enum(["production", "test", "development"])
+    .default("development")
+    .describe("Where the server is running"),
 });
 
 logger.info("Loading env vars...");

@@ -10,7 +10,7 @@ const logger = createLogger("db");
 export type Database = BunSQLDatabase<typeof dbSchema>;
 
 export async function openDb(): Promise<Database> {
-  const { DATABASE_URL, DATABASE_ENABLE_SEEDING } = env;
+  const { DATABASE_URL, DATABASE_ENABLE_SEEDING, STAGE } = env;
   if (!DATABASE_URL) throw Error("env.DATABASE_URL is required to open the database");
 
   logger.info("Opening database");
@@ -27,7 +27,9 @@ export async function openDb(): Promise<Database> {
     schema: dbSchema,
   });
 
-  if (Bun.isMainThread) {
+  const canManage = Bun.isMainThread && STAGE !== "test";
+
+  if (canManage) {
     logger.info("Running migrations");
     const migrateStart = Date.now();
     await migrate(db, {
@@ -37,7 +39,7 @@ export async function openDb(): Promise<Database> {
   }
 
   // The jobs worker opens its own connection, only seed once
-  if (DATABASE_ENABLE_SEEDING && Bun.isMainThread) await seedDatabase(db);
+  if (DATABASE_ENABLE_SEEDING && canManage) await seedDatabase(db);
 
   return db;
 }
