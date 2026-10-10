@@ -43,6 +43,7 @@ export const graphqlApis = createApp()
 
       logger.info(`Evaluating GraphQL`, {
         operationName,
+        queryHash: Bun.sha(query, "base64url"),
         query: query.replace(/\s+/gm, " ").slice(0, 40),
       });
 
