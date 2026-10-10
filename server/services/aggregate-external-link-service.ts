@@ -5,8 +5,8 @@ import type { ExternalLinkLookupService } from "./external-link-lookup-service";
 const logger = createLogger("aggregate-external-link-service");
 
 /**
- * Aggregates multiple ExternalLinkLookupService implementations.
- * Collects links from all services and returns them combined.
+ * Aggregates multiple ExternalLinkLookupService implementations. Collects links from all services
+ * and returns them combined.
  */
 export function createAggregateExternalLinkService({
   services,

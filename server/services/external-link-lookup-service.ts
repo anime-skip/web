@@ -5,6 +5,7 @@
 export interface ExternalLinkLookupService {
   /**
    * Finds external link URLs for the given show name.
+   *
    * @param showName The name of the show to search for
    * @returns An array of external link URLs found, or an empty array if none found
    */

@@ -9,9 +9,7 @@ declare var self: Worker;
 
 const logger = createLogger("worker");
 
-/**
- * Run `job` on a cron schedule (UTC). Runs never overlap and errors never stop the schedule.
- */
+/** Run `job` on a cron schedule (UTC). Runs never overlap and errors never stop the schedule. */
 function schedule(name: string, pattern: string, job: () => Promise<unknown>) {
   const cron = new Cron(
     pattern,

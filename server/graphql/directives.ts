@@ -28,8 +28,8 @@ function getRolesAllowedForRequiredRole(requiredRole: string): DbUserRole[] {
 }
 
 /**
- * Authenticate the user from the request token and set ctx.authUserId.
- * Throws "Unauthorized" if no token is present or token is invalid.
+ * Authenticate the user from the request token and set ctx.authUserId. Throws "Unauthorized" if no
+ * token is present or token is invalid.
  */
 async function authenticate(ctx: GqlContext): Promise<void> {
   const token = getAccessToken(ctx.request);

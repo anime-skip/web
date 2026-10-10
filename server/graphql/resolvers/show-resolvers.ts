@@ -148,9 +148,7 @@ export const showResolvers: GqlResolvers = {
   },
 };
 
-/**
- * Returns a SQL ILIKE pattern for matching external link URLs by service and service ID.
- */
+/** Returns a SQL ILIKE pattern for matching external link URLs by service and service ID. */
 function getServiceUrlPattern(service: GqlExternalService, serviceId: string): string {
   switch (service) {
     case "ANILIST":

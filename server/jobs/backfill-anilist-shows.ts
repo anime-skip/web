@@ -15,9 +15,9 @@ export interface BackfillAnilistShowsOptions {
   /** Should be backed by Anilist, since we only look for shows missing an Anilist link. */
   anilist: ExternalLinkLookupService;
   /**
-   * Only look at shows created within this many days. Shows with no Anilist match are never
-   * marked as checked, so a recurring run should use a window to avoid re-querying them forever.
-   * Leave undefined to check every show without a link (one-off backfill).
+   * Only look at shows created within this many days. Shows with no Anilist match are never marked
+   * as checked, so a recurring run should use a window to avoid re-querying them forever. Leave
+   * undefined to check every show without a link (one-off backfill).
    */
   createdWithinDays?: number;
   /** Log matches without writing them. */

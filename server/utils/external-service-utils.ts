@@ -4,6 +4,7 @@ export const ALLOWED_EXTERNAL_LINK_HOSTNAMES = [ANILIST_HOSTNAME];
 
 /**
  * Extract the service ID from an external link URL based on the hostname.
+ *
  * @param url The external link URL
  * @returns The service-specific ID, or null if not found or unsupported service
  */

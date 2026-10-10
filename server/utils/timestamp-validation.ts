@@ -1,5 +1,6 @@
 /**
  * Timestamp validation utilities ported from the Go implementation.
+ *
  * @see public-api/internal/validation/episode_timestamps.go
  */
 
@@ -197,9 +198,7 @@ const rules: ValidationRule[] = [
   createMaxTimestampTypeCountRule("credits", isCredits, CREDITS_COUNT_MAX),
 ];
 
-/**
- * Creates a rule that validates the maximum count of a specific timestamp type.
- */
+/** Creates a rule that validates the maximum count of a specific timestamp type. */
 function createMaxTimestampTypeCountRule(
   targetTypeName: string,
   isType: (typeId: string | undefined | null) => boolean,
@@ -220,9 +219,7 @@ function createMaxTimestampTypeCountRule(
   };
 }
 
-/**
- * Creates a rule that validates the duration of a specific timestamp type.
- */
+/** Creates a rule that validates the duration of a specific timestamp type. */
 function createTimestampTypeDurationRule(
   targetTypeName: string,
   isType: (typeId: string | undefined | null) => boolean,
@@ -260,11 +257,11 @@ function createTimestampTypeDurationRule(
 }
 
 /**
- * Validates episode timestamps and returns the validated timestamps,
- * whether they are valid, and any validation errors.
+ * Validates episode timestamps and returns the validated timestamps, whether they are valid, and
+ * any validation errors.
  *
- * Some rules can "fix" timestamps (like adding a timestamp at 0 or merging duplicates).
- * The returned timestamps include these fixes.
+ * Some rules can "fix" timestamps (like adding a timestamp at 0 or merging duplicates). The
+ * returned timestamps include these fixes.
  *
  * @param episode - The episode being validated
  * @param timestamps - The timestamps to validate (should be sorted by `at`)

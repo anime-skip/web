@@ -16,11 +16,9 @@ declare const grecaptcha: {
  *
  * You must have loaded the the `RECAPTCHA_SCRIPT` inside a page entrypoint via:
  *
- * ```
- * useHead({
- *   script: [RECAPTCHA_SCRIPT],
- * });
- * ```
+ *     useHead({
+ *       script: [RECAPTCHA_SCRIPT],
+ *     });
  */
 export async function executeRecaptcha(action: string): Promise<string> {
   return new Promise((res, rej) => {
