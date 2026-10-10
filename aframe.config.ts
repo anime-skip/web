@@ -7,7 +7,7 @@ import markdown from "unplugin-vue-markdown/vite";
 
 export default defineConfig({
   proxyPaths: ["/api", "/openapi.json", "/scalar", "/playground"],
-  compile: true,
+  compile: false,
   vite: {
     plugins: [
       vue({
