@@ -27,6 +27,9 @@ jobs:
         with:
           version-file: .tool-versions
 
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
       - name: Setup Git
         run: |
           git config --global user.name "GitHub Actions"
