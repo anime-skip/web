@@ -57,12 +57,12 @@ export function createDiscordAlerter(): Alerter {
       await sendMessage(channelId, message);
     },
 
-    async notifyInThread(message: string, messages: string[]): Promise<void> {
+    async notifyInThread(message: string, messages: string[], threadName?: string): Promise<void> {
       const initialMessage = await sendMessage(channelId, message);
       const thread = await createThread(
         channelId,
         initialMessage.id,
-        `Thread ${new Date().toISOString()}`,
+        threadName ?? `Thread ${new Date().toISOString()}`,
       );
 
       for (const msg of messages) {

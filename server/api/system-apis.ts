@@ -22,7 +22,7 @@ export const systemApis = createApp().get(
     status: "RUNNING" as const,
     version,
     stage: process.env.NODE_ENV ?? "development",
-    introspection: env.ENABLE_INTROSPECTION,
+    introspection: true,
     playground: env.ENABLE_PLAYGROUND,
   }),
 );

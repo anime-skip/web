@@ -937,7 +937,7 @@ type GqlMutationSavePreferencesArgs = {
 
 type GqlMutationCreateShowArgs = {
   showInput: GqlInputShow;
-  becomeAdmin: Scalars['Boolean']['input'];
+  becomeAdmin?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 

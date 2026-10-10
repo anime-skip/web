@@ -4,7 +4,6 @@ import { mapDbUserRoleToGqlRole } from "server/graphql/mappers";
 import type { GqlDirectiveResolvers } from "server/graphql/resolver-types.gen";
 import { auth } from "server/utils/auth";
 import { getAccessToken } from "server/utils/http";
-import { notImplemented } from "shared/utils";
 
 // Role hierarchy: DEV > ADMIN > REVIEWER > USER
 // Higher roles can access resources requiring lower roles
@@ -71,8 +70,5 @@ export const directiveResolvers: GqlDirectiveResolvers = {
     }
 
     return await next();
-  },
-  isShowAdmin: (_next, _parent, _directiveArgs, _ctx, _info) => {
-    notImplemented("isShowAdmin directive");
   },
 };

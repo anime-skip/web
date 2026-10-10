@@ -1,7 +1,8 @@
-import { createApp } from "@aklinker1/zeta";
+import { createApp, NotFoundHttpError } from "@aklinker1/zeta";
 import dedent from "dedent";
 import playgroundHtmlTemplate from "server/assets/playground.html.tpl" with { type: "text" };
 import { OpenApiTag } from "server/enums";
+import { env } from "server/env";
 import { SHARED_CLIENT_ID } from "shared/constants";
 import { GetGraphqlPlaygroundOutput } from "shared/models";
 import { version } from "shared/version";
@@ -21,6 +22,8 @@ export const graphqlPlaygroundApis = createApp().get(
     responses: GetGraphqlPlaygroundOutput,
   },
   async ({ set }) => {
+    if (!env.ENABLE_PLAYGROUND) throw new NotFoundHttpError("GraphQL playground is disabled");
+
     set.headers["content-type"] = "text/html";
     return playgroundHtmlTemplate
       .replaceAll("{{VERSION}}", version)

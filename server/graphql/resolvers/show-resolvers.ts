@@ -14,7 +14,6 @@ import { getShowAdminsByShowId } from "server/graphql/resolvers/show-admin-resol
 import { getTemplatesByShowId } from "server/graphql/resolvers/template-resolvers";
 import { prepareGqlInputForDb } from "server/utils/drizzle-utils";
 import type { NoOptionals } from "shared/types";
-import { notImplemented } from "shared/utils";
 
 export const showResolvers: GqlResolvers = {
   Mutation: {
@@ -52,8 +51,6 @@ export const showResolvers: GqlResolvers = {
         },
         { accessMode: "read write" },
       );
-
-      if (args.becomeAdmin) notImplemented("createShow > args.becomeAdmin");
 
       return mapDbShowToGqlShow(row);
     },

@@ -504,7 +504,7 @@ export type GqlMutationResolvers<ContextType = GqlContext, ParentType extends Gq
   deleteMyAccount?: Resolver<GqlResolversTypes['Account'], ParentType, ContextType>;
   deleteAccount?: Resolver<GqlResolversTypes['Account'], ParentType, ContextType, RequireFields<GqlMutationDeleteAccountArgs, 'userId'>>;
   savePreferences?: Resolver<GqlResolversTypes['Preferences'], ParentType, ContextType, RequireFields<GqlMutationSavePreferencesArgs, 'preferences'>>;
-  createShow?: Resolver<GqlResolversTypes['Show'], ParentType, ContextType, RequireFields<GqlMutationCreateShowArgs, 'showInput' | 'becomeAdmin'>>;
+  createShow?: Resolver<GqlResolversTypes['Show'], ParentType, ContextType, RequireFields<GqlMutationCreateShowArgs, 'showInput'>>;
   updateShow?: Resolver<GqlResolversTypes['Show'], ParentType, ContextType, RequireFields<GqlMutationUpdateShowArgs, 'showId' | 'newShow'>>;
   deleteShow?: Resolver<GqlResolversTypes['Show'], ParentType, ContextType, RequireFields<GqlMutationDeleteShowArgs, 'showId'>>;
   createShowAdmin?: Resolver<GqlResolversTypes['ShowAdmin'], ParentType, ContextType, RequireFields<GqlMutationCreateShowAdminArgs, 'showAdminInput'>>;

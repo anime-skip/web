@@ -61,7 +61,11 @@ type Mutation {
 
   # Shows
   "Create a show and optionally become an admin"
-  createShow(showInput: InputShow!, becomeAdmin: Boolean!): Show! @authenticated
+  createShow(
+    showInput: InputShow!
+    becomeAdmin: Boolean @deprecated(reason: "This parameter is ignored, it has no effect")
+  ): Show! @authenticated
+
   """
   Update show data
   """

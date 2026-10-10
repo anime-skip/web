@@ -25,16 +25,7 @@ export const env = {
     },
     LogLevel.Info,
   ),
-  /**
-   * Control whether or not show admins are disabled.
-   * @default true
-   */
-  IS_SHOW_ADMIN_DISABLED: boolean("IS_SHOW_ADMIN_DISABLED", true),
-  /**
-   * If GQL introspection should be enabled.
-   * @default true
-   */
-  ENABLE_INTROSPECTION: boolean("ENABLE_INTROSPECTION", true),
+
   /**
    * If GQL playground should be enabled.
    * @default true
