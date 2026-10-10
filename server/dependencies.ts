@@ -1,5 +1,5 @@
 import { createIocContainer } from "@aklinker1/zero-ioc";
-import { openAnimeSkipDatabase } from "server/services/db";
+import { openDb } from "server/services/db";
 
 import { createAggregateExternalLinkService } from "./services/aggregate-external-link-service";
 import { createAggregateThirdPartyService } from "./services/aggregate-third-party-service";
@@ -20,7 +20,7 @@ import { createTimestampTypeService } from "./services/timestamp-type-service";
 import { createUserReportService } from "./services/user-report-service";
 import { createUserService } from "./services/user-service";
 
-const db = await openAnimeSkipDatabase();
+const db = await openDb();
 
 export const container = createIocContainer()
   .register({ db: () => db })

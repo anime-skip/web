@@ -25,12 +25,14 @@ export async function openAnimeSkipDatabase(): Promise<AnimeSkipDatabase> {
     schema: dbSchema,
   });
 
-  logger.info("Running migrations");
-  const migrateStart = Date.now();
-  await migrate(db, {
-    migrationsFolder: "server/db/drizzle",
-  });
-  logger.info("Migrations complete", { durationMs: Date.now() - migrateStart });
+  if (Bun.isMainThread) {
+    logger.info("Running migrations");
+    const migrateStart = Date.now();
+    await migrate(db, {
+      migrationsFolder: "server/db/drizzle",
+    });
+    logger.info("Migrations complete", { durationMs: Date.now() - migrateStart });
+  }
 
   // The jobs worker opens its own connection, only seed once
   if (DATABASE_ENABLE_SEEDING && Bun.isMainThread) await seedDatabase(db);

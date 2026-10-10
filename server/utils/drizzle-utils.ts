@@ -1,7 +1,7 @@
 import Dataloader from "dataloader";
 import { inArray } from "drizzle-orm";
 import type { PgTableWithColumns } from "drizzle-orm/pg-core";
-import type { AnimeSkipDatabase } from "server/services/db";
+import type { Database } from "server/services/db";
 
 /**
  * Convert Gql inputs to a object that can be set when inserting or updating data. It removes any
@@ -18,7 +18,7 @@ export type StripNullish<T> = {
 };
 
 export function createDrizzleDataloader<DbModel, GqlModel>(
-  db: AnimeSkipDatabase,
+  db: Database,
   // oxlint-lint-ignore no-explicit-any
   table: PgTableWithColumns<any>,
   idKey: keyof DbModel,

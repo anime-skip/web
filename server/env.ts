@@ -1,4 +1,9 @@
+import { createLogger } from "@aklinker1/logger";
 import z from "zod";
+
+import { loadEnvVars } from "./utils/env-utils";
+
+const logger = createLogger("env");
 
 export const Env = z.object({
   NODE_ENV: z.string().default("development").describe("Node environment"),
@@ -44,4 +49,7 @@ export const Env = z.object({
   DISCORD_BOT_TOKEN: z.string().optional().describe("Token used to authenticate with Discord API"),
 });
 
-export const env: z.infer<typeof Env> = Env.parse(process.env);
+logger.info("Loading env vars...");
+const loadStart = Date.now();
+export const env: z.infer<typeof Env> = Env.parse(await loadEnvVars(Env));
+logger.success("Loaded env vars", { durationMs: Date.now() - loadStart });
