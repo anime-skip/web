@@ -33,7 +33,7 @@ const createClient = () =>
     :loading="isCreating"
     @click="createClient"
   >
-    <i class="i-heroicons-plus size-5"></i>
+    <i class="i-heroicons-plus size-5 shrink-0"></i>
     <span>Add Client</span>
   </button>
 

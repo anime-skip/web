@@ -43,14 +43,14 @@ const updateApiClient = () =>
 </script>
 
 <template>
-  <li class="ring-neutral shadow-neutral rounded-lg p-4 shadow-lg ring">
+  <li class="ring-neutral shadow-neutral overflow-hidden rounded-lg p-4 shadow-lg ring">
     <form class="flex flex-col gap-4" @submit.prevent="updateApiClient">
       <div>
         <p class="text-base-content/50 text-xs font-bold">Client ID</p>
         <div class="flex items-center gap-2">
-          <p class="text-primary font-mono text-lg">{{ client.id }}</p>
+          <p class="text-primary line-clamp-1 font-mono text-lg">{{ client.id }}</p>
           <i
-            class="text-primary size-5 cursor-pointer"
+            class="text-primary size-5 shrink-0 cursor-pointer"
             :class="{
               'i-heroicons-clipboard': !copied,
               'i-heroicons-check': copied,
