@@ -56,17 +56,23 @@ const router = createRouter({
       component: () => import("app/pages/Support.vue"),
     },
     {
-      path: "/docs/contributing-timestamps",
-      component: () => import("app/pages/docs/ContributingTimestamps.vue"),
-    },
-    {
-      path: "/docs/policies/privacy",
-      component: () => import("app/pages/docs/policies/PrivacyPolicy.vue"),
-    },
-    {
-      path: "/docs/policies/extension-privacy",
-      component: () =>
-        import("app/pages/docs/policies/ExtensionPrivacyPolicy.vue"),
+      path: "/docs",
+      component: () => import("app/pages/docs/index.vue"),
+      children: [
+        {
+          path: "contributing-timestamps",
+          component: () => import("app/pages/docs/ContributingTimestamps.md"),
+        },
+        {
+          path: "policies/privacy",
+          component: () => import("app/pages/docs/policies/PrivacyPolicy.md"),
+        },
+        {
+          path: "policies/extension-privacy",
+          component: () =>
+            import("app/pages/docs/policies/ExtensionPrivacyPolicy.md"),
+        },
+      ],
     },
     {
       path: "/:pathMatch(.*)*",

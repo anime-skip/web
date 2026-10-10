@@ -13,7 +13,7 @@ useHead({
 </script>
 
 <template>
-  <MainNavigation wide />
+  <MainNavigation />
   <HomeSectionHero class="pt-main-navigation" />
   <HomeSectionFeatures class="bg-primary/5" />
   <HomeSectionRecentlyAdded />

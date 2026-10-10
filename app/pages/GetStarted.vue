@@ -109,8 +109,8 @@ const loginCompleted = useIsExtensionSignedIn();
         <p>Some other helpful links:</p>
         <ul class="list-disc pl-8">
           <li>
-            <a class="link" target="_blank" href="https://discord.gg/9wVhwZg"
-              >FAQ</a
+            <RouterLink class="link" target="_blank" to="/support"
+              >FAQ</RouterLink
             >
             &ndash; go here first if you have problems with the extension.
           </li>
@@ -122,8 +122,8 @@ const loginCompleted = useIsExtensionSignedIn();
             bug reports, etc.
           </li>
           <li>
-            <a class="link" target="_blank" href="https://discord.gg/9wVhwZg"
-              >Recently added episodes</a
+            <RouterLink class="link" target="_blank" to="/#recently-added"
+              >Recently added episodes</RouterLink
             >
             &ndash; See what other people are watching!
           </li>

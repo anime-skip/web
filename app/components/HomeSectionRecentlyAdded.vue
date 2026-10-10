@@ -9,14 +9,14 @@ const { data } = useGqlRecentlyAddedEpisodesQuery();
 <template>
   <section
     id="recently-added"
-    class="py-8 md:py-16 flex flex-col gap-8 items-center"
+    class="py-8 md:py-16 flex flex-col gap-8 max-w-7xl mx-auto"
   >
     <h3 class="text-3xl font-overpass tracking-tighter font-black text-center">
       Recently Added Episodes
     </h3>
 
     <ul
-      class="shadow-2xl shadow-neutral rounded-lg ring ring-neutral overflow-hidden divide-y divide-neutral mx-8 max-w-xl"
+      class="shadow-2xl shadow-neutral rounded-lg ring ring-neutral overflow-hidden divide-y divide-neutral mx-8"
     >
       <RecentlyAddedEpisodeListItem
         v-for="episode in data"

@@ -10,7 +10,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GraphiQL 5 with React 19 and GraphiQL Explorer</title>
+    <title>GraphQL Playground - Anime Skip</title>
     <style>
       body {
         margin: 0;

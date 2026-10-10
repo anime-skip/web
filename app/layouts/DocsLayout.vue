@@ -5,7 +5,7 @@ import DefaultLayout from "./DefaultLayout.vue";
 <template>
   <DefaultLayout>
     <div class="flex flex-col items-center">
-      <div class="container p-8 prose lg:prose-xl prose-invert">
+      <div class="w-full max-w-7xl p-8 prose prose-invert">
         <slot />
       </div>
     </div>

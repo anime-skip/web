@@ -2,10 +2,6 @@
 import useSession from "app/composables/useSession";
 import { ref } from "vue";
 
-defineProps<{
-  wide?: boolean;
-}>();
-
 const { session, logOut } = useSession();
 
 const accountDropdownOpen = ref(false);
@@ -14,11 +10,7 @@ const accountDropdownOpen = ref(false);
 <template>
   <div class="flex fixed top-0 inset-x-0 z-10 bg-base border-b border-neutral">
     <div
-      class="w-full flex items-stretch h-main-navigation mx-auto px-4 py-2"
-      :class="{
-        'max-w-256': !wide,
-        'max-w-312': wide,
-      }"
+      class="w-full flex items-stretch h-main-navigation mx-auto px-4 py-2 max-w-7xl"
     >
       <!-- Home -->
       <RouterLink

@@ -71,6 +71,14 @@
   .grecaptcha-badge {
     opacity: 0 !important;
   }
+
+  .prose details > summary {
+    font-weight: bold;
+    font-size: 1.125rem;
+  }
+  .prose details > *:not(summary) {
+    margin-left: calc(8 * var(--spacing));
+  }
 }
 
 @layer components {
@@ -118,12 +126,13 @@
     --btn-outline-color: var(--color-neutral);
   }
   .btn-outline {
-    --btn-bg-color: transparent;
+    --btn-bg-color: --alpha(var(--color-primary) / 10%);
     --btn-text-color: var(--color-primary);
     --btn-border-color: var(--color-primary);
     border: 1px solid var(--btn-border-color);
   }
   .btn-outline.btn-error {
+    --btn-bg-color: --alpha(var(--color-error) / 5%);
     --btn-text-color: var(--color-error);
     --btn-border-color: var(--color-error);
   }

@@ -1,6 +1,6 @@
 <template>
   <div class="bg-black">
-    <div class="container footer">
+    <div class="max-w-7xl mx-auto footer">
       <ul>
         <li class="footer-title">Anime Skip</li>
         <li>
@@ -67,18 +67,13 @@
           </a>
         </li>
         <li>
-          <a to="/scalar" target="_blank">
+          <a href="/scalar" target="_blank">
             <span>API Documentation</span>
           </a>
         </li>
         <li>
           <a href="/playground" target="_blank">
             <span>API Playground</span>
-          </a>
-        </li>
-        <li>
-          <a href="http://tuckerchap.in/BetterVRV/" target="_blank">
-            <span>BetterVRV</span>
           </a>
         </li>
       </ul>

@@ -6,10 +6,7 @@ import MainFooter from "../components/MainFooter.vue";
 <template>
   <div class="min-h-screen flex flex-col">
     <MainNavigation />
-    <main
-      id="prerenderer-target"
-      class="mt-main-navigation flex-grow-1 flex flex-col"
-    >
+    <main id="prerenderer-target" class="mt-main-navigation grow flex flex-col">
       <slot />
     </main>
     <MainFooter />
