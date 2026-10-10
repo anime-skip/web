@@ -18,11 +18,11 @@ function schedule(name: string, pattern: string, job: () => Promise<unknown>) {
     {
       name,
       timezone: "UTC",
-      protect: () => logger.warn(`Skipping "${name}", previous run still in progress`),
-      catch: (error) => logger.error(`"${name}" failed`, { error }),
+      protect: () => logger.warn(`Skipping job, previous run still in progress`, { name }),
+      catch: (error) => logger.error(`Job failed`, { name, error }),
     },
     async () => {
-      logger.info(`Running "${name}"`);
+      logger.info(`Running job`, { name });
       await job();
     },
   );
