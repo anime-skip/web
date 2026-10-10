@@ -1,5 +1,5 @@
 import { createIocContainer } from "@aklinker1/zero-ioc";
-import { openDb } from "server/services/db";
+import { openDb, type Database } from "server/services/db";
 
 import { createAggregateExternalLinkService } from "./services/aggregate-external-link-service";
 import { createAggregateThirdPartyService } from "./services/aggregate-third-party-service";
@@ -11,6 +11,7 @@ import { createEpisodeService } from "./services/episode-service";
 import { createEpisodeUrlService } from "./services/episode-url-service";
 import { createExternalLinkService } from "./services/external-link-service";
 import { createPreferencesService } from "./services/preferences-service";
+import { createPrerenderStub } from "./services/prerender-stub";
 import { createShowService } from "./services/show-service";
 import { createTemplateService } from "./services/template-service";
 import { createTemplateTimestampService } from "./services/template-timestamp-service";
@@ -18,44 +19,45 @@ import { createTimestampService } from "./services/timestamp-service";
 import { createTimestampTypeService } from "./services/timestamp-type-service";
 import { createUserReportService } from "./services/user-report-service";
 import { createUserService } from "./services/user-service";
+import { isPrerendering } from "./utils/prerendering";
 
-const db = await openDb();
+// Prerending doesn't need the database or credentials to work. This is the only service that isn't
+// lazy loaded, so it is stubbed manually.
+const db: Database = isPrerendering ? createPrerenderStub() : await openDb();
 
 export const container = createIocContainer()
-  .register({ db: () => db })
-  .register({ alerter: createDiscordAlerter })
-  .register({ apiClientService: createApiClientService })
-  .register({ episodeUrlService: createEpisodeUrlService })
-  .register({ externalLinkService: createExternalLinkService })
-  .register({ preferencesService: createPreferencesService })
+  .register("db", () => db)
+  .register("alerter", createDiscordAlerter)
+  .register("apiClientService", createApiClientService)
+  .register("episodeUrlService", createEpisodeUrlService)
+  .register("externalLinkService", createExternalLinkService)
+  .register("preferencesService", createPreferencesService)
 
-  .register({ templateTimestampService: createTemplateTimestampService })
-  .register({ timestampTypeService: createTimestampTypeService })
-  .register({ userReportService: createUserReportService })
-  .register({ userService: createUserService })
-  .register({ templateService: createTemplateService })
-  .register({ timestampService: createTimestampService })
-  .register({ episodeService: createEpisodeService })
-  .register({ showService: createShowService })
-  .register({
-    thirdPartyService: (deps) =>
-      createAggregateThirdPartyService({
-        ...deps,
-        services: {
-          Db: createDbThirdPartyService(deps),
-        },
-      }),
-  })
-  .register({ anilistExternalLinkService: createAnilistExternalLinkService })
-  .register({
-    externalLinkLookupService: (deps) =>
-      createAggregateExternalLinkService({
-        ...deps,
-        services: {
-          Anilist: deps.anilistExternalLinkService,
-        },
-      }),
-  });
+  .register("templateTimestampService", createTemplateTimestampService)
+  .register("timestampTypeService", createTimestampTypeService)
+  .register("userReportService", createUserReportService)
+  .register("userService", createUserService)
+  .register("templateService", createTemplateService)
+  .register("timestampService", createTimestampService)
+  .register("episodeService", createEpisodeService)
+  .register("showService", createShowService)
+  .register("thirdPartyService", (deps) =>
+    createAggregateThirdPartyService({
+      ...deps,
+      services: {
+        Db: createDbThirdPartyService(deps),
+      },
+    }),
+  )
+  .register("anilistExternalLinkService", createAnilistExternalLinkService)
+  .register("externalLinkLookupService", (deps) =>
+    createAggregateExternalLinkService({
+      ...deps,
+      services: {
+        Anilist: deps.anilistExternalLinkService,
+      },
+    }),
+  );
 
 export const graphqlScope = container.scope<{ ip: string; request: Request }>();
 

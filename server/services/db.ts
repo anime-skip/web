@@ -27,19 +27,17 @@ export async function openDb(): Promise<Database> {
     schema: dbSchema,
   });
 
-  const canManage = Bun.isMainThread && STAGE !== "test";
-
-  if (canManage) {
+  // Only manage the DB during dev/prod and in the main thread (not workers)
+  if (Bun.isMainThread && STAGE !== "test") {
     logger.info("Running migrations");
     const migrateStart = Date.now();
     await migrate(db, {
       migrationsFolder: "server/db/drizzle",
     });
     logger.info("Migrations complete", { durationMs: Date.now() - migrateStart });
-  }
 
-  // The jobs worker opens its own connection, only seed once
-  if (DATABASE_ENABLE_SEEDING && canManage) await seedDatabase(db);
+    if (DATABASE_ENABLE_SEEDING) await seedDatabase(db);
+  }
 
   return db;
 }
