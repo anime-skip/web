@@ -26,13 +26,13 @@ export const episodeUrlResolvers: GqlResolvers = {
             ? null
             : String(args.episodeUrlInput.timestampsOffset),
       };
-      const [row] = await ctx.db.insert(episodeUrls).values(value).returning();
+      const [row] = await ctx.deps.db.insert(episodeUrls).values(value).returning();
       return mapDbEpisodeUrlToGqlEpisodeUrl(row);
     },
 
     deleteEpisodeUrl: async (_parent, args, ctx) => {
-      const [deleted] = await ctx.db.transaction(
-        (tx) => ctx.episodeUrlService.deleteMany(tx, [args.episodeUrl]),
+      const [deleted] = await ctx.deps.db.transaction(
+        (tx) => ctx.deps.episodeUrlService.deleteMany(tx, [args.episodeUrl]),
         { accessMode: "read write" },
       );
       if (!deleted) {
@@ -57,7 +57,7 @@ export const episodeUrlResolvers: GqlResolvers = {
             ? String(args.newEpisodeUrl.timestampsOffset)
             : args.newEpisodeUrl.timestampsOffset,
       };
-      const [row] = await ctx.db
+      const [row] = await ctx.deps.db
         .update(episodeUrls)
         .set(updates)
         .where(eq(episodeUrls.url, args.episodeUrl))
@@ -92,7 +92,7 @@ export async function getEpisodeUrlsByEpisodeId(
   ctx: GqlContext,
   episodeId: string,
 ): Promise<GqlEpisodeUrl[]> {
-  const rows = await ctx.db.query.episodeUrls.findMany({
+  const rows = await ctx.deps.db.query.episodeUrls.findMany({
     where: eq(episodeUrls.episodeId, episodeId),
   });
   return rows.map(mapDbEpisodeUrlToGqlEpisodeUrl);

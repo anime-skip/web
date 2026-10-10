@@ -26,7 +26,7 @@ export const apiClientResolvers: GqlResolvers = {
         deletedAt: null,
         deletedByUserId: null,
       };
-      const [row] = await ctx.db.insert(apiClients).values(value).returning();
+      const [row] = await ctx.deps.db.insert(apiClients).values(value).returning();
       return mapDbApiClientToGqlApiClient(row);
     },
 
@@ -38,7 +38,7 @@ export const apiClientResolvers: GqlResolvers = {
         updatedByUserId: userId,
         ...prepareGqlInputForDb(args.changes),
       };
-      const [row] = await ctx.db
+      const [row] = await ctx.deps.db
         .update(apiClients)
         .set(updates)
         .where(eq(apiClients.id, args.id))
@@ -49,8 +49,8 @@ export const apiClientResolvers: GqlResolvers = {
     deleteApiClient: async (_parent, args, ctx) => {
       const userId = ctx.authUserId!;
       const now = new Date();
-      const deleted = await ctx.db.transaction(
-        (tx) => ctx.apiClientService.softDeleteMany(tx, [args.id], userId, now),
+      const deleted = await ctx.deps.db.transaction(
+        (tx) => ctx.deps.apiClientService.softDeleteMany(tx, [args.id], userId, now),
         { accessMode: "read write" },
       );
       return mapDbApiClientToGqlApiClient(deleted);
@@ -79,7 +79,7 @@ export async function getApiClientsByUserId(
     sort: string;
   },
 ): Promise<GqlApiClient[]> {
-  const rows = await ctx.db.query.apiClients.findMany({
+  const rows = await ctx.deps.db.query.apiClients.findMany({
     where: and(eq(apiClients.userId, userId), isNull(apiClients.deletedAt)),
     offset: options.offset,
     limit: options.limit,

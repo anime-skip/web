@@ -29,7 +29,7 @@ export const episodeResolvers: GqlResolvers = {
         deletedAt: null,
         deletedByUserId: null,
       };
-      const [row] = await ctx.db.insert(episodes).values(value).returning();
+      const [row] = await ctx.deps.db.insert(episodes).values(value).returning();
       return mapDbEpisodeToGqlEpisode(row);
     },
 
@@ -42,7 +42,7 @@ export const episodeResolvers: GqlResolvers = {
         ...prepareGqlInputForDb(args.newEpisode),
         baseDuration: String(args.newEpisode.baseDuration),
       };
-      const [row] = await ctx.db
+      const [row] = await ctx.deps.db
         .update(episodes)
         .set(updates)
         .where(eq(episodes.id, args.episodeId))
@@ -53,8 +53,8 @@ export const episodeResolvers: GqlResolvers = {
     deleteEpisode: async (_parent, args, ctx) => {
       const userId = ctx.authUserId!;
       const now = new Date();
-      const [deleted] = await ctx.db.transaction(
-        (tx) => ctx.episodeService.softDeleteMany(tx, [args.episodeId], userId, now),
+      const [deleted] = await ctx.deps.db.transaction(
+        (tx) => ctx.deps.episodeService.softDeleteMany(tx, [args.episodeId], userId, now),
         { accessMode: "read write" },
       );
       if (!deleted) {
@@ -75,7 +75,7 @@ export const episodeResolvers: GqlResolvers = {
       // This isn't perfect (episode could be missing or slightly out of order), but it beats what the
       // the old query - 13ms vs 10s
       // https://github.com/anime-skip/backend/blob/33fd2b842bc847bed67c9b1f9283e78b710cd1f5/internal/database/repos/episodes.go#L137-L153
-      const res = await ctx.db
+      const res = await ctx.deps.db
         .select()
         .from(episodes)
         .where(
@@ -103,7 +103,7 @@ export const episodeResolvers: GqlResolvers = {
       if (args.search) where.push(ilike(episodes.name, `%${args.search}%`));
       if (args.showId) where.push(eq(episodes.showId, args.showId));
 
-      const res = await ctx.db.query.episodes.findMany({
+      const res = await ctx.deps.db.query.episodes.findMany({
         where: and(...where),
         limit: args.limit,
         offset: args.offset,
@@ -113,7 +113,7 @@ export const episodeResolvers: GqlResolvers = {
     },
 
     findEpisodeByName: async (_parent, args, ctx) =>
-      ctx.thirdPartyService.findEpisodeByName(args.name),
+      ctx.deps.thirdPartyService.findEpisodeByName(args.name),
   },
   Episode: {
     createdBy: ({ createdByUserId: id }, _, ctx) => ctx.dataloaders.users.load(id),
@@ -135,7 +135,7 @@ export const episodeResolvers: GqlResolvers = {
 };
 
 export async function getEpisodesByShowId(ctx: GqlContext, showId: string): Promise<GqlEpisode[]> {
-  const rows = await ctx.db.query.episodes.findMany({
+  const rows = await ctx.deps.db.query.episodes.findMany({
     where: and(eq(episodes.showId, showId), isNull(episodes.deletedAt)),
   });
   return rows.map(mapDbEpisodeToGqlEpisode);

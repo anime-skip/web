@@ -55,4 +55,6 @@ export const container = createIocContainer()
       }),
   });
 
+export const graphqlScope = container.scope<{ ip: string; request: Request }>();
+
 export type Dependencies = ReturnType<typeof container.resolveAll>;

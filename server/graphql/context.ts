@@ -3,14 +3,9 @@ import type { Dependencies } from "server/dependencies";
 import * as mappers from "server/graphql/mappers";
 import { createDrizzleDataloader } from "server/utils/drizzle-utils";
 
-export function createGqlContext(
-  ctx: Dependencies & {
-    request: Request;
-    ip: string;
-  },
-) {
+export function createGqlContext(ctx: { deps: Dependencies; request: Request; ip: string }) {
   const dbUsersDataloader = createDrizzleDataloader(
-    ctx.db,
+    ctx.deps.db,
     tables.users,
     "id",
     (v: tables.DbUser) => v,
@@ -35,61 +30,61 @@ export function createGqlContext(
       },
 
       apiClients: createDrizzleDataloader(
-        ctx.db,
+        ctx.deps.db,
         tables.apiClients,
         "id",
         mappers.mapDbApiClientToGqlApiClient,
       ),
       userReports: createDrizzleDataloader(
-        ctx.db,
+        ctx.deps.db,
         tables.userReports,
         "id",
         mappers.mapDbUserReportToGqlUserReport,
       ),
       episodeUrls: createDrizzleDataloader(
-        ctx.db,
+        ctx.deps.db,
         tables.episodeUrls,
         "url",
         mappers.mapDbEpisodeUrlToGqlEpisodeUrl,
       ),
       episodes: createDrizzleDataloader(
-        ctx.db,
+        ctx.deps.db,
         tables.episodes,
         "id",
         mappers.mapDbEpisodeToGqlEpisode,
       ),
       showAdmins: createDrizzleDataloader(
-        ctx.db,
+        ctx.deps.db,
         tables.showAdmins,
         "id",
         mappers.mapDbShowAdminToGqlShowAdmin,
       ),
       shows: createDrizzleDataloader(
-        ctx.db,
+        ctx.deps.db,
         tables.shows,
         "id",
         mappers.mapDbShowToGqlShow,
       ),
       templates: createDrizzleDataloader(
-        ctx.db,
+        ctx.deps.db,
         tables.templates,
         "id",
         mappers.mapDbTemplateToGqlTemplate,
       ),
       timestampTypes: createDrizzleDataloader(
-        ctx.db,
+        ctx.deps.db,
         tables.timestampTypes,
         "id",
         mappers.mapDbTimestampTypeToGqlTimestampType,
       ),
       timestamps: createDrizzleDataloader(
-        ctx.db,
+        ctx.deps.db,
         tables.timestamps,
         "id",
         mappers.mapDbTimestampToGqlTimestamp,
       ),
       externalLinks: createDrizzleDataloader(
-        ctx.db,
+        ctx.deps.db,
         tables.externalLinks,
         "url",
         mappers.mapDbExternalLinkToGqlExternalLink,
@@ -97,13 +92,13 @@ export function createGqlContext(
 
       preferences: {
         byId: createDrizzleDataloader(
-          ctx.db,
+          ctx.deps.db,
           tables.preferences,
           "id",
           mappers.mapDbPreferencesToGqlPreferences,
         ),
         byUserId: createDrizzleDataloader(
-          ctx.db,
+          ctx.deps.db,
           tables.preferences,
           "userId",
           mappers.mapDbPreferencesToGqlPreferences,
@@ -111,13 +106,13 @@ export function createGqlContext(
       },
       templateTimestamps: {
         byTemplateIds: createDrizzleDataloader(
-          ctx.db,
+          ctx.deps.db,
           tables.templateTimestamps,
           "templateId",
           mappers.mapDbTemplateTimestampToGqlTemplateTimestamp,
         ),
         byTimestampIds: createDrizzleDataloader(
-          ctx.db,
+          ctx.deps.db,
           tables.templateTimestamps,
           "timestampId",
           mappers.mapDbTemplateTimestampToGqlTemplateTimestamp,

@@ -20,7 +20,7 @@ export const preferencesResolvers: GqlResolvers = {
             ? undefined
             : mapGqlColorThemeToDbColorTheme(args.preferences.colorTheme),
       };
-      const [row] = await ctx.db
+      const [row] = await ctx.deps.db
         .update(preferences)
         .set(updates)
         .where(eq(preferences.userId, userId))

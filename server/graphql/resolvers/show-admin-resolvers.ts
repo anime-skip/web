@@ -20,15 +20,15 @@ export const showAdminResolvers: GqlResolvers = {
         deletedAt: null,
         deletedByUserId: null,
       };
-      const [row] = await ctx.db.insert(showAdmins).values(value).returning();
+      const [row] = await ctx.deps.db.insert(showAdmins).values(value).returning();
       return mapDbShowAdminToGqlShowAdmin(row);
     },
 
     deleteShowAdmin: async (_parent, args, ctx) => {
       const userId = ctx.authUserId!;
       const now = new Date();
-      const [deleted] = await ctx.db.transaction(
-        (tx) => ctx.showAdminService.softDeleteMany(tx, [args.showAdminId], userId, now),
+      const [deleted] = await ctx.deps.db.transaction(
+        (tx) => ctx.deps.showAdminService.softDeleteMany(tx, [args.showAdminId], userId, now),
         { accessMode: "read write" },
       );
       if (!deleted) {
@@ -61,7 +61,7 @@ export async function getShowAdminsByUserId(
   ctx: GqlContext,
   userId: string,
 ): Promise<GqlShowAdmin[]> {
-  const rows = await ctx.db.query.showAdmins.findMany({
+  const rows = await ctx.deps.db.query.showAdmins.findMany({
     where: and(eq(showAdmins.userId, userId), isNull(showAdmins.deletedAt)),
   });
   return rows.map(mapDbShowAdminToGqlShowAdmin);
@@ -71,7 +71,7 @@ export async function getShowAdminsByShowId(
   ctx: GqlContext,
   showId: string,
 ): Promise<GqlShowAdmin[]> {
-  const rows = await ctx.db.query.showAdmins.findMany({
+  const rows = await ctx.deps.db.query.showAdmins.findMany({
     where: and(eq(showAdmins.showId, showId), isNull(showAdmins.deletedAt)),
   });
   return rows.map(mapDbShowAdminToGqlShowAdmin);

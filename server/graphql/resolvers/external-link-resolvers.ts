@@ -9,19 +9,19 @@ import type { NoOptionals } from "shared/types";
 export const externalLinkResolvers: GqlResolvers = {
   Mutation: {
     addExternalLink: async (_parent, args, ctx) => {
-      const cleanUrl = ctx.externalLinkService.sanitizeUrl(args.url);
+      const cleanUrl = ctx.deps.externalLinkService.sanitizeUrl(args.url);
 
       const value: NoOptionals<DbExternalLinkInsert> = {
         url: cleanUrl,
         showId: args.showId,
       };
-      const [row] = await ctx.db.insert(externalLinks).values(value).returning();
+      const [row] = await ctx.deps.db.insert(externalLinks).values(value).returning();
       return mapDbExternalLinkToGqlExternalLink(row);
     },
 
     removeExternalLink: async (_parent, args, ctx) => {
-      const [deleted] = await ctx.db.transaction(
-        (tx) => ctx.externalLinkService.deleteMany(tx, [args]),
+      const [deleted] = await ctx.deps.db.transaction(
+        (tx) => ctx.deps.externalLinkService.deleteMany(tx, [args]),
         { accessMode: "read write" },
       );
       if (!deleted) {
@@ -32,7 +32,7 @@ export const externalLinkResolvers: GqlResolvers = {
   },
   ExternalLink: {
     url: (parent, _args, ctx) => {
-      return ctx.externalLinkService.sanitizeUrl(parent.url);
+      return ctx.deps.externalLinkService.sanitizeUrl(parent.url);
     },
 
     show: (parent, _args, ctx) => ctx.dataloaders.shows.load(parent.showId),
@@ -52,7 +52,7 @@ export async function getExternalLinksByShowId(
   ctx: GqlContext,
   showId: string,
 ): Promise<GqlExternalLink[]> {
-  const rows = await ctx.db.query.externalLinks.findMany({
+  const rows = await ctx.deps.db.query.externalLinks.findMany({
     where: eq(externalLinks.showId, showId),
   });
   return rows.map(mapDbExternalLinkToGqlExternalLink);

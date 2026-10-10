@@ -20,7 +20,7 @@ export async function getOptionalUserByUsername(
   ctx: GqlContext,
   username: string,
 ): Promise<GqlUser | null> {
-  const row = await ctx.db.query.users.findFirst({
+  const row = await ctx.deps.db.query.users.findFirst({
     where: eq(users.username, username),
   });
   return row ? mapDbUserToGqlUser(row) : null;

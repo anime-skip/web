@@ -33,15 +33,15 @@ export const showResolvers: GqlResolvers = {
         website: args.showInput.website ?? null,
       };
 
-      const externalLinks = await ctx.externalLinkLookupService.findLinks(args.showInput.name);
+      const externalLinks = await ctx.deps.externalLinkLookupService.findLinks(args.showInput.name);
 
-      const [row] = await ctx.db.transaction(
+      const [row] = await ctx.deps.db.transaction(
         async (tx) => {
           const [createdShow] = await tx.insert(shows).values(value).returning();
 
           if (externalLinks.length > 0) {
             const linkValues = externalLinks.map<DbExternalLinkInsert>((link) => ({
-              url: ctx.externalLinkService.sanitizeUrl(link),
+              url: ctx.deps.externalLinkService.sanitizeUrl(link),
               showId: createdShow.id,
             }));
             await tx.insert(externalLinksTable).values(linkValues);
@@ -63,7 +63,7 @@ export const showResolvers: GqlResolvers = {
         updatedByUserId: userId,
         ...prepareGqlInputForDb(args.newShow),
       };
-      const [row] = await ctx.db
+      const [row] = await ctx.deps.db
         .update(shows)
         .set(updates)
         .where(eq(shows.id, args.showId))
@@ -74,8 +74,8 @@ export const showResolvers: GqlResolvers = {
     deleteShow: async (_parent, args, ctx) => {
       const userId = ctx.authUserId!;
       const now = new Date();
-      const [deleted] = await ctx.db.transaction(
-        (tx) => ctx.showService.softDeleteMany(tx, [args.showId], userId, now),
+      const [deleted] = await ctx.deps.db.transaction(
+        (tx) => ctx.deps.showService.softDeleteMany(tx, [args.showId], userId, now),
         { accessMode: "read write" },
       );
       if (!deleted) {
@@ -90,7 +90,7 @@ export const showResolvers: GqlResolvers = {
     findShowsByExternalId: async (_parent, args, ctx) => {
       const urlPattern = getServiceUrlPattern(args.service, args.serviceId);
 
-      const links = await ctx.db.query.externalLinks.findMany({
+      const links = await ctx.deps.db.query.externalLinks.findMany({
         where: ilike(externalLinksTable.url, urlPattern),
       });
       if (links.length === 0) return [];
@@ -106,7 +106,7 @@ export const showResolvers: GqlResolvers = {
         where.push(ilike(shows.name, `%${args.search.trim()}%`));
       }
 
-      const res = await ctx.db.query.shows.findMany({
+      const res = await ctx.deps.db.query.shows.findMany({
         where: and(...where),
         limit: args.limit,
         offset: args.offset,
@@ -132,7 +132,7 @@ export const showResolvers: GqlResolvers = {
     externalLinks: (parent, _args, ctx) => getExternalLinksByShowId(ctx, parent.id),
 
     seasonCount: async (parent, _args, ctx) => {
-      const [{ count }] = await ctx.db
+      const [{ count }] = await ctx.deps.db
         .select({ count: sql<number>`COUNT(DISTINCT season)` })
         .from(episodes)
         .where(and(eq(episodes.showId, parent.id), isNull(episodes.deletedAt)));
@@ -140,7 +140,7 @@ export const showResolvers: GqlResolvers = {
     },
 
     episodeCount: async (parent, _args, ctx) => {
-      return await ctx.db.$count(
+      return await ctx.deps.db.$count(
         episodes,
         and(eq(episodes.showId, parent.id), isNull(episodes.deletedAt)),
       );

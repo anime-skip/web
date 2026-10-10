@@ -35,7 +35,7 @@ export const timestampResolvers: GqlResolvers = {
       const userId = ctx.authUserId!;
       const now = new Date();
       const value = prepareTimestampInsert(args.episodeId, args.timestampInput, userId, now);
-      const [row] = await ctx.db.insert(timestamps).values(value).returning();
+      const [row] = await ctx.deps.db.insert(timestamps).values(value).returning();
       return mapDbTimestampToGqlTimestamp(row);
     },
 
@@ -52,7 +52,7 @@ export const timestampResolvers: GqlResolvers = {
             : mapGqlTimestampSourceToDbTimestampSource(args.newTimestamp.source),
         at: args.newTimestamp.at == null ? undefined : String(args.newTimestamp.at),
       };
-      const [row] = await ctx.db
+      const [row] = await ctx.deps.db
         .update(timestamps)
         .set(updates)
         .where(eq(timestamps.id, args.timestampId))
@@ -63,8 +63,8 @@ export const timestampResolvers: GqlResolvers = {
     deleteTimestamp: async (_parent, args, ctx) => {
       const userId = ctx.authUserId!;
       const now = new Date();
-      const [deleted] = await ctx.db.transaction(
-        (tx) => ctx.timestampService.softDeleteMany(tx, [args.timestampId], userId, now),
+      const [deleted] = await ctx.deps.db.transaction(
+        (tx) => ctx.deps.timestampService.softDeleteMany(tx, [args.timestampId], userId, now),
         { accessMode: "read write" },
       );
       if (!deleted) {
@@ -114,8 +114,9 @@ export const timestampResolvers: GqlResolvers = {
       }
 
       // Execute all operations in a transaction
-      const result = await ctx.db.transaction(
-        (tx) => ctx.timestampService.updateAll(tx, createList, updateList, deleteIds, userId, now),
+      const result = await ctx.deps.db.transaction(
+        (tx) =>
+          ctx.deps.timestampService.updateAll(tx, createList, updateList, deleteIds, userId, now),
         { accessMode: "read write" },
       );
 
@@ -149,7 +150,7 @@ export async function getTimestampsByEpisodeId(
   ctx: GqlContext,
   episodeId: string,
 ): Promise<GqlTimestamp[]> {
-  const rows = await ctx.db.query.timestamps.findMany({
+  const rows = await ctx.deps.db.query.timestamps.findMany({
     where: and(eq(timestamps.episodeId, episodeId), isNull(timestamps.deletedAt)),
   });
   return rows.map(mapDbTimestampToGqlTimestamp);

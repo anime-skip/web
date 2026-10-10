@@ -7,7 +7,7 @@ import type { GqlResolvers } from "server/graphql/resolver-types.gen";
 export const templateTimestampResolvers: GqlResolvers = {
   Mutation: {
     addTimestampToTemplate: async (_parent, args, ctx) => {
-      const [row] = await ctx.db
+      const [row] = await ctx.deps.db
         .insert(templateTimestamps)
         .values(args.templateTimestamp)
         .returning();
@@ -15,8 +15,8 @@ export const templateTimestampResolvers: GqlResolvers = {
     },
 
     removeTimestampFromTemplate: async (_parent, args, ctx) => {
-      const [deleted] = await ctx.db.transaction(
-        (tx) => ctx.templateTimestampService.deleteMany(tx, [args.templateTimestamp]),
+      const [deleted] = await ctx.deps.db.transaction(
+        (tx) => ctx.deps.templateTimestampService.deleteMany(tx, [args.templateTimestamp]),
         { accessMode: "read write" },
       );
       if (!deleted) {
@@ -36,7 +36,7 @@ export async function getTemplateTimestampsByTemplateId(
   ctx: GqlContext,
   templateId: string,
 ): Promise<GqlTemplateTimestamp[]> {
-  const rows = await ctx.db.query.templateTimestamps.findMany({
+  const rows = await ctx.deps.db.query.templateTimestamps.findMany({
     where: eq(templateTimestamps.templateId, templateId),
   });
   return rows.map(mapDbTemplateTimestampToGqlTemplateTimestamp);

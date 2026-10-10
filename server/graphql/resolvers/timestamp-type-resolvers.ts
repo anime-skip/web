@@ -20,7 +20,7 @@ export const timestampTypeResolvers: GqlResolvers = {
         description: args.timestampTypeInput.description,
         name: args.timestampTypeInput.name,
       };
-      const [row] = await ctx.db.insert(timestampTypes).values(value).returning();
+      const [row] = await ctx.deps.db.insert(timestampTypes).values(value).returning();
       return mapDbTimestampTypeToGqlTimestampType(row);
     },
 
@@ -32,7 +32,7 @@ export const timestampTypeResolvers: GqlResolvers = {
         updatedByUserId: userId,
         ...prepareGqlInputForDb(args.newTimestampType),
       };
-      const [row] = await ctx.db
+      const [row] = await ctx.deps.db
         .update(timestampTypes)
         .set(updates)
         .where(eq(timestampTypes.id, args.timestampTypeId))
@@ -43,8 +43,9 @@ export const timestampTypeResolvers: GqlResolvers = {
     deleteTimestampType: async (_parent, args, ctx) => {
       const userId = ctx.authUserId!;
       const now = new Date();
-      const [deleted] = await ctx.db.transaction(
-        (tx) => ctx.timestampTypeService.softDeleteMany(tx, [args.timestampTypeId], userId, now),
+      const [deleted] = await ctx.deps.db.transaction(
+        (tx) =>
+          ctx.deps.timestampTypeService.softDeleteMany(tx, [args.timestampTypeId], userId, now),
         { accessMode: "read write" },
       );
       if (!deleted) {
@@ -58,7 +59,7 @@ export const timestampTypeResolvers: GqlResolvers = {
       ctx.dataloaders.timestampTypes.load(args.timestampTypeId),
 
     allTimestampTypes: async (_parent, _args, ctx) => {
-      const rows = await ctx.db.query.timestampTypes.findMany();
+      const rows = await ctx.deps.db.query.timestampTypes.findMany();
       return rows.map(mapDbTimestampTypeToGqlTimestampType);
     },
   },

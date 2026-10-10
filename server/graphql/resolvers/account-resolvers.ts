@@ -40,7 +40,7 @@ export const accountResolvers: GqlResolvers = {
       }
 
       logger.debug("Checking for existing email");
-      const existingUserByEmail = await ctx.db.query.users.findFirst({
+      const existingUserByEmail = await ctx.deps.db.query.users.findFirst({
         where: eq(users.email, email),
       });
       if (existingUserByEmail) {
@@ -51,7 +51,7 @@ export const accountResolvers: GqlResolvers = {
       const encryptedPasswordHash = await auth.encryptPassword(passwordHash);
 
       logger.debug("Creating user and preferences");
-      const [user] = await ctx.db
+      const [user] = await ctx.deps.db
         .insert(users)
         .values({
           email,
@@ -64,7 +64,7 @@ export const accountResolvers: GqlResolvers = {
         })
         .returning();
       const userId = user.id;
-      await ctx.db.insert(preferences).values({
+      await ctx.deps.db.insert(preferences).values({
         userId,
         updatedAt: new Date().toISOString(),
       });
@@ -92,7 +92,7 @@ export const accountResolvers: GqlResolvers = {
         throw Error("Old password is not correct");
       }
 
-      return await updatePassword(ctx.db, user, args);
+      return await updatePassword(ctx.deps.db, user, args);
     },
 
     resendVerificationEmail: async (_parent, args, ctx) => {
@@ -110,7 +110,7 @@ export const accountResolvers: GqlResolvers = {
       const { userId } = await auth.validateToken("verify-email", args.validationToken);
       const user = await requireUser(ctx, userId);
 
-      await ctx.db.update(users).set({ emailVerified: true }).where(eq(users.id, userId));
+      await ctx.deps.db.update(users).set({ emailVerified: true }).where(eq(users.id, userId));
       user.emailVerified = true;
 
       return mapDbUserToGqlAccount(user);
@@ -120,7 +120,7 @@ export const accountResolvers: GqlResolvers = {
       validateEmail(args.email);
 
       await verifyRecaptcha(args.recaptchaResponse, ctx.ip);
-      const user = await ctx.db.query.users.findFirst({
+      const user = await ctx.deps.db.query.users.findFirst({
         where: eq(users.email, args.email),
       });
 
@@ -138,22 +138,22 @@ export const accountResolvers: GqlResolvers = {
       const { userId } = await auth.validateToken("reset-password", args.passwordResetToken);
       const user = await requireUser(ctx, userId);
 
-      return await updatePassword(ctx.db, user, args);
+      return await updatePassword(ctx.deps.db, user, args);
     },
 
     deleteMyAccount: async (_parent, _args, ctx) => {
       const userId = ctx.authUserId!;
 
-      const anonymized = await ctx.db.transaction(async (tx) => {
-        return ctx.userService.anonymize(tx, userId, new Date());
+      const anonymized = await ctx.deps.db.transaction(async (tx) => {
+        return ctx.deps.userService.anonymize(tx, userId, new Date());
       });
 
       return mapDbUserToGqlAccount(anonymized);
     },
 
     deleteAccount: async (_parent, { userId }, ctx) => {
-      const anonymized = await ctx.db.transaction(async (tx) => {
-        return ctx.userService.anonymize(tx, userId, new Date());
+      const anonymized = await ctx.deps.db.transaction(async (tx) => {
+        return ctx.deps.userService.anonymize(tx, userId, new Date());
       });
 
       return mapDbUserToGqlAccount(anonymized);
@@ -163,7 +163,7 @@ export const accountResolvers: GqlResolvers = {
     login: async (_parent, args, ctx) => {
       const usernameOrEmail = args.usernameEmail.trim();
       const passwordHash = args.passwordHash.trim();
-      const user = await ctx.db.query.users.findFirst({
+      const user = await ctx.deps.db.query.users.findFirst({
         where: or(eq(users.username, usernameOrEmail), eq(users.email, usernameOrEmail)),
       });
       if (user == null) {

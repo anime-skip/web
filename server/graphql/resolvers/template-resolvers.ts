@@ -27,7 +27,7 @@ export const templateResolvers: GqlResolvers = {
         sourceEpisodeId: args.newTemplate.sourceEpisodeId,
         type: mapGqlTemplateTypeToDbTemplateType(args.newTemplate.type),
       };
-      const [row] = await ctx.db.insert(templates).values(value).returning();
+      const [row] = await ctx.deps.db.insert(templates).values(value).returning();
       return mapDbTemplateToGqlTemplate(row);
     },
 
@@ -43,7 +43,7 @@ export const templateResolvers: GqlResolvers = {
             ? undefined
             : mapGqlTemplateTypeToDbTemplateType(args.newTemplate.type),
       };
-      const [row] = await ctx.db
+      const [row] = await ctx.deps.db
         .update(templates)
         .set(updates)
         .where(eq(templates.id, args.templateId))
@@ -54,8 +54,8 @@ export const templateResolvers: GqlResolvers = {
     deleteTemplate: async (_parent, args, ctx) => {
       const userId = ctx.authUserId!;
       const now = new Date();
-      const [deleted] = await ctx.db.transaction(
-        (tx) => ctx.templateService.softDeleteMany(tx, [args.templateId], userId, now),
+      const [deleted] = await ctx.deps.db.transaction(
+        (tx) => ctx.deps.templateService.softDeleteMany(tx, [args.templateId], userId, now),
         { accessMode: "read write" },
       );
       if (!deleted) {
@@ -77,7 +77,7 @@ export const templateResolvers: GqlResolvers = {
 
       // 1. Try matching by source episodeId
       if (args.episodeId) {
-        const row = await ctx.db.query.templates.findFirst({
+        const row = await ctx.deps.db.query.templates.findFirst({
           where: and(
             eq(templates.sourceEpisodeId, args.episodeId),
             eq(templates.createdByUserId, userId),
@@ -92,7 +92,7 @@ export const templateResolvers: GqlResolvers = {
 
       // 2 & 3. Try matching by show name (and optionally season)
       if (args.showName) {
-        const show = await ctx.db.query.shows.findFirst({
+        const show = await ctx.deps.db.query.shows.findFirst({
           where: eq(shows.name, args.showName),
         });
         if (!show) {
@@ -101,7 +101,7 @@ export const templateResolvers: GqlResolvers = {
 
         // 2. Try matching show name + season
         if (args.season) {
-          const row = await ctx.db.query.templates.findFirst({
+          const row = await ctx.deps.db.query.templates.findFirst({
             where: and(
               eq(templates.showId, show.id),
               eq(templates.type, DbTemplateType.Seasons),
@@ -117,7 +117,7 @@ export const templateResolvers: GqlResolvers = {
         }
 
         // 3. Try matching just show name (show-wide template)
-        const row = await ctx.db.query.templates.findFirst({
+        const row = await ctx.deps.db.query.templates.findFirst({
           where: and(
             eq(templates.showId, show.id),
             eq(templates.type, DbTemplateType.Show),
@@ -165,7 +165,7 @@ export async function getTemplateByEpisodeId(
   episodeId: string,
 ): Promise<GqlTemplate | null> {
   const userId = ctx.authUserId;
-  const row = await ctx.db.query.templates.findFirst({
+  const row = await ctx.deps.db.query.templates.findFirst({
     where: and(
       eq(templates.sourceEpisodeId, episodeId),
       isNull(templates.deletedAt),
@@ -181,7 +181,7 @@ export async function getTemplatesByShowId(
   showId: string,
 ): Promise<GqlTemplate[]> {
   const userId = ctx.authUserId;
-  const rows = await ctx.db.query.templates.findMany({
+  const rows = await ctx.deps.db.query.templates.findMany({
     where: and(
       eq(templates.showId, showId),
       isNull(templates.deletedAt),

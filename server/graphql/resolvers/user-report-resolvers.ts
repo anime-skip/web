@@ -29,7 +29,7 @@ export const userReportResolvers: GqlResolvers = {
         showId: args.report.showId ?? null,
         timestampId: args.report.timestampId ?? null,
       };
-      const [row] = await ctx.db.insert(userReports).values(value).returning();
+      const [row] = await ctx.deps.db.insert(userReports).values(value).returning();
       return mapDbUserReportToGqlUserReport(row);
     },
 
@@ -42,7 +42,7 @@ export const userReportResolvers: GqlResolvers = {
         resolved: true,
         resolvedMessage: args.resolvedMessage,
       };
-      const [row] = await ctx.db
+      const [row] = await ctx.deps.db
         .update(userReports)
         .set(updates)
         .where(eq(userReports.id, args.id))
@@ -54,7 +54,7 @@ export const userReportResolvers: GqlResolvers = {
     findUserReport: (_parent, args, ctx) => ctx.dataloaders.userReports.load(args.id),
 
     findUserReports: async (_parent, args, ctx) => {
-      const rows = await ctx.db.query.userReports.findMany({
+      const rows = await ctx.deps.db.query.userReports.findMany({
         where: and(
           isNull(userReports.deletedAt),
           args.resolved != null ? eq(userReports.resolved, args.resolved) : undefined,
@@ -92,7 +92,7 @@ export async function getUserReportsByEpisodeId(
   ctx: GqlContext,
   episodeId: string,
 ): Promise<GqlUserReport[]> {
-  const rows = await ctx.db.query.userReports.findMany({
+  const rows = await ctx.deps.db.query.userReports.findMany({
     where: and(eq(userReports.episodeId, episodeId), isNull(userReports.deletedAt)),
   });
   return rows.map(mapDbUserReportToGqlUserReport);
