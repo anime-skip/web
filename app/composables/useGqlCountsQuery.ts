@@ -7,10 +7,7 @@ export default function () {
     async () => {
       if (isPrerendering()) return { episodes: 0, shows: 0, timestamps: 0 };
 
-      const data = await queryGraphql<{ counts: CountsQueryResponse }>(
-        "HomepageCounts",
-        QUERY,
-      );
+      const data = await queryGraphql<{ counts: CountsQueryResponse }>("HomepageCounts", QUERY);
       return data.counts;
     },
     {
@@ -21,10 +18,7 @@ export default function () {
   );
 }
 
-export type CountsQueryResponse = Pick<
-  GqlTotalCounts,
-  "shows" | "episodes" | "timestamps"
->;
+export type CountsQueryResponse = Pick<GqlTotalCounts, "shows" | "episodes" | "timestamps">;
 
 const QUERY = `
   query HomepageCounts {

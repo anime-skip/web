@@ -1,6 +1,7 @@
-import { templateTimestamps, type DbTemplateTimestamp } from "server/db/schema";
-import type { AnimeSkipDatabase } from "./db";
 import { and, eq, or } from "drizzle-orm";
+import { templateTimestamps, type DbTemplateTimestamp } from "server/db/schema";
+
+import type { AnimeSkipDatabase } from "./db";
 
 export interface TemplateTimestampService {
   deleteMany(
@@ -14,14 +15,11 @@ export interface TemplateTimestampService {
 }
 
 export function createTemplateTimestampService({
-  db: _,
+  db: _db,
 }: {
   db: AnimeSkipDatabase;
 }): TemplateTimestampService {
-  const deleteMany: TemplateTimestampService["deleteMany"] = async (
-    tx,
-    keys,
-  ) => {
+  const deleteMany: TemplateTimestampService["deleteMany"] = async (tx, keys) => {
     if (keys.length === 0) {
       return [];
     }
@@ -40,10 +38,7 @@ export function createTemplateTimestampService({
     return deleted;
   };
 
-  const deleteCascade: TemplateTimestampService["deleteCascade"] = async (
-    tx,
-    keys,
-  ) => {
+  const deleteCascade: TemplateTimestampService["deleteCascade"] = async (tx, keys) => {
     // Nothing to cascade - just delete the template timestamps
     return deleteMany(tx, keys);
   };

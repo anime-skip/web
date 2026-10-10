@@ -5,9 +5,7 @@ import { executeRecaptcha, RecaptchaAction } from "app/utils/recaptcha-utils";
 
 export default function () {
   return useMutation({
-    mutationFn: async (
-      input: Omit<GqlMutationRequestPasswordResetArgs, "recaptchaResponse">,
-    ) => {
+    mutationFn: async (input: Omit<GqlMutationRequestPasswordResetArgs, "recaptchaResponse">) => {
       const recaptchaResponse =
         env.APP_RECAPTCHA_RESPONSE ??
         (await executeRecaptcha(RecaptchaAction.RequestPasswordReset));

@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { useHead } from "@unhead/vue";
 import GetStartedItem from "app/components/GetStartedItem.vue";
 import SupportedServicesUl from "app/components/SupportedServicesUl.vue";
 import useIsExtensionInstalled from "app/composables/useIsExtensionInstalled";
@@ -6,7 +7,6 @@ import useIsExtensionSignedIn from "app/composables/useIsExtensionSignedIn";
 import useSession from "app/composables/useSession";
 import ContentLayout from "app/layouts/ContentLayout.vue";
 import { computed } from "vue";
-import { useHead } from "@unhead/vue";
 
 useHead({
   title: "Get Started – Anime Skip",
@@ -21,20 +21,20 @@ const loginCompleted = useIsExtensionSignedIn();
 
 <template>
   <ContentLayout>
-    <div class="py-16 px-8 flex flex-col gap-4">
+    <div class="flex flex-col gap-4 px-8 py-16">
       <GetStartedItem
         number="1"
         title="Download the Browser Extension"
         :completed="downloadCompleted"
       >
         <p>
-          The "Anime Skip Player" extension adds a custom video player to your
-          browser when watching anime on supported websites:
+          The "Anime Skip Player" extension adds a custom video player to your browser when watching
+          anime on supported websites:
         </p>
 
         <SupportedServicesUl />
 
-        <div class="flex gap-4 flex-wrap">
+        <div class="flex flex-wrap gap-4">
           <a
             class="btn btn-neutral"
             target="blank"
@@ -42,9 +42,7 @@ const loginCompleted = useIsExtensionSignedIn();
           >
             <i class="i-logos-chrome size-5" />
             <span>Install on Chrome</span>
-            <i
-              class="i-heroicons-arrow-top-right-on-square text-neutral-content/50"
-            />
+            <i class="i-heroicons-arrow-top-right-on-square text-neutral-content/50" />
           </a>
           <a
             class="btn btn-neutral"
@@ -53,73 +51,50 @@ const loginCompleted = useIsExtensionSignedIn();
           >
             <i class="i-logos-firefox size-5" />
             <span>Install on Firefox</span>
-            <i
-              class="i-heroicons-arrow-top-right-on-square text-neutral-content/50"
-            />
+            <i class="i-heroicons-arrow-top-right-on-square text-neutral-content/50" />
           </a>
         </div>
 
-        <p class="text-sm text-base-content/50">
+        <p class="text-base-content/50 text-sm">
           You may need to reload this page after installing.
         </p>
       </GetStartedItem>
 
-      <GetStartedItem
-        number="2"
-        title="Create an Account"
-        :completed="createAnAccountCompleted"
-      >
+      <GetStartedItem number="2" title="Create an Account" :completed="createAnAccountCompleted">
         <p>
-          If you don't create an account, you still get all the features of the
-          video player, except you won't be able to contribute timestamps back
-          to the community.
+          If you don't create an account, you still get all the features of the video player, except
+          you won't be able to contribute timestamps back to the community.
         </p>
 
-        <a
-          v-if="!createAnAccountCompleted"
-          class="btn self-start"
-          href="/sign-up"
-          target="blank"
+        <a v-if="!createAnAccountCompleted" class="btn self-start" href="/sign-up" target="blank"
           >Sign Up</a
         >
       </GetStartedItem>
 
-      <GetStartedItem
-        number="3"
-        title="Log in to the Extension"
-        :completed="loginCompleted"
-      >
+      <GetStartedItem number="3" title="Log in to the Extension" :completed="loginCompleted">
+        <p>Once you're logged in, you can setup the timestamps you want to skip.</p>
         <p>
-          Once you're logged in, you can setup the timestamps you want to skip.
-        </p>
-        <p>
-          There are a lot of different types of timestamps in anime, and you
-          should be able to skip only what you want. To learn more about what
-          each timestamp represents,
+          There are a lot of different types of timestamps in anime, and you should be able to skip
+          only what you want. To learn more about what each timestamp represents,
           <a class="link" href="/faq" target="">checkout the FAQ</a>.
         </p>
       </GetStartedItem>
 
       <GetStartedItem number="4" title="Start Watching Anime!" last>
         <p>
-          You're done! Visit any of the supported services to start watching
-          anime with the Anime Skip Player.
+          You're done! Visit any of the supported services to start watching anime with the Anime
+          Skip Player.
         </p>
         <SupportedServicesUl />
         <p>Some other helpful links:</p>
         <ul class="list-disc pl-8">
           <li>
-            <RouterLink class="link" target="_blank" to="/support"
-              >FAQ</RouterLink
-            >
+            <RouterLink class="link" target="_blank" to="/support">FAQ</RouterLink>
             &ndash; go here first if you have problems with the extension.
           </li>
           <li>
-            <a class="link" target="_blank" href="https://discord.gg/9wVhwZg"
-              >Join the Discord</a
-            >
-            &ndash; There you'll find announcements, support, feature requests,
-            bug reports, etc.
+            <a class="link" target="_blank" href="https://discord.gg/9wVhwZg">Join the Discord</a>
+            &ndash; There you'll find announcements, support, feature requests, bug reports, etc.
           </li>
           <li>
             <RouterLink class="link" target="_blank" to="/#recently-added"

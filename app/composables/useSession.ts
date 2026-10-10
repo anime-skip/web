@@ -1,9 +1,10 @@
+import { clearLoginData, setLoginData } from "app/utils/session-utils";
 import { computed, type ComputedRef } from "vue";
+import { useRoute, useRouter } from "vue-router";
+
+import type { LoginData } from "./useGqlLoginQuery";
 import type { Session } from "./useGqlSessionQuery";
 import useGqlSessionQuery from "./useGqlSessionQuery";
-import { clearLoginData, setLoginData } from "app/utils/session-utils";
-import type { LoginData } from "./useGqlLoginQuery";
-import { useRoute, useRouter } from "vue-router";
 
 export default function (): UseSessionReturn {
   const { state, execute } = useGqlSessionQuery();

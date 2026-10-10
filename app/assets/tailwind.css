@@ -27,8 +27,8 @@
 
   --font-sans: InterVariable, sans-serif;
   --font-overpass:
-    "Overpass", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    "Overpass", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
 
   --spacing-main-navigation: calc(16 * var(--spacing));
 }
@@ -107,8 +107,7 @@
     padding: 0 calc(4 * var(--spacing));
     cursor: pointer;
     font-weight: 600;
-    outline: 1px solid
-      color-mix(in srgb, var(--btn-outline-color) 0%, transparent);
+    outline: 1px solid color-mix(in srgb, var(--btn-outline-color) 0%, transparent);
     outline-offset: 2px;
     position: relative;
   }
@@ -148,8 +147,7 @@
     --btn-bg-color: color-mix(in srgb, var(--color-primary) 10%, transparent);
   }
   .btn-shadow {
-    box-shadow: 0 0px 50px -12px
-      color-mix(in srgb, var(--btn-bg-color) 70%, transparent);
+    box-shadow: 0 0px 50px -12px color-mix(in srgb, var(--btn-bg-color) 70%, transparent);
   }
   .btn:hover:active {
     opacity: 75%;
@@ -159,11 +157,7 @@
   }
   .btn[loading="true"],
   .btn[loading=""] {
-    --btn-text-color: color-mix(
-      in srgb,
-      var(--color-primary-content) 70%,
-      transparent
-    );
+    --btn-text-color: color-mix(in srgb, var(--color-primary-content) 70%, transparent);
     pointer-events: none;
     cursor: not-allowed;
   }
@@ -195,11 +189,7 @@
     color: var(--link-color);
   }
   .link-neutral {
-    --link-color: color-mix(
-      in srgb,
-      var(--color-base-content) 70%,
-      transparent
-    );
+    --link-color: color-mix(in srgb, var(--color-base-content) 70%, transparent);
   }
   .link-hover {
     text-decoration: none;
@@ -245,11 +235,7 @@
   }
 
   .input {
-    --placeholder-color: color-mix(
-      in srgb,
-      var(--color-base-content) 50%,
-      transparent
-    );
+    --placeholder-color: color-mix(in srgb, var(--color-base-content) 50%, transparent);
     outline: 1px solid color-mix(in srgb, var(--color-primary) 0%, transparent);
     outline-offset: -2px;
     padding: calc(2 * var(--spacing));
@@ -300,11 +286,7 @@
     --alert-bg-color: var(--color-secondary);
     --alert-text-color: var(--color-secondary-content);
     color: var(--alert-bg-color);
-    background-color: color-mix(
-      in srgb,
-      var(--alert-bg-color) 10%,
-      transparent
-    );
+    background-color: color-mix(in srgb, var(--alert-bg-color) 10%, transparent);
     border-radius: calc(2 * var(--spacing));
     padding: calc(4 * var(--spacing));
     display: flex;
@@ -332,29 +314,17 @@
     align-items: center;
     gap: calc(2 * var(--spacing));
     height: calc(10 * var(--spacing));
-    background-color: color-mix(
-      in srgb,
-      var(--color-base-content) 0%,
-      transparent
-    );
+    background-color: color-mix(in srgb, var(--color-base-content) 0%, transparent);
     cursor: pointer;
     transition: background-color 100ms linear;
     padding: 0 calc(3 * var(--spacing));
     font-size: var(--text-sm);
   }
   .menu-item:hover {
-    background-color: color-mix(
-      in srgb,
-      var(--color-base-content) 10%,
-      transparent
-    );
+    background-color: color-mix(in srgb, var(--color-base-content) 10%, transparent);
   }
   .menu-item:active {
-    background-color: color-mix(
-      in srgb,
-      var(--color-base-content) 15%,
-      transparent
-    );
+    background-color: color-mix(in srgb, var(--color-base-content) 15%, transparent);
   }
   .menu-item.selected,
   .menu-item.active,
@@ -371,10 +341,6 @@
   .menu-divider {
     height: 1px;
     padding-top: calc(0.5 * var(--spacing));
-    background-color: color-mix(
-      in srgb,
-      var(--color-base-content) 10%,
-      transparent
-    );
+    background-color: color-mix(in srgb, var(--color-base-content) 10%, transparent);
   }
 }

@@ -40,9 +40,7 @@ watch(
         const easedProgress = 1 - Math.pow(1 - progress, 3);
 
         // Calculate the interpolated value
-        animatedNumber.value = Math.round(
-          startValue + (endValue - startValue) * easedProgress,
-        );
+        animatedNumber.value = Math.round(startValue + (endValue - startValue) * easedProgress);
 
         if (progress < 1) {
           // Continue the animation if not finished

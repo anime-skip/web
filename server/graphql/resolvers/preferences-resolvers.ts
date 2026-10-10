@@ -1,10 +1,10 @@
-import type { GqlResolvers } from "server/graphql/resolver-types.gen";
+import { eq } from "drizzle-orm";
+import { type DbPreferencesInsert, preferences } from "server/db/schema";
 import {
   mapDbPreferencesToGqlPreferences,
   mapGqlColorThemeToDbColorTheme,
 } from "server/graphql/mappers";
-import { eq } from "drizzle-orm";
-import { type DbPreferencesInsert, preferences } from "server/db/schema";
+import type { GqlResolvers } from "server/graphql/resolver-types.gen";
 import { prepareGqlInputForDb } from "server/utils/drizzle-utils";
 
 export const preferencesResolvers: GqlResolvers = {

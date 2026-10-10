@@ -1,21 +1,21 @@
-import type { GqlResolvers } from "server/graphql/resolver-types.gen";
-import { md5 } from "shared/utils";
+import { createLogger } from "@aklinker1/logger";
 import { eq, or } from "drizzle-orm";
 import { type DbUser, DbUserRole, preferences, users } from "server/db/schema";
+import type { GqlContext } from "server/graphql/context";
 import { mapDbUserToGqlAccount } from "server/graphql/mappers";
-import { auth } from "server/utils/auth";
+import type { GqlResolvers } from "server/graphql/resolver-types.gen";
+import { getShowAdminsByUserId } from "server/graphql/resolvers/show-admin-resolvers";
+import { getOptionalUserByUsername } from "server/graphql/resolvers/user-resolvers";
 import type { AnimeSkipDatabase } from "server/services/db";
-import { validateEmail, validateUsername } from "server/utils/validation";
-import { verifyRecaptcha } from "server/utils/recaptcha";
+import { auth } from "server/utils/auth";
 import {
   sendAccountVerificationEmail,
   sendPasswordResetEmail,
   sendWelcomeEmail,
 } from "server/utils/emails";
-import type { GqlContext } from "server/graphql/context";
-import { getShowAdminsByUserId } from "server/graphql/resolvers/show-admin-resolvers";
-import { getOptionalUserByUsername } from "server/graphql/resolvers/user-resolvers";
-import { createLogger } from "@aklinker1/logger";
+import { verifyRecaptcha } from "server/utils/recaptcha";
+import { validateEmail, validateUsername } from "server/utils/validation";
+import { md5 } from "shared/utils";
 
 const logger = createLogger("account-resolvers");
 
@@ -34,14 +34,9 @@ export const accountResolvers: GqlResolvers = {
       await verifyRecaptcha(args.recaptchaResponse, ctx.ip);
 
       logger.debug("Checking for existing username");
-      const existingUserByUsername = await getOptionalUserByUsername(
-        ctx,
-        username,
-      );
+      const existingUserByUsername = await getOptionalUserByUsername(ctx, username);
       if (existingUserByUsername) {
-        throw Error(
-          `Username '${username}' is already taken, use a different one`,
-        );
+        throw Error(`Username '${username}' is already taken, use a different one`);
       }
 
       logger.debug("Checking for existing email");
@@ -92,10 +87,7 @@ export const accountResolvers: GqlResolvers = {
       const user = await requireUser(ctx, userId);
 
       const oldPassword = md5(args.oldPassword.trim());
-      const isMatch = await auth.comparePasswords(
-        oldPassword,
-        user.passwordHash,
-      );
+      const isMatch = await auth.comparePasswords(oldPassword, user.passwordHash);
       if (!isMatch) {
         throw Error("Old password is not correct");
       }
@@ -115,16 +107,10 @@ export const accountResolvers: GqlResolvers = {
     },
 
     verifyEmailAddress: async (_parent, args, ctx) => {
-      const { userId } = await auth.validateToken(
-        "verify-email",
-        args.validationToken,
-      );
+      const { userId } = await auth.validateToken("verify-email", args.validationToken);
       const user = await requireUser(ctx, userId);
 
-      await ctx.db
-        .update(users)
-        .set({ emailVerified: true })
-        .where(eq(users.id, userId));
+      await ctx.db.update(users).set({ emailVerified: true }).where(eq(users.id, userId));
       user.emailVerified = true;
 
       return mapDbUserToGqlAccount(user);
@@ -149,10 +135,7 @@ export const accountResolvers: GqlResolvers = {
     },
 
     resetPassword: async (_parent, args, ctx) => {
-      const { userId } = await auth.validateToken(
-        "reset-password",
-        args.passwordResetToken,
-      );
+      const { userId } = await auth.validateToken("reset-password", args.passwordResetToken);
       const user = await requireUser(ctx, userId);
 
       return await updatePassword(ctx.db, user, args);
@@ -181,21 +164,13 @@ export const accountResolvers: GqlResolvers = {
       const usernameOrEmail = args.usernameEmail.trim();
       const passwordHash = args.passwordHash.trim();
       const user = await ctx.db.query.users.findFirst({
-        where: or(
-          eq(users.username, usernameOrEmail),
-          eq(users.email, usernameOrEmail),
-        ),
+        where: or(eq(users.username, usernameOrEmail), eq(users.email, usernameOrEmail)),
       });
       if (user == null) {
-        throw Error(
-          `Failed to get account with username or email = "${usernameOrEmail}"`,
-        );
+        throw Error(`Failed to get account with username or email = "${usernameOrEmail}"`);
       }
 
-      const passwordsMatch = await auth.comparePasswords(
-        passwordHash,
-        user.passwordHash,
-      );
+      const passwordsMatch = await auth.comparePasswords(passwordHash, user.passwordHash);
       if (!passwordsMatch) {
         throw Error("Bad login credentials");
       }
@@ -209,12 +184,10 @@ export const accountResolvers: GqlResolvers = {
       return createLoginData(user);
     },
 
-    account: (_parent, _args, ctx) =>
-      ctx.dataloaders.accounts.load(ctx.authUserId!),
+    account: (_parent, _args, ctx) => ctx.dataloaders.accounts.load(ctx.authUserId!),
   },
   Account: {
-    preferences: (parent, _args, ctx) =>
-      ctx.dataloaders.preferences.byUserId.load(parent.id),
+    preferences: (parent, _args, ctx) => ctx.dataloaders.preferences.byUserId.load(parent.id),
 
     adminOfShows: (parent, _args, ctx) => getShowAdminsByUserId(ctx, parent.id),
   },
@@ -243,10 +216,7 @@ async function updatePassword(
   }
 
   user.passwordHash = await auth.encryptPassword(md5(newPassword));
-  await db
-    .update(users)
-    .set({ passwordHash: user.passwordHash })
-    .where(eq(users.id, user.id));
+  await db.update(users).set({ passwordHash: user.passwordHash }).where(eq(users.id, user.id));
 
   return createLoginData(user);
 }

@@ -16,25 +16,22 @@ const { session } = useSession();
 <template>
   <div class="p-8">
     <form
-      class="flex flex-col gap-4 p-8 rounded-lg shadow-2xl shadow-neutral self-center justify-self-center border border-neutral max-w-sm"
+      class="shadow-neutral border-neutral flex max-w-sm flex-col gap-4 self-center justify-self-center rounded-lg border p-8 shadow-2xl"
       @submit.prevent="emit('submit')"
     >
       <template v-if="session">
         <p class="text-base-content/50">Logged in as:</p>
         <div class="flex items-center gap-4">
-          <img :src="session.profileUrl" class="rounded-full size-12" />
-          <p class="font-overpass font-bold text-2xl">{{ session.username }}</p>
+          <img :src="session.profileUrl" class="size-12 rounded-full" />
+          <p class="font-overpass text-2xl font-bold">{{ session.username }}</p>
         </div>
       </template>
 
       <template v-else>
-        <h2 class="text-center font-overpass font-bold text-2xl">
+        <h2 class="font-overpass text-center text-2xl font-bold">
           {{ title }}
         </h2>
-        <h3
-          v-if="subtitle"
-          class="text-center text-sm text-base-content/90 px-8"
-        >
+        <h3 v-if="subtitle" class="text-base-content/90 px-8 text-center text-sm">
           {{ subtitle }}
         </h3>
 

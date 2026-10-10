@@ -7,32 +7,32 @@ const { state: counts } = useGqlCountsQuery();
 
 <template>
   <div
-    class="h-20 bg-secondary/10 mt-8 rounded-lg ring ring-inset ring-secondary/50 flex divide-x divide-secondary/50"
+    class="bg-secondary/10 ring-secondary/50 divide-secondary/50 mt-8 flex h-20 divide-x rounded-lg ring ring-inset"
   >
     <div
-      class="flex-1 text-center flex flex-col items-center justify-center gap-1"
+      class="flex flex-1 flex-col items-center justify-center gap-1 text-center"
       :title="String(counts.shows)"
     >
-      <p class="text-xs text-secondary font-bold">Shows</p>
-      <p class="font-overpass font-black text-2xl">
+      <p class="text-secondary text-xs font-bold">Shows</p>
+      <p class="font-overpass text-2xl font-black">
         <AnimatedNumber :number="counts.shows" :duration="500" />
       </p>
     </div>
     <div
-      class="flex-1 text-center flex flex-col items-center justify-center gap-1"
+      class="flex flex-1 flex-col items-center justify-center gap-1 text-center"
       :title="String(counts.episodes)"
     >
-      <p class="text-xs text-secondary font-bold">Episodes</p>
-      <p class="font-overpass font-black text-2xl">
+      <p class="text-secondary text-xs font-bold">Episodes</p>
+      <p class="font-overpass text-2xl font-black">
         <AnimatedNumber :number="counts.episodes" :duration="1000" />
       </p>
     </div>
     <div
-      class="flex-1 text-center flex flex-col items-center justify-center gap-1"
+      class="flex flex-1 flex-col items-center justify-center gap-1 text-center"
       :title="String(counts.timestamps)"
     >
-      <p class="text-xs text-secondary font-bold">Timestamps</p>
-      <p class="font-overpass font-black text-2xl">
+      <p class="text-secondary text-xs font-bold">Timestamps</p>
+      <p class="font-overpass text-2xl font-black">
         <AnimatedNumber :number="counts.timestamps" :duration="1500" />
       </p>
     </div>

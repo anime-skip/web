@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import type { ApiClient } from "app/composables/useGqlApiClientsQuery";
 import { useClipboard } from "@vueuse/core";
-import { computed, ref } from "vue";
+import type { ApiClient } from "app/composables/useGqlApiClientsQuery";
 import useGqlDeleteApiClientMutation from "app/composables/useGqlDeleteApiClientMutation";
 import useGqlUpdateApiClientMutation from "app/composables/useGqlUpdateApiClientMutation";
+import { computed, ref } from "vue";
 
 const props = defineProps<{
   client: ApiClient;
@@ -28,12 +28,10 @@ const reset = () => {
   description.value = props.client.description;
 };
 
-const { mutate: _deleteApiClient, isPending: isDeleting } =
-  useGqlDeleteApiClientMutation();
+const { mutate: _deleteApiClient, isPending: isDeleting } = useGqlDeleteApiClientMutation();
 const deleteApiClient = () => _deleteApiClient({ id: props.client.id });
 
-const { mutate: _updateApiClient, isPending: isUpdating } =
-  useGqlUpdateApiClientMutation();
+const { mutate: _updateApiClient, isPending: isUpdating } = useGqlUpdateApiClientMutation();
 const updateApiClient = () =>
   _updateApiClient({
     id: props.client.id,
@@ -45,14 +43,14 @@ const updateApiClient = () =>
 </script>
 
 <template>
-  <li class="ring ring-neutral shadow-lg shadow-neutral rounded-lg p-4">
+  <li class="ring-neutral shadow-neutral rounded-lg p-4 shadow-lg ring">
     <form class="flex flex-col gap-4" @submit.prevent="updateApiClient">
       <div>
-        <p class="text-xs font-bold text-base-content/50">Client ID</p>
+        <p class="text-base-content/50 text-xs font-bold">Client ID</p>
         <div class="flex items-center gap-2">
-          <p class="text-lg text-primary font-mono">{{ client.id }}</p>
+          <p class="text-primary font-mono text-lg">{{ client.id }}</p>
           <i
-            class="size-5 text-primary cursor-pointer"
+            class="text-primary size-5 cursor-pointer"
             :class="{
               'i-heroicons-clipboard': !copied,
               'i-heroicons-check': copied,
@@ -63,27 +61,22 @@ const updateApiClient = () =>
       </div>
 
       <label class="flex flex-col gap-1">
-        <p class="text-xs font-bold text-base-content/50">App Name</p>
+        <p class="text-base-content/50 text-xs font-bold">App Name</p>
         <div class="input">
           <input v-model="appName" required />
         </div>
       </label>
 
       <label class="flex flex-col gap-1">
-        <p class="text-xs font-bold text-base-content/50">Description</p>
+        <p class="text-base-content/50 text-xs font-bold">Description</p>
         <div class="input">
-          <textarea
-            class="min-h-24"
-            placeholder="Add a description..."
-            v-model="description"
-          />
+          <textarea class="min-h-24" placeholder="Add a description..." v-model="description" />
         </div>
       </label>
 
       <label class="flex flex-col gap-1">
-        <p class="text-xs font-bold text-base-content/50">
-          Rate Limit (Requests per Minute) - Email support to increase rate
-          limit
+        <p class="text-base-content/50 text-xs font-bold">
+          Rate Limit (Requests per Minute) - Email support to increase rate limit
         </p>
         <div class="input">
           <input type="number" v-model="rateLimitRpm" disabled />
@@ -101,12 +94,7 @@ const updateApiClient = () =>
           Delete
         </button>
         <div class="flex-1" />
-        <button
-          class="btn btn-outline shrink-0"
-          type="button"
-          :disabled="!isDirty"
-          @click="reset"
-        >
+        <button class="btn btn-outline shrink-0" type="button" :disabled="!isDirty" @click="reset">
           {{ isDeleting ? "Deleting..." : "Delete" }}
         </button>
         <button

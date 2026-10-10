@@ -91,13 +91,11 @@ type Mutation {
   """
   Create an episode under a `Show`
   """
-  createEpisode(showId: ID!, episodeInput: InputEpisode!): Episode!
-    @authenticated
+  createEpisode(showId: ID!, episodeInput: InputEpisode!): Episode! @authenticated
   """
   Update episode info
   """
-  updateEpisode(episodeId: ID!, newEpisode: InputEpisode!): Episode!
-    @authenticated
+  updateEpisode(episodeId: ID!, newEpisode: InputEpisode!): Episode! @authenticated
   """
   Delete an episode and all it's child data
 
@@ -109,10 +107,7 @@ type Mutation {
   """
   Link an `Episode` to a service URL
   """
-  createEpisodeUrl(
-    episodeId: ID!
-    episodeUrlInput: InputEpisodeUrl!
-  ): EpisodeUrl! @authenticated
+  createEpisodeUrl(episodeId: ID!, episodeUrlInput: InputEpisodeUrl!): EpisodeUrl! @authenticated
   """
   Unlink an `Episode` to from service URL
 
@@ -122,22 +117,17 @@ type Mutation {
   """
   Update episode url info
   """
-  updateEpisodeUrl(
-    episodeUrl: String!
-    newEpisodeUrl: InputEpisodeUrl!
-  ): EpisodeUrl! @authenticated
+  updateEpisodeUrl(episodeUrl: String!, newEpisodeUrl: InputEpisodeUrl!): EpisodeUrl! @authenticated
 
   # Timestamps
   """
   Add a timestamp to an `Episode`
   """
-  createTimestamp(episodeId: ID!, timestampInput: InputTimestamp!): Timestamp!
-    @authenticated
+  createTimestamp(episodeId: ID!, timestampInput: InputTimestamp!): Timestamp! @authenticated
   """
   Update timestamp data
   """
-  updateTimestamp(timestampId: ID!, newTimestamp: InputTimestamp!): Timestamp!
-    @authenticated
+  updateTimestamp(timestampId: ID!, newTimestamp: InputTimestamp!): Timestamp! @authenticated
   """
   Delete a timestamp
   """
@@ -157,32 +147,27 @@ type Mutation {
 
   > `@hasRole(role: ADMIN)` - The user must have the `ADMIN` role to perform this action
   """
-  createTimestampType(timestampTypeInput: InputTimestampType!): TimestampType!
-    @hasRole(role: ADMIN)
+  createTimestampType(timestampTypeInput: InputTimestampType!): TimestampType! @hasRole(role: ADMIN)
   """
   Update a timestamp type
 
   > `@hasRole(role: ADMIN)` - The user must have the `ADMIN` role to perform this action
   """
-  updateTimestampType(
-    timestampTypeId: ID!
-    newTimestampType: InputTimestampType!
-  ): TimestampType! @hasRole(role: ADMIN)
+  updateTimestampType(timestampTypeId: ID!, newTimestampType: InputTimestampType!): TimestampType!
+    @hasRole(role: ADMIN)
   """
   Delete a timestamp type
 
   > `@hasRole(role: ADMIN)` - The user must have the `ADMIN` role to perform this action
   """
-  deleteTimestampType(timestampTypeId: ID!): TimestampType!
-    @hasRole(role: ADMIN)
+  deleteTimestampType(timestampTypeId: ID!): TimestampType! @hasRole(role: ADMIN)
 
   # Templates
 
   "Make changes to an existing template"
   createTemplate(newTemplate: InputTemplate!): Template! @authenticated
   "Make changes to an existing template"
-  updateTemplate(templateId: ID!, newTemplate: InputTemplate!): Template!
-    @authenticated
+  updateTemplate(templateId: ID!, newTemplate: InputTemplate!): Template! @authenticated
   """
   Delete an existing template
 
@@ -190,19 +175,16 @@ type Mutation {
   """
   deleteTemplate(templateId: ID! @isShowAdmin): Template! @authenticated
   "Add a timestamp to an existing template"
-  addTimestampToTemplate(
-    templateTimestamp: InputTemplateTimestamp!
-  ): TemplateTimestamp! @authenticated
+  addTimestampToTemplate(templateTimestamp: InputTemplateTimestamp!): TemplateTimestamp!
+    @authenticated
   "Remove a timestamp from an existing template"
-  removeTimestampFromTemplate(
-    templateTimestamp: InputTemplateTimestamp!
-  ): TemplateTimestamp! @authenticated
+  removeTimestampFromTemplate(templateTimestamp: InputTemplateTimestamp!): TemplateTimestamp!
+    @authenticated
 
   "Create a new API client for the authenticated user to use"
   createApiClient(client: CreateApiClient!): ApiClient! @authenticated
   "Update one of the authenticated user's API clients"
-  updateApiClient(id: String!, changes: ApiClientChanges!): ApiClient!
-    @authenticated
+  updateApiClient(id: String!, changes: ApiClientChanges!): ApiClient! @authenticated
   "Delete one of the authenticated user's API clients"
   deleteApiClient(id: String!): ApiClient! @authenticated
 
@@ -216,6 +198,5 @@ type Mutation {
 
   > `@hasRole(role: REVIEWER)` - The user must have the `REVIEWER` role to perform this operation.
   """
-  resolveUserReport(id: ID!, resolvedMessage: String): UserReport!
-    @hasRole(role: REVIEWER)
+  resolveUserReport(id: ID!, resolvedMessage: String): UserReport! @hasRole(role: REVIEWER)
 }

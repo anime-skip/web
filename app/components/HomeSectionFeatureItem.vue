@@ -7,13 +7,9 @@ defineProps<{
 </script>
 
 <template>
-  <li
-    class="bg-secondary/10 ring ring-inset ring-secondary/50 p-8 rounded-xl space-y-2"
-  >
-    <p
-      class="text-secondary text-lg font-overpass font-bold flex items-center gap-4"
-    >
-      <span :class="`${icon} size-7 text-secondary`" />
+  <li class="bg-secondary/10 ring-secondary/50 space-y-2 rounded-xl p-8 ring ring-inset">
+    <p class="text-secondary font-overpass flex items-center gap-4 text-lg font-bold">
+      <span :class="`${icon} text-secondary size-7`" />
       <span class="pt-1">{{ feature }}</span>
     </p>
     <p v-if="body">{{ body }}</p>

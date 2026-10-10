@@ -1,11 +1,12 @@
+import { and, eq, inArray, isNull } from "drizzle-orm";
 import {
   timestamps,
   templateTimestamps,
   type DbTimestamp,
   type DbTimestampInsert,
 } from "server/db/schema";
+
 import type { AnimeSkipDatabase } from "./db";
-import { and, eq, inArray, isNull } from "drizzle-orm";
 import type { TemplateTimestampService } from "./template-timestamp-service";
 
 export interface TimestampService {
@@ -36,7 +37,7 @@ export interface TimestampService {
 }
 
 export function createTimestampService({
-  db: _,
+  db: _db,
   templateTimestampService,
 }: {
   db: AnimeSkipDatabase;
@@ -130,10 +131,9 @@ export function createTimestampService({
     const deleted = await softDeleteMany(tx, ids, deletedByUserId, deletedAt);
 
     // 2. Find and delete related template timestamps
-    const relatedTemplateTimestamps =
-      await tx.query.templateTimestamps.findMany({
-        where: inArray(templateTimestamps.timestampId, ids),
-      });
+    const relatedTemplateTimestamps = await tx.query.templateTimestamps.findMany({
+      where: inArray(templateTimestamps.timestampId, ids),
+    });
     if (relatedTemplateTimestamps.length > 0) {
       await templateTimestampService.deleteCascade(
         tx,

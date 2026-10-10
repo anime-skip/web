@@ -1,6 +1,6 @@
-import type { PgTableWithColumns } from "drizzle-orm/pg-core";
-import { inArray } from "drizzle-orm";
 import Dataloader from "dataloader";
+import { inArray } from "drizzle-orm";
+import type { PgTableWithColumns } from "drizzle-orm/pg-core";
 import type { AnimeSkipDatabase } from "server/services/db";
 
 /**
@@ -8,11 +8,9 @@ import type { AnimeSkipDatabase } from "server/services/db";
  * data. It removes any `undefined` fields so they're not set, and keeps any
  * null values so null can be saved in the DB.
  */
-export function prepareGqlInputForDb<T extends Record<string, unknown>>(
-  obj: T,
-): StripNullish<T> {
+export function prepareGqlInputForDb<T extends Record<string, unknown>>(obj: T): StripNullish<T> {
   return Object.fromEntries(
-    Object.entries(obj).filter(([_, value]) => value !== undefined),
+    Object.entries(obj).filter(([_key, value]) => value !== undefined),
   ) as StripNullish<T>;
 }
 

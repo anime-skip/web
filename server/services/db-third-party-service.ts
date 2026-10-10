@@ -1,18 +1,13 @@
+import { and, eq, ilike, isNull } from "drizzle-orm";
 import { episodes, shows, timestamps } from "server/db/schema";
 import type { DbEpisode, DbShow, DbTimestamp } from "server/db/schema";
-import type { AnimeSkipDatabase } from "./db";
-import { and, eq, ilike, isNull } from "drizzle-orm";
-import type { ThirdPartyService } from "./third-party-service";
 import { mapDbTimestampTypeToGqlTimestampType } from "server/graphql/mappers";
 
-export function createDbThirdPartyService({
-  db,
-}: {
-  db: AnimeSkipDatabase;
-}): ThirdPartyService {
-  const findEpisodeByName: ThirdPartyService["findEpisodeByName"] = async (
-    name,
-  ) => {
+import type { AnimeSkipDatabase } from "./db";
+import type { ThirdPartyService } from "./third-party-service";
+
+export function createDbThirdPartyService({ db }: { db: AnimeSkipDatabase }): ThirdPartyService {
+  const findEpisodeByName: ThirdPartyService["findEpisodeByName"] = async (name) => {
     // Find episodes where name contains the search string (case-insensitive)
     const matchingEpisodes = await db.query.episodes.findMany({
       where: and(ilike(episodes.name, `%${name}%`), isNull(episodes.deletedAt)),
@@ -33,20 +28,14 @@ export function createDbThirdPartyService({
 
       // Find timestamps for this episode
       const episodeTimestamps = await db.query.timestamps.findMany({
-        where: and(
-          eq(timestamps.episodeId, episode.id),
-          isNull(timestamps.deletedAt),
-        ),
+        where: and(eq(timestamps.episodeId, episode.id), isNull(timestamps.deletedAt)),
       });
 
       const types = await db.query.timestampTypes.findMany();
-      const typeMap = types.reduce<Record<string, GqlTimestampType>>(
-        (map, type) => {
-          map[type.id] = mapDbTimestampTypeToGqlTimestampType(type);
-          return map;
-        },
-        {},
-      );
+      const typeMap = types.reduce<Record<string, GqlTimestampType>>((map, type) => {
+        map[type.id] = mapDbTimestampTypeToGqlTimestampType(type);
+        return map;
+      }, {});
 
       // Map to third-party types
       const thirdPartyShow = mapToThirdPartyShow(show);

@@ -1,11 +1,13 @@
-import { defineConfig } from "@aklinker1/aframe";
 import { join } from "node:path";
+
+import { defineConfig } from "@aklinker1/aframe";
 import tailwindcss from "@tailwindcss/vite";
 import vue from "@vitejs/plugin-vue";
 import markdown from "unplugin-vue-markdown/vite";
 
 export default defineConfig({
   proxyPaths: ["/api", "/openapi.json", "/scalar", "/playground"],
+  compile: false,
   vite: {
     plugins: [
       vue({

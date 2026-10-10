@@ -1,6 +1,6 @@
 <template>
   <div class="bg-black">
-    <div class="max-w-7xl mx-auto footer">
+    <div class="footer mx-auto max-w-7xl">
       <ul>
         <li class="footer-title">Anime Skip</li>
         <li>

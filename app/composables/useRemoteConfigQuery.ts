@@ -5,13 +5,9 @@ export default function () {
   return useQuery({
     queryKey: [VueQueryKey.remoteConfig],
     queryFn: async (): Promise<RemoteConfig> => {
-      const res = await fetch(
-        "https://remote-config.anime-skip.com/api/config/anime-skip.com",
-      );
+      const res = await fetch("https://remote-config.anime-skip.com/api/config/anime-skip.com");
       if (!res.ok) {
-        throw new Error(
-          "Something went wrong: " + ((await res.text()) || "Unknown"),
-        );
+        throw new Error("Something went wrong: " + ((await res.text()) || "Unknown"));
       }
       return await res.json();
     },

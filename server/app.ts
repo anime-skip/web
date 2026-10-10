@@ -1,15 +1,16 @@
 import { fetchStatic } from "@aklinker1/aframe/server";
 import { createApp } from "@aklinker1/zeta";
 import { zodSchemaAdapter } from "@aklinker1/zeta/adapters/zod-schema-adapter";
+import apiDocs from "server/assets/api-docs.md" with { type: "text" };
+import { SHARED_CLIENT_ID } from "shared/constants";
+import { version } from "shared/version";
+
+import { graphqlApis } from "./api/graphql-apis";
+import { graphqlPlaygroundApis } from "./api/graphql-playground-apis";
+import { systemApis } from "./api/system-apis";
+import { OpenApiSecurityScheme, OpenApiTag } from "./enums";
 import { applyRateLimit } from "./plugins/apply-rate-limit";
 import { requireApiClient } from "./plugins/require-api-client";
-import { graphqlApis } from "./api/graphql-apis";
-import { systemApis } from "./api/system-apis";
-import { graphqlPlaygroundApis } from "./api/graphql-playground-apis";
-import { SHARED_CLIENT_ID } from "shared/constants";
-import { OpenApiSecurityScheme, OpenApiTag } from "./enums";
-import apiDocs from "server/assets/api-docs.md" with { type: "text" };
-import { version } from "shared/version";
 
 const apiApp = createApp({ prefix: "/api" })
   // Don't require API Clients

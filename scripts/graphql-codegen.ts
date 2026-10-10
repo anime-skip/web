@@ -1,11 +1,12 @@
-import { typeDefs } from "server/graphql/type-defs";
+import { styleText } from "node:util";
+
+import { createLogger } from "@aklinker1/logger";
 import { codegen } from "@graphql-codegen/core";
+import type { CodegenPlugin } from "@graphql-codegen/plugin-helpers";
 import * as typescriptPlugin from "@graphql-codegen/typescript";
 import * as typescriptResolversPlugin from "@graphql-codegen/typescript-resolvers";
-import { createLogger } from "@aklinker1/logger";
+import { typeDefs } from "server/graphql/type-defs";
 import { createTimer } from "shared/time";
-import type { CodegenPlugin } from "@graphql-codegen/plugin-helpers";
-import { styleText } from "node:util";
 
 const logger = createLogger("graphql-codegen");
 
@@ -17,15 +18,12 @@ export async function generateGraphqlCode() {
   logger.debug(`  - Resolvers: ${styleText("cyan", "./" + resolversOutput)}`);
   const codegenTimer = createTimer();
 
-  await generate<typescriptPlugin.TypeScriptPluginConfig>(
-    typesOutput,
-    typescriptPlugin,
-    {
-      typesPrefix: "Gql",
-      noExport: true,
-      enumsAsTypes: true,
-    },
-  );
+  await generate<typescriptPlugin.TypeScriptPluginConfig>(typesOutput, typescriptPlugin, {
+    typesPrefix: "Gql",
+    noExport: true,
+    enumsAsTypes: true,
+    defaultScalarType: "any",
+  });
   await generate<typescriptResolversPlugin.TypeScriptResolversPluginConfig>(
     resolversOutput,
     typescriptResolversPlugin,
@@ -33,10 +31,11 @@ export async function generateGraphqlCode() {
       contextType: "server/graphql/context.ts#GqlContext",
       useTypeImports: true,
       typesPrefix: "Gql",
+      defaultScalarType: "any",
     },
   );
 
-  logger.info("Generated in", { duration: codegenTimer.duration() });
+  logger.success("Done", { duration: codegenTimer.duration() });
 }
 
 // oxlint-lint-ignore ban-types
@@ -60,10 +59,7 @@ async function generate<T extends {}>(
     },
   });
 
-  await Bun.write(
-    filename,
-    `// oxlint-lint-ignore-file\n// prettier-ignore\n${code}`,
-  );
+  await Bun.write(filename, `// oxlint-lint-ignore-file\n// prettier-ignore\n${code}`);
 }
 
 if (import.meta.main) await generateGraphqlCode();

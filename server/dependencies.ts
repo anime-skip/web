@@ -1,7 +1,12 @@
-import { openAnimeSkipDatabase } from "server/services/db";
 import { createIocContainer } from "@aklinker1/zero-ioc";
+import { openAnimeSkipDatabase } from "server/services/db";
+
+import { createAggregateExternalLinkService } from "./services/aggregate-external-link-service";
+import { createAggregateThirdPartyService } from "./services/aggregate-third-party-service";
+import { createAnilistExternalLinkService } from "./services/anilist-external-link-service";
 import { createApiClientService } from "./services/api-client-service";
-import { createUserService } from "./services/user-service";
+import { createDbThirdPartyService } from "./services/db-third-party-service";
+import { createEpisodeService } from "./services/episode-service";
 import { createEpisodeUrlService } from "./services/episode-url-service";
 import { createExternalLinkService } from "./services/external-link-service";
 import { createPreferencesService } from "./services/preferences-service";
@@ -12,11 +17,7 @@ import { createTemplateTimestampService } from "./services/template-timestamp-se
 import { createTimestampService } from "./services/timestamp-service";
 import { createTimestampTypeService } from "./services/timestamp-type-service";
 import { createUserReportService } from "./services/user-report-service";
-import { createEpisodeService } from "./services/episode-service";
-import { createAggregateThirdPartyService } from "./services/aggregate-third-party-service";
-import { createDbThirdPartyService } from "./services/db-third-party-service";
-import { createAnilistExternalLinkService } from "./services/anilist-external-link-service";
-import { createAggregateExternalLinkService } from "./services/aggregate-external-link-service";
+import { createUserService } from "./services/user-service";
 
 const db = await openAnimeSkipDatabase();
 

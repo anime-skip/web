@@ -1,22 +1,17 @@
 <script lang="ts" setup>
-import LoginCard from "app/components/LoginCard.vue";
-import DefaultLayout from "app/layouts/DefaultLayout.vue";
-import useGqlLoginQuery from "app/composables/useGqlLoginQuery";
-import { ref } from "vue";
-import { whenever } from "@vueuse/core";
 import { useHead } from "@unhead/vue";
+import { whenever } from "@vueuse/core";
+import LoginCard from "app/components/LoginCard.vue";
+import useGqlLoginQuery from "app/composables/useGqlLoginQuery";
 import useSession from "app/composables/useSession";
+import DefaultLayout from "app/layouts/DefaultLayout.vue";
+import { ref } from "vue";
 
 useHead({
   title: "Sign In – Anime Skip",
 });
 
-const {
-  state: loginData,
-  execute: _login,
-  error,
-  isLoading,
-} = useGqlLoginQuery();
+const { state: loginData, execute: _login, error, isLoading } = useGqlLoginQuery();
 
 const username = ref("");
 const password = ref("");
@@ -79,9 +74,9 @@ whenever(loginData, (loginData) => logIn(loginData));
         </p>
       </div>
 
-      <div class="h-px bg-neutral w-full" />
+      <div class="bg-neutral h-px w-full" />
 
-      <p class="text-sm text-center">
+      <p class="text-center text-sm">
         New to Anime Skip?
         <RouterLink class="link" to="/sign-up">Create an account</RouterLink>
       </p>

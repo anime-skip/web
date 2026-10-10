@@ -1,3 +1,4 @@
+import { sql } from "drizzle-orm";
 import {
   boolean,
   index,
@@ -12,7 +13,6 @@ import {
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
-import { sql } from "drizzle-orm";
 
 const createdAt = timestamp({ withTimezone: true, mode: "string" })
   .default(sql`CURRENT_TIMESTAMP`)
@@ -57,10 +57,7 @@ export const users = pgTable(
     role: integer().notNull(),
   },
   (table) => [
-    uniqueIndex("user_username").using(
-      "btree",
-      table.username.asc().nullsLast().op("text_ops"),
-    ),
+    uniqueIndex("user_username").using("btree", table.username.asc().nullsLast().op("text_ops")),
   ],
 );
 export type DbUser = typeof users.$inferSelect;
@@ -105,18 +102,12 @@ export const userReports = pgTable(
       "btree",
       table.episodeUrl.asc().nullsLast().op("text_ops"),
     ),
-    index("idx_user_report_show_id").using(
-      "btree",
-      table.showId.asc().nullsLast().op("uuid_ops"),
-    ),
+    index("idx_user_report_show_id").using("btree", table.showId.asc().nullsLast().op("uuid_ops")),
     index("idx_user_report_timestamp_id").using(
       "btree",
       table.timestampId.asc().nullsLast().op("uuid_ops"),
     ),
-    index("idx_user_resolved").using(
-      "btree",
-      table.resolved.asc().nullsLast().op("bool_ops"),
-    ),
+    index("idx_user_resolved").using("btree", table.resolved.asc().nullsLast().op("bool_ops")),
   ],
 );
 export type DbUserReport = typeof userReports.$inferSelect;
@@ -223,10 +214,7 @@ export const templates = pgTable(
     sourceEpisodeId: uuid().notNull(),
   },
   (table) => [
-    index("idx_template_show_id").using(
-      "btree",
-      table.showId.asc().nullsLast().op("uuid_ops"),
-    ),
+    index("idx_template_show_id").using("btree", table.showId.asc().nullsLast().op("uuid_ops")),
     index("idx_template_source_episode_id").using(
       "btree",
       table.sourceEpisodeId.asc().nullsLast().op("uuid_ops"),

@@ -1,15 +1,10 @@
-import {
-  episodes,
-  templates,
-  timestamps,
-  episodeUrls,
-  type DbEpisode,
-} from "server/db/schema";
-import type { AnimeSkipDatabase } from "./db";
 import { inArray, isNull, and } from "drizzle-orm";
+import { episodes, templates, timestamps, episodeUrls, type DbEpisode } from "server/db/schema";
+
+import type { AnimeSkipDatabase } from "./db";
+import type { EpisodeUrlService } from "./episode-url-service";
 import type { TemplateService } from "./template-service";
 import type { TimestampService } from "./timestamp-service";
-import type { EpisodeUrlService } from "./episode-url-service";
 
 export interface EpisodeService {
   softDeleteMany(
@@ -27,7 +22,7 @@ export interface EpisodeService {
 }
 
 export function createEpisodeService({
-  db: _,
+  db: _db,
   templateService,
   timestampService,
   episodeUrlService,
@@ -74,10 +69,7 @@ export function createEpisodeService({
 
     // 2. Find and cascade delete related templates (by sourceEpisodeId)
     const relatedTemplates = await tx.query.templates.findMany({
-      where: and(
-        inArray(templates.sourceEpisodeId, ids),
-        isNull(templates.deletedAt),
-      ),
+      where: and(inArray(templates.sourceEpisodeId, ids), isNull(templates.deletedAt)),
     });
     if (relatedTemplates.length > 0) {
       await templateService.softDeleteCascade(
@@ -90,10 +82,7 @@ export function createEpisodeService({
 
     // 3. Find and cascade delete related timestamps
     const relatedTimestamps = await tx.query.timestamps.findMany({
-      where: and(
-        inArray(timestamps.episodeId, ids),
-        isNull(timestamps.deletedAt),
-      ),
+      where: and(inArray(timestamps.episodeId, ids), isNull(timestamps.deletedAt)),
     });
     if (relatedTimestamps.length > 0) {
       await timestampService.softDeleteCascade(

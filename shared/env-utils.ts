@@ -1,7 +1,6 @@
 export function requireString(envName: string): string {
   const value = import.meta.env[envName];
-  if (!value)
-    throw new Error(`Missing required environment variable: ${envName}`);
+  if (!value) throw new Error(`Missing required environment variable: ${envName}`);
 
   return value;
 }
@@ -16,14 +15,10 @@ export function optionalString(envName: string): string | undefined {
 
 export function requireInt(envName: string): number {
   const value = import.meta.env[envName];
-  if (!value)
-    throw new Error(`Missing required environment variable: ${envName}`);
+  if (!value) throw new Error(`Missing required environment variable: ${envName}`);
 
   const parsed = parseInt(value);
-  if (isNaN(parsed))
-    throw new Error(
-      `Invalid integer value for environment variable: ${envName}`,
-    );
+  if (isNaN(parsed)) throw new Error(`Invalid integer value for environment variable: ${envName}`);
 
   return parsed;
 }
@@ -32,37 +27,24 @@ export function int(envName: string, defaultValue: number): number {
   if (import.meta.env[envName] == null) return defaultValue;
 
   const value = parseInt(import.meta.env[envName]);
-  if (isNaN(value))
-    throw Error(`Invalid integer value for environment variable: ${envName}`);
+  if (isNaN(value)) throw Error(`Invalid integer value for environment variable: ${envName}`);
 
   return value;
 }
 
-export function boolean(
-  envName: string,
-  defaultValue: boolean = false,
-): boolean {
+export function boolean(envName: string, defaultValue: boolean = false): boolean {
   if (import.meta.env[envName] == null) return defaultValue;
-  return ["true", "yes", "t", "y", ""].includes(
-    import.meta.env[envName].toLowerCase(),
-  );
+  return ["true", "yes", "t", "y", ""].includes(import.meta.env[envName].toLowerCase());
 }
 
-export function enumValue<T>(
-  envName: string,
-  valueMap: Record<string, T>,
-  defaultValue: T,
-): T {
+export function enumValue<T>(envName: string, valueMap: Record<string, T>, defaultValue: T): T {
   const value = import.meta.env[envName];
   if (value == null) return defaultValue;
 
   return valueMap[value] ?? defaultValue;
 }
 
-export function stringArray(
-  envName: string,
-  defaultValue: string[] = [],
-): string[] {
+export function stringArray(envName: string, defaultValue: string[] = []): string[] {
   const value = import.meta.env[envName];
   if (!value) return defaultValue;
 

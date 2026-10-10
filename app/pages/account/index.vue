@@ -9,8 +9,8 @@ useRequireSession();
 <template>
   <ContentLayout>
     <div class="flex flex-col md:flex-row">
-      <div class="md:w-64 md:self-start md:sticky md:top-main-navigation">
-        <ul class="menu m-8 mb-0 md:m-8 md:mr-0 rounded-lg bg-neutral">
+      <div class="md:top-main-navigation md:sticky md:w-64 md:self-start">
+        <ul class="menu bg-neutral m-8 mb-0 rounded-lg md:m-8 md:mr-0">
           <li>
             <RouterLink class="menu-item" to="/account">
               <i class="i-heroicons-user"></i>
@@ -31,7 +31,7 @@ useRequireSession();
           </li>
         </ul>
       </div>
-      <div class="flex-1 m-8 flex flex-col gap-4">
+      <div class="m-8 flex flex-1 flex-col gap-4">
         <RouterView />
       </div>
     </div>

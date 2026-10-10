@@ -1,14 +1,9 @@
-import { DAY, MINUTE, toSeconds } from "shared/time";
-import { jwtVerify, SignJWT } from "jose";
 import bcrypt from "bcryptjs";
+import { jwtVerify, SignJWT } from "jose";
 import { env } from "server/env";
+import { DAY, MINUTE, toSeconds } from "shared/time";
 
-type TokenKind =
-  | "access"
-  | "refresh"
-  | "verify-email"
-  | "reset-password"
-  | "delete-account";
+type TokenKind = "access" | "refresh" | "verify-email" | "reset-password" | "delete-account";
 
 const TIMEOUTS: Record<TokenKind, number> = {
   access: 7 * DAY,
@@ -64,10 +59,7 @@ export const auth = {
   },
 
   /** Check a password against an existing hash. */
-  comparePasswords: async (
-    checkPassword: string,
-    againstHash: string,
-  ): Promise<boolean> => {
+  comparePasswords: async (checkPassword: string, againstHash: string): Promise<boolean> => {
     return await bcrypt.compare(checkPassword, againstHash);
   },
 

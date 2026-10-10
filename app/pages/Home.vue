@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 import { useHead } from "@unhead/vue";
-import HomeSectionHero from "../components/HomeSectionHero.vue";
-import HomeSectionFeatures from "../components/HomeSectionFeatures.vue";
-import HomeSectionApi from "../components/HomeSectionApi.vue";
+import HomeSectionRecentlyAdded from "app/components/HomeSectionRecentlyAdded.vue";
 import MainFooter from "app/components/MainFooter.vue";
 import MainNavigation from "app/components/MainNavigation.vue";
-import HomeSectionRecentlyAdded from "app/components/HomeSectionRecentlyAdded.vue";
+
+import HomeSectionApi from "../components/HomeSectionApi.vue";
+import HomeSectionFeatures from "../components/HomeSectionFeatures.vue";
+import HomeSectionHero from "../components/HomeSectionHero.vue";
 
 useHead({
   title: "Anime Skip",

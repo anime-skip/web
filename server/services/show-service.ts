@@ -1,3 +1,4 @@
+import { inArray, isNull, and } from "drizzle-orm";
 import {
   shows,
   showAdmins,
@@ -6,12 +7,12 @@ import {
   externalLinks,
   type DbShow,
 } from "server/db/schema";
+
 import type { AnimeSkipDatabase } from "./db";
-import { inArray, isNull, and } from "drizzle-orm";
-import type { ShowAdminService } from "./show-admin-service";
-import type { TemplateService } from "./template-service";
 import type { EpisodeService } from "./episode-service";
 import type { ExternalLinkService } from "./external-link-service";
+import type { ShowAdminService } from "./show-admin-service";
+import type { TemplateService } from "./template-service";
 
 export interface ShowService {
   softDeleteMany(
@@ -29,7 +30,7 @@ export interface ShowService {
 }
 
 export function createShowService({
-  db: _,
+  db: _db,
   showAdminService,
   templateService,
   episodeService,

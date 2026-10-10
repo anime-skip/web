@@ -1,5 +1,5 @@
-import { queryGraphql } from "app/utils/graphql-utils";
 import { useQuery } from "@tanstack/vue-query";
+import { queryGraphql } from "app/utils/graphql-utils";
 import { VueQueryKey } from "app/utils/vue-query-keys";
 
 export default function () {
@@ -15,10 +15,7 @@ export default function () {
   });
 }
 
-export type TimestampType = Pick<
-  GqlTimestampType,
-  "id" | "name" | "description"
->;
+export type TimestampType = Pick<GqlTimestampType, "id" | "name" | "description">;
 
 const QUERY = `
   query AllTimestampTypes {

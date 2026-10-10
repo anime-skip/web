@@ -1,6 +1,7 @@
-import { timestampTypes, type DbTimestampType } from "server/db/schema";
-import type { AnimeSkipDatabase } from "./db";
 import { inArray } from "drizzle-orm";
+import { timestampTypes, type DbTimestampType } from "server/db/schema";
+
+import type { AnimeSkipDatabase } from "./db";
 
 export interface TimestampTypeService {
   softDeleteMany(
@@ -18,7 +19,7 @@ export interface TimestampTypeService {
 }
 
 export function createTimestampTypeService({
-  db: _,
+  db: _db,
 }: {
   db: AnimeSkipDatabase;
 }): TimestampTypeService {

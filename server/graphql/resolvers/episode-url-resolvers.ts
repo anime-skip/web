@@ -1,13 +1,10 @@
-import type { GqlResolvers } from "server/graphql/resolver-types.gen";
-import type { GqlContext } from "server/graphql/context";
 import { eq } from "drizzle-orm";
 import { type DbEpisodeUrlInsert, episodeUrls } from "server/db/schema";
-import {
-  mapDbEpisodeUrlToGqlEpisodeUrl,
-  mapUrlToDbEpisodeSource,
-} from "server/graphql/mappers";
-import type { NoOptionals } from "shared/types";
+import type { GqlContext } from "server/graphql/context";
+import { mapDbEpisodeUrlToGqlEpisodeUrl, mapUrlToDbEpisodeSource } from "server/graphql/mappers";
+import type { GqlResolvers } from "server/graphql/resolver-types.gen";
 import { prepareGqlInputForDb } from "server/utils/drizzle-utils";
+import type { NoOptionals } from "shared/types";
 
 export const episodeUrlResolvers: GqlResolvers = {
   Mutation: {
@@ -21,9 +18,7 @@ export const episodeUrlResolvers: GqlResolvers = {
         updatedAt: now.toISOString(),
         updatedByUserId: userId,
         duration:
-          args.episodeUrlInput.duration == null
-            ? null
-            : String(args.episodeUrlInput.duration),
+          args.episodeUrlInput.duration == null ? null : String(args.episodeUrlInput.duration),
         episodeId: args.episodeId,
         source: mapUrlToDbEpisodeSource(args.episodeUrlInput.url),
         timestampsOffset:
@@ -71,21 +66,17 @@ export const episodeUrlResolvers: GqlResolvers = {
     },
   },
   Query: {
-    findEpisodeUrl: (_parent, args, ctx) =>
-      ctx.dataloaders.episodeUrls.load(args.episodeUrl),
+    findEpisodeUrl: (_parent, args, ctx) => ctx.dataloaders.episodeUrls.load(args.episodeUrl),
 
     findEpisodeUrlsByEpisodeId: (_parent, args, ctx) =>
       getEpisodeUrlsByEpisodeId(ctx, args.episodeId),
   },
   EpisodeUrl: {
-    createdBy: ({ createdByUserId: id }, _, ctx) =>
-      ctx.dataloaders.users.load(id),
+    createdBy: ({ createdByUserId: id }, _, ctx) => ctx.dataloaders.users.load(id),
 
-    updatedBy: ({ updatedByUserId: id }, _, ctx) =>
-      ctx.dataloaders.users.load(id),
+    updatedBy: ({ updatedByUserId: id }, _, ctx) => ctx.dataloaders.users.load(id),
 
-    episode: (parent, _args, ctx) =>
-      ctx.dataloaders.episodes.load(parent.episodeId),
+    episode: (parent, _args, ctx) => ctx.dataloaders.episodes.load(parent.episodeId),
 
     url: (parent, _args, _ctx) => cleanEpisodeUrl(parent.url),
   },

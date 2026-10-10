@@ -1,9 +1,9 @@
-import type { GqlResolvers } from "server/graphql/resolver-types.gen";
-import { mapDbTimestampTypeToGqlTimestampType } from "server/graphql/mappers";
-import type { NoOptionals } from "shared/types";
-import { type DbTimestampTypeInsert, timestampTypes } from "server/db/schema";
-import { prepareGqlInputForDb } from "server/utils/drizzle-utils";
 import { eq } from "drizzle-orm";
+import { type DbTimestampTypeInsert, timestampTypes } from "server/db/schema";
+import { mapDbTimestampTypeToGqlTimestampType } from "server/graphql/mappers";
+import type { GqlResolvers } from "server/graphql/resolver-types.gen";
+import { prepareGqlInputForDb } from "server/utils/drizzle-utils";
+import type { NoOptionals } from "shared/types";
 
 export const timestampTypeResolvers: GqlResolvers = {
   Mutation: {
@@ -20,10 +20,7 @@ export const timestampTypeResolvers: GqlResolvers = {
         description: args.timestampTypeInput.description,
         name: args.timestampTypeInput.name,
       };
-      const [row] = await ctx.db
-        .insert(timestampTypes)
-        .values(value)
-        .returning();
+      const [row] = await ctx.db.insert(timestampTypes).values(value).returning();
       return mapDbTimestampTypeToGqlTimestampType(row);
     },
 
@@ -47,13 +44,7 @@ export const timestampTypeResolvers: GqlResolvers = {
       const userId = ctx.authUserId!;
       const now = new Date();
       const [deleted] = await ctx.db.transaction(
-        (tx) =>
-          ctx.timestampTypeService.softDeleteMany(
-            tx,
-            [args.timestampTypeId],
-            userId,
-            now,
-          ),
+        (tx) => ctx.timestampTypeService.softDeleteMany(tx, [args.timestampTypeId], userId, now),
         { accessMode: "read write" },
       );
       if (!deleted) {
@@ -72,13 +63,10 @@ export const timestampTypeResolvers: GqlResolvers = {
     },
   },
   TimestampType: {
-    createdBy: ({ createdByUserId: id }, _, ctx) =>
-      ctx.dataloaders.users.load(id),
+    createdBy: ({ createdByUserId: id }, _, ctx) => ctx.dataloaders.users.load(id),
 
-    updatedBy: ({ updatedByUserId: id }, _, ctx) =>
-      ctx.dataloaders.users.load(id),
+    updatedBy: ({ updatedByUserId: id }, _, ctx) => ctx.dataloaders.users.load(id),
 
-    deletedBy: ({ deletedByUserId: id }, _, ctx) =>
-      id ? ctx.dataloaders.users.load(id) : null,
+    deletedBy: ({ deletedByUserId: id }, _, ctx) => (id ? ctx.dataloaders.users.load(id) : null),
   },
 };

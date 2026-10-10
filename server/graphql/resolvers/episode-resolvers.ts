@@ -1,24 +1,14 @@
+import { and, asc, desc, eq, ilike, inArray, isNull, sql, type SQLWrapper } from "drizzle-orm";
+import { type DbEpisodeInsert, episodes } from "server/db/schema";
+import type { GqlContext } from "server/graphql/context";
+import { mapDbEpisodeToGqlEpisode } from "server/graphql/mappers";
 import type { GqlResolvers } from "server/graphql/resolver-types.gen";
 import { getEpisodeUrlsByEpisodeId } from "server/graphql/resolvers/episode-url-resolvers";
 import { getTemplateByEpisodeId } from "server/graphql/resolvers/template-resolvers";
-import { getUserReportsByEpisodeId } from "server/graphql/resolvers/user-report-resolvers";
 import { getTimestampsByEpisodeId } from "server/graphql/resolvers/timestamp-resolvers";
-import type { GqlContext } from "server/graphql/context";
-import { type DbEpisodeInsert, episodes } from "server/db/schema";
-import {
-  and,
-  asc,
-  desc,
-  eq,
-  ilike,
-  inArray,
-  isNull,
-  sql,
-  type SQLWrapper,
-} from "drizzle-orm";
-import { mapDbEpisodeToGqlEpisode } from "server/graphql/mappers";
-import type { NoOptionals } from "shared/types";
+import { getUserReportsByEpisodeId } from "server/graphql/resolvers/user-report-resolvers";
 import { prepareGqlInputForDb } from "server/utils/drizzle-utils";
+import type { NoOptionals } from "shared/types";
 
 export const episodeResolvers: GqlResolvers = {
   Mutation: {
@@ -64,8 +54,7 @@ export const episodeResolvers: GqlResolvers = {
       const userId = ctx.authUserId!;
       const now = new Date();
       const [deleted] = await ctx.db.transaction(
-        (tx) =>
-          ctx.episodeService.softDeleteMany(tx, [args.episodeId], userId, now),
+        (tx) => ctx.episodeService.softDeleteMany(tx, [args.episodeId], userId, now),
         { accessMode: "read write" },
       );
       if (!deleted) {
@@ -105,11 +94,9 @@ export const episodeResolvers: GqlResolvers = {
       return res.map(mapDbEpisodeToGqlEpisode);
     },
 
-    findEpisode: (_parent, args, ctx) =>
-      ctx.dataloaders.episodes.load(args.episodeId),
+    findEpisode: (_parent, args, ctx) => ctx.dataloaders.episodes.load(args.episodeId),
 
-    findEpisodesByShowId: (_parent, args, ctx) =>
-      getEpisodesByShowId(ctx, args.showId),
+    findEpisodesByShowId: (_parent, args, ctx) => getEpisodesByShowId(ctx, args.showId),
 
     searchEpisodes: async (_parent, args, ctx) => {
       const where: SQLWrapper[] = [];
@@ -129,33 +116,25 @@ export const episodeResolvers: GqlResolvers = {
       ctx.thirdPartyService.findEpisodeByName(args.name),
   },
   Episode: {
-    createdBy: ({ createdByUserId: id }, _, ctx) =>
-      ctx.dataloaders.users.load(id),
+    createdBy: ({ createdByUserId: id }, _, ctx) => ctx.dataloaders.users.load(id),
 
-    updatedBy: ({ updatedByUserId: id }, _, ctx) =>
-      ctx.dataloaders.users.load(id),
+    updatedBy: ({ updatedByUserId: id }, _, ctx) => ctx.dataloaders.users.load(id),
 
-    deletedBy: ({ deletedByUserId: id }, _, ctx) =>
-      id ? ctx.dataloaders.users.load(id) : null,
+    deletedBy: ({ deletedByUserId: id }, _, ctx) => (id ? ctx.dataloaders.users.load(id) : null),
 
     show: (parent, _args, ctx) => ctx.dataloaders.shows.load(parent.showId),
 
-    timestamps: (parent, _args, ctx) =>
-      getTimestampsByEpisodeId(ctx, parent.id),
+    timestamps: (parent, _args, ctx) => getTimestampsByEpisodeId(ctx, parent.id),
 
     urls: (parent, _args, ctx) => getEpisodeUrlsByEpisodeId(ctx, parent.id),
 
     template: (parent, _args, ctx) => getTemplateByEpisodeId(ctx, parent.id),
 
-    userReports: (parent, _args, ctx) =>
-      getUserReportsByEpisodeId(ctx, parent.id),
+    userReports: (parent, _args, ctx) => getUserReportsByEpisodeId(ctx, parent.id),
   },
 };
 
-export async function getEpisodesByShowId(
-  ctx: GqlContext,
-  showId: string,
-): Promise<GqlEpisode[]> {
+export async function getEpisodesByShowId(ctx: GqlContext, showId: string): Promise<GqlEpisode[]> {
   const rows = await ctx.db.query.episodes.findMany({
     where: and(eq(episodes.showId, showId), isNull(episodes.deletedAt)),
   });

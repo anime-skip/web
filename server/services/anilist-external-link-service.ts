@@ -1,12 +1,11 @@
 import { createLogger } from "@aklinker1/logger";
+
 import type { ExternalLinkLookupService } from "./external-link-lookup-service";
 
 const logger = createLogger("anilist-external-link-service");
 
 export function createAnilistExternalLinkService(): ExternalLinkLookupService {
-  const findLinks: ExternalLinkLookupService["findLinks"] = async (
-    showName,
-  ) => {
+  const findLinks: ExternalLinkLookupService["findLinks"] = async (showName) => {
     const query = `
       query ($search: String) {
         anime: Page(perPage: 1) {

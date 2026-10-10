@@ -1,7 +1,7 @@
-import { createDrizzleDataloader } from "server/utils/drizzle-utils";
 import * as tables from "server/db/schema";
-import * as mappers from "server/graphql/mappers";
 import type { Dependencies } from "server/dependencies";
+import * as mappers from "server/graphql/mappers";
+import { createDrizzleDataloader } from "server/utils/drizzle-utils";
 
 export function createGqlContext(
   ctx: Dependencies & {

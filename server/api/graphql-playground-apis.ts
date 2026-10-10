@@ -1,9 +1,9 @@
 import { createApp } from "@aklinker1/zeta";
 import dedent from "dedent";
 import playgroundHtmlTemplate from "server/assets/playground.html.tpl" with { type: "text" };
+import { OpenApiTag } from "server/enums";
 import { SHARED_CLIENT_ID } from "shared/constants";
 import { GetGraphqlPlaygroundOutput } from "shared/models";
-import { OpenApiTag } from "server/enums";
 import { version } from "shared/version";
 
 export const graphqlPlaygroundApis = createApp().get(

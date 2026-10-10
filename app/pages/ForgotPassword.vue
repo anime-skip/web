@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import LoginCard from "app/components/LoginCard.vue";
-import DefaultLayout from "app/layouts/DefaultLayout.vue";
-import useGqlRequestPasswordResetMutation from "app/composables/useGqlRequestPasswordResetMutation";
-import { ref } from "vue";
-import { whenever } from "@vueuse/core";
-import { useRoute, useRouter } from "vue-router";
-import md5 from "md5";
 import { useHead } from "@unhead/vue";
+import { whenever } from "@vueuse/core";
+import LoginCard from "app/components/LoginCard.vue";
+import useGqlRequestPasswordResetMutation from "app/composables/useGqlRequestPasswordResetMutation";
+import DefaultLayout from "app/layouts/DefaultLayout.vue";
 import { RECAPTCHA_SCRIPT } from "app/utils/recaptcha-utils";
+import md5 from "md5";
+import { ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
 useHead({
   title: "Forgot Password – Anime Skip",
@@ -23,8 +23,7 @@ const {
   isSuccess,
 } = useGqlRequestPasswordResetMutation();
 
-const requestPasswordReset = () =>
-  _requestPasswordReset({ email: email.value });
+const requestPasswordReset = () => _requestPasswordReset({ email: email.value });
 </script>
 
 <template>
@@ -39,8 +38,8 @@ const requestPasswordReset = () =>
       <div v-if="isSuccess" class="alert">
         <i class="i-heroicons-exclaimation-circle size-5" />
         <p>
-          An email has been sent to your email address with instructions on how
-          to reset your password.
+          An email has been sent to your email address with instructions on how to reset your
+          password.
         </p>
       </div>
 
@@ -48,21 +47,11 @@ const requestPasswordReset = () =>
         <!-- Email -->
         <label class="input">
           <i class="i-heroicons-envelope" />
-          <input
-            placeholder="Email"
-            autocomplete="email"
-            required
-            v-model="email"
-          />
+          <input placeholder="Email" autocomplete="email" required v-model="email" />
         </label>
 
         <!-- Submit -->
-        <button
-          type="submit"
-          class="btn text-sm"
-          :disabled="isPending"
-          :loading="isPending"
-        >
+        <button type="submit" class="btn text-sm" :disabled="isPending" :loading="isPending">
           {{ isPending ? "Resetting Password..." : "Reset Password" }}
         </button>
       </template>
@@ -75,9 +64,9 @@ const requestPasswordReset = () =>
         </p>
       </div>
 
-      <div class="h-px bg-neutral w-full" />
+      <div class="bg-neutral h-px w-full" />
 
-      <p class="text-base-content/50 text-sm text-center">
+      <p class="text-base-content/50 text-center text-sm">
         This site is protected by reCAPTCHA and the Google
         <a
           class="underline"

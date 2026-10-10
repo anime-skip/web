@@ -1,24 +1,19 @@
 <script lang="ts" setup>
-import LoginCard from "app/components/LoginCard.vue";
-import DefaultLayout from "app/layouts/DefaultLayout.vue";
-import useGqlResetPasswordMutation from "app/composables/useGqlResetPasswordMutation";
-import { ref } from "vue";
-import { whenever } from "@vueuse/core";
-import { useRoute, useRouter } from "vue-router";
-import md5 from "md5";
 import { useHead } from "@unhead/vue";
+import { whenever } from "@vueuse/core";
+import LoginCard from "app/components/LoginCard.vue";
+import useGqlResetPasswordMutation from "app/composables/useGqlResetPasswordMutation";
 import useSession from "app/composables/useSession";
+import DefaultLayout from "app/layouts/DefaultLayout.vue";
+import md5 from "md5";
+import { ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
 useHead({
   title: "Reset Password – Anime Skip",
 });
 
-const {
-  data: loginData,
-  mutate: _resetPassword,
-  error,
-  isPending,
-} = useGqlResetPasswordMutation();
+const { data: loginData, mutate: _resetPassword, error, isPending } = useGqlResetPasswordMutation();
 
 const route = useRoute();
 const password = ref("");
@@ -68,12 +63,7 @@ whenever(loginData, (loginData) => logIn(loginData));
       </label>
 
       <!-- Submit -->
-      <button
-        type="submit"
-        class="btn text-sm"
-        :disabled="isPending"
-        :loading="isPending"
-      >
+      <button type="submit" class="btn text-sm" :disabled="isPending" :loading="isPending">
         {{ isPending ? "Resetting..." : "Reset" }}
       </button>
 

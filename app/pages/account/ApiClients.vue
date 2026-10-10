@@ -1,8 +1,8 @@
 <script lang="ts" setup>
+import { useHead } from "@unhead/vue";
 import ApiClientEditorListItem from "app/components/ApiClientEditorListItem.vue";
 import useGqlApiClientsQuery from "app/composables/useGqlApiClientsQuery";
 import useGqlCreateApiClientMutation from "app/composables/useGqlCreateApiClientMutation";
-import { useHead } from "@unhead/vue";
 
 useHead({
   title: "API Clients – Anime Skip",
@@ -10,8 +10,7 @@ useHead({
 
 const { data: clients, error, isLoading } = useGqlApiClientsQuery();
 
-const { mutate: _createClient, isPending: isCreating } =
-  useGqlCreateApiClientMutation();
+const { mutate: _createClient, isPending: isCreating } = useGqlCreateApiClientMutation();
 const createClient = () =>
   _createClient({
     client: {
@@ -22,11 +21,10 @@ const createClient = () =>
 </script>
 
 <template>
-  <h1 class="font-overpass font-bold text-2xl">API Clients</h1>
+  <h1 class="font-overpass text-2xl font-bold">API Clients</h1>
   <p>
     API clients are used to access Anime Skip's API. Read the
-    <a class="link" href="/scalar" target="_blank">API docs</a> for more
-    information.
+    <a class="link" href="/scalar" target="_blank">API docs</a> for more information.
   </p>
 
   <button
@@ -46,10 +44,7 @@ const createClient = () =>
       :key="client.id"
       :client="client"
     />
-    <li
-      v-if="clients?.length === 0"
-      class="py-8 text-center text-base-content/50"
-    >
+    <li v-if="clients?.length === 0" class="text-base-content/50 py-8 text-center">
       No API clients created yet.
     </li>
   </ul>

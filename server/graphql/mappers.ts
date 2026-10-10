@@ -76,9 +76,7 @@ export function mapGqlRoleToDbUserRole(gql: GqlRole): DbUserRole {
   throw Error("Unknown GqlRole: " + gql);
 }
 
-export function mapDbPreferencesToGqlPreferences(
-  db: DbPreferences,
-): GqlPreferences {
+export function mapDbPreferencesToGqlPreferences(db: DbPreferences): GqlPreferences {
   return {
     id: db.id,
     createdAt: db.createdAt,
@@ -107,9 +105,7 @@ export function mapDbPreferencesToGqlPreferences(
   };
 }
 
-export function mapDbColorThemeToGqlColorTheme(
-  db: DbColorTheme,
-): GqlColorTheme {
+export function mapDbColorThemeToGqlColorTheme(db: DbColorTheme): GqlColorTheme {
   switch (db) {
     case DbColorTheme.AnimeSkipBlue:
       return "ANIME_SKIP_BLUE";
@@ -125,9 +121,7 @@ export function mapDbColorThemeToGqlColorTheme(
   throw Error("Unknown DbColorTheme: " + db);
 }
 
-export function mapGqlColorThemeToDbColorTheme(
-  gql: GqlColorTheme,
-): DbColorTheme {
+export function mapGqlColorThemeToDbColorTheme(gql: GqlColorTheme): DbColorTheme {
   switch (gql) {
     case "ANIME_SKIP_BLUE":
       return DbColorTheme.AnimeSkipBlue;
@@ -163,9 +157,7 @@ export function mapDbApiClientToGqlApiClient(db: DbApiClient): GqlApiClient {
   };
 }
 
-export function mapDbUserReportToGqlUserReport(
-  db: DbUserReport,
-): GqlUserReport {
+export function mapDbUserReportToGqlUserReport(db: DbUserReport): GqlUserReport {
   return {
     id: db.id,
     createdAt: db.createdAt,
@@ -192,9 +184,7 @@ export function mapDbUserReportToGqlUserReport(
   };
 }
 
-export function mapDbEpisodeUrlToGqlEpisodeUrl(
-  db: DbEpisodeUrl,
-): GqlEpisodeUrl {
+export function mapDbEpisodeUrlToGqlEpisodeUrl(db: DbEpisodeUrl): GqlEpisodeUrl {
   return {
     url: db.url,
     createdAt: db.createdAt,
@@ -250,9 +240,7 @@ export function mapDbEpisodeToGqlEpisode(db: DbEpisode): GqlEpisode {
   };
 }
 
-export function mapDbEpisodeSourceToGqlEpisodeSource(
-  db: DbEpisodeSource,
-): GqlEpisodeSource {
+export function mapDbEpisodeSourceToGqlEpisodeSource(db: DbEpisodeSource): GqlEpisodeSource {
   switch (db) {
     case DbEpisodeSource.Crunchyroll:
       return "CRUNCHYROLL";
@@ -266,9 +254,7 @@ export function mapDbEpisodeSourceToGqlEpisodeSource(
   throw Error("Unknown DbEpisodeSource: " + db);
 }
 
-export function mapGqlEpisodeSourceToDbEpisodeSource(
-  gql: GqlEpisodeSource,
-): DbEpisodeSource {
+export function mapGqlEpisodeSourceToDbEpisodeSource(gql: GqlEpisodeSource): DbEpisodeSource {
   switch (gql) {
     case "CRUNCHYROLL":
       return DbEpisodeSource.Crunchyroll;
@@ -354,9 +340,7 @@ export function mapDbTemplateToGqlTemplate(db: DbTemplate): GqlTemplate {
   };
 }
 
-export function mapDbTemplateTypeToGqlTemplateType(
-  db: DbTemplateType,
-): GqlTemplateType {
+export function mapDbTemplateTypeToGqlTemplateType(db: DbTemplateType): GqlTemplateType {
   switch (db) {
     case DbTemplateType.Seasons:
       return "SEASONS";
@@ -366,9 +350,7 @@ export function mapDbTemplateTypeToGqlTemplateType(
   throw Error("Unknown DbEpisodeSource: " + db);
 }
 
-export function mapGqlTemplateTypeToDbTemplateType(
-  gql: GqlTemplateType,
-): DbTemplateType {
+export function mapGqlTemplateTypeToDbTemplateType(gql: GqlTemplateType): DbTemplateType {
   switch (gql) {
     case "SEASONS":
       return DbTemplateType.Seasons;
@@ -378,9 +360,7 @@ export function mapGqlTemplateTypeToDbTemplateType(
   throw Error("Unknown GqlTemplateType: " + gql);
 }
 
-export function mapDbTimestampTypeToGqlTimestampType(
-  db: DbTimestampType,
-): GqlTimestampType {
+export function mapDbTimestampTypeToGqlTimestampType(db: DbTimestampType): GqlTimestampType {
   return {
     id: db.id,
     createdAt: db.createdAt,
@@ -442,9 +422,7 @@ export function mapGqlTimestampSourceToDbTimestampSource(
   throw Error("Unknown GqlTimestampSource: " + gql);
 }
 
-export function mapDbExternalLinkToGqlExternalLink(
-  db: DbExternalLink,
-): GqlExternalLink {
+export function mapDbExternalLinkToGqlExternalLink(db: DbExternalLink): GqlExternalLink {
   return {
     url: db.url,
     showId: db.showId,

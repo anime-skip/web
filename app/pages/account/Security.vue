@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { useHead } from "@unhead/vue";
 import useGqlChangePasswordMutation from "app/composables/useGqlChangePasswordMutation";
 import { ref } from "vue";
-import { useHead } from "@unhead/vue";
 
 useHead({
   title: "Security – Anime Skip",
@@ -31,11 +31,11 @@ const submit = () => {
 </script>
 
 <template>
-  <h1 class="font-overpass font-bold text-2xl">Change Password</h1>
+  <h1 class="font-overpass text-2xl font-bold">Change Password</h1>
 
   <form class="flex flex-col gap-4" @submit.prevent="submit">
     <label class="flex flex-col gap-1">
-      <p class="text-xs font-bold text-base-content/50">Current Password</p>
+      <p class="text-base-content/50 text-xs font-bold">Current Password</p>
       <div class="input">
         <i class="i-heroicons-key" />
         <input
@@ -49,7 +49,7 @@ const submit = () => {
     </label>
 
     <label class="flex flex-col gap-1">
-      <p class="text-xs font-bold text-base-content/50">New Password</p>
+      <p class="text-base-content/50 text-xs font-bold">New Password</p>
       <div class="input">
         <i class="i-heroicons-key" />
         <input
@@ -63,7 +63,7 @@ const submit = () => {
     </label>
 
     <label class="flex flex-col gap-1">
-      <p class="text-xs font-bold text-base-content/50">Confirm New Password</p>
+      <p class="text-base-content/50 text-xs font-bold">Confirm New Password</p>
       <div class="input">
         <i class="i-heroicons-key" />
         <input

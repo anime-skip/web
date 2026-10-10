@@ -11,15 +11,13 @@ const timeAgo = useTimeAgo(props.episode.createdAt);
 </script>
 
 <template>
-  <li class="p-4 flex gap-8 items-center">
+  <li class="flex items-center gap-8 p-4">
     <div class="flex-1">
       <p class="line-clamp-1 text-lg font-bold">
         {{ episode.name ?? "Unknown Episode" }}
       </p>
       <p class="text-sm">
-        <span class="text-primary">{{
-          episode.show.name ?? "Unknown Show"
-        }}</span>
+        <span class="text-primary">{{ episode.show.name ?? "Unknown Show" }}</span>
         <span class="text-base-content/50"
           >{{ " " }} &bull; {{ getSeasonAndNumberText(episode) }}</span
         >

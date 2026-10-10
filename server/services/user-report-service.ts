@@ -1,6 +1,7 @@
-import { userReports, type DbUserReport } from "server/db/schema";
-import type { AnimeSkipDatabase } from "./db";
 import { inArray } from "drizzle-orm";
+import { userReports, type DbUserReport } from "server/db/schema";
+
+import type { AnimeSkipDatabase } from "./db";
 
 export interface UserReportService {
   softDeleteMany(
@@ -17,11 +18,7 @@ export interface UserReportService {
   ): Promise<DbUserReport[]>;
 }
 
-export function createUserReportService({
-  db: _,
-}: {
-  db: AnimeSkipDatabase;
-}): UserReportService {
+export function createUserReportService({ db: _db }: { db: AnimeSkipDatabase }): UserReportService {
   const softDeleteMany: UserReportService["softDeleteMany"] = async (
     tx,
     ids,

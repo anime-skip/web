@@ -1,11 +1,9 @@
-import { eq } from "drizzle-orm";
 import { createApp } from "@aklinker1/zeta";
+import { eq } from "drizzle-orm";
 import { apiClients } from "server/db/schema";
+import { ApiClientNotFoundError, XClientIdHeaderMissingError } from "server/errors";
+
 import { decorateContext } from "./decorate-context";
-import {
-  ApiClientNotFoundError,
-  XClientIdHeaderMissingError,
-} from "server/errors";
 
 export const requireApiClient = createApp()
   .use(decorateContext)

@@ -1,9 +1,6 @@
 import { env } from "server/env";
 
-export async function verifyRecaptcha(
-  response: string,
-  ipAddress: string,
-): Promise<void> {
+export async function verifyRecaptcha(response: string, ipAddress: string): Promise<void> {
   if (env.RECAPTCHA_RESPONSE_ALLOWLIST.includes(response)) return;
 
   const url = new URL("https://www.google.com/recaptcha/api/siteverify");

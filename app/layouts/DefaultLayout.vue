@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import MainNavigation from "../components/MainNavigation.vue";
 import MainFooter from "../components/MainFooter.vue";
+import MainNavigation from "../components/MainNavigation.vue";
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col">
+  <div class="flex min-h-screen flex-col">
     <MainNavigation />
-    <main id="prerenderer-target" class="mt-main-navigation grow flex flex-col">
+    <main id="prerenderer-target" class="mt-main-navigation flex grow flex-col">
       <slot />
     </main>
     <MainFooter />

@@ -1,6 +1,7 @@
-import { preferences, type DbPreferences } from "server/db/schema";
-import type { AnimeSkipDatabase } from "./db";
 import { eq } from "drizzle-orm";
+import { preferences, type DbPreferences } from "server/db/schema";
+
+import type { AnimeSkipDatabase } from "./db";
 
 export interface PreferencesService {
   softDeleteByUserId(
@@ -11,7 +12,7 @@ export interface PreferencesService {
 }
 
 export function createPreferencesService({
-  db: _,
+  db: _db,
 }: {
   db: AnimeSkipDatabase;
 }): PreferencesService {

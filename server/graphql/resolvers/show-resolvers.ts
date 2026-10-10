@@ -1,11 +1,4 @@
-import type { GqlResolvers } from "server/graphql/resolver-types.gen";
-import { notImplemented } from "shared/utils";
-import { getEpisodesByShowId } from "server/graphql/resolvers/episode-resolvers";
-import { getShowAdminsByShowId } from "server/graphql/resolvers/show-admin-resolvers";
-import { getTemplatesByShowId } from "server/graphql/resolvers/template-resolvers";
-import { getExternalLinksByShowId } from "server/graphql/resolvers/external-link-resolvers";
-import type { NoOptionals } from "shared/types";
-import { mapDbShowToGqlShow } from "server/graphql/mappers";
+import { and, asc, desc, eq, ilike, isNull, sql, type SQLWrapper } from "drizzle-orm";
 import {
   type DbShowInsert,
   type DbExternalLinkInsert,
@@ -13,17 +6,15 @@ import {
   externalLinks as externalLinksTable,
   shows,
 } from "server/db/schema";
+import { mapDbShowToGqlShow } from "server/graphql/mappers";
+import type { GqlResolvers } from "server/graphql/resolver-types.gen";
+import { getEpisodesByShowId } from "server/graphql/resolvers/episode-resolvers";
+import { getExternalLinksByShowId } from "server/graphql/resolvers/external-link-resolvers";
+import { getShowAdminsByShowId } from "server/graphql/resolvers/show-admin-resolvers";
+import { getTemplatesByShowId } from "server/graphql/resolvers/template-resolvers";
 import { prepareGqlInputForDb } from "server/utils/drizzle-utils";
-import {
-  and,
-  asc,
-  desc,
-  eq,
-  ilike,
-  isNull,
-  sql,
-  type SQLWrapper,
-} from "drizzle-orm";
+import type { NoOptionals } from "shared/types";
+import { notImplemented } from "shared/utils";
 
 export const showResolvers: GqlResolvers = {
   Mutation: {
@@ -43,24 +34,17 @@ export const showResolvers: GqlResolvers = {
         website: args.showInput.website ?? null,
       };
 
-      const externalLinks = await ctx.externalLinkLookupService.findLinks(
-        args.showInput.name,
-      );
+      const externalLinks = await ctx.externalLinkLookupService.findLinks(args.showInput.name);
 
       const [row] = await ctx.db.transaction(
         async (tx) => {
-          const [createdShow] = await tx
-            .insert(shows)
-            .values(value)
-            .returning();
+          const [createdShow] = await tx.insert(shows).values(value).returning();
 
           if (externalLinks.length > 0) {
-            const linkValues = externalLinks.map<DbExternalLinkInsert>(
-              (link) => ({
-                url: ctx.externalLinkService.sanitizeUrl(link),
-                showId: createdShow.id,
-              }),
-            );
+            const linkValues = externalLinks.map<DbExternalLinkInsert>((link) => ({
+              url: ctx.externalLinkService.sanitizeUrl(link),
+              showId: createdShow.id,
+            }));
             await tx.insert(externalLinksTable).values(linkValues);
           }
 
@@ -115,9 +99,7 @@ export const showResolvers: GqlResolvers = {
       if (links.length === 0) return [];
 
       const showIds = [...new Set(links.map((link) => link.showId))];
-      return await Promise.all(
-        showIds.map((id) => ctx.dataloaders.shows.load(id)),
-      );
+      return await Promise.all(showIds.map((id) => ctx.dataloaders.shows.load(id)));
     },
 
     searchShows: async (_parent, args, ctx) => {
@@ -138,14 +120,11 @@ export const showResolvers: GqlResolvers = {
     },
   },
   Show: {
-    createdBy: ({ createdByUserId: id }, _, ctx) =>
-      ctx.dataloaders.users.load(id),
+    createdBy: ({ createdByUserId: id }, _, ctx) => ctx.dataloaders.users.load(id),
 
-    updatedBy: ({ updatedByUserId: id }, _, ctx) =>
-      ctx.dataloaders.users.load(id),
+    updatedBy: ({ updatedByUserId: id }, _, ctx) => ctx.dataloaders.users.load(id),
 
-    deletedBy: ({ deletedByUserId: id }, _, ctx) =>
-      id ? ctx.dataloaders.users.load(id) : null,
+    deletedBy: ({ deletedByUserId: id }, _, ctx) => (id ? ctx.dataloaders.users.load(id) : null),
 
     admins: (parent, _args, ctx) => getShowAdminsByShowId(ctx, parent.id),
 
@@ -153,8 +132,7 @@ export const showResolvers: GqlResolvers = {
 
     templates: (parent, _args, ctx) => getTemplatesByShowId(ctx, parent.id),
 
-    externalLinks: (parent, _args, ctx) =>
-      getExternalLinksByShowId(ctx, parent.id),
+    externalLinks: (parent, _args, ctx) => getExternalLinksByShowId(ctx, parent.id),
 
     seasonCount: async (parent, _args, ctx) => {
       const [{ count }] = await ctx.db
@@ -176,10 +154,7 @@ export const showResolvers: GqlResolvers = {
 /**
  * Returns a SQL ILIKE pattern for matching external link URLs by service and service ID.
  */
-function getServiceUrlPattern(
-  service: GqlExternalService,
-  serviceId: string,
-): string {
+function getServiceUrlPattern(service: GqlExternalService, serviceId: string): string {
   switch (service) {
     case "ANILIST":
       // Match URLs like https://anilist.co/anime/12345 or https://anilist.co/anime/12345/some-slug

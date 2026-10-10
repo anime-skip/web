@@ -1,8 +1,8 @@
-import type { GqlResolvers } from "server/graphql/resolver-types.gen";
 import { and, asc, desc, eq, isNull } from "drizzle-orm";
-import type { GqlContext } from "server/graphql/context";
 import { type DbUserReportInsert, userReports } from "server/db/schema";
+import type { GqlContext } from "server/graphql/context";
 import { mapDbUserReportToGqlUserReport } from "server/graphql/mappers";
+import type { GqlResolvers } from "server/graphql/resolver-types.gen";
 import type { NoOptionals } from "shared/types";
 
 export const userReportResolvers: GqlResolvers = {
@@ -51,50 +51,37 @@ export const userReportResolvers: GqlResolvers = {
     },
   },
   Query: {
-    findUserReport: (_parent, args, ctx) =>
-      ctx.dataloaders.userReports.load(args.id),
+    findUserReport: (_parent, args, ctx) => ctx.dataloaders.userReports.load(args.id),
 
     findUserReports: async (_parent, args, ctx) => {
       const rows = await ctx.db.query.userReports.findMany({
         where: and(
           isNull(userReports.deletedAt),
-          args.resolved != null
-            ? eq(userReports.resolved, args.resolved)
-            : undefined,
+          args.resolved != null ? eq(userReports.resolved, args.resolved) : undefined,
         ),
         limit: args.limit,
         offset: args.offset,
-        orderBy:
-          args.sort === "ASC"
-            ? asc(userReports.createdAt)
-            : desc(userReports.createdAt),
+        orderBy: args.sort === "ASC" ? asc(userReports.createdAt) : desc(userReports.createdAt),
       });
 
       return rows.map(mapDbUserReportToGqlUserReport);
     },
   },
   UserReport: {
-    createdBy: ({ createdByUserId: id }, _, ctx) =>
-      ctx.dataloaders.users.load(id),
+    createdBy: ({ createdByUserId: id }, _, ctx) => ctx.dataloaders.users.load(id),
 
-    updatedBy: ({ updatedByUserId: id }, _, ctx) =>
-      ctx.dataloaders.users.load(id),
+    updatedBy: ({ updatedByUserId: id }, _, ctx) => ctx.dataloaders.users.load(id),
 
-    deletedBy: ({ deletedByUserId: id }, _, ctx) =>
-      id ? ctx.dataloaders.users.load(id) : null,
+    deletedBy: ({ deletedByUserId: id }, _, ctx) => (id ? ctx.dataloaders.users.load(id) : null),
 
     timestamp: (parent, _args, ctx) =>
-      parent.timestampId
-        ? ctx.dataloaders.timestamps.load(parent.timestampId)
-        : null,
+      parent.timestampId ? ctx.dataloaders.timestamps.load(parent.timestampId) : null,
 
     episode: (parent, _args, ctx) =>
       parent.episodeId ? ctx.dataloaders.episodes.load(parent.episodeId) : null,
 
     episodeUrl: (parent, _args, ctx) =>
-      parent.episodeUrlString
-        ? ctx.dataloaders.episodeUrls.load(parent.episodeUrlString)
-        : null,
+      parent.episodeUrlString ? ctx.dataloaders.episodeUrls.load(parent.episodeUrlString) : null,
 
     show: (parent, _args, ctx) =>
       parent.showId ? ctx.dataloaders.shows.load(parent.showId) : null,
@@ -106,10 +93,7 @@ export async function getUserReportsByEpisodeId(
   episodeId: string,
 ): Promise<GqlUserReport[]> {
   const rows = await ctx.db.query.userReports.findMany({
-    where: and(
-      eq(userReports.episodeId, episodeId),
-      isNull(userReports.deletedAt),
-    ),
+    where: and(eq(userReports.episodeId, episodeId), isNull(userReports.deletedAt)),
   });
   return rows.map(mapDbUserReportToGqlUserReport);
 }

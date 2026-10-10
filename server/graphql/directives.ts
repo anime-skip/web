@@ -1,22 +1,17 @@
+import { DbUserRole } from "server/db/schema";
+import type { GqlContext } from "server/graphql/context";
+import { mapDbUserRoleToGqlRole } from "server/graphql/mappers";
 import type { GqlDirectiveResolvers } from "server/graphql/resolver-types.gen";
-import { notImplemented } from "shared/utils";
 import { auth } from "server/utils/auth";
 import { getAccessToken } from "server/utils/http";
-import { DbUserRole } from "server/db/schema";
-import { mapDbUserRoleToGqlRole } from "server/graphql/mappers";
-import type { GqlContext } from "server/graphql/context";
+import { notImplemented } from "shared/utils";
 
 // Role hierarchy: DEV > ADMIN > REVIEWER > USER
 // Higher roles can access resources requiring lower roles
 const DEV_ROLES = [DbUserRole.Dev];
 const ADMIN_ROLES = [DbUserRole.Dev, DbUserRole.Admin];
 const REVIEWER_ROLES = [DbUserRole.Dev, DbUserRole.Admin, DbUserRole.Reviewer];
-const USER_ROLES = [
-  DbUserRole.Dev,
-  DbUserRole.Admin,
-  DbUserRole.Reviewer,
-  DbUserRole.User,
-];
+const USER_ROLES = [DbUserRole.Dev, DbUserRole.Admin, DbUserRole.Reviewer, DbUserRole.User];
 
 function getRolesAllowedForRequiredRole(requiredRole: string): DbUserRole[] {
   switch (requiredRole) {

@@ -1,8 +1,8 @@
-import type { GqlResolvers } from "server/graphql/resolver-types.gen";
 import { eq } from "drizzle-orm";
-import type { GqlContext } from "server/graphql/context";
 import { templateTimestamps } from "server/db/schema";
+import type { GqlContext } from "server/graphql/context";
 import { mapDbTemplateTimestampToGqlTemplateTimestamp } from "server/graphql/mappers";
+import type { GqlResolvers } from "server/graphql/resolver-types.gen";
 
 export const templateTimestampResolvers: GqlResolvers = {
   Mutation: {
@@ -16,8 +16,7 @@ export const templateTimestampResolvers: GqlResolvers = {
 
     removeTimestampFromTemplate: async (_parent, args, ctx) => {
       const [deleted] = await ctx.db.transaction(
-        (tx) =>
-          ctx.templateTimestampService.deleteMany(tx, [args.templateTimestamp]),
+        (tx) => ctx.templateTimestampService.deleteMany(tx, [args.templateTimestamp]),
         { accessMode: "read write" },
       );
       if (!deleted) {
@@ -27,11 +26,9 @@ export const templateTimestampResolvers: GqlResolvers = {
     },
   },
   TemplateTimestamp: {
-    template: (parent, _args, ctx) =>
-      ctx.dataloaders.templates.load(parent.templateId),
+    template: (parent, _args, ctx) => ctx.dataloaders.templates.load(parent.templateId),
 
-    timestamp: (parent, _args, ctx) =>
-      ctx.dataloaders.timestamps.load(parent.timestampId),
+    timestamp: (parent, _args, ctx) => ctx.dataloaders.timestamps.load(parent.timestampId),
   },
 };
 

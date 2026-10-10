@@ -1,8 +1,8 @@
-import type { GqlResolvers } from "server/graphql/resolver-types.gen";
-import type { GqlContext } from "server/graphql/context";
-import { type DbShowAdminInsert, showAdmins } from "server/db/schema";
 import { and, eq, isNull } from "drizzle-orm";
+import { type DbShowAdminInsert, showAdmins } from "server/db/schema";
+import type { GqlContext } from "server/graphql/context";
 import { mapDbShowAdminToGqlShowAdmin } from "server/graphql/mappers";
+import type { GqlResolvers } from "server/graphql/resolver-types.gen";
 import type { NoOptionals } from "shared/types";
 
 export const showAdminResolvers: GqlResolvers = {
@@ -28,13 +28,7 @@ export const showAdminResolvers: GqlResolvers = {
       const userId = ctx.authUserId!;
       const now = new Date();
       const [deleted] = await ctx.db.transaction(
-        (tx) =>
-          ctx.showAdminService.softDeleteMany(
-            tx,
-            [args.showAdminId],
-            userId,
-            now,
-          ),
+        (tx) => ctx.showAdminService.softDeleteMany(tx, [args.showAdminId], userId, now),
         { accessMode: "read write" },
       );
       if (!deleted) {
@@ -44,24 +38,18 @@ export const showAdminResolvers: GqlResolvers = {
     },
   },
   Query: {
-    findShowAdmin: (_parent, args, ctx) =>
-      ctx.dataloaders.showAdmins.load(args.showAdminId),
+    findShowAdmin: (_parent, args, ctx) => ctx.dataloaders.showAdmins.load(args.showAdminId),
 
-    findShowAdminsByShowId: (_parent, args, ctx) =>
-      getShowAdminsByShowId(ctx, args.showId),
+    findShowAdminsByShowId: (_parent, args, ctx) => getShowAdminsByShowId(ctx, args.showId),
 
-    findShowAdminsByUserId: (_parent, args, ctx) =>
-      getShowAdminsByUserId(ctx, args.userId),
+    findShowAdminsByUserId: (_parent, args, ctx) => getShowAdminsByUserId(ctx, args.userId),
   },
   ShowAdmin: {
-    createdBy: ({ createdByUserId: id }, _, ctx) =>
-      ctx.dataloaders.users.load(id),
+    createdBy: ({ createdByUserId: id }, _, ctx) => ctx.dataloaders.users.load(id),
 
-    updatedBy: ({ updatedByUserId: id }, _, ctx) =>
-      ctx.dataloaders.users.load(id),
+    updatedBy: ({ updatedByUserId: id }, _, ctx) => ctx.dataloaders.users.load(id),
 
-    deletedBy: ({ deletedByUserId: id }, _, ctx) =>
-      id ? ctx.dataloaders.users.load(id) : null,
+    deletedBy: ({ deletedByUserId: id }, _, ctx) => (id ? ctx.dataloaders.users.load(id) : null),
 
     show: (parent, _args, ctx) => ctx.dataloaders.shows.load(parent.showId),
 

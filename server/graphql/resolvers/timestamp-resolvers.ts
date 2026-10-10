@@ -1,13 +1,13 @@
-import type { GqlResolvers } from "server/graphql/resolver-types.gen";
-import type { GqlContext } from "server/graphql/context";
 import { and, eq, isNull } from "drizzle-orm";
 import { type DbTimestampInsert, timestamps } from "server/db/schema";
+import type { GqlContext } from "server/graphql/context";
 import {
   mapDbTimestampToGqlTimestamp,
   mapGqlTimestampSourceToDbTimestampSource,
 } from "server/graphql/mappers";
-import type { NoOptionals } from "shared/types";
+import type { GqlResolvers } from "server/graphql/resolver-types.gen";
 import { prepareGqlInputForDb } from "server/utils/drizzle-utils";
+import type { NoOptionals } from "shared/types";
 
 function prepareTimestampInsert(
   episodeId: string,
@@ -24,9 +24,7 @@ function prepareTimestampInsert(
     deletedByUserId: null,
     at: String(timestampInput.at),
     episodeId,
-    source: mapGqlTimestampSourceToDbTimestampSource(
-      timestampInput.source ?? "ANIME_SKIP",
-    ),
+    source: mapGqlTimestampSourceToDbTimestampSource(timestampInput.source ?? "ANIME_SKIP"),
     typeId: timestampInput.typeId,
   };
 }
@@ -36,12 +34,7 @@ export const timestampResolvers: GqlResolvers = {
     createTimestamp: async (_parent, args, ctx) => {
       const userId = ctx.authUserId!;
       const now = new Date();
-      const value = prepareTimestampInsert(
-        args.episodeId,
-        args.timestampInput,
-        userId,
-        now,
-      );
+      const value = prepareTimestampInsert(args.episodeId, args.timestampInput, userId, now);
       const [row] = await ctx.db.insert(timestamps).values(value).returning();
       return mapDbTimestampToGqlTimestamp(row);
     },
@@ -56,13 +49,8 @@ export const timestampResolvers: GqlResolvers = {
         source:
           args.newTimestamp.source == null
             ? undefined
-            : mapGqlTimestampSourceToDbTimestampSource(
-                args.newTimestamp.source,
-              ),
-        at:
-          args.newTimestamp.at == null
-            ? undefined
-            : String(args.newTimestamp.at),
+            : mapGqlTimestampSourceToDbTimestampSource(args.newTimestamp.source),
+        at: args.newTimestamp.at == null ? undefined : String(args.newTimestamp.at),
       };
       const [row] = await ctx.db
         .update(timestamps)
@@ -76,13 +64,7 @@ export const timestampResolvers: GqlResolvers = {
       const userId = ctx.authUserId!;
       const now = new Date();
       const [deleted] = await ctx.db.transaction(
-        (tx) =>
-          ctx.timestampService.softDeleteMany(
-            tx,
-            [args.timestampId],
-            userId,
-            now,
-          ),
+        (tx) => ctx.timestampService.softDeleteMany(tx, [args.timestampId], userId, now),
         { accessMode: "read write" },
       );
       if (!deleted) {
@@ -112,10 +94,7 @@ export const timestampResolvers: GqlResolvers = {
         }
         const updates: Partial<DbTimestampInsert> = {
           ...prepareGqlInputForDb(u.timestamp),
-          at:
-            u.timestamp.at != null
-              ? String(u.timestamp.at)
-              : String(existing.at),
+          at: u.timestamp.at != null ? String(u.timestamp.at) : String(existing.at),
           source:
             u.timestamp.source != null
               ? mapGqlTimestampSourceToDbTimestampSource(u.timestamp.source)
@@ -136,15 +115,7 @@ export const timestampResolvers: GqlResolvers = {
 
       // Execute all operations in a transaction
       const result = await ctx.db.transaction(
-        (tx) =>
-          ctx.timestampService.updateAll(
-            tx,
-            createList,
-            updateList,
-            deleteIds,
-            userId,
-            now,
-          ),
+        (tx) => ctx.timestampService.updateAll(tx, createList, updateList, deleteIds, userId, now),
         { accessMode: "read write" },
       );
 
@@ -156,27 +127,21 @@ export const timestampResolvers: GqlResolvers = {
     },
   },
   Query: {
-    findTimestamp: (_parent, args, ctx) =>
-      ctx.dataloaders.timestamps.load(args.timestampId),
+    findTimestamp: (_parent, args, ctx) => ctx.dataloaders.timestamps.load(args.timestampId),
 
     findTimestampsByEpisodeId: (_parent, args, ctx) =>
       getTimestampsByEpisodeId(ctx, args.episodeId),
   },
   Timestamp: {
-    createdBy: ({ createdByUserId: id }, _, ctx) =>
-      ctx.dataloaders.users.load(id),
+    createdBy: ({ createdByUserId: id }, _, ctx) => ctx.dataloaders.users.load(id),
 
-    updatedBy: ({ updatedByUserId: id }, _, ctx) =>
-      ctx.dataloaders.users.load(id),
+    updatedBy: ({ updatedByUserId: id }, _, ctx) => ctx.dataloaders.users.load(id),
 
-    deletedBy: ({ deletedByUserId: id }, _, ctx) =>
-      id ? ctx.dataloaders.users.load(id) : null,
+    deletedBy: ({ deletedByUserId: id }, _, ctx) => (id ? ctx.dataloaders.users.load(id) : null),
 
-    type: (parent, _args, ctx) =>
-      ctx.dataloaders.timestampTypes.load(parent.typeId),
+    type: (parent, _args, ctx) => ctx.dataloaders.timestampTypes.load(parent.typeId),
 
-    episode: (parent, _args, ctx) =>
-      ctx.dataloaders.episodes.load(parent.episodeId),
+    episode: (parent, _args, ctx) => ctx.dataloaders.episodes.load(parent.episodeId),
   },
 };
 
@@ -185,10 +150,7 @@ export async function getTimestampsByEpisodeId(
   episodeId: string,
 ): Promise<GqlTimestamp[]> {
   const rows = await ctx.db.query.timestamps.findMany({
-    where: and(
-      eq(timestamps.episodeId, episodeId),
-      isNull(timestamps.deletedAt),
-    ),
+    where: and(eq(timestamps.episodeId, episodeId), isNull(timestamps.deletedAt)),
   });
   return rows.map(mapDbTimestampToGqlTimestamp);
 }

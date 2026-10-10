@@ -1,9 +1,5 @@
-import {
-  boolean,
-  enumValue,
-  requireString,
-  stringArray,
-} from "shared/env-utils";
+import { boolean, enumValue, requireString, stringArray } from "shared/env-utils";
+
 import { LogLevel } from "./enums";
 
 export const env = {

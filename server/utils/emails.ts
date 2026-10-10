@@ -1,11 +1,12 @@
-import type { DbUser } from "server/db/schema";
-import resetPasswordHtmlTemplate from "server/assets/email-templates/reset-password.html.tpl" with { type: "text" };
-import welcomeHtmlTemplate from "server/assets/email-templates/welcome.html.tpl" with { type: "text" };
-import verificationHtmlTemplate from "server/assets/email-templates/verification.html.tpl" with { type: "text" };
-import SMTPConnection from "nodemailer/lib/smtp-connection";
 import { promisify } from "node:util";
-import { env } from "server/env";
+
 import { createLogger } from "@aklinker1/logger";
+import SMTPConnection from "nodemailer/lib/smtp-connection";
+import resetPasswordHtmlTemplate from "server/assets/email-templates/reset-password.html.tpl" with { type: "text" };
+import verificationHtmlTemplate from "server/assets/email-templates/verification.html.tpl" with { type: "text" };
+import welcomeHtmlTemplate from "server/assets/email-templates/welcome.html.tpl" with { type: "text" };
+import type { DbUser } from "server/db/schema";
+import { env } from "server/env";
 
 const logger = createLogger("emails");
 
@@ -45,10 +46,7 @@ export async function sendWelcomeEmail(user: DbUser): Promise<void> {
   });
 }
 
-export async function sendAccountVerificationEmail(
-  user: DbUser,
-  token: string,
-): Promise<void> {
+export async function sendAccountVerificationEmail(user: DbUser, token: string): Promise<void> {
   await send({
     from: NO_REPLY_SENDER,
     to: [user.email],
@@ -58,10 +56,7 @@ export async function sendAccountVerificationEmail(
   });
 }
 
-export async function sendPasswordResetEmail(
-  user: DbUser,
-  token: string,
-): Promise<void> {
+export async function sendPasswordResetEmail(user: DbUser, token: string): Promise<void> {
   await send({
     from: NO_REPLY_SENDER,
     to: [user.email],
@@ -110,7 +105,6 @@ async function send(data: {
     pass: env.EMAIL_STMP_PASSWORD,
   };
   const connection = new SMTPConnection({
-    auth,
     host: STMP_HOSTNAME,
     port: STMP_PORT,
     logger: {
@@ -124,10 +118,7 @@ async function send(data: {
   try {
     await promisify(connection.connect)();
     await promisify(connection.login)(auth);
-    await promisify(connection.send)(
-      { from: data.from.address, to: data.to },
-      content,
-    );
+    await promisify(connection.send)({ from: data.from.address, to: data.to }, content);
   } catch (error) {
     logger.error(`Failed to send email`, { error });
   } finally {

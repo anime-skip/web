@@ -1,4 +1,5 @@
 import { describe, it, expect } from "bun:test";
+
 import {
   validateEpisodeTimestamps,
   TIMESTAMP_TYPE_IDS,
@@ -99,9 +100,7 @@ describe("Episode Timestamps Validation", () => {
     ]);
 
     expect(result.isValid).toBe(false);
-    expect(result.errors).toEqual([
-      "At most, there should be 1 intro(s): 2 intro(s) found",
-    ]);
+    expect(result.errors).toEqual(["At most, there should be 1 intro(s): 2 intro(s) found"]);
     expect(result.timestamps).toEqual([
       { typeId: newIntro, at: 0 },
       { typeId: intro, at: 90 },
@@ -115,9 +114,7 @@ describe("Episode Timestamps Validation", () => {
     ]);
 
     expect(result.isValid).toBe(false);
-    expect(result.errors).toEqual([
-      "At most, there should be 1 intro(s): 2 intro(s) found",
-    ]);
+    expect(result.errors).toEqual(["At most, there should be 1 intro(s): 2 intro(s) found"]);
     expect(result.timestamps).toEqual([
       { typeId: newIntro, at: 0 },
       { typeId: mixedIntro, at: 90 },

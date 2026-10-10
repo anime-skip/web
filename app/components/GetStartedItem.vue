@@ -19,7 +19,7 @@ const toggleExpanded = () => {
     <!-- Left Side -->
     <div class="flex flex-col items-center gap-4">
       <div
-        class="shrink-0 size-12 rounded-full flex items-center justify-center cursor-pointer"
+        class="flex size-12 shrink-0 cursor-pointer items-center justify-center rounded-full"
         :class="{
           'bg-primary text-primary-content': !completed,
           'bg-neutral text-neutral-content': completed,
@@ -27,15 +27,15 @@ const toggleExpanded = () => {
         @click="toggleExpanded"
       >
         <i v-if="completed" class="i-heroicons-check-16-solid size-6" />
-        <span v-else class="font-bold text-lg">{{ number }}</span>
+        <span v-else class="text-lg font-bold">{{ number }}</span>
       </div>
-      <div v-if="!last" class="w-0.5 rounded-full bg-neutral flex-1 min-h-4" />
+      <div v-if="!last" class="bg-neutral min-h-4 w-0.5 flex-1 rounded-full" />
     </div>
 
     <!-- Right Side -->
     <div class="flex flex-col gap-4 pb-8">
       <p
-        class="font-bold text-xl font-overpass h-12 flex items-center"
+        class="font-overpass flex h-12 items-center text-xl font-bold"
         :class="{
           'text-base-content/50': completed,
         }"

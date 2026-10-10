@@ -1,25 +1,20 @@
 <script lang="ts" setup>
-import LoginCard from "app/components/LoginCard.vue";
-import DefaultLayout from "app/layouts/DefaultLayout.vue";
-import useGqlCreateAccountMutation from "app/composables/useGqlCreateAccountMutation";
-import { ref } from "vue";
-import { whenever } from "@vueuse/core";
-import md5 from "md5";
 import { useHead } from "@unhead/vue";
-import { RECAPTCHA_SCRIPT } from "app/utils/recaptcha-utils";
+import { whenever } from "@vueuse/core";
+import LoginCard from "app/components/LoginCard.vue";
+import useGqlCreateAccountMutation from "app/composables/useGqlCreateAccountMutation";
 import useSession from "app/composables/useSession";
+import DefaultLayout from "app/layouts/DefaultLayout.vue";
+import { RECAPTCHA_SCRIPT } from "app/utils/recaptcha-utils";
+import md5 from "md5";
+import { ref } from "vue";
 
 useHead({
   title: "Sign Up – Anime Skip",
   script: [RECAPTCHA_SCRIPT],
 });
 
-const {
-  data: loginData,
-  mutate: _createAccount,
-  error,
-  isPending,
-} = useGqlCreateAccountMutation();
+const { data: loginData, mutate: _createAccount, error, isPending } = useGqlCreateAccountMutation();
 
 const email = ref("");
 const username = ref("");
@@ -39,31 +34,17 @@ whenever(loginData, (loginData) => logIn(loginData));
 
 <template>
   <DefaultLayout>
-    <LoginCard
-      class="m-auto"
-      title="Anime Skip Sign Up"
-      @submit="createAccount"
-    >
+    <LoginCard class="m-auto" title="Anime Skip Sign Up" @submit="createAccount">
       <!-- Username -->
       <label class="input">
         <i class="i-heroicons-user" />
-        <input
-          placeholder="Username"
-          autocomplete="username"
-          required
-          v-model="username"
-        />
+        <input placeholder="Username" autocomplete="username" required v-model="username" />
       </label>
 
       <!-- Email -->
       <label class="input">
         <i class="i-heroicons-envelope" />
-        <input
-          placeholder="Email"
-          autocomplete="email"
-          required
-          v-model="email"
-        />
+        <input placeholder="Email" autocomplete="email" required v-model="email" />
       </label>
 
       <!-- Password -->
@@ -91,12 +72,7 @@ whenever(loginData, (loginData) => logIn(loginData));
       </label>
 
       <!-- Submit -->
-      <button
-        type="submit"
-        class="btn text-sm"
-        :disabled="isPending"
-        :loading="isPending"
-      >
+      <button type="submit" class="btn text-sm" :disabled="isPending" :loading="isPending">
         {{ isPending ? "Signing up..." : "Sign Up" }}
       </button>
 
@@ -108,16 +84,16 @@ whenever(loginData, (loginData) => logIn(loginData));
         </p>
       </div>
 
-      <div class="h-px bg-neutral w-full" />
+      <div class="bg-neutral h-px w-full" />
 
-      <p class="text-sm text-center">
+      <p class="text-center text-sm">
         Already have an account?
         <RouterLink class="link" to="/sign-in">Sign In</RouterLink>
       </p>
 
-      <div class="h-px bg-neutral w-full" />
+      <div class="bg-neutral h-px w-full" />
 
-      <p class="text-base-content/50 text-sm text-center">
+      <p class="text-base-content/50 text-center text-sm">
         This site is protected by reCAPTCHA and the Google
         <a
           class="underline"

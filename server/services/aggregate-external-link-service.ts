@@ -1,4 +1,5 @@
 import { createLogger } from "@aklinker1/logger";
+
 import type { ExternalLinkLookupService } from "./external-link-lookup-service";
 
 const logger = createLogger("aggregate-external-link-service");
@@ -12,9 +13,7 @@ export function createAggregateExternalLinkService({
 }: {
   services: Record<string, ExternalLinkLookupService>;
 }): ExternalLinkLookupService {
-  const findLinks: ExternalLinkLookupService["findLinks"] = async (
-    showName,
-  ) => {
+  const findLinks: ExternalLinkLookupService["findLinks"] = async (showName) => {
     const results = await Promise.all(
       Object.entries(services).map(async ([serviceName, service]) => {
         try {

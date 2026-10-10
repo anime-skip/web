@@ -1,7 +1,7 @@
+import { VueQueryPlugin } from "@tanstack/vue-query";
+import { createHead } from "@unhead/vue/client";
 import { createApp } from "vue";
 import { createRouter, createWebHistory, RouterView } from "vue-router";
-import { createHead } from "@unhead/vue/client";
-import { VueQueryPlugin } from "@tanstack/vue-query";
 
 const router = createRouter({
   routes: [
@@ -69,8 +69,7 @@ const router = createRouter({
         },
         {
           path: "policies/extension-privacy",
-          component: () =>
-            import("app/pages/docs/policies/ExtensionPrivacyPolicy.md"),
+          component: () => import("app/pages/docs/policies/ExtensionPrivacyPolicy.md"),
         },
       ],
     },
@@ -85,10 +84,6 @@ const router = createRouter({
 
 const head = createHead();
 
-createApp(RouterView)
-  .use(VueQueryPlugin)
-  .use(router)
-  .use(head)
-  .mount(document.body);
+createApp(RouterView).use(VueQueryPlugin).use(router).use(head).mount(document.body);
 
 console.log("Hydrated in", performance.now(), "ms");

@@ -6,11 +6,9 @@ const githubLink = "https://github.com/anime-skip";
 
 <template>
   <section id="features" class="py-8 md:py-16">
-    <div class="w-full max-w-312 px-8 mx-auto space-y-8">
-      <h3 class="text-3xl font-overpass tracking-tighter font-black">
-        Player Features
-      </h3>
-      <ul class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div class="mx-auto w-full max-w-312 space-y-8 px-8">
+      <h3 class="font-overpass text-3xl font-black tracking-tighter">Player Features</h3>
+      <ul class="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         <HomeSectionFeatureItem
           icon="i-heroicons-play"
           feature="Auto-skip Timestamps"
@@ -31,14 +29,8 @@ const githubLink = "https://github.com/anime-skip";
           feature="Advanced Player Controls"
           body="Playback speed up to 4x, advance between timestamps, 4 levels of fast forwards and rewinds."
         />
-        <HomeSectionFeatureItem
-          icon="i-heroicons-code-bracket"
-          feature="Open Source"
-        >
-          <p>
-            Anime Skip is fully open source! The web extension, API, and this
-            website.
-          </p>
+        <HomeSectionFeatureItem icon="i-heroicons-code-bracket" feature="Open Source">
+          <p>Anime Skip is fully open source! The web extension, API, and this website.</p>
           <p>
             <a class="link no-underline" :href="githubLink" target="_blank">
               <span class="underline">{{ githubLink }}</span>

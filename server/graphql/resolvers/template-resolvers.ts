@@ -1,19 +1,14 @@
-import type { GqlResolvers } from "server/graphql/resolver-types.gen";
-import type { GqlContext } from "server/graphql/context";
 import { and, desc, eq, isNull, arrayContains } from "drizzle-orm";
-import {
-  type DbTemplateInsert,
-  templates,
-  shows,
-  DbTemplateType,
-} from "server/db/schema";
+import { type DbTemplateInsert, templates, shows, DbTemplateType } from "server/db/schema";
+import type { GqlContext } from "server/graphql/context";
 import {
   mapDbTemplateToGqlTemplate,
   mapGqlTemplateTypeToDbTemplateType,
 } from "server/graphql/mappers";
+import type { GqlResolvers } from "server/graphql/resolver-types.gen";
 import { getTemplateTimestampsByTemplateId } from "server/graphql/resolvers/template-timestamp-resolvers";
-import type { NoOptionals } from "shared/types";
 import { prepareGqlInputForDb } from "server/utils/drizzle-utils";
+import type { NoOptionals } from "shared/types";
 
 export const templateResolvers: GqlResolvers = {
   Mutation: {
@@ -60,13 +55,7 @@ export const templateResolvers: GqlResolvers = {
       const userId = ctx.authUserId!;
       const now = new Date();
       const [deleted] = await ctx.db.transaction(
-        (tx) =>
-          ctx.templateService.softDeleteMany(
-            tx,
-            [args.templateId],
-            userId,
-            now,
-          ),
+        (tx) => ctx.templateService.softDeleteMany(tx, [args.templateId], userId, now),
         { accessMode: "read write" },
       );
       if (!deleted) {
@@ -76,18 +65,14 @@ export const templateResolvers: GqlResolvers = {
     },
   },
   Query: {
-    findTemplate: (_parent, args, ctx) =>
-      ctx.dataloaders.templates.load(args.templateId),
+    findTemplate: (_parent, args, ctx) => ctx.dataloaders.templates.load(args.templateId),
 
-    findTemplatesByShowId: (_parent, args, ctx) =>
-      getTemplatesByShowId(ctx, args.showId),
+    findTemplatesByShowId: (_parent, args, ctx) => getTemplatesByShowId(ctx, args.showId),
 
     findTemplateByDetails: async (_parent, args, ctx) => {
       const userId = ctx.authUserId;
       if (!userId) {
-        throw new Error(
-          "Template not found: FindTemplateByDetails requires authentication",
-        );
+        throw new Error("Template not found: FindTemplateByDetails requires authentication");
       }
 
       // 1. Try matching by source episodeId
@@ -150,25 +135,18 @@ export const templateResolvers: GqlResolvers = {
     },
   },
   Template: {
-    createdBy: ({ createdByUserId: id }, _, ctx) =>
-      ctx.dataloaders.users.load(id),
+    createdBy: ({ createdByUserId: id }, _, ctx) => ctx.dataloaders.users.load(id),
 
-    updatedBy: ({ updatedByUserId: id }, _, ctx) =>
-      ctx.dataloaders.users.load(id),
+    updatedBy: ({ updatedByUserId: id }, _, ctx) => ctx.dataloaders.users.load(id),
 
-    deletedBy: ({ deletedByUserId: id }, _, ctx) =>
-      id ? ctx.dataloaders.users.load(id) : null,
+    deletedBy: ({ deletedByUserId: id }, _, ctx) => (id ? ctx.dataloaders.users.load(id) : null),
 
     show: (parent, _args, ctx) => ctx.dataloaders.shows.load(parent.showId),
 
-    sourceEpisode: (parent, _args, ctx) =>
-      ctx.dataloaders.episodes.load(parent.sourceEpisodeId),
+    sourceEpisode: (parent, _args, ctx) => ctx.dataloaders.episodes.load(parent.sourceEpisodeId),
 
     timestamps: async (parent, _args, ctx) => {
-      const templateTimestamps = await getTemplateTimestampsByTemplateId(
-        ctx,
-        parent.id,
-      );
+      const templateTimestamps = await getTemplateTimestampsByTemplateId(ctx, parent.id);
       const timestamps = await ctx.dataloaders.timestamps.loadMany(
         templateTimestamps.map((timestamp) => timestamp.timestampId),
       );
@@ -176,10 +154,7 @@ export const templateResolvers: GqlResolvers = {
     },
 
     timestampIds: async (parent, _args, ctx) => {
-      const templateTimestamps = await getTemplateTimestampsByTemplateId(
-        ctx,
-        parent.id,
-      );
+      const templateTimestamps = await getTemplateTimestampsByTemplateId(ctx, parent.id);
       return templateTimestamps.map((timestamp) => timestamp.timestampId);
     },
   },

@@ -24,12 +24,7 @@ type Query {
   Search for shows that include the `search` in the `Show.name`. Results are sorted by `Show.name`
   as `ASC` or `DESC`
   """
-  searchShows(
-    search: String = ""
-    offset: Int = 0
-    limit: Int = 25
-    sort: String = "ASC"
-  ): [Show!]!
+  searchShows(search: String = "", offset: Int = 0, limit: Int = 25, sort: String = "ASC"): [Show!]!
 
   # Show Admins
   "Find show admin with a matching `ShowAdmin.id`"
@@ -122,11 +117,8 @@ type Query {
   Only templates you've created are returned. If you don't include a token in the authorization
   header, you will get a not found error, same as if the template was not found.
   """
-  findTemplateByDetails(
-    episodeId: ID
-    showName: String
-    season: String
-  ): Template! @optionalAuthenticated
+  findTemplateByDetails(episodeId: ID, showName: String, season: String): Template!
+    @optionalAuthenticated
 
   "List or search through the authenticated user's API clients"
   myApiClients(

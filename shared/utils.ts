@@ -12,21 +12,18 @@ export function notImplemented(fn: string) {
 }
 
 /** Merge multiple objects into one. Later objects override values of earlier objects */
-export function mergeAll<T extends Record<PropertyKey, unknown>>(
-  ...objects: T[]
-): T {
+export function mergeAll<T extends Record<PropertyKey, unknown>>(...objects: T[]): T {
   if (objects.length === 0) {
     return {} as T;
   }
   if (objects.length === 1) {
     return objects[0];
   }
-  return objects.reduce((acc, obj) => merge(acc ?? {}, obj));
+  return objects.reduce<T>((acc, obj) => merge(acc, obj) as T, {} as T);
 }
 
 export function randomString(length: number): string {
-  const letters =
-    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  const letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
   let result = "";
   for (let i = 0; i < length; i++) {

@@ -1,17 +1,18 @@
+import { isPrerendering } from "@aklinker1/aframe/app";
 import { useAsyncState } from "@vueuse/core";
 import { queryGraphql } from "app/utils/graphql-utils";
 
 export default function () {
   let existingSession: Session | undefined;
   try {
-    existingSession = JSON.parse(
-      localStorage.getItem("@anime-skip/session") ?? "",
-    );
+    existingSession = JSON.parse(localStorage.getItem("@anime-skip/session") ?? "");
   } catch {
     // Noop
   }
 
   return useAsyncState<Session | undefined>(async () => {
+    if (isPrerendering()) return;
+
     const data = await queryGraphql<{ account: Session }>("GetSession", QUERY);
     return data.account;
   }, existingSession);

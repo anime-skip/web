@@ -1,15 +1,12 @@
-import { queryGraphql } from "app/utils/graphql-utils";
 import { useQuery } from "@tanstack/vue-query";
+import { queryGraphql } from "app/utils/graphql-utils";
 import { VueQueryKey } from "app/utils/vue-query-keys";
 
 export default function () {
   return useQuery<ApiClient[]>({
     queryKey: [VueQueryKey.apiClients],
     queryFn: async () => {
-      const data = await queryGraphql<{ myApiClients: ApiClient[] }>(
-        "ListApiClients",
-        QUERY,
-      );
+      const data = await queryGraphql<{ myApiClients: ApiClient[] }>("ListApiClients", QUERY);
       return data.myApiClients;
     },
   });

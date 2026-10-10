@@ -1,4 +1,5 @@
 import { createLogger } from "@aklinker1/logger";
+
 import type { ThirdPartyService } from "./third-party-service";
 
 const logger = createLogger("aggregate-third-party-service");
@@ -8,9 +9,7 @@ export function createAggregateThirdPartyService({
 }: {
   services: Record<string, ThirdPartyService>;
 }): ThirdPartyService {
-  const findEpisodeByName: ThirdPartyService["findEpisodeByName"] = async (
-    name,
-  ) => {
+  const findEpisodeByName: ThirdPartyService["findEpisodeByName"] = async (name) => {
     const results: GqlThirdPartyEpisode[][] = await Promise.all(
       Object.entries(services).map(async ([key, service]) => {
         try {

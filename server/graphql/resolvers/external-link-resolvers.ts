@@ -1,10 +1,10 @@
-import type { GqlResolvers } from "server/graphql/resolver-types.gen";
-import type { NoOptionals } from "shared/types";
-import { type DbExternalLinkInsert, externalLinks } from "server/db/schema";
-import { mapDbExternalLinkToGqlExternalLink } from "server/graphql/mappers";
-import type { GqlContext } from "server/graphql/context";
 import { eq } from "drizzle-orm";
+import { type DbExternalLinkInsert, externalLinks } from "server/db/schema";
+import type { GqlContext } from "server/graphql/context";
+import { mapDbExternalLinkToGqlExternalLink } from "server/graphql/mappers";
+import type { GqlResolvers } from "server/graphql/resolver-types.gen";
 import { extractServiceId } from "server/utils/external-service-utils";
+import type { NoOptionals } from "shared/types";
 
 export const externalLinkResolvers: GqlResolvers = {
   Mutation: {
@@ -15,10 +15,7 @@ export const externalLinkResolvers: GqlResolvers = {
         url: cleanUrl,
         showId: args.showId,
       };
-      const [row] = await ctx.db
-        .insert(externalLinks)
-        .values(value)
-        .returning();
+      const [row] = await ctx.db.insert(externalLinks).values(value).returning();
       return mapDbExternalLinkToGqlExternalLink(row);
     },
 

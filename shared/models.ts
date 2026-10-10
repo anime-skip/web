@@ -1,14 +1,13 @@
-import { z } from "zod";
 import dedent from "dedent";
+import { z } from "zod";
+
 import { version } from "./version";
 
 export const HealthCheckOutput = z
   .object({
     status: z
       .literal("UP")
-      .describe(
-        'The server status. Will always return `"UP"` when the server is running.',
-      )
+      .describe('The server status. Will always return `"UP"` when the server is running.')
       .meta({ example: "UP" }),
     version: z
       .string()
@@ -67,14 +66,9 @@ export const GraphqlOutput = z
   });
 export type GraphqlOutput = z.infer<typeof GraphqlOutput>;
 
-export const GetGraphqlPlaygroundOutput = z
-  .string()
-  .describe("HTML page")
-  .meta({
-    ref: "GetGraphqlPlaygroundOutput",
-    example: "<html>...</html>",
-    responseType: "text/html",
-  });
-export type GetGraphqlPlaygroundOutput = z.infer<
-  typeof GetGraphqlPlaygroundOutput
->;
+export const GetGraphqlPlaygroundOutput = z.string().describe("HTML page").meta({
+  ref: "GetGraphqlPlaygroundOutput",
+  example: "<html>...</html>",
+  responseType: "text/html",
+});
+export type GetGraphqlPlaygroundOutput = z.infer<typeof GetGraphqlPlaygroundOutput>;

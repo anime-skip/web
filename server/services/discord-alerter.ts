@@ -1,25 +1,20 @@
 import { env } from "server/env";
+
 import type { Alerter } from "./alerter";
 
 export function createDiscordAlerter(): Alerter {
   const botToken = `Bot ${env.DISCORD_BOT_TOKEN}`;
   const channelId = env.DISCORD_ALERTS_CHANNEL_ID;
 
-  async function sendMessage(
-    channelId: string,
-    content: string,
-  ): Promise<{ id: string }> {
-    const response = await fetch(
-      `https://discord.com/api/v10/channels/${channelId}/messages`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: botToken,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ content }),
+  async function sendMessage(channelId: string, content: string): Promise<{ id: string }> {
+    const response = await fetch(`https://discord.com/api/v10/channels/${channelId}/messages`, {
+      method: "POST",
+      headers: {
+        Authorization: botToken,
+        "Content-Type": "application/json",
       },
-    );
+      body: JSON.stringify({ content }),
+    });
 
     if (!response.ok) {
       throw new Error(`Failed to send Discord message: ${response.statusText}`);
@@ -51,9 +46,7 @@ export function createDiscordAlerter(): Alerter {
     );
 
     if (!response.ok) {
-      throw new Error(
-        `Failed to create Discord thread: ${response.statusText}`,
-      );
+      throw new Error(`Failed to create Discord thread: ${response.statusText}`);
     }
 
     return response.json();

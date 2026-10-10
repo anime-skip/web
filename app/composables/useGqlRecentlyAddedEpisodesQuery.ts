@@ -1,3 +1,4 @@
+import { isPrerendering } from "@aklinker1/aframe/app";
 import { useQuery } from "@tanstack/vue-query";
 import { queryGraphql } from "app/utils/graphql-utils";
 import { VueQueryKey } from "app/utils/vue-query-keys";
@@ -11,6 +12,7 @@ export default function () {
       }>(QUERY_NAME, QUERY);
       return data.recentlyAddedEpisodes;
     },
+    enabled: !isPrerendering(),
   });
 }
 
