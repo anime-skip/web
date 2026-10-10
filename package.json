@@ -1,6 +1,5 @@
 {
   "name": "web",
-  "packageManager": "bun@1.3.12",
   "type": "module",
   "scripts": {
     "check": "check",
