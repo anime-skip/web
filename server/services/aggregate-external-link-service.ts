@@ -1,5 +1,7 @@
-import { logger } from "server/utils/logger";
+import { createLogger } from "@aklinker1/logger";
 import type { ExternalLinkLookupService } from "./external-link-lookup-service";
+
+const logger = createLogger("aggregate-external-link-service");
 
 /**
  * Aggregates multiple ExternalLinkLookupService implementations.
@@ -10,26 +12,27 @@ export function createAggregateExternalLinkService({
 }: {
   services: Record<string, ExternalLinkLookupService>;
 }): ExternalLinkLookupService {
-  const serviceLogger = logger.extend("aggregate-external-link-service");
-
   const findLinks: ExternalLinkLookupService["findLinks"] = async (
     showName,
   ) => {
     const results = await Promise.all(
-      Object.entries(services).map(async ([name, service]) => {
+      Object.entries(services).map(async ([serviceName, service]) => {
         try {
           const links = await service.findLinks(showName);
           if (links.length > 0) {
-            serviceLogger.debug(
-              `Found ${links.length} link(s) for "${showName}" from ${name}`,
-            );
+            logger.debug("Found external links", {
+              links: links.length,
+              serviceName,
+              showName,
+            });
           }
           return links;
-        } catch (err) {
-          serviceLogger.error(
-            `${name} failed to find links for "${showName}":`,
-            err,
-          );
+        } catch (error) {
+          logger.error("Failed to find links", {
+            serviceName,
+            showName,
+            error,
+          });
           return [];
         }
       }),
@@ -38,7 +41,9 @@ export function createAggregateExternalLinkService({
     const allLinks = results.flat();
 
     if (allLinks.length === 0) {
-      serviceLogger.debug(`No external links found for "${showName}"`);
+      logger.debug("No external links found", {
+        showName,
+      });
     }
 
     return allLinks;

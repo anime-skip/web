@@ -15,11 +15,14 @@ import {
 import type { GqlContext } from "server/graphql/context";
 import { getShowAdminsByUserId } from "server/graphql/resolvers/show-admin-resolvers";
 import { getOptionalUserByUsername } from "server/graphql/resolvers/user-resolvers";
+import { createLogger } from "@aklinker1/logger";
+
+const logger = createLogger("account-resolvers");
 
 export const accountResolvers: GqlResolvers = {
   Mutation: {
     createAccount: async (_parent, args, ctx) => {
-      ctx.logger.verbose("Additional input validation");
+      logger.debug("Additional input validation");
       const username = args.username.trim();
       const email = args.email.trim();
       const passwordHash = args.passwordHash.trim();
@@ -27,10 +30,10 @@ export const accountResolvers: GqlResolvers = {
       validateUsername(username);
       validateEmail(email);
 
-      ctx.logger.verbose("Verify recaptcha");
+      logger.debug("Verify recaptcha");
       await verifyRecaptcha(args.recaptchaResponse, ctx.ip);
 
-      ctx.logger.verbose("Checking for existing username");
+      logger.debug("Checking for existing username");
       const existingUserByUsername = await getOptionalUserByUsername(
         ctx,
         username,
@@ -41,7 +44,7 @@ export const accountResolvers: GqlResolvers = {
         );
       }
 
-      ctx.logger.verbose("Checking for existing email");
+      logger.debug("Checking for existing email");
       const existingUserByEmail = await ctx.db.query.users.findFirst({
         where: eq(users.email, email),
       });
@@ -49,10 +52,10 @@ export const accountResolvers: GqlResolvers = {
         throw Error(`Email '${email}' is already taken, use a different one`);
       }
 
-      ctx.logger.verbose("Generating passwordHash");
+      logger.debug("Generating passwordHash");
       const encryptedPasswordHash = await auth.encryptPassword(passwordHash);
 
-      ctx.logger.verbose("Creating user and preferences");
+      logger.debug("Creating user and preferences");
       const [user] = await ctx.db
         .insert(users)
         .values({
@@ -71,16 +74,16 @@ export const accountResolvers: GqlResolvers = {
         updatedAt: new Date().toISOString(),
       });
 
-      ctx.logger.verbose("Sending welcome email");
+      logger.debug("Sending welcome email");
       await sendWelcomeEmail(user);
 
-      ctx.logger.verbose("Sending verification email");
+      logger.debug("Sending verification email");
       const verifyEmailToken = await auth.createToken("verify-email", {
         userId,
       });
       await sendAccountVerificationEmail(user, verifyEmailToken);
 
-      ctx.logger.verbose("Returning LoginData");
+      logger.debug("Returning LoginData");
       return createLoginData(user);
     },
 

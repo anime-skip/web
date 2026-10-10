@@ -2,23 +2,19 @@ import { typeDefs } from "server/graphql/type-defs";
 import { codegen } from "@graphql-codegen/core";
 import * as typescriptPlugin from "@graphql-codegen/typescript";
 import * as typescriptResolversPlugin from "@graphql-codegen/typescript-resolvers";
-import { logger } from "server/utils/logger";
+import { createLogger } from "@aklinker1/logger";
 import { createTimer } from "shared/time";
 import type { CodegenPlugin } from "@graphql-codegen/plugin-helpers";
-import { Color } from "server/utils/logger";
+import { styleText } from "node:util";
 
-const codegenLogger = logger.extend("graphql-codegen");
+const logger = createLogger("graphql-codegen");
 
 export async function generateGraphqlCode() {
   const typesOutput = "shared/graphql-types.gen.d.ts";
   const resolversOutput = "server/graphql/resolver-types.gen.ts";
-  codegenLogger.info("Generating GraphQL types...");
-  codegenLogger.verbose(
-    `  - Types:     ${Color.Cyan}./${typesOutput}${Color.Reset}`,
-  );
-  codegenLogger.verbose(
-    `  - Resolvers: ${Color.Cyan}./${resolversOutput}${Color.Reset}`,
-  );
+  logger.info("Generating GraphQL types...");
+  logger.debug(`  - Types:     ${styleText("cyan", "./" + typesOutput)}`);
+  logger.debug(`  - Resolvers: ${styleText("cyan", "./" + resolversOutput)}`);
   const codegenTimer = createTimer();
 
   await generate<typescriptPlugin.TypeScriptPluginConfig>(
@@ -40,7 +36,7 @@ export async function generateGraphqlCode() {
     },
   );
 
-  codegenLogger.info("Generated in", codegenTimer.duration());
+  logger.info("Generated in", { duration: codegenTimer.duration() });
 }
 
 // oxlint-lint-ignore ban-types

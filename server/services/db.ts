@@ -1,13 +1,13 @@
+import { createLogger } from "@aklinker1/logger";
 import { drizzle, BunSQLDatabase } from "drizzle-orm/bun-sql";
 // import { migrate } from "drizzle-orm/bun-sql/migrator";
 import * as dbSchema from "server/db/schema";
 import { env } from "server/env";
-import { logger } from "server/utils/logger";
 
-const dbLogger = logger.extend("db");
+const logger = createLogger("db");
 
 export async function openAnimeSkipDatabase(): Promise<AnimeSkipDatabase> {
-  dbLogger.info("Opening database...");
+  logger.info("Opening database");
   const db = drizzle({
     connection: {
       url: env.DATABASE_URL,

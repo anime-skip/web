@@ -4,10 +4,10 @@ import welcomeHtmlTemplate from "server/assets/email-templates/welcome.html.tpl"
 import verificationHtmlTemplate from "server/assets/email-templates/verification.html.tpl" with { type: "text" };
 import SMTPConnection from "nodemailer/lib/smtp-connection";
 import { promisify } from "node:util";
-import { logger } from "./logger";
 import { env } from "server/env";
+import { createLogger } from "@aklinker1/logger";
 
-const emailsLogger = logger.extend("emails");
+const logger = createLogger("emails");
 
 const STMP_HOSTNAME = "email-smtp.us-east-2.amazonaws.com";
 const STMP_PORT = 587;
@@ -79,9 +79,11 @@ async function send(data: {
   templateName: TemplateName;
   templateData: Record<string, string>;
 }): Promise<void> {
-  emailsLogger.info(`Sending ${data.templateName} email to:`, data.to);
+  logger.info(`Sending email`, {
+    templateName: data.templateName,
+  });
   if (!env.SEND_EMAILS) {
-    emailsLogger.warn("Skipped sending email, env.SEND_EMAILS != true");
+    logger.warn("Skipped sending email, env.SEND_EMAILS != true");
     return;
   }
 
@@ -112,10 +114,10 @@ async function send(data: {
     host: STMP_HOSTNAME,
     port: STMP_PORT,
     logger: {
-      ...emailsLogger,
+      ...logger,
       level: () => {},
-      trace: (...args) => emailsLogger.debug(...args),
-      fatal: (...args) => emailsLogger.error(...args),
+      trace: (...args) => logger.debug("SMTP trace", { args }),
+      fatal: (...args) => logger.error("SMTP fatal", { args }),
     },
     debug: false,
   });
@@ -126,8 +128,8 @@ async function send(data: {
       { from: data.from.address, to: data.to },
       content,
     );
-  } catch (err) {
-    emailsLogger.error(`Failed to send email:`, err);
+  } catch (error) {
+    logger.error(`Failed to send email`, { error });
   } finally {
     connection.quit();
   }

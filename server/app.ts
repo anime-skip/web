@@ -7,7 +7,6 @@ import { graphqlApis } from "./api/graphql-apis";
 import { systemApis } from "./api/system-apis";
 import { graphqlPlaygroundApis } from "./api/graphql-playground-apis";
 import { SHARED_CLIENT_ID } from "shared/constants";
-import { logger as _logger } from "./utils/logger";
 import { OpenApiSecurityScheme, OpenApiTag } from "./enums";
 import apiDocs from "server/assets/api-docs.md" with { type: "text" };
 import { version } from "shared/version";

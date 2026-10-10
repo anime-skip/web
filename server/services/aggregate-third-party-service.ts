@@ -1,7 +1,7 @@
-import { logger } from "server/utils/logger";
+import { createLogger } from "@aklinker1/logger";
 import type { ThirdPartyService } from "./third-party-service";
 
-const serviceLogger = logger.extend("aggregate-third-party-service");
+const logger = createLogger("aggregate-third-party-service");
 
 export function createAggregateThirdPartyService({
   services,
@@ -15,11 +15,12 @@ export function createAggregateThirdPartyService({
       Object.entries(services).map(async ([key, service]) => {
         try {
           return await service.findEpisodeByName(name);
-        } catch (err) {
-          serviceLogger.error(
-            `${key} failed to find episode by name ("${name}"):`,
-            err,
-          );
+        } catch (error) {
+          logger.error("Failed to find episode by name", {
+            key,
+            name,
+            error,
+          });
           return [];
         }
       }),

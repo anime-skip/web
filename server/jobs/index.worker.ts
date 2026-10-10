@@ -1,8 +1,8 @@
-import { logger } from "server/utils/logger";
+import { createLogger } from "@aklinker1/logger";
 
 declare var self: Worker;
 
-const workerLogger = logger.extend("jobs:worker");
-workerLogger.info("Scheduled jobs");
+const logger = createLogger("worker");
+logger.info("Scheduled jobs");
 
 self.postMessage("initialized");

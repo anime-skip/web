@@ -1,7 +1,6 @@
 import { DAY, MINUTE, toSeconds } from "shared/time";
 import { jwtVerify, SignJWT } from "jose";
 import bcrypt from "bcryptjs";
-import { logger } from "server/utils/logger";
 import { env } from "server/env";
 
 type TokenKind =
@@ -46,8 +45,8 @@ export const auth = {
         .setAudience(AUDIENCES[kind])
         .setExpirationTime(toSeconds(now + TIMEOUTS[kind]))
         .sign(SECRET);
-    } catch (err) {
-      throw Error(`Failed to create ${kind} token`, { cause: err });
+    } catch (cause) {
+      throw new TokenError("create", kind, { cause });
     }
   },
 
@@ -59,9 +58,8 @@ export const auth = {
         algorithms: ["HS256"],
       });
       return res.payload;
-    } catch (err) {
-      logger.error(err);
-      throw Error(`Failed to validate ${kind} token`, { cause: err });
+    } catch (cause) {
+      throw new TokenError("validate", kind, { cause });
     }
   },
 
@@ -82,3 +80,13 @@ export const auth = {
     }
   },
 };
+
+class TokenError extends Error {
+  constructor(
+    readonly method: "create" | "validate",
+    readonly kind: TokenKind,
+    options?: ErrorOptions,
+  ) {
+    super(`Failed to ${method} ${kind} token`, options);
+  }
+}

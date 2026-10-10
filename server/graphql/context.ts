@@ -18,7 +18,6 @@ export function createGqlContext(
 
   return {
     ...ctx,
-    logger: ctx.logger.extend("graphql"),
     request: ctx.request,
     authUserId: undefined as string | undefined,
     authRole: undefined as tables.DbUserRole | undefined,

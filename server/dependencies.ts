@@ -1,4 +1,3 @@
-import { logger } from "server/utils/logger";
 import { openAnimeSkipDatabase } from "server/services/db";
 import { createIocContainer } from "@aklinker1/zero-ioc";
 import { createApiClientService } from "./services/api-client-service";
@@ -23,7 +22,6 @@ const db = await openAnimeSkipDatabase();
 
 export const container = createIocContainer()
   .register({ db: () => db })
-  .register({ logger: () => logger })
   .register({ apiClientService: createApiClientService })
   .register({ episodeUrlService: createEpisodeUrlService })
   .register({ externalLinkService: createExternalLinkService })
@@ -51,7 +49,7 @@ export const container = createIocContainer()
       createAggregateExternalLinkService({
         ...deps,
         services: {
-          Anilist: createAnilistExternalLinkService(deps),
+          Anilist: createAnilistExternalLinkService(),
         },
       }),
   });

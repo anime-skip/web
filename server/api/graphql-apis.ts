@@ -12,6 +12,9 @@ import { directiveResolvers } from "server/graphql/directives";
 import { attachDirectiveResolvers } from "server/utils/graphql-helpers";
 import { createGqlContext } from "server/graphql/context";
 import { resolveIpAddress } from "server/plugins/resolve-ip-address";
+import { createLogger } from "@aklinker1/logger";
+
+const logger = createLogger("graphql-apis");
 
 const schema: GraphQLSchema = attachDirectiveResolvers(
   makeExecutableSchema({
@@ -38,9 +41,10 @@ export const graphqlApis = createApp()
     async (ctx) => {
       const { operationName = "Unknown", query, variables } = ctx.body;
 
-      ctx.logger.http(
-        `Evaluating GraphQL "${operationName}": ${query.replace(/\s+/gm, " ").slice(0, 40)}...`,
-      );
+      logger.info(`Evaluating GraphQL`, {
+        operationName,
+        query: query.replace(/\s+/gm, " ").slice(0, 40),
+      });
 
       return await graphql({
         schema,

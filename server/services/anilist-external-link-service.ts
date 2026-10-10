@@ -1,13 +1,9 @@
-import type { Logger } from "server/utils/logger";
+import { createLogger } from "@aklinker1/logger";
 import type { ExternalLinkLookupService } from "./external-link-lookup-service";
 
-export function createAnilistExternalLinkService({
-  logger,
-}: {
-  logger: Logger;
-}): ExternalLinkLookupService {
-  const serviceLogger = logger.extend("anilist-external-link-service");
+const logger = createLogger("anilist-external-link-service");
 
+export function createAnilistExternalLinkService(): ExternalLinkLookupService {
   const findLinks: ExternalLinkLookupService["findLinks"] = async (
     showName,
   ) => {
@@ -36,38 +32,40 @@ export function createAnilistExternalLinkService({
       });
 
       if (!response.ok) {
-        serviceLogger.error(
-          `Anilist API request failed: ${response.status} ${response.statusText}`,
-        );
+        logger.error("Failed to fetch anilist show", {
+          status: response.status,
+          statusText: response.statusText,
+          showName,
+        });
         return [];
       }
 
       const data = (await response.json()) as AnilistResponse;
 
       if (data.errors) {
-        serviceLogger.error(`Anilist API errors:`, data.errors);
+        logger.error(`Anilist API returned errors`, {
+          showName,
+          errors: data.errors,
+        });
         return [];
       }
 
       const results = data.data?.anime?.results;
       if (!results || results.length === 0) {
-        serviceLogger.debug(`No Anilist results found for "${showName}"`);
+        logger.debug(`No Anilist results found`, { showName });
         return [];
       }
 
       const siteUrl = results[0]?.siteUrl;
       if (!siteUrl) {
-        serviceLogger.debug(`Anilist result for "${showName}" has no siteUrl`);
+        logger.debug(`Anilist has no siteUrl`, { showName });
         return [];
       }
 
-      serviceLogger.debug(`Found Anilist link for "${showName}": ${siteUrl}`);
+      logger.debug(`Found Anilist link`, { showName, siteUrl });
       return [siteUrl];
-    } catch (err) {
-      serviceLogger.error(
-        `Failed to fetch Anilist links for "${showName}":`,
-        err,
-      );
+    } catch (error) {
+      logger.error(`Failed to fetch Anilist links`, { showName, error });
       return [];
     }
   };

@@ -1,18 +1,18 @@
-import { logger } from "server/utils/logger";
+import { createLogger } from "@aklinker1/logger";
 
-const jobsLogger = logger.extend("jobs");
+const logger = createLogger("jobs");
 
 export function initJobs() {
-  jobsLogger.info("Starting jobs worker...");
+  logger.info("Starting jobs worker");
   const workerUrl = new URL("./index.worker.ts", import.meta.url);
   const worker = new Worker(workerUrl);
 
   worker.onmessage = (message) => {
-    if (message.data === "initialized") jobsLogger.info("Worker initialized!");
-    else jobsLogger.info("Message from worker:", message);
+    if (message.data === "initialized") logger.info("Worker initialized!");
+    else logger.info("Worker message", { message });
   };
 
-  worker.onerror = (err) => {
-    jobsLogger.error("Worker Error:", err);
+  worker.onerror = (error) => {
+    logger.error("Worker error", { error });
   };
 }

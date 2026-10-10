@@ -6,30 +6,31 @@
 
 import { openAnimeSkipDatabase } from "server/services/db";
 import { createAnilistExternalLinkService } from "server/services/anilist-external-link-service";
-import { logger, Color } from "server/utils/logger";
+import { createLogger } from "@aklinker1/logger";
 import { createTimer } from "shared/time";
 import { externalLinks, shows } from "server/db/schema";
 import { isNull } from "drizzle-orm";
+import { styleText } from "node:util";
 
-const scriptLogger = logger.extend("backfill-anilist-shows");
+const logger = createLogger("backfill-anilist-shows");
 
 async function main() {
   const timer = createTimer();
 
-  scriptLogger.info("Opening database...");
+  logger.info("Opening database...");
   const db = await openAnimeSkipDatabase();
 
-  const anilistService = createAnilistExternalLinkService({ logger });
+  const anilistService = createAnilistExternalLinkService();
 
-  scriptLogger.info("Getting all shows...");
+  logger.info("Getting all shows...");
   const allShows = await db.query.shows.findMany({
     where: isNull(shows.deletedAt),
   });
 
   const showCount = allShows.length;
-  scriptLogger.info(`Found ${Color.Cyan}${showCount}${Color.Reset} shows`);
+  logger.info(`Found ${styleText("cyan", String(showCount))} shows`);
 
-  scriptLogger.info("Looking for Anilist matches:");
+  logger.info("Looking for Anilist matches:");
 
   for (let i = 0; i < allShows.length; i++) {
     const show = allShows[i];
@@ -38,8 +39,8 @@ async function main() {
     await sleep(60_000 / 90);
 
     if (!show.name) {
-      scriptLogger.warn(
-        `(${i + 1}/${showCount}) ${Color.Dim}[${show.id}]${Color.Reset} - NO NAME`,
+      logger.warn(
+        `(${i + 1}/${showCount}) ${styleText("dim", show.id)} - NO NAME`,
       );
       continue;
     }
@@ -47,8 +48,8 @@ async function main() {
     const links = await anilistService.findLinks(show.name);
 
     if (links.length === 0) {
-      scriptLogger.info(
-        `(${i + 1}/${showCount}) ${show.name} - ${Color.Yellow}NO URL${Color.Reset}`,
+      logger.info(
+        `(${i + 1}/${showCount}) ${show.name} - ${styleText("yellow", "NO URL")}`,
       );
     } else {
       const url = links[0];
@@ -60,8 +61,8 @@ async function main() {
             showId: show.id,
           })
           .onConflictDoNothing();
-        scriptLogger.info(
-          `(${i + 1}/${showCount}) ${show.name} - ${Color.Green}${url}${Color.Reset}`,
+        logger.info(
+          `(${i + 1}/${showCount}) ${show.name} - ${styleText("green", url)}`,
         );
       } catch (err) {
         // Handle duplicate key errors gracefully
@@ -69,8 +70,8 @@ async function main() {
           err instanceof Error &&
           err.message.includes("duplicate key value violates unique constraint")
         ) {
-          scriptLogger.info(
-            `(${i + 1}/${showCount}) ${show.name} - ${Color.Cyan}${url}${Color.Reset} (already exists)`,
+          logger.info(
+            `(${i + 1}/${showCount}) ${show.name} - ${styleText("cyan", url)} (already exists)`,
           );
         } else {
           throw err;
@@ -79,7 +80,7 @@ async function main() {
     }
   }
 
-  scriptLogger.info(`Completed in ${timer.duration()}`);
+  logger.info(`Completed in ${timer.duration()}`);
   process.exit(0);
 }
 
@@ -88,6 +89,6 @@ function sleep(ms: number): Promise<void> {
 }
 
 main().catch((err) => {
-  scriptLogger.error("Error:", err);
+  logger.error("Error:", err);
   process.exit(1);
 });
