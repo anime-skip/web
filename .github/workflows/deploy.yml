@@ -46,7 +46,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
         with:
-          images: ${{ secrets.REGISTRY_ORIGIN }}/anime-skip-web
+          images: ${{ secrets.REGISTRY_ORIGIN }}/anime-skip/web
           tags: |
             type=semver,pattern={{version}},value=v${{ steps.bump.outputs.version }}
             type=semver,pattern={{major}}.{{minor}},value=v${{ steps.bump.outputs.version }}
