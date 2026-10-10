@@ -1,24 +1,24 @@
 import { inArray } from "drizzle-orm";
 import { showAdmins, type DbShowAdmin } from "server/db/schema";
 
-import type { AnimeSkipDatabase } from "./db";
+import type { Database } from "./db";
 
 export interface ShowAdminService {
   softDeleteMany(
-    tx: AnimeSkipDatabase,
+    tx: Database,
     ids: string[],
     deletedByUserId: string,
     deletedAt: Date,
   ): Promise<DbShowAdmin[]>;
   softDeleteCascade(
-    tx: AnimeSkipDatabase,
+    tx: Database,
     ids: string[],
     deletedByUserId: string,
     deletedAt: Date,
   ): Promise<DbShowAdmin[]>;
 }
 
-export function createShowAdminService({ db: _db }: { db: AnimeSkipDatabase }): ShowAdminService {
+export function createShowAdminService({ db: _db }: { db: Database }): ShowAdminService {
   const softDeleteMany: ShowAdminService["softDeleteMany"] = async (
     tx,
     ids,

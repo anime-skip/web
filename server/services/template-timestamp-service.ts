@@ -1,15 +1,15 @@
 import { and, eq, or } from "drizzle-orm";
 import { templateTimestamps, type DbTemplateTimestamp } from "server/db/schema";
 
-import type { AnimeSkipDatabase } from "./db";
+import type { Database } from "./db";
 
 export interface TemplateTimestampService {
   deleteMany(
-    tx: AnimeSkipDatabase,
+    tx: Database,
     keys: Array<{ templateId: string; timestampId: string }>,
   ): Promise<DbTemplateTimestamp[]>;
   deleteCascade(
-    tx: AnimeSkipDatabase,
+    tx: Database,
     keys: Array<{ templateId: string; timestampId: string }>,
   ): Promise<DbTemplateTimestamp[]>;
 }
@@ -17,7 +17,7 @@ export interface TemplateTimestampService {
 export function createTemplateTimestampService({
   db: _db,
 }: {
-  db: AnimeSkipDatabase;
+  db: Database;
 }): TemplateTimestampService {
   const deleteMany: TemplateTimestampService["deleteMany"] = async (tx, keys) => {
     if (keys.length === 0) {

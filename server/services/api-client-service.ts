@@ -1,18 +1,18 @@
 import { inArray } from "drizzle-orm";
 import { apiClients, type DbApiClient } from "server/db/schema";
 
-import type { AnimeSkipDatabase } from "./db";
+import type { Database } from "./db";
 
 export interface ApiClientService {
   softDeleteMany(
-    tx: AnimeSkipDatabase,
+    tx: Database,
     ids: string[],
     deletedByUserId: string,
     deletedAt: Date,
   ): Promise<DbApiClient>;
 }
 
-export function createApiClientService({ db: _db }: { db: AnimeSkipDatabase }): ApiClientService {
+export function createApiClientService({ db: _db }: { db: Database }): ApiClientService {
   const softDeleteMany: ApiClientService["softDeleteMany"] = async (
     tx,
     ids,

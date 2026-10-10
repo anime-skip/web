@@ -1,18 +1,18 @@
 import { eq } from "drizzle-orm";
 import { users, type DbUser } from "server/db/schema";
 
-import type { AnimeSkipDatabase } from "./db";
+import type { Database } from "./db";
 import type { PreferencesService } from "./preferences-service";
 
 export interface UserService {
-  anonymize(tx: AnimeSkipDatabase, userId: string, deletedAt: Date): Promise<DbUser>;
+  anonymize(tx: Database, userId: string, deletedAt: Date): Promise<DbUser>;
 }
 
 export function createUserService({
   db: _db,
   preferencesService,
 }: {
-  db: AnimeSkipDatabase;
+  db: Database;
   preferencesService: PreferencesService;
 }): UserService {
   const anonymize: UserService["anonymize"] = async (tx, userId, deletedAt) => {

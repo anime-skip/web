@@ -1,20 +1,20 @@
 import { inArray, isNull, and } from "drizzle-orm";
 import { episodes, templates, timestamps, episodeUrls, type DbEpisode } from "server/db/schema";
 
-import type { AnimeSkipDatabase } from "./db";
+import type { Database } from "./db";
 import type { EpisodeUrlService } from "./episode-url-service";
 import type { TemplateService } from "./template-service";
 import type { TimestampService } from "./timestamp-service";
 
 export interface EpisodeService {
   softDeleteMany(
-    tx: AnimeSkipDatabase,
+    tx: Database,
     ids: string[],
     deletedByUserId: string,
     deletedAt: Date,
   ): Promise<DbEpisode[]>;
   softDeleteCascade(
-    tx: AnimeSkipDatabase,
+    tx: Database,
     ids: string[],
     deletedByUserId: string,
     deletedAt: Date,
@@ -27,7 +27,7 @@ export function createEpisodeService({
   timestampService,
   episodeUrlService,
 }: {
-  db: AnimeSkipDatabase;
+  db: Database;
   templateService: TemplateService;
   timestampService: TimestampService;
   episodeUrlService: EpisodeUrlService;

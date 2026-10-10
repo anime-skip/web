@@ -1,14 +1,14 @@
 import { inArray } from "drizzle-orm";
 import { episodeUrls, type DbEpisodeUrl } from "server/db/schema";
 
-import type { AnimeSkipDatabase } from "./db";
+import type { Database } from "./db";
 
 export interface EpisodeUrlService {
-  deleteMany(tx: AnimeSkipDatabase, urls: string[]): Promise<DbEpisodeUrl[]>;
-  deleteCascade(tx: AnimeSkipDatabase, urls: string[]): Promise<DbEpisodeUrl[]>;
+  deleteMany(tx: Database, urls: string[]): Promise<DbEpisodeUrl[]>;
+  deleteCascade(tx: Database, urls: string[]): Promise<DbEpisodeUrl[]>;
 }
 
-export function createEpisodeUrlService({ db: _db }: { db: AnimeSkipDatabase }): EpisodeUrlService {
+export function createEpisodeUrlService({ db: _db }: { db: Database }): EpisodeUrlService {
   const deleteMany: EpisodeUrlService["deleteMany"] = async (tx, urls) => {
     if (urls.length === 0) {
       return [];

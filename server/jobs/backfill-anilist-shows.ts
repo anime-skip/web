@@ -1,7 +1,7 @@
 import { createLogger } from "@aklinker1/logger";
 import { and, gte, isNotNull, isNull, notExists, sql } from "drizzle-orm";
 import { externalLinks, shows } from "server/db/schema";
-import type { AnimeSkipDatabase } from "server/services/db";
+import type { Database } from "server/services/db";
 import type { ExternalLinkLookupService } from "server/services/external-link-lookup-service";
 import { DAY } from "shared/time";
 
@@ -11,7 +11,7 @@ const logger = createLogger("backfill-anilist-shows");
 const REQUEST_INTERVAL_MS = 60_000 / 90;
 
 export interface BackfillAnilistShowsOptions {
-  db: AnimeSkipDatabase;
+  db: Database;
   /** Should be backed by Anilist, since we only look for shows missing an Anilist link. */
   anilist: ExternalLinkLookupService;
   /**

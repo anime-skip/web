@@ -2,7 +2,7 @@ import { createLogger } from "@aklinker1/logger";
 import { and, asc, gt, inArray, isNull } from "drizzle-orm";
 import { episodes, episodeUrls, shows, timestamps, users } from "server/db/schema";
 import type { Alerter } from "server/services/alerter";
-import type { AnimeSkipDatabase } from "server/services/db";
+import type { Database } from "server/services/db";
 import {
   validateEpisodeTimestamps,
   type ValidationTimestamp,
@@ -23,7 +23,7 @@ interface InvalidEpisode {
 }
 
 export interface ReviewTimestampsOptions {
-  db: AnimeSkipDatabase;
+  db: Database;
   alerter: Alerter;
 }
 
@@ -112,7 +112,7 @@ export async function reviewTimestamps({
 }
 
 async function buildMessages(
-  db: AnimeSkipDatabase,
+  db: Database,
   invalid: InvalidEpisode[],
   typeNames: Map<string, string>,
 ): Promise<string[]> {

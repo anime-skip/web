@@ -8,7 +8,7 @@ import {
   type DbShow,
 } from "server/db/schema";
 
-import type { AnimeSkipDatabase } from "./db";
+import type { Database } from "./db";
 import type { EpisodeService } from "./episode-service";
 import type { ExternalLinkService } from "./external-link-service";
 import type { ShowAdminService } from "./show-admin-service";
@@ -16,13 +16,13 @@ import type { TemplateService } from "./template-service";
 
 export interface ShowService {
   softDeleteMany(
-    tx: AnimeSkipDatabase,
+    tx: Database,
     ids: string[],
     deletedByUserId: string,
     deletedAt: Date,
   ): Promise<DbShow[]>;
   softDeleteCascade(
-    tx: AnimeSkipDatabase,
+    tx: Database,
     ids: string[],
     deletedByUserId: string,
     deletedAt: Date,
@@ -36,7 +36,7 @@ export function createShowService({
   episodeService,
   externalLinkService,
 }: {
-  db: AnimeSkipDatabase;
+  db: Database;
   showAdminService: ShowAdminService;
   templateService: TemplateService;
   episodeService: EpisodeService;

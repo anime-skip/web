@@ -7,7 +7,9 @@ import { env } from "server/env";
 
 const logger = createLogger("db");
 
-export async function openAnimeSkipDatabase(): Promise<AnimeSkipDatabase> {
+export type Database = BunSQLDatabase<typeof dbSchema>;
+
+export async function openDb(): Promise<Database> {
   const { DATABASE_URL, DATABASE_ENABLE_SEEDING } = env;
   if (!DATABASE_URL) throw Error("env.DATABASE_URL is required to open the database");
 
@@ -39,5 +41,3 @@ export async function openAnimeSkipDatabase(): Promise<AnimeSkipDatabase> {
 
   return db;
 }
-
-export type AnimeSkipDatabase = BunSQLDatabase<typeof dbSchema>;

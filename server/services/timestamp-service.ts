@@ -6,12 +6,12 @@ import {
   type DbTimestampInsert,
 } from "server/db/schema";
 
-import type { AnimeSkipDatabase } from "./db";
+import type { Database } from "./db";
 import type { TemplateTimestampService } from "./template-timestamp-service";
 
 export interface TimestampService {
   updateAll(
-    tx: AnimeSkipDatabase,
+    tx: Database,
     create: Omit<DbTimestampInsert, "id">[],
     update: Array<{ id: string; updates: Partial<DbTimestampInsert> }>,
     deleteIds: string[],
@@ -23,13 +23,13 @@ export interface TimestampService {
     deleted: DbTimestamp[];
   }>;
   softDeleteMany(
-    tx: AnimeSkipDatabase,
+    tx: Database,
     ids: string[],
     deletedByUserId: string,
     deletedAt: Date,
   ): Promise<DbTimestamp[]>;
   softDeleteCascade(
-    tx: AnimeSkipDatabase,
+    tx: Database,
     ids: string[],
     deletedByUserId: string,
     deletedAt: Date,
@@ -40,7 +40,7 @@ export function createTimestampService({
   db: _db,
   templateTimestampService,
 }: {
-  db: AnimeSkipDatabase;
+  db: Database;
   templateTimestampService: TemplateTimestampService;
 }): TimestampService {
   const updateAll: TimestampService["updateAll"] = async (

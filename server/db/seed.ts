@@ -1,7 +1,7 @@
 import { createLogger } from "@aklinker1/logger";
 import { SHARED_CLIENT_ID } from "shared/constants";
 
-import type { AnimeSkipDatabase } from "../services/db";
+import type { Database } from "../services/db";
 import { TIMESTAMP_TYPE_IDS } from "../utils/timestamp-validation";
 import { apiClients, DbUserRole, preferences, timestampTypes, users } from "./schema";
 
@@ -111,7 +111,7 @@ const API_CLIENTS: Array<{
  * Insert the rows the API depends on to function. Safe to run repeatedly, existing rows are never
  * modified.
  */
-export async function seedDatabase(db: AnimeSkipDatabase): Promise<void> {
+export async function seedDatabase(db: Database): Promise<void> {
   logger.info("Seeding database");
   const now = new Date().toISOString();
 

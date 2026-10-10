@@ -1,18 +1,18 @@
 import { and, inArray, isNull } from "drizzle-orm";
 import { templates, templateTimestamps, type DbTemplate } from "server/db/schema";
 
-import type { AnimeSkipDatabase } from "./db";
+import type { Database } from "./db";
 import type { TemplateTimestampService } from "./template-timestamp-service";
 
 export interface TemplateService {
   softDeleteMany(
-    tx: AnimeSkipDatabase,
+    tx: Database,
     ids: string[],
     deletedByUserId: string,
     deletedAt: Date,
   ): Promise<DbTemplate[]>;
   softDeleteCascade(
-    tx: AnimeSkipDatabase,
+    tx: Database,
     ids: string[],
     deletedByUserId: string,
     deletedAt: Date,
@@ -23,7 +23,7 @@ export function createTemplateService({
   db: _db,
   templateTimestampService,
 }: {
-  db: AnimeSkipDatabase;
+  db: Database;
   templateTimestampService: TemplateTimestampService;
 }): TemplateService {
   const softDeleteMany: TemplateService["softDeleteMany"] = async (

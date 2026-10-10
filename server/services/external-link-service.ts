@@ -2,25 +2,18 @@ import { and, eq, or } from "drizzle-orm";
 import { externalLinks, type DbExternalLink } from "server/db/schema";
 import { ALLOWED_EXTERNAL_LINK_HOSTNAMES } from "server/utils/external-service-utils";
 
-import type { AnimeSkipDatabase } from "./db";
+import type { Database } from "./db";
 
 export interface ExternalLinkService {
   sanitizeUrl(url: string): string;
-  deleteMany(
-    tx: AnimeSkipDatabase,
-    keys: Array<{ url: string; showId: string }>,
-  ): Promise<DbExternalLink[]>;
+  deleteMany(tx: Database, keys: Array<{ url: string; showId: string }>): Promise<DbExternalLink[]>;
   deleteCascade(
-    tx: AnimeSkipDatabase,
+    tx: Database,
     keys: Array<{ url: string; showId: string }>,
   ): Promise<DbExternalLink[]>;
 }
 
-export function createExternalLinkService({
-  db: _db,
-}: {
-  db: AnimeSkipDatabase;
-}): ExternalLinkService {
+export function createExternalLinkService({ db: _db }: { db: Database }): ExternalLinkService {
   const sanitizeUrl: ExternalLinkService["sanitizeUrl"] = (url) => {
     const parsed = new URL(url);
 

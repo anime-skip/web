@@ -6,7 +6,7 @@ import { mapDbUserToGqlAccount } from "server/graphql/mappers";
 import type { GqlResolvers } from "server/graphql/resolver-types.gen";
 import { getShowAdminsByUserId } from "server/graphql/resolvers/show-admin-resolvers";
 import { getOptionalUserByUsername } from "server/graphql/resolvers/user-resolvers";
-import type { AnimeSkipDatabase } from "server/services/db";
+import type { Database } from "server/services/db";
 import { auth } from "server/utils/auth";
 import {
   sendAccountVerificationEmail,
@@ -202,7 +202,7 @@ async function requireUser(ctx: GqlContext, userId: string): Promise<DbUser> {
 }
 
 async function updatePassword(
-  db: AnimeSkipDatabase,
+  db: Database,
   user: DbUser,
   args: { newPassword: string; confirmNewPassword: string },
 ): Promise<GqlLoginData> {

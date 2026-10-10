@@ -3,10 +3,10 @@ import { episodes, shows, timestamps } from "server/db/schema";
 import type { DbEpisode, DbShow, DbTimestamp } from "server/db/schema";
 import { mapDbTimestampTypeToGqlTimestampType } from "server/graphql/mappers";
 
-import type { AnimeSkipDatabase } from "./db";
+import type { Database } from "./db";
 import type { ThirdPartyService } from "./third-party-service";
 
-export function createDbThirdPartyService({ db }: { db: AnimeSkipDatabase }): ThirdPartyService {
+export function createDbThirdPartyService({ db }: { db: Database }): ThirdPartyService {
   const findEpisodeByName: ThirdPartyService["findEpisodeByName"] = async (name) => {
     // Find episodes where name contains the search string (case-insensitive)
     const matchingEpisodes = await db.query.episodes.findMany({
