@@ -7,14 +7,14 @@
     "dev": "bun --silent aframe",
     "build": "bun --silent aframe build",
     "preview": "bun --cwd .output --env-file ../.env server-entry.js",
-    "docker:build": "docker build -t anime-skip/web:latest .",
+    "docker:build": "bun run build && docker build -t anime-skip/web:latest .",
     "docker:preview": "docker run --init --rm -p 3000:3000 -e NODE_ENV=production --env-file=.env anime-skip/web:latest",
     "gen": "bun gen:db && bun gen:graphql",
     "gen:db": "bun run drizzle-kit generate",
     "gen:graphql": "bun scripts/graphql-codegen.ts"
   },
   "dependencies": {
-    "@aklinker1/aframe": "^2.0.1",
+    "@aklinker1/aframe": "^2.0.4",
     "@aklinker1/logger": "^1.1.1",
     "@aklinker1/zero-ioc": "^1.6.0",
     "@aklinker1/zeta": "^2.2.3",

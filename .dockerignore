@@ -1,7 +1,2 @@
-node_modules
-.output
-.env
-.env.*
-.gitignore
-.prettierignore
-Dockerfile
+*
+!.output
