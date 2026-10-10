@@ -6,13 +6,22 @@ import { version } from "./version";
 export const HealthCheckOutput = z
   .object({
     status: z
-      .literal("UP")
-      .describe('The server status. Will always return `"UP"` when the server is running.')
-      .meta({ example: "UP" }),
+      .literal("RUNNING")
+      .describe('The server status. Will always return `"RUNNING"` when the server is running.')
+      .meta({ example: "RUNNING" }),
     version: z
       .string()
       .describe("The version of the API that is running.")
       .meta({ example: version }),
+    stage: z.string().meta({ example: "production" }),
+    introspection: z
+      .boolean()
+      .describe("Whether or not GraphQL playground is enabled")
+      .meta({ example: true }),
+    playground: z
+      .boolean()
+      .describe("Whether or not the GraphQL introspection is enabled")
+      .meta({ example: true }),
   })
   .describe("Server status")
   .meta({ ref: "HealthCheckOutput" });

@@ -1,6 +1,7 @@
 import { createApp } from "@aklinker1/zeta";
 import dedent from "dedent";
 import { OpenApiTag } from "server/enums";
+import { env } from "server/env";
 import { OpenApiSecurity } from "server/utils/openapi";
 import { HealthCheckOutput } from "shared/models";
 import { version } from "shared/version";
@@ -18,7 +19,10 @@ export const systemApis = createApp().get(
     responses: HealthCheckOutput,
   },
   () => ({
-    status: "UP" as const,
+    status: "RUNNING" as const,
     version,
+    stage: process.env.NODE_ENV ?? "development",
+    introspection: env.ENABLE_INTROSPECTION,
+    playground: env.ENABLE_PLAYGROUND,
   }),
 );
