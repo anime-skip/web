@@ -39,7 +39,7 @@ export const graphqlApis = createApp()
       responses: GraphqlOutput,
     },
     async (ctx) => {
-      const { operationName = "Unknown", query, variables } = ctx.body;
+      const { operationName, query, variables } = ctx.body;
 
       logger.info(`Evaluating GraphQL`, {
         operationName,
@@ -52,7 +52,7 @@ export const graphqlApis = createApp()
         source: query,
         contextValue: createGqlContext(ctx),
         variableValues: variables,
-        operationName: operationName,
+        operationName,
       });
     },
   );
