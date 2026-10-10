@@ -77,9 +77,15 @@ async function send(data: {
   logger.info(`Sending email`, {
     templateName: data.templateName,
   });
-  if (!env.SEND_EMAILS) {
-    logger.warn("Skipped sending email, env.SEND_EMAILS != true");
+  const { SEND_EMAILS } = env;
+  if (!SEND_EMAILS) {
+    logger.warn("Skipped sending email, disabled by env.SEND_EMAILS");
     return;
+  }
+
+  const { EMAIL_STMP_USERNAME, EMAIL_STMP_PASSWORD } = env;
+  if (!EMAIL_STMP_USERNAME || !EMAIL_STMP_PASSWORD) {
+    throw Error("env.EMAIL_STMP_USERNAME or env.EMAIL_STMP_PASSWORD are required to send an email");
   }
 
   const headers = [
@@ -101,8 +107,8 @@ async function send(data: {
 
   const auth = {
     type: "login" as const,
-    user: env.EMAIL_STMP_USERNAME,
-    pass: env.EMAIL_STMP_PASSWORD,
+    user: EMAIL_STMP_USERNAME,
+    pass: EMAIL_STMP_PASSWORD,
   };
   const connection = new SMTPConnection({
     host: STMP_HOSTNAME,

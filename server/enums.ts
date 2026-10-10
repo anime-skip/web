@@ -6,12 +6,3 @@ export enum OpenApiTag {
 export enum OpenApiSecurityScheme {
   XClientId = "X-Client-ID",
 }
-
-export enum LogLevel {
-  Debug,
-  Verbose,
-  Info,
-  Http,
-  Warn,
-  Error,
-}

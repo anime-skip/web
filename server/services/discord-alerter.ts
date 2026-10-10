@@ -3,8 +3,15 @@ import { env } from "server/env";
 import type { Alerter } from "./alerter";
 
 export function createDiscordAlerter(): Alerter {
-  const botToken = `Bot ${env.DISCORD_BOT_TOKEN}`;
-  const channelId = env.DISCORD_ALERTS_CHANNEL_ID;
+  const { DISCORD_BOT_TOKEN, DISCORD_ALERTS_CHANNEL_ID } = env;
+  if (!DISCORD_BOT_TOKEN || !DISCORD_ALERTS_CHANNEL_ID) {
+    throw new Error(
+      "env.DISCORD_BOT_TOKEN and env.DISCORD_ALERTS_CHANNEL_ID are required to send discord alerts",
+    );
+  }
+
+  const botToken = `Bot ${DISCORD_BOT_TOKEN}`;
+  const channelId = DISCORD_ALERTS_CHANNEL_ID;
 
   async function sendMessage(channelId: string, content: string): Promise<{ id: string }> {
     const response = await fetch(`https://discord.com/api/v10/channels/${channelId}/messages`, {

@@ -10,6 +10,7 @@ import { graphqlPlaygroundApis } from "./api/graphql-playground-apis";
 import { systemApis } from "./api/system-apis";
 import { OpenApiSecurityScheme, OpenApiTag } from "./enums";
 import { applyRateLimit } from "./plugins/apply-rate-limit";
+import { corsPlugin } from "./plugins/cors";
 import { requireApiClient } from "./plugins/require-api-client";
 
 const apiApp = createApp({ prefix: "/api" })
@@ -61,6 +62,7 @@ export const app = createApp({
     },
   },
 })
+  .use(corsPlugin)
   .use(graphqlPlaygroundApis)
   .use(apiApp)
   .mount(fetchStatic());

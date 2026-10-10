@@ -23,7 +23,14 @@ const AUDIENCES: Record<TokenKind, string> = {
 
 const ISSUER = "anime-skip.com";
 
-const SECRET = new TextEncoder().encode(env.JWT_SECRET);
+let SECRET: Uint8Array<ArrayBufferLike> | undefined;
+function secret(): Uint8Array<ArrayBufferLike> {
+  const { JWT_SECRET } = env;
+  if (!JWT_SECRET) throw Error("env.JWT_SECRET is required to work with JWTs");
+
+  SECRET ??= new TextEncoder().encode(JWT_SECRET);
+  return SECRET;
+}
 
 export type TokenInfo = {
   userId: string;
@@ -39,7 +46,7 @@ export const auth = {
         .setIssuer(ISSUER)
         .setAudience(AUDIENCES[kind])
         .setExpirationTime(toSeconds(now + TIMEOUTS[kind]))
-        .sign(SECRET);
+        .sign(secret());
     } catch (cause) {
       throw new TokenError("create", kind, { cause });
     }
@@ -47,7 +54,7 @@ export const auth = {
 
   validateToken: async (kind: TokenKind, token: string): Promise<TokenInfo> => {
     try {
-      const res = await jwtVerify<TokenInfo>(token, SECRET, {
+      const res = await jwtVerify<TokenInfo>(token, secret(), {
         issuer: ISSUER,
         audience: AUDIENCES[kind],
         algorithms: ["HS256"],
