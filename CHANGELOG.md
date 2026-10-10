@@ -1,5 +1,26 @@
 # Changelog
 
+## v2.0.0-alpha.3
+
+[compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.2...v2.0.0-alpha.3)
+
+### 🩹 Fixes
+
+- Remove default gql operation name ([`573d925`](https://github.com/anime-skip/web/commit/573d925c9f113ad5688c406cf6b0d2c97bed2627))
+
+### 🏡 Chore
+
+- Ignore changelog formatting ([`e5bf889`](https://github.com/anime-skip/web/commit/e5bf8895a6a714ef64e79802eb5938bc07492d4f))
+
+### 🤖 CI
+
+- Push `latest` tag during deploy ([`c97149e`](https://github.com/anime-skip/web/commit/c97149ea7a41298f37a922021d16b024b45582e9))
+
+### ❤️ Contributors
+
+- [@aklinker1](https://github.com/aklinker1)
+
+
 ## v2.0.0-alpha.2
 
 ### 🚀 Features
@@ -119,4 +140,3 @@
 ### ❤️ Contributors
 
 - [@aklinker1](https://github.com/aklinker1)
-
