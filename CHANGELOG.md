@@ -1,9 +1,21 @@
 # Changelog
 
+## v2.0.0-alpha.10
+
+[compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.9...v2.0.0-alpha.10)
+
+### 🩹 Fixes
+
+- Cleanup account settings layout ([`6edf296`](https://github.com/anime-skip/web/commit/6edf296655f0a9e027a69c0b4f4f19f02b5a1c63))
+
+### ❤️ Contributors
+
+- [@aklinker1](https://github.com/aklinker1)
+
+
 ## v2.0.0-alpha.9
 
 [compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.8...v2.0.0-alpha.9)
-
 
 ## v2.0.0-alpha.8
 
