@@ -14,45 +14,12 @@ import { getTemplatesByShowId } from "server/graphql/resolvers/template-resolver
 import { prepareGqlInputForDb } from "server/utils/drizzle-utils";
 import type { NoOptionals } from "shared/types";
 
+import type { GqlContext } from "../context";
+
 export const showResolvers: GqlResolvers = {
   Mutation: {
-    createShow: async (_parent, args, ctx) => {
-      const userId = ctx.authUserId!;
-      const now = new Date();
-      const value: NoOptionals<Omit<DbShowInsert, "id">> = {
-        createdAt: now.toISOString(),
-        createdByUserId: userId,
-        updatedAt: now.toISOString(),
-        updatedByUserId: userId,
-        deletedAt: null,
-        deletedByUserId: null,
-        image: args.showInput.image ?? null,
-        name: args.showInput.name,
-        originalName: args.showInput.originalName ?? null,
-        website: args.showInput.website ?? null,
-      };
-
-      const externalLinks = await ctx.deps.externalLinkLookupService.findLinks(args.showInput.name);
-
-      const [row] = await ctx.deps.db.transaction(
-        async (tx) => {
-          const [createdShow] = await tx.insert(shows).values(value).returning();
-
-          if (externalLinks.length > 0) {
-            const linkValues = externalLinks.map<DbExternalLinkInsert>((link) => ({
-              url: ctx.deps.externalLinkService.sanitizeUrl(link),
-              showId: createdShow.id,
-            }));
-            await tx.insert(externalLinksTable).values(linkValues);
-          }
-
-          return [createdShow];
-        },
-        { accessMode: "read write" },
-      );
-
-      return mapDbShowToGqlShow(row);
-    },
+    createShow: (_parent, args, ctx) => createShow(ctx, args),
+    createShowV2: (_parent, args, ctx) => createShow(ctx, args),
 
     updateShow: async (_parent, args, ctx) => {
       const userId = ctx.authUserId!;
@@ -144,6 +111,44 @@ export const showResolvers: GqlResolvers = {
     },
   },
 };
+
+async function createShow(ctx: GqlContext, args: { showInput: GqlInputShow }): Promise<GqlShow> {
+  const userId = ctx.authUserId!;
+  const now = new Date();
+  const value: NoOptionals<Omit<DbShowInsert, "id">> = {
+    createdAt: now.toISOString(),
+    createdByUserId: userId,
+    updatedAt: now.toISOString(),
+    updatedByUserId: userId,
+    deletedAt: null,
+    deletedByUserId: null,
+    image: args.showInput.image ?? null,
+    name: args.showInput.name,
+    originalName: args.showInput.originalName ?? null,
+    website: args.showInput.website ?? null,
+  };
+
+  const externalLinks = await ctx.deps.externalLinkLookupService.findLinks(args.showInput.name);
+
+  const [row] = await ctx.deps.db.transaction(
+    async (tx) => {
+      const [createdShow] = await tx.insert(shows).values(value).returning();
+
+      if (externalLinks.length > 0) {
+        const linkValues = externalLinks.map<DbExternalLinkInsert>((link) => ({
+          url: ctx.deps.externalLinkService.sanitizeUrl(link),
+          showId: createdShow.id,
+        }));
+        await tx.insert(externalLinksTable).values(linkValues);
+      }
+
+      return [createdShow];
+    },
+    { accessMode: "read write" },
+  );
+
+  return mapDbShowToGqlShow(row);
+}
 
 /** Returns a SQL ILIKE pattern for matching external link URLs by service and service ID. */
 function getServiceUrlPattern(service: GqlExternalService, serviceId: string): string {

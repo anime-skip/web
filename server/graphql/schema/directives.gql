@@ -6,3 +6,6 @@ directive @optionalAuthenticated on FIELD_DEFINITION
 
 "Checks if the user is signed in and has a given role."
 directive @hasRole(role: Role!) on FIELD_DEFINITION
+
+"Deprecated: show admins are no longer supported. This directive has no effect."
+directive @isShowAdmin on ARGUMENT_DEFINITION

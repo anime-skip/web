@@ -195,6 +195,10 @@ type Account {
   email: String!
   "Url to an image that is the user's profile picture"
   profileUrl: String!
+  """
+  > Deprecated: show admins are no longer supported. This is always an empty list.
+  """
+  adminOfShows: [ShowAdmin!]! @deprecated(reason: "Show admins are no longer supported")
 
   "If the user's email is verified. Emails must be verified before the user can call a mutation"
   emailVerified: Boolean!
@@ -323,7 +327,8 @@ type Show implements BaseModel {
   website: String
   "A link to a show poster"
   image: String
-
+  "Deprecated: show admins are no longer supported. This is always an empty list."
+  admins: [ShowAdmin!]! @deprecated(reason: "Show admins are no longer supported")
   "All the episodes that belong to the show"
   episodes: [Episode!]!
   "All the templates that belong to this show"
@@ -349,6 +354,32 @@ input InputShow {
   originalName: String
   website: String
   image: String
+}
+
+"""
+Deprecated: show admins are no longer supported.
+"""
+type ShowAdmin implements BaseModel {
+  id: ID!
+  createdAt: Time!
+  createdByUserId: ID!
+  createdBy: User!
+  updatedAt: Time!
+  updatedByUserId: ID!
+  updatedBy: User!
+  deletedAt: Time
+  deletedByUserId: ID
+  deletedBy: User
+  showId: ID!
+  show: Show!
+  userId: ID!
+  user: User!
+}
+
+"Deprecated: show admins are no longer supported."
+input InputShowAdmin {
+  showId: ID!
+  userId: ID!
 }
 
 type Timestamp implements BaseModel {
@@ -434,6 +465,8 @@ type User {
 
   username: String!
   profileUrl: String!
+  "Deprecated: show admins are no longer supported. This is always an empty list."
+  adminOfShows: [ShowAdmin!]! @deprecated(reason: "Show admins are no longer supported")
 }
 
 """

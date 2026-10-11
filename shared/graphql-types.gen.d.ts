@@ -297,6 +297,11 @@ type GqlAccount = {
   email: Scalars['String']['output'];
   /** Url to an image that is the user's profile picture */
   profileUrl: Scalars['String']['output'];
+  /**
+   * > Deprecated: show admins are no longer supported. This is always an empty list.
+   * @deprecated Show admins are no longer supported
+   */
+  adminOfShows: Array<GqlShowAdmin>;
   /** If the user's email is verified. Emails must be verified before the user can call a mutation */
   emailVerified: Scalars['Boolean']['output'];
   /** The user's administrative role. Most users are `Role.USER` */
@@ -422,6 +427,11 @@ type GqlShow = GqlBaseModel & {
   website?: Maybe<Scalars['String']['output']>;
   /** A link to a show poster */
   image?: Maybe<Scalars['String']['output']>;
+  /**
+   * Deprecated: show admins are no longer supported. This is always an empty list.
+   * @deprecated Show admins are no longer supported
+   */
+  admins: Array<GqlShowAdmin>;
   /** All the episodes that belong to the show */
   episodes: Array<GqlEpisode>;
   /** All the templates that belong to this show */
@@ -447,6 +457,31 @@ type GqlInputShow = {
   originalName?: InputMaybe<Scalars['String']['input']>;
   website?: InputMaybe<Scalars['String']['input']>;
   image?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Deprecated: show admins are no longer supported. */
+type GqlShowAdmin = GqlBaseModel & {
+  __typename?: 'ShowAdmin';
+  id: Scalars['ID']['output'];
+  createdAt: Scalars['Time']['output'];
+  createdByUserId: Scalars['ID']['output'];
+  createdBy: GqlUser;
+  updatedAt: Scalars['Time']['output'];
+  updatedByUserId: Scalars['ID']['output'];
+  updatedBy: GqlUser;
+  deletedAt?: Maybe<Scalars['Time']['output']>;
+  deletedByUserId?: Maybe<Scalars['ID']['output']>;
+  deletedBy?: Maybe<GqlUser>;
+  showId: Scalars['ID']['output'];
+  show: GqlShow;
+  userId: Scalars['ID']['output'];
+  user: GqlUser;
+};
+
+/** Deprecated: show admins are no longer supported. */
+type GqlInputShowAdmin = {
+  showId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
 };
 
 type GqlTimestamp = GqlBaseModel & {
@@ -533,6 +568,11 @@ type GqlUser = {
   deletedAt?: Maybe<Scalars['Time']['output']>;
   username: Scalars['String']['output'];
   profileUrl: Scalars['String']['output'];
+  /**
+   * Deprecated: show admins are no longer supported. This is always an empty list.
+   * @deprecated Show admins are no longer supported
+   */
+  adminOfShows: Array<GqlShowAdmin>;
 };
 
 /** When no timestamps exist for a specific episode, templates are setup to provide fallback timestamps */
@@ -739,8 +779,13 @@ type GqlMutation = {
   deleteAccount: GqlAccount;
   /** Update user preferences */
   savePreferences: GqlPreferences;
-  /** Create a show and optionally become an admin */
+  /**
+   * Create a show and optionally become an admin
+   * @deprecated Use `createShowV2` instead, `becomeAdmin` is always ignored
+   */
   createShow: GqlShow;
+  /** Create a show */
+  createShowV2: GqlShow;
   /** Update show data */
   updateShow: GqlShow;
   /**
@@ -749,6 +794,16 @@ type GqlMutation = {
    * > `@hasRole(role: ADMIN)` - The user must have the `ADMIN` role to perform this action
    */
   deleteShow: GqlShow;
+  /**
+   * > Deprecated: show admins are no longer supported. This always throws an error.
+   * @deprecated Show admins are no longer supported
+   */
+  createShowAdmin: GqlShowAdmin;
+  /**
+   * > Deprecated: show admins are no longer supported. This always throws an error.
+   * @deprecated Show admins are no longer supported
+   */
+  deleteShowAdmin: GqlShowAdmin;
   /** Create an episode under a `Show` */
   createEpisode: GqlEpisode;
   /** Update episode info */
@@ -866,7 +921,12 @@ type GqlMutationSavePreferencesArgs = {
 
 type GqlMutationCreateShowArgs = {
   showInput: GqlInputShow;
-  becomeAdmin?: InputMaybe<Scalars['Boolean']['input']>;
+  becomeAdmin: Scalars['Boolean']['input'];
+};
+
+
+type GqlMutationCreateShowV2Args = {
+  showInput: GqlInputShow;
 };
 
 
@@ -878,6 +938,16 @@ type GqlMutationUpdateShowArgs = {
 
 type GqlMutationDeleteShowArgs = {
   showId: Scalars['ID']['input'];
+};
+
+
+type GqlMutationCreateShowAdminArgs = {
+  showAdminInput: GqlInputShowAdmin;
+};
+
+
+type GqlMutationDeleteShowAdminArgs = {
+  showAdminId: Scalars['ID']['input'];
 };
 
 
@@ -1043,6 +1113,21 @@ type GqlQuery = {
    */
   searchShows: Array<GqlShow>;
   /**
+   * Deprecated: always throws an error.
+   * @deprecated Show admins are no longer supported
+   */
+  findShowAdmin: GqlShowAdmin;
+  /**
+   * Deprecated: always returns an empty list.
+   * @deprecated Show admins are no longer supported
+   */
+  findShowAdminsByShowId: Array<GqlShowAdmin>;
+  /**
+   * Deprecated: always returns an empty list.
+   * @deprecated Show admins are no longer supported
+   */
+  findShowAdminsByUserId: Array<GqlShowAdmin>;
+  /**
    * Get a list of recently added episodes that have timestamps.
    *
    * > Since this is a rather intensive query, it is cached for 20 minutes before it will look for new
@@ -1168,6 +1253,21 @@ type GqlQuerySearchShowsArgs = {
   offset?: InputMaybe<Scalars['Int']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   sort?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+type GqlQueryFindShowAdminArgs = {
+  showAdminId: Scalars['ID']['input'];
+};
+
+
+type GqlQueryFindShowAdminsByShowIdArgs = {
+  showId: Scalars['ID']['input'];
+};
+
+
+type GqlQueryFindShowAdminsByUserIdArgs = {
+  userId: Scalars['ID']['input'];
 };
 
 

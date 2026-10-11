@@ -26,6 +26,7 @@ export function mapDbUserToGqlUser(db: DbUser): GqlUser {
     id: db.id,
     createdAt: db.createdAt,
     profileUrl: db.profileUrl,
+    adminOfShows: unresolved,
     username: db.username,
     deletedAt: db.deletedAt,
   };
@@ -53,6 +54,7 @@ export function mapDbUserToGqlAccount(db: DbUser): GqlAccount {
     username: db.username,
     email: db.email,
     profileUrl: db.profileUrl,
+    adminOfShows: unresolved,
     emailVerified: db.emailVerified,
     role: mapDbUserRoleToGqlRole(db.role),
     preferences: unresolved,
@@ -286,7 +288,7 @@ export function mapDbShowToGqlShow(db: DbShow): GqlShow {
     originalName: db.originalName,
     website: db.website,
     image: db.image,
-
+    admins: unresolved,
     episodes: unresolved,
     templates: unresolved,
     externalLinks: unresolved,

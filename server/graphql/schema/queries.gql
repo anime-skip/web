@@ -26,6 +26,17 @@ type Query {
   """
   searchShows(search: String = "", offset: Int = 0, limit: Int = 25, sort: String = "ASC"): [Show!]!
 
+  # Show Admins
+  "Deprecated: always throws an error."
+  findShowAdmin(showAdminId: ID!): ShowAdmin!
+    @deprecated(reason: "Show admins are no longer supported")
+  "Deprecated: always returns an empty list."
+  findShowAdminsByShowId(showId: ID!): [ShowAdmin!]!
+    @deprecated(reason: "Show admins are no longer supported")
+  "Deprecated: always returns an empty list."
+  findShowAdminsByUserId(userId: ID!): [ShowAdmin!]!
+    @deprecated(reason: "Show admins are no longer supported")
+
   # Episodes
   """
   Get a list of recently added episodes that have timestamps.

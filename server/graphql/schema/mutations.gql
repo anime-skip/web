@@ -61,10 +61,12 @@ type Mutation {
 
   # Shows
   "Create a show and optionally become an admin"
-  createShow(
-    showInput: InputShow!
-    becomeAdmin: Boolean @deprecated(reason: "This parameter is ignored, it has no effect")
-  ): Show! @authenticated
+  createShow(showInput: InputShow!, becomeAdmin: Boolean!): Show!
+    @authenticated
+    @deprecated(reason: "Use `createShowV2` instead, `becomeAdmin` is always ignored")
+
+  "Create a show"
+  createShowV2(showInput: InputShow!): Show! @authenticated
 
   """
   Update show data
@@ -76,6 +78,18 @@ type Mutation {
   > `@hasRole(role: ADMIN)` - The user must have the `ADMIN` role to perform this action
   """
   deleteShow(showId: ID!): Show! @hasRole(role: ADMIN)
+
+  # Show Admins
+  """
+  > Deprecated: show admins are no longer supported. This always throws an error.
+  """
+  createShowAdmin(showAdminInput: InputShowAdmin!): ShowAdmin!
+    @deprecated(reason: "Show admins are no longer supported")
+  """
+  > Deprecated: show admins are no longer supported. This always throws an error.
+  """
+  deleteShowAdmin(showAdminId: ID!): ShowAdmin!
+    @deprecated(reason: "Show admins are no longer supported")
 
   # Episodes
   """
