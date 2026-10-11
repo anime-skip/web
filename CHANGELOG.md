@@ -1,5 +1,22 @@
 # Changelog
 
+## v2.0.0-alpha.11
+
+[compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.10...v2.0.0-alpha.11)
+
+### 🚀 Features
+
+- Add `DATABASE_ENABLE_TLS` env var ([`0ffeeee`](https://github.com/anime-skip/web/commit/0ffeeee121b7c29447319db4e97b7f7acc2fe66e))
+
+### 🩹 Fixes
+
+- Throw 404 for `/api/*` ([`aac3134`](https://github.com/anime-skip/web/commit/aac31341224489ab73d67b93fbadf5e1b87bc279))
+
+### ❤️ Contributors
+
+- [@aklinker1](https://github.com/aklinker1)
+
+
 ## v2.0.0-alpha.10
 
 [compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.9...v2.0.0-alpha.10)
@@ -11,7 +28,6 @@
 ### ❤️ Contributors
 
 - [@aklinker1](https://github.com/aklinker1)
-
 
 ## v2.0.0-alpha.9
 
