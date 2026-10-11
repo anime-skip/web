@@ -1,7 +1,7 @@
 import { createLogger } from "@aklinker1/logger";
 import { Cron } from "croner";
 import { container } from "server/dependencies";
-import { flushTelemetry, SpanKind, withSpan } from "server/utils/telemetry";
+import { flushTelemetry, initTelemetry, SpanKind, withSpan } from "server/utils/telemetry";
 
 import { backfillAnilistShows } from "./backfill-anilist-shows";
 import { reviewTimestamps } from "./review-timestamps";
@@ -9,6 +9,8 @@ import { reviewTimestamps } from "./review-timestamps";
 declare var self: Worker;
 
 const logger = createLogger("worker");
+
+initTelemetry();
 
 /** Run `job` on a cron schedule (UTC). Runs never overlap and errors never stop the schedule. */
 function schedule(name: string, pattern: string, job: () => Promise<unknown>) {

@@ -1,3 +1,4 @@
+import { createLogger } from "@aklinker1/logger";
 import {
   context,
   propagation,
@@ -18,6 +19,8 @@ import { env } from "server/env";
 
 export { SpanKind, SpanStatusCode };
 
+const logger = createLogger("telemetry");
+
 /** Context manager that lets a hook make a span active for the rest of the current async chain. */
 class EnterableContextManager extends AsyncLocalStorageContextManager {
   enterWith(ctx: Context): void {
@@ -33,8 +36,14 @@ let provider: BasicTracerProvider | undefined;
  * `OTEL_EXPORTER_OTLP_ENDPOINT` isn't set. Must be called once per thread (main and workers).
  */
 export function initTelemetry(): void {
-  if (provider || !env.OTEL_EXPORTER_OTLP_ENDPOINT) return;
+  if (!env.OTEL_EXPORTER_OTLP_ENDPOINT) {
+    logger.info("Open telemetry is not enabled");
+    return;
+  }
 
+  if (provider) return;
+
+  logger.info("Initializing telemetry");
   provider = new BasicTracerProvider({
     resource: resourceFromAttributes({
       [ATTR_SERVICE_NAME]: env.OTEL_SERVICE_NAME,

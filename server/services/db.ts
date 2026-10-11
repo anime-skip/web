@@ -5,7 +5,6 @@ import { migrate } from "drizzle-orm/bun-sql/migrator";
 import * as dbSchema from "server/db/schema";
 import { seedDatabase } from "server/db/seed";
 import { env } from "server/env";
-import { initTelemetry } from "server/utils/telemetry";
 import { traceSqlClient } from "server/utils/traced-sql";
 
 const logger = createLogger("db");
@@ -15,9 +14,6 @@ export type Database = BunSQLDatabase<typeof dbSchema>;
 export async function openDb(): Promise<Database> {
   const { DATABASE_URL, DATABASE_ENABLE_SEEDING, STAGE } = env;
   if (!DATABASE_URL) throw Error("env.DATABASE_URL is required to open the database");
-
-  // db is the first thing opened in both the main thread and the jobs worker
-  initTelemetry();
 
   logger.info("Opening database");
   const db = drizzle({
