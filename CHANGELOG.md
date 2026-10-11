@@ -1,5 +1,26 @@
 # Changelog
 
+## v2.0.0-alpha.5
+
+[compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.4...v2.0.0-alpha.5)
+
+### 🩹 Fixes
+
+- Fix playground content type ([`8b41116`](https://github.com/anime-skip/web/commit/8b4111624ade3a7fc145ee02d6ad5d324e35d759))
+
+### 🏡 Chore
+
+- Fix lint ([`b46c0ea`](https://github.com/anime-skip/web/commit/b46c0ea5271e61248e474f365e8b69124c882e7b))
+
+### 🤖 CI
+
+- Upgrade runners to `ubuntu-26.04` ([`6a9fb9e`](https://github.com/anime-skip/web/commit/6a9fb9e757b44db8915cb4276d68db5efec9170e))
+
+### ❤️ Contributors
+
+- [@aklinker1](https://github.com/aklinker1)
+
+
 ## v2.0.0-alpha.4
 
 [compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.3...v2.0.0-alpha.4)
@@ -15,7 +36,6 @@
 ### ❤️ Contributors
 
 - [@aklinker1](https://github.com/aklinker1)
-
 
 ## v2.0.0-alpha.3
 
