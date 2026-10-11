@@ -1,6 +1,8 @@
 import Dataloader from "dataloader";
 import { inArray } from "drizzle-orm";
 import type { PgTableWithColumns } from "drizzle-orm/pg-core";
+import { keyBy } from "es-toolkit";
+import type { assertField } from "graphql";
 import type { Database } from "server/services/db";
 
 /**
@@ -29,6 +31,10 @@ export function createDrizzleDataloader<DbModel, GqlModel>(
       .select()
       .from(table)
       .where(inArray(table[idKey], [...ids]));
-    return rows.map(mapper);
+    const entries = keyBy(rows, (row) => row[idKey] as PropertyKey);
+    return ids.map((id) => {
+      const row = entries[id as PropertyKey];
+      return row ? mapper(row) : new Error(`Row not found in ${String(idKey)}=${String(id)}`);
+    });
   });
 }
