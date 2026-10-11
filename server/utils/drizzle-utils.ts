@@ -2,7 +2,6 @@ import Dataloader from "dataloader";
 import { inArray } from "drizzle-orm";
 import type { PgTableWithColumns } from "drizzle-orm/pg-core";
 import { keyBy } from "es-toolkit";
-import type { assertField } from "graphql";
 import type { Database } from "server/services/db";
 
 /**
