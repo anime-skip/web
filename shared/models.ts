@@ -74,10 +74,3 @@ export const GraphqlOutput = z
     },
   });
 export type GraphqlOutput = z.infer<typeof GraphqlOutput>;
-
-export const GetGraphqlPlaygroundOutput = z.string().describe("HTML page").meta({
-  ref: "GetGraphqlPlaygroundOutput",
-  example: "<html>...</html>",
-  responseType: "text/html",
-});
-export type GetGraphqlPlaygroundOutput = z.infer<typeof GetGraphqlPlaygroundOutput>;

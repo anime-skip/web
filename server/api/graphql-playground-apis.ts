@@ -1,32 +1,16 @@
 import { createApp, NotFoundHttpError } from "@aklinker1/zeta";
-import dedent from "dedent";
 import playgroundHtmlTemplate from "server/assets/playground.html.tpl" with { type: "text" };
-import { OpenApiTag } from "server/enums";
 import { env } from "server/env";
 import { SHARED_CLIENT_ID } from "shared/constants";
-import { GetGraphqlPlaygroundOutput } from "shared/models";
 import { version } from "shared/version";
 
-export const graphqlPlaygroundApis = createApp().get(
-  "/playground",
-  {
-    operationId: "getGraphqlPlayground",
-    summary: "Get GraphQL Playground",
-    tags: [OpenApiTag.Graphql],
-    description: dedent`
-        Endpoint that hosts the [GraphQL playground](/playground), which you can use to:
+export const graphqlPlaygroundApis = createApp().get("/playground", async ({ set }) => {
+  if (!env.ENABLE_PLAYGROUND) throw new NotFoundHttpError("GraphQL playground is disabled");
 
-        - Explore the GraphQL API Reference.
-        - Build and test GraphQL queries.
-      `,
-    responses: GetGraphqlPlaygroundOutput,
-  },
-  async ({ set }) => {
-    if (!env.ENABLE_PLAYGROUND) throw new NotFoundHttpError("GraphQL playground is disabled");
-
-    set.headers["content-type"] = "text/html";
-    return playgroundHtmlTemplate
+  return new Response(
+    playgroundHtmlTemplate
       .replaceAll("{{VERSION}}", version)
-      .replaceAll("{{CLIENT_ID}}", SHARED_CLIENT_ID);
-  },
-);
+      .replaceAll("{{CLIENT_ID}}", SHARED_CLIENT_ID),
+    { headers: { "content-type": "text/html" } },
+  );
+});
