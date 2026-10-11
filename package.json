@@ -5,7 +5,7 @@
   "scripts": {
     "check": "check",
     "dev": "bun --silent aframe",
-    "build": "bun --silent aframe build",
+    "build": "bun --silent aframe build && bun scripts/fix-prerendered.ts",
     "preview": "bun --cwd .output --env-file ../.env server-entry.js",
     "docker:build": "bun run build && docker build -t anime-skip/web:latest .",
     "docker:preview": "docker run --init --rm -p 3000:3000 -e NODE_ENV=production --env-file=.env anime-skip/web:latest",
