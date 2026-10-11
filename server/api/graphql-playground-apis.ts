@@ -4,7 +4,7 @@ import { env } from "server/env";
 import { SHARED_CLIENT_ID } from "shared/constants";
 import { version } from "shared/version";
 
-export const graphqlPlaygroundApis = createApp().get("/playground", async ({ set }) => {
+export const graphqlPlaygroundApis = createApp().get("/playground", () => {
   if (!env.ENABLE_PLAYGROUND) throw new NotFoundHttpError("GraphQL playground is disabled");
 
   return new Response(
