@@ -1,5 +1,22 @@
 # Changelog
 
+## v2.0.0-alpha.4
+
+[compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.3...v2.0.0-alpha.4)
+
+### 🩹 Fixes
+
+- Add back show admins to schema as deprecated to prevent breaking changes ([`9e87d30`](https://github.com/anime-skip/web/commit/9e87d30f8a737b764e667066eb2974c9c8a5acea))
+
+### 🤖 CI
+
+- Add back deploy webhook ([`24a4418`](https://github.com/anime-skip/web/commit/24a4418ddd5b309873cebd829f1c6b8dcf43ce3f))
+
+### ❤️ Contributors
+
+- [@aklinker1](https://github.com/aklinker1)
+
+
 ## v2.0.0-alpha.3
 
 [compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.2...v2.0.0-alpha.3)
@@ -19,7 +36,6 @@
 ### ❤️ Contributors
 
 - [@aklinker1](https://github.com/aklinker1)
-
 
 ## v2.0.0-alpha.2
 
