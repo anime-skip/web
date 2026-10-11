@@ -1,8 +1,10 @@
-export function getSeasonAndNumberText({
-  absoluteNumber,
-  number,
-  season,
-}: Pick<GqlEpisode, "number" | "season" | "absoluteNumber"> = {}): string {
+export function getSeasonAndNumberText(
+  episode: Pick<GqlEpisode, "number" | "season" | "absoluteNumber"> = {},
+): string {
+  const absoluteNumber = episode.absoluteNumber || null;
+  const number = episode.number || null;
+  const season = episode.season || null;
+
   if (absoluteNumber != null && number != null && season != null) {
     return `Season ${season}, Episode ${number} (#${absoluteNumber})`;
   }
