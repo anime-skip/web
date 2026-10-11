@@ -49,6 +49,10 @@ export const Env = z.object({
     ),
   RECAPTCHA_SECRET: z.string().optional().describe("Recaptcha secret key"),
   DATABASE_URL: z.string().optional().describe("Postgres connection URL"),
+  DATABASE_ENABLE_TLS: z
+    .stringbool()
+    .default(false)
+    .describe("Enable TLS for the database connection"),
   DATABASE_ENABLE_SEEDING: z
     .stringbool()
     .default(false)

@@ -12,12 +12,12 @@ const logger = createLogger("db");
 export type Database = BunSQLDatabase<typeof dbSchema>;
 
 export async function openDb(): Promise<Database> {
-  const { DATABASE_URL, DATABASE_ENABLE_SEEDING, STAGE } = env;
+  const { DATABASE_URL, DATABASE_ENABLE_SEEDING, STAGE, DATABASE_ENABLE_TLS } = env;
   if (!DATABASE_URL) throw Error("env.DATABASE_URL is required to open the database");
 
   logger.info("Opening database");
   const db = drizzle({
-    client: traceSqlClient(new SQL({ url: DATABASE_URL, tls: true })),
+    client: traceSqlClient(new SQL({ url: DATABASE_URL, tls: DATABASE_ENABLE_TLS })),
     casing: "snake_case",
     // Uncomment to load SQL queries
     // logger: {
