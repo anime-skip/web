@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.0.0-alpha.7
+
+[compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.6...v2.0.0-alpha.7)
+
+### 🏡 Chore
+
+- Add otel spans to debug performance issues ([`59daf1f`](https://github.com/anime-skip/web/commit/59daf1fa4585db298f7de73efc938fdb8a384280))
+
+### ❤️ Contributors
+
+- [@aklinker1](https://github.com/aklinker1)
+
+
 ## v2.0.0-alpha.6
 
 [compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.5...v2.0.0-alpha.6)
@@ -15,7 +28,6 @@
 ### ❤️ Contributors
 
 - [@aklinker1](https://github.com/aklinker1)
-
 
 ## v2.0.0-alpha.5
 
