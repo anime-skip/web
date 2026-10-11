@@ -2,6 +2,45 @@ import { getDirectives, MapperKind, mapSchema } from "@graphql-tools/utils";
 import { defaultFieldResolver, type GraphQLSchema } from "graphql";
 import type { GqlDirectiveResolvers } from "server/graphql/resolver-types.gen";
 
+import { SpanKind, withSpan } from "./telemetry";
+
+/**
+ * Wrap every field that has a real resolver (not the default property lookup) in a span, so nested
+ * resolvers that hit the DB show up as children of their parent field.
+ */
+export function traceResolvers(schema: GraphQLSchema): GraphQLSchema {
+  return mapSchema(schema, {
+    [MapperKind.OBJECT_FIELD]: (fieldConfig, fieldName, typeName) => {
+      const resolve = fieldConfig.resolve;
+      if (!resolve || typeName.startsWith("__")) return fieldConfig;
+      return {
+        ...fieldConfig,
+        resolve: (source, args, context, info) =>
+          withSpan(
+            `graphql.resolve ${typeName}.${fieldName}`,
+            {
+              kind: SpanKind.INTERNAL,
+              attributes: {
+                "graphql.field.name": fieldName,
+                "graphql.field.parent_type": typeName,
+                "graphql.field.path": pathToString(info.path),
+              },
+            },
+            () => resolve(source, args, context, info),
+          ),
+      };
+    },
+  });
+}
+
+function pathToString(path: { prev?: any; key: string | number }): string {
+  const keys: Array<string | number> = [];
+  for (let p: typeof path | undefined = path; p; p = p.prev) {
+    if (typeof p.key === "string") keys.unshift(p.key);
+  }
+  return keys.join(".");
+}
+
 /** https://the-guild.dev/graphql/tools/docs/schema-directives#what-about-directiveresolvers */
 export function attachDirectiveResolvers(
   schema: GraphQLSchema,

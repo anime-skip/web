@@ -12,6 +12,7 @@ import { OpenApiSecurityScheme, OpenApiTag } from "./enums";
 import { applyRateLimit } from "./plugins/apply-rate-limit";
 import { corsPlugin } from "./plugins/cors";
 import { requireApiClient } from "./plugins/require-api-client";
+import { traceRequests } from "./plugins/trace-requests";
 
 const apiApp = createApp({ prefix: "/api" })
   // Don't require API Clients
@@ -62,6 +63,7 @@ export const app = createApp({
     },
   },
 })
+  .use(traceRequests)
   .use(corsPlugin)
   .use(graphqlPlaygroundApis)
   .use(apiApp)

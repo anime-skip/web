@@ -1,5 +1,7 @@
 import { env } from "server/env";
 
+import { tracedFetch } from "./traced-fetch";
+
 export async function verifyRecaptcha(response: string, ipAddress: string): Promise<void> {
   if (env.RECAPTCHA_RESPONSE_ALLOWLIST.includes(response)) return;
 
@@ -10,7 +12,7 @@ export async function verifyRecaptcha(response: string, ipAddress: string): Prom
   url.searchParams.set("response", response);
   url.searchParams.set("secret", RECAPTCHA_SECRET);
   url.searchParams.set("remoteip", ipAddress);
-  const res = await fetch(url.href, {
+  const res = await tracedFetch(url.href, {
     method: "POST",
     // TODO: Do I need to pass this header?
     headers: {

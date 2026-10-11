@@ -1,4 +1,5 @@
 import { env } from "server/env";
+import { tracedFetch } from "server/utils/traced-fetch";
 
 import type { Alerter } from "./alerter";
 
@@ -14,14 +15,17 @@ export function createDiscordAlerter(): Alerter {
   const channelId = DISCORD_ALERTS_CHANNEL_ID;
 
   async function sendMessage(channelId: string, content: string): Promise<{ id: string }> {
-    const response = await fetch(`https://discord.com/api/v10/channels/${channelId}/messages`, {
-      method: "POST",
-      headers: {
-        Authorization: botToken,
-        "Content-Type": "application/json",
+    const response = await tracedFetch(
+      `https://discord.com/api/v10/channels/${channelId}/messages`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: botToken,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ content }),
       },
-      body: JSON.stringify({ content }),
-    });
+    );
 
     if (!response.ok) {
       throw new Error(`Failed to send Discord message: ${response.statusText}`);
@@ -37,7 +41,7 @@ export function createDiscordAlerter(): Alerter {
   ): Promise<{ id: string }> {
     const archiveAfterMinutes = 7 * 24 * 60; // 7 days in minutes
 
-    const response = await fetch(
+    const response = await tracedFetch(
       `https://discord.com/api/v10/channels/${channelId}/messages/${messageId}/threads`,
       {
         method: "POST",

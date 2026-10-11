@@ -1,6 +1,7 @@
 import { createLogger } from "@aklinker1/logger";
 import { Cron } from "croner";
 import { container } from "server/dependencies";
+import { flushTelemetry, SpanKind, withSpan } from "server/utils/telemetry";
 
 import { backfillAnilistShows } from "./backfill-anilist-shows";
 import { reviewTimestamps } from "./review-timestamps";
@@ -21,7 +22,15 @@ function schedule(name: string, pattern: string, job: () => Promise<unknown>) {
     },
     async () => {
       logger.info(`Running job`, { name });
-      await job();
+      try {
+        await withSpan(
+          `job ${name}`,
+          { kind: SpanKind.INTERNAL, attributes: { "job.name": name } },
+          job,
+        );
+      } finally {
+        await flushTelemetry();
+      }
     },
   );
   logger.info("Scheduled job", { name, pattern, next: cron.nextRun()?.toISOString() });

@@ -57,6 +57,13 @@ export const Env = z.object({
     ),
   DISCORD_ALERTS_CHANNEL_ID: z.string().optional().describe("Discord channel ID to post alerts to"),
   DISCORD_BOT_TOKEN: z.string().optional().describe("Token used to authenticate with Discord API"),
+  OTEL_EXPORTER_OTLP_ENDPOINT: z
+    .string()
+    .optional()
+    .describe(
+      "OTLP/HTTP endpoint to send traces to, e.g. http://alloy:4318. Tracing is disabled if unset",
+    ),
+  OTEL_SERVICE_NAME: z.string().default("anime-skip-web").describe("Service name shown in Grafana"),
   STAGE: z
     .enum(["production", "test", "development"])
     .default("development")

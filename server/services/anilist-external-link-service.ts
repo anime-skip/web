@@ -1,4 +1,5 @@
 import { createLogger } from "@aklinker1/logger";
+import { tracedFetch } from "server/utils/traced-fetch";
 
 import type { ExternalLinkLookupService } from "./external-link-lookup-service";
 
@@ -22,7 +23,7 @@ export function createAnilistExternalLinkService(): ExternalLinkLookupService {
     const variables = { search: showName };
 
     // Failures throw so callers can tell "no match" apart from "Anilist is unavailable"
-    const response = await fetch("https://graphql.anilist.co", {
+    const response = await tracedFetch("https://graphql.anilist.co", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

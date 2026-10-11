@@ -10,18 +10,21 @@ import { rootResolver } from "server/graphql/resolvers";
 import { typeDefs } from "server/graphql/type-defs";
 import { decorateContext } from "server/plugins/decorate-context";
 import { resolveIpAddress } from "server/plugins/resolve-ip-address";
-import { attachDirectiveResolvers } from "server/utils/graphql-helpers";
+import { attachDirectiveResolvers, traceResolvers } from "server/utils/graphql-helpers";
 import { OpenApiSecurity } from "server/utils/openapi";
+import { SpanKind, SpanStatusCode, withSpan } from "server/utils/telemetry";
 import { GraphqlInput, GraphqlOutput } from "shared/models";
 
 const logger = createLogger("graphql-apis");
 
-const schema: GraphQLSchema = attachDirectiveResolvers(
-  makeExecutableSchema({
-    resolvers: rootResolver,
-    typeDefs: typeDefs,
-  }),
-  directiveResolvers,
+const schema: GraphQLSchema = traceResolvers(
+  attachDirectiveResolvers(
+    makeExecutableSchema({
+      resolvers: rootResolver,
+      typeDefs: typeDefs,
+    }),
+    directiveResolvers,
+  ),
 );
 
 export const graphqlApis = createApp()
@@ -47,12 +50,29 @@ export const graphqlApis = createApp()
         query: query.replace(/\s+/gm, " ").slice(0, 40),
       });
 
-      return await graphql({
-        schema,
-        source: query,
-        contextValue: createGqlContext(ctx),
-        variableValues: variables,
-        operationName,
-      });
+      return await withSpan(
+        `graphql.execute ${operationName ? ` ${operationName}` : ""}`,
+        {
+          kind: SpanKind.INTERNAL,
+          attributes: {
+            "graphql.operation.name": operationName ?? undefined,
+            "graphql.query.hash": Bun.sha(query, "base64url"),
+          },
+        },
+        async (span) => {
+          const result = await graphql({
+            schema,
+            source: query,
+            contextValue: createGqlContext(ctx),
+            variableValues: variables,
+            operationName,
+          });
+          if (result.errors?.length) {
+            span.setAttribute("graphql.error_count", result.errors.length);
+            span.setStatus({ code: SpanStatusCode.ERROR, message: result.errors[0]!.message });
+          }
+          return result;
+        },
+      );
     },
   );
