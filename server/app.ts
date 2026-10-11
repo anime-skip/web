@@ -1,5 +1,5 @@
 import { fetchStatic } from "@aklinker1/aframe/server";
-import { createApp } from "@aklinker1/zeta";
+import { createApp, NotFoundHttpError } from "@aklinker1/zeta";
 import { zodSchemaAdapter } from "@aklinker1/zeta/adapters/zod-schema-adapter";
 import apiDocs from "server/assets/api-docs.md" with { type: "text" };
 import { SHARED_CLIENT_ID } from "shared/constants";
@@ -21,7 +21,10 @@ const apiApp = createApp({ prefix: "/api" })
   // Require API Client
   .use(requireApiClient)
   .use(applyRateLimit)
-  .use(graphqlApis);
+  .use(graphqlApis)
+  .any("/**", () => {
+    throw new NotFoundHttpError();
+  });
 
 export const app = createApp({
   schemaAdapter: zodSchemaAdapter,
