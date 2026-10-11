@@ -1,5 +1,22 @@
 # Changelog
 
+## v2.0.0-alpha.6
+
+[compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.5...v2.0.0-alpha.6)
+
+### 🩹 Fixes
+
+- Fix dataloader query results order ([`2975ea7`](https://github.com/anime-skip/web/commit/2975ea7940ae28d6d7df28d676eb24c282a8ecd1))
+
+### 🏡 Chore
+
+- Fix lint ([`edcad88`](https://github.com/anime-skip/web/commit/edcad884c86a5a1fe63941bc9696e5ef33ae8bd7))
+
+### ❤️ Contributors
+
+- [@aklinker1](https://github.com/aklinker1)
+
+
 ## v2.0.0-alpha.5
 
 [compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.4...v2.0.0-alpha.5)
@@ -19,7 +36,6 @@
 ### ❤️ Contributors
 
 - [@aklinker1](https://github.com/aklinker1)
-
 
 ## v2.0.0-alpha.4
 
