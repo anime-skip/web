@@ -1,5 +1,23 @@
 # Changelog
 
+## v2.0.0-alpha.8
+
+[compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.7...v2.0.0-alpha.8)
+
+### 🩹 Fixes
+
+- Ignore blank strings when formatting season/episode number text ([`5f5839a`](https://github.com/anime-skip/web/commit/5f5839a9740aab8938613236aed66af3aca8eb3d))
+
+### 🏡 Chore
+
+- Fix localhost in prerendered output ([`003673b`](https://github.com/anime-skip/web/commit/003673bc0ec61dfdbf4267aeca8abcd1d5cddf09))
+- Cleanup telemetry init ([`8a44569`](https://github.com/anime-skip/web/commit/8a44569dfbe5b620b31a0e0ffc1ecd96c33c467e))
+
+### ❤️ Contributors
+
+- [@aklinker1](https://github.com/aklinker1)
+
+
 ## v2.0.0-alpha.7
 
 [compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.6...v2.0.0-alpha.7)
@@ -11,7 +29,6 @@
 ### ❤️ Contributors
 
 - [@aklinker1](https://github.com/aklinker1)
-
 
 ## v2.0.0-alpha.6
 
