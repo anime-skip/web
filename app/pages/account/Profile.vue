@@ -63,10 +63,13 @@ function onDeleteClick() {
           </label>
 
           <!-- Email -->
-          <label class="input">
-            <i class="i-heroicons-envelope" />
-            <input disabled v-model="account.email" placeholder="Enter your email..." />
-          </label>
+          <div class="flex flex-col gap-1">
+            <label class="input">
+              <i class="i-heroicons-envelope" />
+              <input disabled v-model="account.email" placeholder="Enter your email..." />
+            </label>
+            <p v-if="account.emailVerified" class="text-success text-xs">Email verified</p>
+          </div>
         </div>
       </div>
     </div>
