@@ -497,6 +497,7 @@ export type GqlUserReportResolvers<ContextType = GqlContext, ParentType extends 
 export type GqlMutationResolvers<ContextType = GqlContext, ParentType extends GqlResolversParentTypes['Mutation'] = GqlResolversParentTypes['Mutation']> = {
   createAccount?: Resolver<GqlResolversTypes['LoginData'], ParentType, ContextType, RequireFields<GqlMutationCreateAccountArgs, 'username' | 'email' | 'passwordHash' | 'recaptchaResponse'>>;
   changePassword?: Resolver<GqlResolversTypes['LoginData'], ParentType, ContextType, RequireFields<GqlMutationChangePasswordArgs, 'oldPassword' | 'newPassword' | 'confirmNewPassword'>>;
+  updateAccount?: Resolver<GqlResolversTypes['Account'], ParentType, ContextType, Partial<GqlMutationUpdateAccountArgs>>;
   resendVerificationEmail?: Resolver<Maybe<GqlResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<GqlMutationResendVerificationEmailArgs, 'recaptchaResponse'>>;
   verifyEmailAddress?: Resolver<GqlResolversTypes['Account'], ParentType, ContextType, RequireFields<GqlMutationVerifyEmailAddressArgs, 'validationToken'>>;
   requestPasswordReset?: Resolver<GqlResolversTypes['Boolean'], ParentType, ContextType, RequireFields<GqlMutationRequestPasswordResetArgs, 'recaptchaResponse' | 'email'>>;

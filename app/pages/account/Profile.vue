@@ -2,7 +2,9 @@
 import { useHead } from "@unhead/vue";
 import useGqlAccountQuery from "app/composables/useGqlAccountQuery";
 import useGqlDeleteMyAccountMutation from "app/composables/useGqlDeleteMyAccountMutation";
+import useGqlUpdateAccountMutation from "app/composables/useGqlUpdateAccountMutation";
 import { getProfileUrl } from "app/utils/profile-utils";
+import { computed, ref, watch } from "vue";
 
 useHead({
   title: "Profile – Anime Skip",
@@ -10,6 +12,45 @@ useHead({
 
 const { data: account, isLoading } = useGqlAccountQuery();
 const { mutate: deleteMyAccount, isPending: isDeleting } = useGqlDeleteMyAccountMutation();
+
+const {
+  mutate: updateAccount,
+  isPending: isSaving,
+  error: saveError,
+  reset: resetSave,
+} = useGqlUpdateAccountMutation();
+
+const username = ref("");
+const email = ref("");
+const emailChangeNotice = ref(false);
+
+watch(
+  account,
+  (value) => {
+    if (!value) return;
+    username.value = value.username;
+    email.value = value.email;
+  },
+  { immediate: true },
+);
+
+const hasChanges = computed(
+  () =>
+    !!account.value &&
+    (username.value.trim() !== account.value.username ||
+      email.value.trim() !== account.value.email),
+);
+
+function onSaveSubmit() {
+  if (!account.value) return;
+  const emailChanged = email.value.trim() !== account.value.email;
+  resetSave();
+  emailChangeNotice.value = false;
+  updateAccount(
+    { username: username.value.trim(), email: email.value.trim() },
+    { onSuccess: () => (emailChangeNotice.value = emailChanged) },
+  );
+}
 
 function onDeleteClick() {
   const confirmed = window.confirm(
@@ -25,11 +66,6 @@ function onDeleteClick() {
   <div class="flex flex-col gap-8">
     <div class="flex flex-col gap-4">
       <h1 class="font-overpass text-2xl font-bold">Profile Settings</h1>
-
-      <div class="alert">
-        <i class="i-heroicons-information-circle size-5" />
-        <p>Coming soon. For now, you can send an email to support to update your profile.</p>
-      </div>
 
       <!-- Loading Skeleton -->
       <div v-if="isLoading" class="flex flex-col gap-4 md:flex-row">
@@ -55,25 +91,39 @@ function onDeleteClick() {
           />
         </div>
 
-        <div class="flex flex-1 flex-col gap-2">
+        <form class="flex flex-1 flex-col gap-2" @submit.prevent="onSaveSubmit">
           <!-- Username -->
           <label class="input">
             <i class="i-heroicons-user" />
-            <input disabled v-model="account.username" placeholder="Enter your username..." />
+            <input v-model="username" required placeholder="Enter your username..." />
           </label>
 
           <!-- Email -->
           <div class="flex flex-col gap-1">
             <label class="input">
               <i class="i-heroicons-envelope" />
-              <input disabled v-model="account.email" placeholder="Enter your email..." />
+              <input v-model="email" type="email" required placeholder="Enter your email..." />
             </label>
             <p v-if="account.emailVerified" class="text-success flex items-center gap-1 text-xs">
               <i class="i-heroicons-check-circle size-3.5" />
               <span>Email verified</span>
             </p>
           </div>
-        </div>
+
+          <p v-if="saveError" class="text-error text-sm">{{ saveError.message }}</p>
+          <p v-if="emailChangeNotice" class="text-success text-sm">
+            A verification email has been sent to your new email address.
+          </p>
+
+          <button
+            type="submit"
+            class="btn btn-primary self-start"
+            :disabled="!hasChanges || isSaving"
+          >
+            <span v-if="isSaving" class="loading loading-spinner loading-sm" />
+            <span>Save</span>
+          </button>
+        </form>
       </div>
     </div>
 

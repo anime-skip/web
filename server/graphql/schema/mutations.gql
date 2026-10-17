@@ -20,6 +20,11 @@ type Mutation {
     newPassword: String!
     confirmNewPassword: String!
   ): LoginData! @authenticated
+  """
+  Update the authenticated user's username and/or email. Both must not be used by another account.
+  If the email changes, it is marked as unverified and a new verification email is sent.
+  """
+  updateAccount(username: String, email: String): Account! @authenticated
   "Resend the verification email for the account of the authenticated user"
   resendVerificationEmail(recaptchaResponse: String!): Boolean @authenticated
   """

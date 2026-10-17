@@ -747,6 +747,11 @@ type GqlMutation = {
    * > Note the passwords aren't md5 hashes. The regular login will be moving to this as well eventually
    */
   changePassword: GqlLoginData;
+  /**
+   * Update the authenticated user's username and/or email. Both must not be used by another account.
+   * If the email changes, it is marked as unverified and a new verification email is sent.
+   */
+  updateAccount: GqlAccount;
   /** Resend the verification email for the account of the authenticated user */
   resendVerificationEmail?: Maybe<Scalars['Boolean']['output']>;
   /**
@@ -883,6 +888,12 @@ type GqlMutationChangePasswordArgs = {
   oldPassword: Scalars['String']['input'];
   newPassword: Scalars['String']['input'];
   confirmNewPassword: Scalars['String']['input'];
+};
+
+
+type GqlMutationUpdateAccountArgs = {
+  username?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
 };
 
 

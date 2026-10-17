@@ -94,6 +94,52 @@ export const accountResolvers: GqlResolvers = {
       return await updatePassword(ctx.deps.db, user, args);
     },
 
+    updateAccount: async (_parent, args, ctx) => {
+      const user = await requireUser(ctx, ctx.authUserId!);
+      const username = args.username?.trim() ?? user.username;
+      const email = args.email?.trim() ?? user.email;
+      const usernameChanged = username !== user.username;
+      const emailChanged = email !== user.email;
+
+      if (usernameChanged) {
+        validateUsername(username);
+        const existing = await ctx.deps.db.query.users.findFirst({
+          where: eq(users.username, username),
+        });
+        if (existing) {
+          throw Error(`Username '${username}' is already taken, use a different one`);
+        }
+      }
+      if (emailChanged) {
+        validateEmail(email);
+        const existing = await ctx.deps.db.query.users.findFirst({
+          where: eq(users.email, email),
+        });
+        if (existing) {
+          throw Error(`Email '${email}' is already taken, use a different one`);
+        }
+      }
+
+      if (!usernameChanged && !emailChanged) return mapDbUserToGqlAccount(user);
+
+      const [updated] = await ctx.deps.db
+        .update(users)
+        .set({
+          username,
+          email,
+          ...(emailChanged ? { emailVerified: false } : {}),
+        })
+        .where(eq(users.id, user.id))
+        .returning();
+
+      if (emailChanged) {
+        const token = await auth.createToken("verify-email", { userId: user.id });
+        await sendAccountVerificationEmail(updated, token);
+      }
+
+      return mapDbUserToGqlAccount(updated);
+    },
+
     resendVerificationEmail: async (_parent, args, ctx) => {
       const userId = ctx.authUserId!;
 
