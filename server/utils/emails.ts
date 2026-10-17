@@ -1,4 +1,4 @@
-import { promisify } from "node:util";
+import { format, promisify } from "node:util";
 
 import { createLogger } from "@aklinker1/logger";
 import SMTPConnection from "nodemailer/lib/smtp-connection";
@@ -110,12 +110,7 @@ async function send(data: {
   const connection = new SMTPConnection({
     host: EMAIL_STMP_HOSTNAME,
     port: EMAIL_STMP_PORT,
-    logger: {
-      ...logger,
-      level: () => {},
-      trace: (...args) => logger.debug("SMTP trace", { args }),
-      fatal: (...args) => logger.error("SMTP fatal", { args }),
-    },
+    logger: nodemailerLogger,
     debug: false,
   });
   try {
@@ -131,6 +126,32 @@ async function send(data: {
     connection.quit();
   }
 }
+
+/**
+ * Nodemailer calls its logger with the bunyan convention: `(dataObject, formatString, ...args)`,
+ * which is incompatible with our `(message, meta)` logger.
+ */
+const nodemailerLogger = (() => {
+  const smtpLogger = logger.extend("smtp");
+  const adapt =
+    (log: (message: string, meta?: Record<string, any>) => void) =>
+    (meta: unknown, message?: unknown, ...args: unknown[]) => {
+      if (typeof meta === "string") {
+        log(format(meta, ...(message === undefined ? [] : [message]), ...args));
+      } else {
+        log(format(String(message ?? ""), ...args), meta as Record<string, any>);
+      }
+    };
+  return {
+    level: () => {},
+    trace: adapt(smtpLogger.debug),
+    debug: adapt(smtpLogger.debug),
+    info: adapt(smtpLogger.info),
+    warn: adapt(smtpLogger.warn),
+    error: adapt(smtpLogger.error),
+    fatal: adapt(smtpLogger.error),
+  };
+})();
 
 type EmailAddress = {
   name: string;
