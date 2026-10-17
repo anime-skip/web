@@ -8,7 +8,7 @@
   <body>
     <p>
       <strong>{{username}}</strong>, thanks for joining Anime Skip. Follow the
-      <a href="https://www.anime-skip.com/get-started">getting started guide</a>
+      <a href="https://anime-skip.com/get-started">getting started guide</a>
       to start watching some anime!
     </p>
     <p>

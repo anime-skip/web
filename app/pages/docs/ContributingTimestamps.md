@@ -39,7 +39,7 @@ When there is a transition between two sections it's a bit harder to nail down t
 
 ### Timestamp Types
 
-Make sure to check out the list of [timestamp types](https://www.anime-skip.com/support#timestamp-types). Most should be obvious from the name, but if you're confused which ones should be used, you can click to on them and see their description.
+Make sure to check out the list of [timestamp types](https://anime-skip.com/support#timestamp-types). Most should be obvious from the name, but if you're confused which ones should be used, you can click to on them and see their description.
 
 ### Add Ending Timestamps
 

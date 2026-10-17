@@ -8,7 +8,7 @@
   <body>
     <p>
       To reset your password,
-      <a href="https://www.anime-skip.com/forgot-password?token={{token}}"
+      <a href="https://anime-skip.com/forgot-password?token={{token}}"
         >click here</a
       >. <strong>This link is secret, do not share it with anyone</strong>.
     </p>
