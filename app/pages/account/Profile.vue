@@ -2,6 +2,7 @@
 import { useHead } from "@unhead/vue";
 import useGqlAccountQuery from "app/composables/useGqlAccountQuery";
 import useGqlDeleteMyAccountMutation from "app/composables/useGqlDeleteMyAccountMutation";
+import { getProfileUrl } from "app/utils/profile-utils";
 
 useHead({
   title: "Profile – Anime Skip",
@@ -49,7 +50,7 @@ function onDeleteClick() {
         >
           <img
             class="absolute inset-0 size-full rounded-lg"
-            :src="account.profileUrl"
+            :src="getProfileUrl(account.profileUrl)"
             alt="Profile Picture"
           />
         </div>

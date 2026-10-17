@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import useSession from "app/composables/useSession";
+import { getProfileUrl } from "app/utils/profile-utils";
 
 const props = defineProps<{
   title?: string;
@@ -22,7 +23,7 @@ const { session } = useSession();
       <template v-if="session">
         <p class="text-base-content/50">Logged in as:</p>
         <div class="flex items-center gap-4">
-          <img :src="session.profileUrl" class="size-12 rounded-full" />
+          <img :src="getProfileUrl(session.profileUrl)" class="size-12 rounded-full" />
           <p class="font-overpass text-2xl font-bold">{{ session.username }}</p>
         </div>
       </template>

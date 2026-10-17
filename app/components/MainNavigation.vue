@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import useSession from "app/composables/useSession";
+import { getProfileUrl } from "app/utils/profile-utils";
 import { ref } from "vue";
 
 const { session, logOut } = useSession();
@@ -35,7 +36,7 @@ const accountDropdownOpen = ref(false);
           class="btn btn-ghost h-full gap-1 pr-1.5 pl-2.5"
           @click="accountDropdownOpen = !accountDropdownOpen"
         >
-          <img :src="session.profileUrl" class="size-7 rounded-full" />
+          <img :src="getProfileUrl(session.profileUrl)" class="size-7 rounded-full" />
           <i
             class="i-heroicons-chevron-down-16-solid size-5 rotate-0 transition-transform"
             :class="{
