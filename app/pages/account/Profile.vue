@@ -68,7 +68,10 @@ function onDeleteClick() {
               <i class="i-heroicons-envelope" />
               <input disabled v-model="account.email" placeholder="Enter your email..." />
             </label>
-            <p v-if="account.emailVerified" class="text-success text-xs">Email verified</p>
+            <p v-if="account.emailVerified" class="text-success flex items-center gap-1 text-xs">
+              <i class="i-heroicons-check-circle size-3.5" />
+              <span>Email verified</span>
+            </p>
           </div>
         </div>
       </div>
