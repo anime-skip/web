@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.0.0-alpha.17
+
+[compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.16...v2.0.0-alpha.17)
+
+### 🩹 Fixes
+
+- Fix email verified text and add check icon ([`9c0ea17`](https://github.com/anime-skip/web/commit/9c0ea17d25b259168e7fb7e53e6e084ea0549a4e))
+
+### ❤️ Contributors
+
+- [@aklinker1](https://github.com/aklinker1)
+
+
 ## v2.0.0-alpha.16
 
 [compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.15...v2.0.0-alpha.16)
@@ -13,7 +26,6 @@
 ### ❤️ Contributors
 
 - [@aklinker1](https://github.com/aklinker1)
-
 
 ## v2.0.0-alpha.15
 
