@@ -119,9 +119,12 @@ async function send(data: {
     debug: false,
   });
   try {
-    await promisify(connection.connect)();
-    await promisify(connection.login)(auth);
-    await promisify(connection.send)({ from: data.from.address, to: data.to }, content);
+    await promisify(connection.connect.bind(connection))();
+    await promisify(connection.login.bind(connection))(auth);
+    await promisify(connection.send.bind(connection))(
+      { from: data.from.address, to: data.to },
+      content,
+    );
   } catch (error) {
     logger.error(`Failed to send email`, { error });
   } finally {
