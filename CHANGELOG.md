@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.0.0-alpha.13
+
+[compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.12...v2.0.0-alpha.13)
+
+### 🩹 Fixes
+
+- Fix bad nodemailer logger ([`e14fb6a`](https://github.com/anime-skip/web/commit/e14fb6a6e98a18b8b8038691605de348ed06ad02))
+
+### ❤️ Contributors
+
+- [@aklinker1](https://github.com/aklinker1)
+
+
 ## v2.0.0-alpha.12
 
 [compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.11...v2.0.0-alpha.12)
@@ -11,7 +24,6 @@
 ### ❤️ Contributors
 
 - [@aklinker1](https://github.com/aklinker1)
-
 
 ## v2.0.0-alpha.11
 
