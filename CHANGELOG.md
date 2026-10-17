@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.0.0-alpha.14
+
+[compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.13...v2.0.0-alpha.14)
+
+### 🩹 Fixes
+
+- Invalid mail headers causing emails to not send ([`43f3160`](https://github.com/anime-skip/web/commit/43f316020d19b6437e62191ad4cb006e5db7797e))
+
+### ❤️ Contributors
+
+- [@aklinker1](https://github.com/aklinker1)
+
+
 ## v2.0.0-alpha.13
 
 [compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.12...v2.0.0-alpha.13)
@@ -11,7 +24,6 @@
 ### ❤️ Contributors
 
 - [@aklinker1](https://github.com/aklinker1)
-
 
 ## v2.0.0-alpha.12
 
