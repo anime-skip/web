@@ -86,10 +86,10 @@ async function send(data: {
   }
 
   const headers = [
-    "MIME-version: 1.0;",
-    `Content-Type: text/html; charset="UTF-8";`,
+    "MIME-Version: 1.0",
+    `Content-Type: text/html; charset="UTF-8"`,
     `From: ${data.from.name} <${data.from.address}>`,
-    `To: ${data.to.join()}>`,
+    `To: ${data.to.join()}`,
     `Subject: ${data.subject}`,
   ];
   if (data.replyTo) {
