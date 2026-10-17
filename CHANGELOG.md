@@ -1,5 +1,20 @@
 # Changelog
 
+## v2.0.0-alpha.16
+
+[compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.15...v2.0.0-alpha.16)
+
+### 🩹 Fixes
+
+- Use `anime-skip.com` instead of `www.anime-skip.com`, simplify verification email ([`74b4770`](https://github.com/anime-skip/web/commit/74b4770404793ea5487e1b5cd898d9c105cbd232))
+- Use fallback profile icon ([`189c053`](https://github.com/anime-skip/web/commit/189c053b53892037e269242c7ba95df51830f94e))
+- Add email verified text to account settings page ([`6938d87`](https://github.com/anime-skip/web/commit/6938d87acb76d1319a05c01ea632c8efbaed51c0))
+
+### ❤️ Contributors
+
+- [@aklinker1](https://github.com/aklinker1)
+
+
 ## v2.0.0-alpha.15
 
 [compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.14...v2.0.0-alpha.15)
@@ -11,7 +26,6 @@
 ### ❤️ Contributors
 
 - [@aklinker1](https://github.com/aklinker1)
-
 
 ## v2.0.0-alpha.14
 
