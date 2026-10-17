@@ -30,6 +30,10 @@ const router = createRouter({
       component: () => import("app/pages/ResetPassword.vue"),
     },
     {
+      path: "/account/email-verification",
+      component: () => import("app/pages/EmailVerification.vue"),
+    },
+    {
       path: "/account",
       component: () => import("app/pages/account/index.vue"),
       children: [
