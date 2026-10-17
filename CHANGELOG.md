@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.0.0-alpha.15
+
+[compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.14...v2.0.0-alpha.15)
+
+### 🚀 Features
+
+- Add back email verification page ([`c822090`](https://github.com/anime-skip/web/commit/c822090d87c26ebde783f737be9fb20a1a665b92))
+
+### ❤️ Contributors
+
+- [@aklinker1](https://github.com/aklinker1)
+
+
 ## v2.0.0-alpha.14
 
 [compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.13...v2.0.0-alpha.14)
@@ -11,7 +24,6 @@
 ### ❤️ Contributors
 
 - [@aklinker1](https://github.com/aklinker1)
-
 
 ## v2.0.0-alpha.13
 
