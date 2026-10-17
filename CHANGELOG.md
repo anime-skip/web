@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.0.0-alpha.12
+
+[compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.11...v2.0.0-alpha.12)
+
+### 🩹 Fixes
+
+- Fix issues sending emails due to improper binding ([`ed8c335`](https://github.com/anime-skip/web/commit/ed8c33565e68523baab77829900fa9a71c7d7263))
+
+### ❤️ Contributors
+
+- [@aklinker1](https://github.com/aklinker1)
+
+
 ## v2.0.0-alpha.11
 
 [compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.10...v2.0.0-alpha.11)
@@ -15,7 +28,6 @@
 ### ❤️ Contributors
 
 - [@aklinker1](https://github.com/aklinker1)
-
 
 ## v2.0.0-alpha.10
 
