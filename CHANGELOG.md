@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.0.0-alpha.18
+
+[compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.17...v2.0.0-alpha.18)
+
+### 🚀 Features
+
+- Update account (username + email) ([`ba4abb7`](https://github.com/anime-skip/web/commit/ba4abb7e8913bd3ef18a8306fa898390deb4035a))
+
+### ❤️ Contributors
+
+- [@aklinker1](https://github.com/aklinker1)
+
+
 ## v2.0.0-alpha.17
 
 [compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.16...v2.0.0-alpha.17)
@@ -11,7 +24,6 @@
 ### ❤️ Contributors
 
 - [@aklinker1](https://github.com/aklinker1)
-
 
 ## v2.0.0-alpha.16
 
