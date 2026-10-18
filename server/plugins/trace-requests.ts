@@ -41,7 +41,7 @@ export const traceRequests = createApp()
     recordError(span, error);
   })
   .onGlobalAfterResponse(({ span, response, set }) => {
-    const status = response.status ?? set.status;
+    const status = response?.status ?? set?.status ?? 200;
     span.setAttribute("http.response.status_code", status);
     if (status >= 500) span.setStatus({ code: SpanStatusCode.ERROR });
     span.end();
