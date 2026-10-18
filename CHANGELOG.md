@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.0.0-alpha.19
+
+[compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.18...v2.0.0-alpha.19)
+
+### 🩹 Fixes
+
+- Error in `onGlobalAfterResponse` ([`f88c28f`](https://github.com/anime-skip/web/commit/f88c28fcb7fd3a8f3e16e9a1adfccd7ac70c24b9))
+
+### ❤️ Contributors
+
+- [@aklinker1](https://github.com/aklinker1)
+
+
 ## v2.0.0-alpha.18
 
 [compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.17...v2.0.0-alpha.18)
@@ -11,7 +24,6 @@
 ### ❤️ Contributors
 
 - [@aklinker1](https://github.com/aklinker1)
-
 
 ## v2.0.0-alpha.17
 
