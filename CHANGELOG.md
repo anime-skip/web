@@ -1,5 +1,19 @@
 # Changelog
 
+## v2.0.0-alpha.20
+
+[compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.19...v2.0.0-alpha.20)
+
+### 🩹 Fixes
+
+- Save blank strings for episode/season numbers as null ([`544668b`](https://github.com/anime-skip/web/commit/544668bde2bdeb545242d8797764e317c8f61a8b))
+- Order timestamps by `at` ascending ([`7c95ce6`](https://github.com/anime-skip/web/commit/7c95ce64bcb4892c2776a01c6535050b755fb3a4))
+
+### ❤️ Contributors
+
+- [@aklinker1](https://github.com/aklinker1)
+
+
 ## v2.0.0-alpha.19
 
 [compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.18...v2.0.0-alpha.19)
@@ -11,7 +25,6 @@
 ### ❤️ Contributors
 
 - [@aklinker1](https://github.com/aklinker1)
-
 
 ## v2.0.0-alpha.18
 
