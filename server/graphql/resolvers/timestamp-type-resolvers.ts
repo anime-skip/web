@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 import { type DbTimestampTypeInsert, timestampTypes } from "server/db/schema";
 import { mapDbTimestampTypeToGqlTimestampType } from "server/graphql/mappers";
 import type { GqlResolvers } from "server/graphql/resolver-types.gen";
@@ -59,7 +59,9 @@ export const timestampTypeResolvers: GqlResolvers = {
       ctx.dataloaders.timestampTypes.load(args.timestampTypeId),
 
     allTimestampTypes: async (_parent, _args, ctx) => {
-      const rows = await ctx.deps.db.query.timestampTypes.findMany();
+      const rows = await ctx.deps.db.query.timestampTypes.findMany({
+        orderBy: asc(timestampTypes.name),
+      });
       return rows.map(mapDbTimestampTypeToGqlTimestampType);
     },
   },

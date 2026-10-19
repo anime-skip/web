@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 import { type DbExternalLinkInsert, externalLinks } from "server/db/schema";
 import type { GqlContext } from "server/graphql/context";
 import { mapDbExternalLinkToGqlExternalLink } from "server/graphql/mappers";
@@ -54,6 +54,7 @@ export async function getExternalLinksByShowId(
 ): Promise<GqlExternalLink[]> {
   const rows = await ctx.deps.db.query.externalLinks.findMany({
     where: eq(externalLinks.showId, showId),
+    orderBy: asc(externalLinks.url),
   });
   return rows.map(mapDbExternalLinkToGqlExternalLink);
 }

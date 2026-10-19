@@ -94,6 +94,7 @@ export async function getUserReportsByEpisodeId(
 ): Promise<GqlUserReport[]> {
   const rows = await ctx.deps.db.query.userReports.findMany({
     where: and(eq(userReports.episodeId, episodeId), isNull(userReports.deletedAt)),
+    orderBy: asc(userReports.createdAt),
   });
   return rows.map(mapDbUserReportToGqlUserReport);
 }

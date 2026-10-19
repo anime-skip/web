@@ -157,7 +157,12 @@ export const templateResolvers: GqlResolvers = {
 
     timestampIds: async (parent, _args, ctx) => {
       const templateTimestamps = await getTemplateTimestampsByTemplateId(ctx, parent.id);
-      return templateTimestamps.map((timestamp) => timestamp.timestampId);
+      const timestamps = await ctx.dataloaders.timestamps.loadMany(
+        templateTimestamps.map((timestamp) => timestamp.timestampId),
+      );
+      return (timestamps.filter((t) => !(t instanceof Error)) as GqlTimestamp[])
+        .sort((a, b) => a.at - b.at)
+        .map((t) => t.id);
     },
   },
 };

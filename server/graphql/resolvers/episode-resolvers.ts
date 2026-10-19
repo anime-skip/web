@@ -138,5 +138,12 @@ export async function getEpisodesByShowId(ctx: GqlContext, showId: string): Prom
   const rows = await ctx.deps.db.query.episodes.findMany({
     where: and(eq(episodes.showId, showId), isNull(episodes.deletedAt)),
   });
+  const collator = new Intl.Collator(undefined, { numeric: true });
+  rows.sort(
+    (a, b) =>
+      collator.compare(a.season ?? "", b.season ?? "") ||
+      collator.compare(a.number ?? "", b.number ?? "") ||
+      collator.compare(a.absoluteNumber ?? "", b.absoluteNumber ?? ""),
+  );
   return rows.map(mapDbEpisodeToGqlEpisode);
 }

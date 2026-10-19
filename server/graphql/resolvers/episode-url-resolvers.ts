@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 import { type DbEpisodeUrlInsert, episodeUrls } from "server/db/schema";
 import type { GqlContext } from "server/graphql/context";
 import { mapDbEpisodeUrlToGqlEpisodeUrl, mapUrlToDbEpisodeSource } from "server/graphql/mappers";
@@ -94,6 +94,7 @@ export async function getEpisodeUrlsByEpisodeId(
 ): Promise<GqlEpisodeUrl[]> {
   const rows = await ctx.deps.db.query.episodeUrls.findMany({
     where: eq(episodeUrls.episodeId, episodeId),
+    orderBy: asc(episodeUrls.createdAt),
   });
   return rows.map(mapDbEpisodeUrlToGqlEpisodeUrl);
 }
