@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.0.0-alpha.21
+
+[compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.20...v2.0.0-alpha.21)
+
+
 ## v2.0.0-alpha.20
 
 [compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.19...v2.0.0-alpha.20)
@@ -12,7 +17,6 @@
 ### ❤️ Contributors
 
 - [@aklinker1](https://github.com/aklinker1)
-
 
 ## v2.0.0-alpha.19
 
