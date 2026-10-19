@@ -1,9 +1,25 @@
 # Changelog
 
+## v2.0.0-alpha.22
+
+[compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.21...v2.0.0-alpha.22)
+
+### 🚀 Features
+
+- Add crunchyroll as a timestamp source ([`8c32ffc`](https://github.com/anime-skip/web/commit/8c32ffcbfc6776b3c59a05c1610c79e3b149cd0a))
+
+### 🩹 Fixes
+
+- Add more missing `ORDER BY` statements ([`343470f`](https://github.com/anime-skip/web/commit/343470f49b68fac4d8e42c0d8b4b8e71ce070a39))
+
+### ❤️ Contributors
+
+- [@aklinker1](https://github.com/aklinker1)
+
+
 ## v2.0.0-alpha.21
 
 [compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.20...v2.0.0-alpha.21)
-
 
 ## v2.0.0-alpha.20
 
