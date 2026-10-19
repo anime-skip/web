@@ -68,7 +68,8 @@ type GqlEpisodeSource =
 /** Where a timestamp originated from */
 type GqlTimestampSource =
   | 'ANIME_SKIP'
-  | 'BETTER_VRV';
+  | 'BETTER_VRV'
+  | 'CRUNCHYROLL';
 
 /** The scope that a template applies to */
 type GqlTemplateType =

@@ -32,6 +32,7 @@ enum EpisodeSource {
 enum TimestampSource {
   ANIME_SKIP
   BETTER_VRV
+  CRUNCHYROLL
 }
 
 "The scope that a template applies to"

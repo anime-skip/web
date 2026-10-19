@@ -386,6 +386,8 @@ export function mapDbTimestampSourceToGqlTimestampSource(
       return "ANIME_SKIP";
     case DbTimestampSource.BetterVrv:
       return "BETTER_VRV";
+    case DbTimestampSource.Crunchyroll:
+      return "CRUNCHYROLL";
   }
   throw Error("Unknown TimestampSource: " + db);
 }
@@ -398,6 +400,8 @@ export function mapGqlTimestampSourceToDbTimestampSource(
       return DbTimestampSource.AnimeSkip;
     case "BETTER_VRV":
       return DbTimestampSource.BetterVrv;
+    case "CRUNCHYROLL":
+      return DbTimestampSource.Crunchyroll;
   }
   throw Error("Unknown GqlTimestampSource: " + gql);
 }

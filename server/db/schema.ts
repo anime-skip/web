@@ -268,6 +268,7 @@ export type DbTimestampInsert = typeof timestamps.$inferInsert;
 export enum DbTimestampSource {
   AnimeSkip = 0,
   BetterVrv = 1,
+  Crunchyroll = 2,
 }
 
 export const preferences = pgTable("preferences", {
