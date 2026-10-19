@@ -1,4 +1,4 @@
-import { and, eq, isNull } from "drizzle-orm";
+import { and, asc, eq, isNull } from "drizzle-orm";
 import { type DbTimestampInsert, timestamps } from "server/db/schema";
 import type { GqlContext } from "server/graphql/context";
 import {
@@ -152,6 +152,7 @@ export async function getTimestampsByEpisodeId(
 ): Promise<GqlTimestamp[]> {
   const rows = await ctx.deps.db.query.timestamps.findMany({
     where: and(eq(timestamps.episodeId, episodeId), isNull(timestamps.deletedAt)),
+    orderBy: asc(timestamps.at),
   });
   return rows.map(mapDbTimestampToGqlTimestamp);
 }
