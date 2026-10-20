@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.0.0-alpha.23
+
+[compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.22...v2.0.0-alpha.23)
+
+### 🩹 Fixes
+
+- Use `/reset-password` in forgot password email ([`b060cf6`](https://github.com/anime-skip/web/commit/b060cf628c79b86fef28ab9b114f1ab3d4921ea5))
+
+### ❤️ Contributors
+
+- [@aklinker1](https://github.com/aklinker1)
+
+
 ## v2.0.0-alpha.22
 
 [compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.21...v2.0.0-alpha.22)
@@ -15,7 +28,6 @@
 ### ❤️ Contributors
 
 - [@aklinker1](https://github.com/aklinker1)
-
 
 ## v2.0.0-alpha.21
 
