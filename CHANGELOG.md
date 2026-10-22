@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.0.0-alpha.25
+
+[compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.24...v2.0.0-alpha.25)
+
+### 🩹 Fixes
+
+- Support `null` for variables for backwards compatibility ([`e13dedb`](https://github.com/anime-skip/web/commit/e13dedb215a35f16d9af4feb560cbc64fb6b541a))
+
+### ❤️ Contributors
+
+- [@aklinker1](https://github.com/aklinker1)
+
+
 ## v2.0.0-alpha.24
 
 [compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.23...v2.0.0-alpha.24)
@@ -11,7 +24,6 @@
 ### ❤️ Contributors
 
 - [@aklinker1](https://github.com/aklinker1)
-
 
 ## v2.0.0-alpha.23
 
