@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.0.0-alpha.24
+
+[compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.23...v2.0.0-alpha.24)
+
+### 🔥 Performance
+
+- Optimize the recent episodes query ([`0c878e0`](https://github.com/anime-skip/web/commit/0c878e0d8bda96cc76167091e4e11d04b0e48986))
+
+### ❤️ Contributors
+
+- [@aklinker1](https://github.com/aklinker1)
+
+
 ## v2.0.0-alpha.23
 
 [compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.22...v2.0.0-alpha.23)
@@ -11,7 +24,6 @@
 ### ❤️ Contributors
 
 - [@aklinker1](https://github.com/aklinker1)
-
 
 ## v2.0.0-alpha.22
 
