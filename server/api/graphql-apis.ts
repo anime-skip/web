@@ -64,7 +64,7 @@ export const graphqlApis = createApp()
             schema,
             source: query,
             contextValue: createGqlContext(ctx),
-            variableValues: variables,
+            variableValues: variables ?? undefined,
             operationName,
           });
           if (result.errors?.length) {

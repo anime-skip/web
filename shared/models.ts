@@ -50,7 +50,7 @@ export const GraphqlInput = z
       }),
     variables: z
       .record(z.string(), z.any())
-      .optional()
+      .nullish()
       .describe("Map of variables provided to the query."),
   })
   .meta({
