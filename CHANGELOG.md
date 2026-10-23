@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.0.0-alpha.27
+
+[compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.26...v2.0.0-alpha.27)
+
+### 🔥 Performance
+
+- Fix n+1 queries when listing all one-to-many child models ([`361587e`](https://github.com/anime-skip/web/commit/361587ed28ce7067183066e1a98633a74cdba1fb))
+
+### ❤️ Contributors
+
+- [@aklinker1](https://github.com/aklinker1)
+
+
 ## v2.0.0-alpha.26
 
 [compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.25...v2.0.0-alpha.26)
@@ -15,7 +28,6 @@
 ### ❤️ Contributors
 
 - [@aklinker1](https://github.com/aklinker1)
-
 
 ## v2.0.0-alpha.25
 
