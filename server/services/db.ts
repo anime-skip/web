@@ -21,7 +21,7 @@ export async function openDb(): Promise<Database> {
     casing: "snake_case",
     // Uncomment to load SQL queries
     // logger: {
-    //   logQuery: dbLogger.debug,
+    //   logQuery: logger.debug,
     // },
     schema: dbSchema,
   });

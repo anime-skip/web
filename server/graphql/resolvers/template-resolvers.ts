@@ -167,22 +167,6 @@ export const templateResolvers: GqlResolvers = {
   },
 };
 
-export async function getTemplateByEpisodeId(
-  ctx: GqlContext,
-  episodeId: string,
-): Promise<GqlTemplate | null> {
-  const userId = ctx.authUserId;
-  const row = await ctx.deps.db.query.templates.findFirst({
-    where: and(
-      eq(templates.sourceEpisodeId, episodeId),
-      isNull(templates.deletedAt),
-      ...(userId ? [eq(templates.createdByUserId, userId)] : []),
-    ),
-    orderBy: desc(templates.createdAt),
-  });
-  return row ? mapDbTemplateToGqlTemplate(row) : null;
-}
-
 export async function getTemplatesByShowId(
   ctx: GqlContext,
   showId: string,

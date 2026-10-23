@@ -1,6 +1,5 @@
 import { and, asc, desc, eq, isNull } from "drizzle-orm";
 import { type DbUserReportInsert, userReports } from "server/db/schema";
-import type { GqlContext } from "server/graphql/context";
 import { mapDbUserReportToGqlUserReport } from "server/graphql/mappers";
 import type { GqlResolvers } from "server/graphql/resolver-types.gen";
 import type { NoOptionals } from "shared/types";
@@ -87,14 +86,3 @@ export const userReportResolvers: GqlResolvers = {
       parent.showId ? ctx.dataloaders.shows.load(parent.showId) : null,
   },
 };
-
-export async function getUserReportsByEpisodeId(
-  ctx: GqlContext,
-  episodeId: string,
-): Promise<GqlUserReport[]> {
-  const rows = await ctx.deps.db.query.userReports.findMany({
-    where: and(eq(userReports.episodeId, episodeId), isNull(userReports.deletedAt)),
-    orderBy: asc(userReports.createdAt),
-  });
-  return rows.map(mapDbUserReportToGqlUserReport);
-}

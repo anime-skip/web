@@ -1,17 +1,26 @@
+import { and, asc, desc, eq, isNull, type SQL } from "drizzle-orm";
+import type { PgTableWithColumns } from "drizzle-orm/pg-core";
 import * as tables from "server/db/schema";
 import type { Dependencies } from "server/dependencies";
 import * as mappers from "server/graphql/mappers";
-import { createDrizzleDataloader } from "server/utils/drizzle-utils";
+import { createDrizzleDataloader, unwrapOne } from "server/utils/drizzle-utils";
 
 export function createGqlContext(ctx: { deps: Dependencies; request: Request; ip: string }) {
-  const dbUsersDataloader = createDrizzleDataloader(
-    ctx.deps.db,
-    tables.users,
-    "id",
-    (v: tables.DbUser) => v,
-  );
+  /** Loads a single row by a unique column, failing if it doesn't exist. */
+  const byUnique = <DbModel, GqlModel>(
+    // oxlint-lint-ignore no-explicit-any
+    table: PgTableWithColumns<any>,
+    key: keyof DbModel,
+    mapper: (db: DbModel) => GqlModel,
+  ) => unwrapOne(createDrizzleDataloader(ctx.deps.db, table, key, mapper), key);
 
-  return {
+  const dbUsersDataloader = byUnique(tables.users, "id", (v: tables.DbUser) => v);
+
+  // Declared up front (and assigned below) so the dataloaders can read `authUserId` lazily without
+  // making the context's inferred type circular.
+  let getAuthUserId: () => string | undefined = () => undefined;
+
+  const context = {
     ...ctx,
     request: ctx.request,
     authUserId: undefined as string | undefined,
@@ -29,75 +38,54 @@ export function createGqlContext(ctx: { deps: Dependencies; request: Request; ip
           dbUsersDataloader.load(key).then(mappers.mapDbUserToGqlUser),
       },
 
-      apiClients: createDrizzleDataloader(
-        ctx.deps.db,
-        tables.apiClients,
-        "id",
-        mappers.mapDbApiClientToGqlApiClient,
-      ),
-      userReports: createDrizzleDataloader(
-        ctx.deps.db,
-        tables.userReports,
-        "id",
-        mappers.mapDbUserReportToGqlUserReport,
-      ),
-      episodeUrls: createDrizzleDataloader(
-        ctx.deps.db,
-        tables.episodeUrls,
-        "url",
-        mappers.mapDbEpisodeUrlToGqlEpisodeUrl,
-      ),
-      episodes: createDrizzleDataloader(
-        ctx.deps.db,
-        tables.episodes,
-        "id",
-        mappers.mapDbEpisodeToGqlEpisode,
-      ),
-
-      shows: createDrizzleDataloader(
-        ctx.deps.db,
-        tables.shows,
-        "id",
-        mappers.mapDbShowToGqlShow,
-      ),
-      templates: createDrizzleDataloader(
-        ctx.deps.db,
-        tables.templates,
-        "id",
-        mappers.mapDbTemplateToGqlTemplate,
-      ),
-      timestampTypes: createDrizzleDataloader(
-        ctx.deps.db,
-        tables.timestampTypes,
-        "id",
-        mappers.mapDbTimestampTypeToGqlTimestampType,
-      ),
-      timestamps: createDrizzleDataloader(
+      apiClients: byUnique(tables.apiClients, "id", mappers.mapDbApiClientToGqlApiClient),
+      userReports: byUnique(tables.userReports, "id", mappers.mapDbUserReportToGqlUserReport),
+      episodeUrls: byUnique(tables.episodeUrls, "url", mappers.mapDbEpisodeUrlToGqlEpisodeUrl),
+      episodes: byUnique(tables.episodes, "id", mappers.mapDbEpisodeToGqlEpisode),
+      shows: byUnique(tables.shows, "id", mappers.mapDbShowToGqlShow),
+      templates: byUnique(tables.templates, "id", mappers.mapDbTemplateToGqlTemplate),
+      timestampTypes: byUnique(tables.timestampTypes, "id", mappers.mapDbTimestampTypeToGqlTimestampType),
+      timestamps: byUnique(tables.timestamps, "id", mappers.mapDbTimestampToGqlTimestamp),
+      externalLinks: byUnique(tables.externalLinks, "url", mappers.mapDbExternalLinkToGqlExternalLink),
+      timestampsByEpisodeId: createDrizzleDataloader(
         ctx.deps.db,
         tables.timestamps,
-        "id",
+        "episodeId",
         mappers.mapDbTimestampToGqlTimestamp,
+        { where: isNull(tables.timestamps.deletedAt), orderBy: asc(tables.timestamps.at) },
       ),
-      externalLinks: createDrizzleDataloader(
+      episodeUrlsByEpisodeId: createDrizzleDataloader(
         ctx.deps.db,
-        tables.externalLinks,
-        "url",
-        mappers.mapDbExternalLinkToGqlExternalLink,
+        tables.episodeUrls,
+        "episodeId",
+        mappers.mapDbEpisodeUrlToGqlEpisodeUrl,
+        { orderBy: asc(tables.episodeUrls.createdAt) },
       ),
-
+      userReportsByEpisodeId: createDrizzleDataloader(
+        ctx.deps.db,
+        tables.userReports,
+        "episodeId",
+        mappers.mapDbUserReportToGqlUserReport,
+        { where: isNull(tables.userReports.deletedAt), orderBy: asc(tables.userReports.createdAt) },
+      ),
+      // Newest first; the resolver takes the first template per episode.
+      templatesBySourceEpisodeId: createDrizzleDataloader(
+        ctx.deps.db,
+        tables.templates,
+        "sourceEpisodeId",
+        mappers.mapDbTemplateToGqlTemplate,
+        {
+          where: (): SQL | undefined =>
+            and(
+              isNull(tables.templates.deletedAt),
+              getAuthUserId() ? eq(tables.templates.createdByUserId, getAuthUserId()!) : undefined,
+            ),
+          orderBy: desc(tables.templates.createdAt),
+        },
+      ),
       preferences: {
-        byId: createDrizzleDataloader(
-          ctx.deps.db,
-          tables.preferences,
-          "id",
-          mappers.mapDbPreferencesToGqlPreferences,
-        ),
-        byUserId: createDrizzleDataloader(
-          ctx.deps.db,
-          tables.preferences,
-          "userId",
-          mappers.mapDbPreferencesToGqlPreferences,
-        ),
+        byId: byUnique(tables.preferences, "id", mappers.mapDbPreferencesToGqlPreferences),
+        byUserId: byUnique(tables.preferences, "userId", mappers.mapDbPreferencesToGqlPreferences),
       },
       templateTimestamps: {
         byTemplateIds: createDrizzleDataloader(
@@ -115,6 +103,8 @@ export function createGqlContext(ctx: { deps: Dependencies; request: Request; ip
       },
     },
   };
+  getAuthUserId = () => context.authUserId;
+  return context;
 }
 
 export type GqlContext = ReturnType<typeof createGqlContext>;

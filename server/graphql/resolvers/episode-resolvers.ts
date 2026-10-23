@@ -3,10 +3,6 @@ import { type DbEpisodeInsert, episodes, timestamps } from "server/db/schema";
 import type { GqlContext } from "server/graphql/context";
 import { mapDbEpisodeToGqlEpisode } from "server/graphql/mappers";
 import type { GqlResolvers } from "server/graphql/resolver-types.gen";
-import { getEpisodeUrlsByEpisodeId } from "server/graphql/resolvers/episode-url-resolvers";
-import { getTemplateByEpisodeId } from "server/graphql/resolvers/template-resolvers";
-import { getTimestampsByEpisodeId } from "server/graphql/resolvers/timestamp-resolvers";
-import { getUserReportsByEpisodeId } from "server/graphql/resolvers/user-report-resolvers";
 import { prepareGqlInputForDb } from "server/utils/drizzle-utils";
 import type { NoOptionals } from "shared/types";
 
@@ -115,13 +111,14 @@ export const episodeResolvers: GqlResolvers = {
 
     show: (parent, _args, ctx) => ctx.dataloaders.shows.load(parent.showId),
 
-    timestamps: (parent, _args, ctx) => getTimestampsByEpisodeId(ctx, parent.id),
+    timestamps: (parent, _args, ctx) => ctx.dataloaders.timestampsByEpisodeId.load(parent.id),
 
-    urls: (parent, _args, ctx) => getEpisodeUrlsByEpisodeId(ctx, parent.id),
+    urls: (parent, _args, ctx) => ctx.dataloaders.episodeUrlsByEpisodeId.load(parent.id),
 
-    template: (parent, _args, ctx) => getTemplateByEpisodeId(ctx, parent.id),
+    template: async (parent, _args, ctx) =>
+      (await ctx.dataloaders.templatesBySourceEpisodeId.load(parent.id))[0] ?? null,
 
-    userReports: (parent, _args, ctx) => getUserReportsByEpisodeId(ctx, parent.id),
+    userReports: (parent, _args, ctx) => ctx.dataloaders.userReportsByEpisodeId.load(parent.id),
   },
 };
 

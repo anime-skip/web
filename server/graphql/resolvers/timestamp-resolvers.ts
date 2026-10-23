@@ -1,6 +1,5 @@
-import { and, asc, eq, isNull } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { type DbTimestampInsert, timestamps } from "server/db/schema";
-import type { GqlContext } from "server/graphql/context";
 import {
   mapDbTimestampToGqlTimestamp,
   mapGqlTimestampSourceToDbTimestampSource,
@@ -131,7 +130,7 @@ export const timestampResolvers: GqlResolvers = {
     findTimestamp: (_parent, args, ctx) => ctx.dataloaders.timestamps.load(args.timestampId),
 
     findTimestampsByEpisodeId: (_parent, args, ctx) =>
-      getTimestampsByEpisodeId(ctx, args.episodeId),
+      ctx.dataloaders.timestampsByEpisodeId.load(args.episodeId),
   },
   Timestamp: {
     createdBy: ({ createdByUserId: id }, _, ctx) => ctx.dataloaders.users.load(id),
@@ -145,14 +144,3 @@ export const timestampResolvers: GqlResolvers = {
     episode: (parent, _args, ctx) => ctx.dataloaders.episodes.load(parent.episodeId),
   },
 };
-
-export async function getTimestampsByEpisodeId(
-  ctx: GqlContext,
-  episodeId: string,
-): Promise<GqlTimestamp[]> {
-  const rows = await ctx.deps.db.query.timestamps.findMany({
-    where: and(eq(timestamps.episodeId, episodeId), isNull(timestamps.deletedAt)),
-    orderBy: asc(timestamps.at),
-  });
-  return rows.map(mapDbTimestampToGqlTimestamp);
-}

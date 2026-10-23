@@ -1,6 +1,5 @@
-import { asc, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { type DbEpisodeUrlInsert, episodeUrls } from "server/db/schema";
-import type { GqlContext } from "server/graphql/context";
 import { mapDbEpisodeUrlToGqlEpisodeUrl, mapUrlToDbEpisodeSource } from "server/graphql/mappers";
 import type { GqlResolvers } from "server/graphql/resolver-types.gen";
 import { prepareGqlInputForDb } from "server/utils/drizzle-utils";
@@ -69,7 +68,7 @@ export const episodeUrlResolvers: GqlResolvers = {
     findEpisodeUrl: (_parent, args, ctx) => ctx.dataloaders.episodeUrls.load(args.episodeUrl),
 
     findEpisodeUrlsByEpisodeId: (_parent, args, ctx) =>
-      getEpisodeUrlsByEpisodeId(ctx, args.episodeId),
+      ctx.dataloaders.episodeUrlsByEpisodeId.load(args.episodeId),
   },
   EpisodeUrl: {
     createdBy: ({ createdByUserId: id }, _, ctx) => ctx.dataloaders.users.load(id),
@@ -86,15 +85,4 @@ function cleanEpisodeUrl(url: string): string {
   const nineAnimeRegexp = /9anime\.\w+/;
   url = url.replace(nineAnimeRegexp, "9anime.to");
   return url;
-}
-
-export async function getEpisodeUrlsByEpisodeId(
-  ctx: GqlContext,
-  episodeId: string,
-): Promise<GqlEpisodeUrl[]> {
-  const rows = await ctx.deps.db.query.episodeUrls.findMany({
-    where: eq(episodeUrls.episodeId, episodeId),
-    orderBy: asc(episodeUrls.createdAt),
-  });
-  return rows.map(mapDbEpisodeUrlToGqlEpisodeUrl);
 }
