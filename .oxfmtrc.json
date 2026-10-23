@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "ignorePatterns": ["*.gen.*", "CHANGELOG.md"],
+  "ignorePatterns": ["*.gen.*", "CHANGELOG.md", "server/db/drizzle/meta"],
   "sortImports": true,
   "sortTailwindcss": true,
   "jsdoc": true
