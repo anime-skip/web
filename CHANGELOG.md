@@ -1,5 +1,22 @@
 # Changelog
 
+## v2.0.0-alpha.26
+
+[compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.25...v2.0.0-alpha.26)
+
+### 🔥 Performance
+
+- Add missing indices ([`d9e37f7`](https://github.com/anime-skip/web/commit/d9e37f7f2a2cbc918ce5f83d052ca9e10fbaa439))
+
+### 🏡 Chore
+
+- Ignore generated drizzle files while formatting ([`cd375a7`](https://github.com/anime-skip/web/commit/cd375a7f2ec83db5fdf56924ab1eb83982934672))
+
+### ❤️ Contributors
+
+- [@aklinker1](https://github.com/aklinker1)
+
+
 ## v2.0.0-alpha.25
 
 [compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.24...v2.0.0-alpha.25)
@@ -11,7 +28,6 @@
 ### ❤️ Contributors
 
 - [@aklinker1](https://github.com/aklinker1)
-
 
 ## v2.0.0-alpha.24
 
