@@ -23,20 +23,24 @@ const updatedByUserId = uuid().notNull();
 const deletedAt = timestamp({ withTimezone: true, mode: "string" });
 const deletedByUserId = uuid();
 
-export const apiClients = pgTable("api_clients", {
-  id: text().primaryKey().notNull(),
-  createdAt,
-  createdByUserId,
-  updatedAt,
-  updatedByUserId,
-  deletedAt,
-  deletedByUserId,
-  userId: uuid().notNull(),
-  appName: text().notNull(),
-  description: text().notNull(),
-  allowedOrigins: text().array(),
-  rateLimitRpm: integer(),
-});
+export const apiClients = pgTable(
+  "api_clients",
+  {
+    id: text().primaryKey().notNull(),
+    createdAt,
+    createdByUserId,
+    updatedAt,
+    updatedByUserId,
+    deletedAt,
+    deletedByUserId,
+    userId: uuid().notNull(),
+    appName: text().notNull(),
+    description: text().notNull(),
+    allowedOrigins: text().array(),
+    rateLimitRpm: integer(),
+  },
+  (table) => [index("idx_api_client_user_id").on(table.userId)],
+);
 export type DbApiClient = typeof apiClients.$inferSelect;
 export type DbApiClientInsert = typeof apiClients.$inferInsert;
 
@@ -58,6 +62,7 @@ export const users = pgTable(
   },
   (table) => [
     uniqueIndex("user_username").using("btree", table.username.asc().nullsLast().op("text_ops")),
+    index("idx_user_email").on(table.email),
   ],
 );
 export type DbUser = typeof users.$inferSelect;
@@ -113,17 +118,21 @@ export const userReports = pgTable(
 export type DbUserReport = typeof userReports.$inferSelect;
 export type DbUserReportInsert = typeof userReports.$inferInsert;
 
-export const episodeUrls = pgTable("episode_urls", {
-  url: text().primaryKey().notNull(),
-  createdAt,
-  createdByUserId,
-  updatedAt,
-  updatedByUserId,
-  episodeId: uuid().notNull(),
-  source: integer().notNull(),
-  duration: numeric(),
-  timestampsOffset: numeric(),
-});
+export const episodeUrls = pgTable(
+  "episode_urls",
+  {
+    url: text().primaryKey().notNull(),
+    createdAt,
+    createdByUserId,
+    updatedAt,
+    updatedByUserId,
+    episodeId: uuid().notNull(),
+    source: integer().notNull(),
+    duration: numeric(),
+    timestampsOffset: numeric(),
+  },
+  (table) => [index("idx_episode_url_episode_id").on(table.episodeId)],
+);
 export type DbEpisodeUrl = typeof episodeUrls.$inferSelect;
 export type DbEpisodeUrlInsert = typeof episodeUrls.$inferInsert;
 
@@ -134,24 +143,28 @@ export enum DbEpisodeSource {
   Crunchyroll = 3,
 }
 
-export const episodes = pgTable("episodes", {
-  id: uuid()
-    .default(sql`uuid_generate_v4()`)
-    .primaryKey()
-    .notNull(),
-  createdAt,
-  createdByUserId,
-  updatedAt,
-  updatedByUserId,
-  deletedAt,
-  deletedByUserId,
-  season: text(),
-  number: text(),
-  absoluteNumber: text(),
-  name: text(),
-  showId: uuid().notNull(),
-  baseDuration: numeric(),
-});
+export const episodes = pgTable(
+  "episodes",
+  {
+    id: uuid()
+      .default(sql`uuid_generate_v4()`)
+      .primaryKey()
+      .notNull(),
+    createdAt,
+    createdByUserId,
+    updatedAt,
+    updatedByUserId,
+    deletedAt,
+    deletedByUserId,
+    season: text(),
+    number: text(),
+    absoluteNumber: text(),
+    name: text(),
+    showId: uuid().notNull(),
+    baseDuration: numeric(),
+  },
+  (table) => [index("idx_episode_show_id").on(table.showId)],
+);
 export type DbEpisode = typeof episodes.$inferSelect;
 export type DbEpisodeInsert = typeof episodes.$inferInsert;
 
@@ -159,20 +172,27 @@ export const migrations = pgTable("migrations", {
   id: varchar({ length: 255 }).primaryKey().notNull(),
 });
 
-export const showAdmins = pgTable("show_admins", {
-  id: uuid()
-    .default(sql`uuid_generate_v4()`)
-    .primaryKey()
-    .notNull(),
-  createdAt,
-  createdByUserId,
-  updatedAt,
-  updatedByUserId,
-  deletedAt,
-  deletedByUserId,
-  showId: uuid().notNull(),
-  userId: uuid().notNull(),
-});
+export const showAdmins = pgTable(
+  "show_admins",
+  {
+    id: uuid()
+      .default(sql`uuid_generate_v4()`)
+      .primaryKey()
+      .notNull(),
+    createdAt,
+    createdByUserId,
+    updatedAt,
+    updatedByUserId,
+    deletedAt,
+    deletedByUserId,
+    showId: uuid().notNull(),
+    userId: uuid().notNull(),
+  },
+  (table) => [
+    index("idx_show_admin_show_id").on(table.showId),
+    index("idx_show_admin_user_id").on(table.userId),
+  ],
+);
 export type DbShowAdmin = typeof showAdmins.$inferSelect;
 export type DbShowAdminInsert = typeof showAdmins.$inferInsert;
 
@@ -246,22 +266,30 @@ export const timestampTypes = pgTable("timestamp_types", {
 export type DbTimestampType = typeof timestampTypes.$inferSelect;
 export type DbTimestampTypeInsert = typeof timestampTypes.$inferInsert;
 
-export const timestamps = pgTable("timestamps", {
-  id: uuid()
-    .default(sql`uuid_generate_v4()`)
-    .primaryKey()
-    .notNull(),
-  createdAt,
-  createdByUserId,
-  updatedAt,
-  updatedByUserId,
-  deletedAt,
-  deletedByUserId,
-  at: numeric(),
-  typeId: uuid().notNull(),
-  episodeId: uuid().notNull(),
-  source: integer().default(0).notNull(),
-});
+export const timestamps = pgTable(
+  "timestamps",
+  {
+    id: uuid()
+      .default(sql`uuid_generate_v4()`)
+      .primaryKey()
+      .notNull(),
+    createdAt,
+    createdByUserId,
+    updatedAt,
+    updatedByUserId,
+    deletedAt,
+    deletedByUserId,
+    at: numeric(),
+    typeId: uuid().notNull(),
+    episodeId: uuid().notNull(),
+    source: integer().default(0).notNull(),
+  },
+  (table) => [
+    index("idx_timestamp_episode_id").on(table.episodeId),
+    index("idx_timestamp_type_id").on(table.typeId),
+    index("idx_timestamp_created_by_user_id").on(table.createdByUserId),
+  ],
+);
 export type DbTimestamp = typeof timestamps.$inferSelect;
 export type DbTimestampInsert = typeof timestamps.$inferInsert;
 
@@ -271,34 +299,38 @@ export enum DbTimestampSource {
   Crunchyroll = 2,
 }
 
-export const preferences = pgTable("preferences", {
-  id: uuid()
-    .default(sql`uuid_generate_v4()`)
-    .primaryKey()
-    .notNull(),
-  createdAt,
-  updatedAt,
-  deletedAt,
-  userId: uuid().notNull(),
-  enableAutoSkip: boolean().default(true).notNull(),
-  enableAutoPlay: boolean().default(true).notNull(),
-  skipBranding: boolean().default(true).notNull(),
-  skipIntros: boolean().default(true).notNull(),
-  skipNewIntros: boolean().default(false).notNull(),
-  skipMixedIntros: boolean().default(false).notNull(),
-  skipRecaps: boolean().default(true).notNull(),
-  skipFiller: boolean().default(true).notNull(),
-  skipCanon: boolean().default(false).notNull(),
-  skipTransitions: boolean().default(true).notNull(),
-  skipCredits: boolean().default(true).notNull(),
-  skipNewCredits: boolean().default(false).notNull(),
-  skipMixedCredits: boolean().default(true).notNull(),
-  skipPreview: boolean().default(true).notNull(),
-  skipTitleCard: boolean().default(true).notNull(),
-  minimizeToolbarWhenEditing: boolean().default(false).notNull(),
-  hideTimelineWhenMinimized: boolean().default(false).notNull(),
-  colorTheme: integer().default(1).notNull(),
-});
+export const preferences = pgTable(
+  "preferences",
+  {
+    id: uuid()
+      .default(sql`uuid_generate_v4()`)
+      .primaryKey()
+      .notNull(),
+    createdAt,
+    updatedAt,
+    deletedAt,
+    userId: uuid().notNull(),
+    enableAutoSkip: boolean().default(true).notNull(),
+    enableAutoPlay: boolean().default(true).notNull(),
+    skipBranding: boolean().default(true).notNull(),
+    skipIntros: boolean().default(true).notNull(),
+    skipNewIntros: boolean().default(false).notNull(),
+    skipMixedIntros: boolean().default(false).notNull(),
+    skipRecaps: boolean().default(true).notNull(),
+    skipFiller: boolean().default(true).notNull(),
+    skipCanon: boolean().default(false).notNull(),
+    skipTransitions: boolean().default(true).notNull(),
+    skipCredits: boolean().default(true).notNull(),
+    skipNewCredits: boolean().default(false).notNull(),
+    skipMixedCredits: boolean().default(true).notNull(),
+    skipPreview: boolean().default(true).notNull(),
+    skipTitleCard: boolean().default(true).notNull(),
+    minimizeToolbarWhenEditing: boolean().default(false).notNull(),
+    hideTimelineWhenMinimized: boolean().default(false).notNull(),
+    colorTheme: integer().default(1).notNull(),
+  },
+  (table) => [index("idx_preferences_user_id").on(table.userId)],
+);
 export type DbPreferences = typeof preferences.$inferSelect;
 export type DbPreferencesInsert = typeof preferences.$inferInsert;
 
@@ -321,6 +353,7 @@ export const externalLinks = pgTable(
       columns: [table.url, table.showId],
       name: "external_links_pkey",
     }),
+    index("idx_external_link_show_id").on(table.showId),
   ],
 );
 export type DbExternalLink = typeof externalLinks.$inferSelect;
