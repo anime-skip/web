@@ -1,4 +1,3 @@
-import bcrypt from "bcryptjs";
 import { jwtVerify, SignJWT } from "jose";
 import { env } from "server/env";
 import { withSpan } from "server/utils/telemetry";
@@ -25,7 +24,7 @@ const AUDIENCES: Record<TokenKind, string> = {
 const ISSUER = "anime-skip.com";
 
 let SECRET: Uint8Array<ArrayBufferLike> | undefined;
-function secret(): Uint8Array<ArrayBufferLike> {
+function getSecret(): Uint8Array<ArrayBufferLike> {
   const { JWT_SECRET } = env;
   if (!JWT_SECRET) throw Error("env.JWT_SECRET is required to work with JWTs");
 
@@ -41,13 +40,14 @@ export const auth = {
   createToken: async (kind: TokenKind, info: TokenInfo) => {
     try {
       const now = Date.now();
-      return await new SignJWT(info)
+      const jwt = new SignJWT(info)
         .setProtectedHeader({ alg: "HS256" })
         .setIssuedAt(toSeconds(now))
         .setIssuer(ISSUER)
         .setAudience(AUDIENCES[kind])
-        .setExpirationTime(toSeconds(now + TIMEOUTS[kind]))
-        .sign(secret());
+        .setExpirationTime(toSeconds(now + TIMEOUTS[kind]));
+      const secret = getSecret();
+      return await withSpan("SignJWT.sign", {}, () => jwt.sign(secret));
     } catch (cause) {
       throw new TokenError("create", kind, { cause });
     }
@@ -55,28 +55,27 @@ export const auth = {
 
   validateToken: async (kind: TokenKind, token: string): Promise<TokenInfo> => {
     try {
-      const res = await jwtVerify<TokenInfo>(token, secret(), {
-        issuer: ISSUER,
-        audience: AUDIENCES[kind],
-        algorithms: ["HS256"],
-      });
+      const secret = getSecret();
+      const res = await withSpan("jwtVerify", {}, () =>
+        jwtVerify<TokenInfo>(token, secret, {
+          issuer: ISSUER,
+          audience: AUDIENCES[kind],
+          algorithms: ["HS256"],
+        }),
+      );
       return res.payload;
     } catch (cause) {
       throw new TokenError("validate", kind, { cause });
     }
   },
 
-  /** Check a password against an existing hash. */
-  comparePasswords: async (checkPassword: string, againstHash: string): Promise<boolean> => {
-    return await withSpan("bcrypt.compare", {}, () => bcrypt.compare(checkPassword, againstHash));
+  verifyPassword: async (passwordMd5: string, hash: string): Promise<boolean> => {
+    return await withSpan("Bun.password.verify", {}, () => Bun.password.verify(passwordMd5, hash));
   },
 
-  /** Hash and encrypt a password. */
-  encryptPassword: async (password: string) => {
+  hashPassword: async (passwordMd5: string) => {
     try {
-      return await withSpan("bcrypt.hash", { attributes: { "bcrypt.cost": 14 } }, () =>
-        bcrypt.hash(password, 14),
-      );
+      return await withSpan("Bun.password.hash", {}, () => Bun.password.hash(passwordMd5));
     } catch (err) {
       throw Error("Failed to encrypt password", { cause: err });
     }

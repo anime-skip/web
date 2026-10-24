@@ -48,7 +48,7 @@ export const accountResolvers: GqlResolvers = {
       }
 
       logger.debug("Generating passwordHash");
-      const encryptedPasswordHash = await auth.encryptPassword(passwordHash);
+      const encryptedPasswordHash = await auth.hashPassword(passwordHash);
 
       logger.debug("Creating user and preferences");
       const [user] = await ctx.deps.db
@@ -89,7 +89,7 @@ export const accountResolvers: GqlResolvers = {
       const user = await requireUser(ctx, userId);
 
       const oldPassword = md5(args.oldPassword.trim());
-      const isMatch = await auth.comparePasswords(oldPassword, user.passwordHash);
+      const isMatch = await auth.verifyPassword(oldPassword, user.passwordHash);
       if (!isMatch) {
         throw Error("Old password is not correct");
       }
@@ -218,7 +218,7 @@ export const accountResolvers: GqlResolvers = {
         throw Error(`Failed to get account with username or email = "${usernameOrEmail}"`);
       }
 
-      const passwordsMatch = await auth.comparePasswords(passwordHash, user.passwordHash);
+      const passwordsMatch = await auth.verifyPassword(passwordHash, user.passwordHash);
       if (!passwordsMatch) {
         throw Error("Bad login credentials");
       }
@@ -261,7 +261,7 @@ async function updatePassword(
     throw Error("New password is not valid, it cannot be empty");
   }
 
-  user.passwordHash = await auth.encryptPassword(md5(newPassword));
+  user.passwordHash = await auth.hashPassword(md5(newPassword));
   await db.update(users).set({ passwordHash: user.passwordHash }).where(eq(users.id, user.id));
 
   return createLoginData(user);
