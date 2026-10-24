@@ -37,7 +37,7 @@ export type TokenInfo = {
 };
 
 /** Prefixes of legacy hashes that get re-hashed with the default algorithm on login. */
-const OLD_HASH_PREFIXES = ["$b2"];
+const OLD_HASH_PREFIXES = ["$2b$14$"];
 
 export const auth = {
   createToken: async (kind: TokenKind, info: TokenInfo) => {
