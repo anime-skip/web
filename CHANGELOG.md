@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.0.0-alpha.31
+
+[compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.30...v2.0.0-alpha.31)
+
+### 🩹 Fixes
+
+- Correct `bcrypt` prefix for password hash migrations ([`6831b3c`](https://github.com/anime-skip/web/commit/6831b3c261cd02bc1c2cc670e63a0f5617dac5e7))
+
+### ❤️ Contributors
+
+- [@aklinker1](https://github.com/aklinker1)
+
+
 ## v2.0.0-alpha.30
 
 [compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.29...v2.0.0-alpha.30)
@@ -15,7 +28,6 @@
 ### ❤️ Contributors
 
 - [@aklinker1](https://github.com/aklinker1)
-
 
 ## v2.0.0-alpha.29
 
