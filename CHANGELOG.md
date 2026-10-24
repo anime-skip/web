@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.0.0-alpha.28
+
+[compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.27...v2.0.0-alpha.28)
+
+### 🏡 Chore
+
+- Add spans for bcrypt ([`a407826`](https://github.com/anime-skip/web/commit/a4078263a8d1351661b0c09d815d8f5a704aaaa2))
+
+### ❤️ Contributors
+
+- [@aklinker1](https://github.com/aklinker1)
+
+
 ## v2.0.0-alpha.27
 
 [compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.26...v2.0.0-alpha.27)
@@ -11,7 +24,6 @@
 ### ❤️ Contributors
 
 - [@aklinker1](https://github.com/aklinker1)
-
 
 ## v2.0.0-alpha.26
 
