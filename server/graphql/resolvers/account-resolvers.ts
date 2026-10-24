@@ -13,6 +13,7 @@ import {
   sendWelcomeEmail,
 } from "server/utils/emails";
 import { verifyRecaptcha } from "server/utils/recaptcha";
+import { withSpan } from "server/utils/telemetry";
 import { validateEmail, validateUsername } from "server/utils/validation";
 import { md5 } from "shared/utils";
 
@@ -30,7 +31,7 @@ export const accountResolvers: GqlResolvers = {
       validateEmail(email);
 
       logger.debug("Verify recaptcha");
-      await verifyRecaptcha(args.recaptchaResponse, ctx.ip);
+      await withSpan("verifyRecaptcha", {}, () => verifyRecaptcha(args.recaptchaResponse, ctx.ip));
 
       logger.debug("Checking for existing username");
       const existingUserByUsername = await getOptionalUserByUsername(ctx, username);
@@ -69,13 +70,15 @@ export const accountResolvers: GqlResolvers = {
       });
 
       logger.debug("Sending welcome email");
-      await sendWelcomeEmail(user);
+      await withSpan("email.welcome", {}, () => sendWelcomeEmail(user));
 
       logger.debug("Sending verification email");
       const verifyEmailToken = await auth.createToken("verify-email", {
         userId,
       });
-      await sendAccountVerificationEmail(user, verifyEmailToken);
+      await withSpan("email.verification", {}, () =>
+        sendAccountVerificationEmail(user, verifyEmailToken),
+      );
 
       logger.debug("Returning LoginData");
       return createLoginData(user);

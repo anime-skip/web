@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import { jwtVerify, SignJWT } from "jose";
 import { env } from "server/env";
+import { withSpan } from "server/utils/telemetry";
 import { DAY, MINUTE, toSeconds } from "shared/time";
 
 type TokenKind = "access" | "refresh" | "verify-email" | "reset-password" | "delete-account";
@@ -67,13 +68,15 @@ export const auth = {
 
   /** Check a password against an existing hash. */
   comparePasswords: async (checkPassword: string, againstHash: string): Promise<boolean> => {
-    return await bcrypt.compare(checkPassword, againstHash);
+    return await withSpan("bcrypt.compare", {}, () => bcrypt.compare(checkPassword, againstHash));
   },
 
   /** Hash and encrypt a password. */
   encryptPassword: async (password: string) => {
     try {
-      return await bcrypt.hash(password, 14);
+      return await withSpan("bcrypt.hash", { attributes: { "bcrypt.cost": 14 } }, () =>
+        bcrypt.hash(password, 14),
+      );
     } catch (err) {
       throw Error("Failed to encrypt password", { cause: err });
     }

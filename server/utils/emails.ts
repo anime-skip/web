@@ -7,6 +7,7 @@ import verificationHtmlTemplate from "server/assets/email-templates/verification
 import welcomeHtmlTemplate from "server/assets/email-templates/welcome.html.tpl" with { type: "text" };
 import type { DbUser } from "server/db/schema";
 import { env } from "server/env";
+import { withSpan } from "server/utils/telemetry";
 
 const logger = createLogger("emails");
 
@@ -114,11 +115,13 @@ async function send(data: {
     debug: false,
   });
   try {
-    await promisify(connection.connect.bind(connection))();
-    await promisify(connection.login.bind(connection))(auth);
-    await promisify(connection.send.bind(connection))(
-      { from: data.from.address, to: data.to },
-      content,
+    await withSpan("smtp.connect", {}, () => promisify(connection.connect.bind(connection))());
+    await withSpan("smtp.login", {}, () => promisify(connection.login.bind(connection))(auth));
+    await withSpan("smtp.send", { attributes: { "email.template": data.templateName } }, () =>
+      promisify(connection.send.bind(connection))(
+        { from: data.from.address, to: data.to },
+        content,
+      ),
     );
   } catch (error) {
     logger.error(`Failed to send email`, { error });
