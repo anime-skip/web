@@ -30,16 +30,13 @@ export const accountResolvers: GqlResolvers = {
       validateUsername(username);
       validateEmail(email);
 
-      logger.debug("Verify recaptcha");
       await withSpan("verifyRecaptcha", {}, () => verifyRecaptcha(args.recaptchaResponse, ctx.ip));
 
-      logger.debug("Checking for existing username");
       const existingUserByUsername = await getOptionalUserByUsername(ctx, username);
       if (existingUserByUsername) {
         throw Error(`Username '${username}' is already taken, use a different one`);
       }
 
-      logger.debug("Checking for existing email");
       const existingUserByEmail = await ctx.deps.db.query.users.findFirst({
         where: eq(users.email, email),
       });
@@ -47,10 +44,8 @@ export const accountResolvers: GqlResolvers = {
         throw Error(`Email '${email}' is already taken, use a different one`);
       }
 
-      logger.debug("Generating passwordHash");
       const encryptedPasswordHash = await auth.hashPassword(passwordHash);
 
-      logger.debug("Creating user and preferences");
       const [user] = await ctx.deps.db
         .insert(users)
         .values({
@@ -69,16 +64,16 @@ export const accountResolvers: GqlResolvers = {
         updatedAt: new Date().toISOString(),
       });
 
-      logger.debug("Sending welcome email");
-      await withSpan("email.welcome", {}, () => sendWelcomeEmail(user));
+      void withSpan("email.welcome", {}, () => sendWelcomeEmail(user)).catch((error) =>
+        logger.error("Failed to send welcome email", { error }),
+      );
 
-      logger.debug("Sending verification email");
       const verifyEmailToken = await auth.createToken("verify-email", {
         userId,
       });
-      await withSpan("email.verification", {}, () =>
+      void withSpan("email.verification", {}, () =>
         sendAccountVerificationEmail(user, verifyEmailToken),
-      );
+      ).catch((error) => logger.error("Failed to send verification email", { error }));
 
       logger.debug("Returning LoginData");
       return createLoginData(user);
