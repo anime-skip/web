@@ -1,5 +1,19 @@
 # Changelog
 
+## v2.0.0-alpha.29
+
+[compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.28...v2.0.0-alpha.29)
+
+### 🔥 Performance
+
+- Drop `bcryptjs` in favor of `Bun.password`, add JWT spans ([`1088bbe`](https://github.com/anime-skip/web/commit/1088bbe2fea8f842110813c9673346124c2f67fc))
+- Don't await sending emails on account creation ([`232c2e2`](https://github.com/anime-skip/web/commit/232c2e29badd7ae998289dea44ab0c676df0055f))
+
+### ❤️ Contributors
+
+- [@aklinker1](https://github.com/aklinker1)
+
+
 ## v2.0.0-alpha.28
 
 [compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.27...v2.0.0-alpha.28)
@@ -11,7 +25,6 @@
 ### ❤️ Contributors
 
 - [@aklinker1](https://github.com/aklinker1)
-
 
 ## v2.0.0-alpha.27
 
