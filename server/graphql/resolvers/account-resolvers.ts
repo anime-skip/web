@@ -218,6 +218,15 @@ export const accountResolvers: GqlResolvers = {
         throw Error("Bad login credentials");
       }
 
+      // Migrate old, slow hashes the latest, safest, and fastest one
+      if (auth.isLegacyPasswordHash(user.passwordHash)) {
+        user.passwordHash = await auth.hashPassword(passwordHash);
+        await ctx.deps.db
+          .update(users)
+          .set({ passwordHash: user.passwordHash })
+          .where(eq(users.id, user.id));
+      }
+
       return createLoginData(user);
     },
 

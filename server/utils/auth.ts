@@ -36,6 +36,9 @@ export type TokenInfo = {
   userId: string;
 };
 
+/** Prefixes of legacy hashes that get re-hashed with the default algorithm on login. */
+const OLD_HASH_PREFIXES = ["$b2"];
+
 export const auth = {
   createToken: async (kind: TokenKind, info: TokenInfo) => {
     try {
@@ -72,6 +75,9 @@ export const auth = {
   verifyPassword: async (passwordMd5: string, hash: string): Promise<boolean> => {
     return await withSpan("Bun.password.verify", {}, () => Bun.password.verify(passwordMd5, hash));
   },
+
+  isLegacyPasswordHash: (hash: string): boolean =>
+    OLD_HASH_PREFIXES.some((p) => hash.startsWith(p)),
 
   hashPassword: async (passwordMd5: string) => {
     try {
