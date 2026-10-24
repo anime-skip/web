@@ -1,5 +1,22 @@
 # Changelog
 
+## v2.0.0-alpha.30
+
+[compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.29...v2.0.0-alpha.30)
+
+### 🔥 Performance
+
+- Migrate old password hashes to newer ones on login ([`401b2c1`](https://github.com/anime-skip/web/commit/401b2c144b2d2a675ab9fc839af4ba0841d5d1ef))
+
+### 🏡 Chore
+
+- Add `.DS_Store` to gitignore ([`ae4cdd2`](https://github.com/anime-skip/web/commit/ae4cdd2a809d9c95ace3666fb0842b5fcfab1296))
+
+### ❤️ Contributors
+
+- [@aklinker1](https://github.com/aklinker1)
+
+
 ## v2.0.0-alpha.29
 
 [compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.28...v2.0.0-alpha.29)
@@ -12,7 +29,6 @@
 ### ❤️ Contributors
 
 - [@aklinker1](https://github.com/aklinker1)
-
 
 ## v2.0.0-alpha.28
 
