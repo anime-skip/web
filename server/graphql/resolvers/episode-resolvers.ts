@@ -1,4 +1,4 @@
-import { and, asc, desc, eq, ilike, isNull, sql, type SQLWrapper } from "drizzle-orm";
+import { and, asc, desc, eq, ilike, sql, type SQLWrapper } from "drizzle-orm";
 import { type DbEpisodeInsert, episodes, timestamps } from "server/db/schema";
 import type { GqlContext } from "server/graphql/context";
 import { mapDbEpisodeToGqlEpisode } from "server/graphql/mappers";
@@ -123,9 +123,7 @@ export const episodeResolvers: GqlResolvers = {
 };
 
 export async function getEpisodesByShowId(ctx: GqlContext, showId: string): Promise<GqlEpisode[]> {
-  const rows = await ctx.deps.db.query.episodes.findMany({
-    where: and(eq(episodes.showId, showId), isNull(episodes.deletedAt)),
-  });
+  const rows = [...(await ctx.dataloaders.dbEpisodesByShowId.load(showId))];
   const collator = new Intl.Collator(undefined, { numeric: true });
   rows.sort(
     (a, b) =>

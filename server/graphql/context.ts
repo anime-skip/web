@@ -47,6 +47,14 @@ export function createGqlContext(ctx: { deps: Dependencies; request: Request; ip
       timestampTypes: byUnique(tables.timestampTypes, "id", mappers.mapDbTimestampTypeToGqlTimestampType),
       timestamps: byUnique(tables.timestamps, "id", mappers.mapDbTimestampToGqlTimestamp),
       externalLinks: byUnique(tables.externalLinks, "url", mappers.mapDbExternalLinkToGqlExternalLink),
+      // Returns raw DB rows so callers can sort before mapping.
+      dbEpisodesByShowId: createDrizzleDataloader(
+        ctx.deps.db,
+        tables.episodes,
+        "showId",
+        (v: tables.DbEpisode) => v,
+        { where: isNull(tables.episodes.deletedAt) },
+      ),
       timestampsByEpisodeId: createDrizzleDataloader(
         ctx.deps.db,
         tables.timestamps,
