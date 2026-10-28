@@ -1,5 +1,18 @@
 # Changelog
 
+## v2.0.0-alpha.32
+
+[compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.31...v2.0.0-alpha.32)
+
+### 🩹 Fixes
+
+- Optimize `findShowsByExternalId` episodes nested resolver lookup ([`36c6923`](https://github.com/anime-skip/web/commit/36c6923ba806b06489b91f26ab0a4e01e0dbbd58))
+
+### ❤️ Contributors
+
+- [@aklinker1](https://github.com/aklinker1)
+
+
 ## v2.0.0-alpha.31
 
 [compare changes](https://github.com/anime-skip/web/compare/v2.0.0-alpha.30...v2.0.0-alpha.31)
@@ -11,7 +24,6 @@
 ### ❤️ Contributors
 
 - [@aklinker1](https://github.com/aklinker1)
-
 
 ## v2.0.0-alpha.30
 
